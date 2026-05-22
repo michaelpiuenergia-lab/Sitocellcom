@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ProductGrid } from "./product-grid";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 import { cn } from "@/lib/utils/cn";
+import { EASE, DURATION } from "@/lib/constants";
 
 interface SparePartsProps {
   initialProducts: PublicProductListItem[];
@@ -12,54 +14,175 @@ interface SparePartsProps {
 
 export function SpareParts({ initialProducts, availableModels }: SparePartsProps) {
   const [selectedModel, setSelectedModel] = useState<string>("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // Chiudi dropdown clickando fuori
+  useEffect(() => {
+    const onDocClick = (e: MouseEvent) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    const onEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    if (isOpen) {
+      document.addEventListener("mousedown", onDocClick);
+      document.addEventListener("keydown", onEsc);
+    }
+    return () => {
+      document.removeEventListener("mousedown", onDocClick);
+      document.removeEventListener("keydown", onEsc);
+    };
+  }, [isOpen]);
 
   const filtered = useMemo(() => {
     if (!selectedModel) return initialProducts;
     const q = selectedModel.toLowerCase();
-    return initialProducts.filter((p) =>
-      p.compatibleModels?.toLowerCase().includes(q) ?? false,
+    return initialProducts.filter(
+      (p) => p.compatibleModels?.toLowerCase().includes(q) ?? false,
     );
   }, [selectedModel, initialProducts]);
 
+  const visibleModels = useMemo(() => {
+    if (!query) return availableModels;
+    const q = query.toLowerCase();
+    return availableModels.filter((m) => m.toLowerCase().includes(q));
+  }, [query, availableModels]);
+
+  const selectModel = (model: string) => {
+    setSelectedModel(model);
+    setIsOpen(false);
+    setQuery("");
+  };
+
   return (
     <div className="flex flex-col gap-8">
-      {/* Filter row — modello dropdown + count */}
+      {/* Filter row */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <div className="flex flex-col gap-2 w-full sm:w-auto">
-          <label
-            htmlFor="model-filter"
-            className="font-mono text-[11px] text-muted-foreground uppercase tracking-[0.15em]"
-          >
+        <div className="flex flex-col gap-2 w-full sm:w-auto" ref={wrapperRef}>
+          <label className="font-mono text-[11px] text-muted-foreground uppercase tracking-[0.15em]">
             Compatibile con
           </label>
-          <select
-            id="model-filter"
-            value={selectedModel}
-            onChange={(e) => setSelectedModel(e.target.value)}
-            className={cn(
-              "min-w-[280px] px-4 py-2.5 rounded-lg",
-              "bg-card border border-border text-foreground",
-              "font-sans text-sm",
-              "focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600",
-              "hover:border-brand-600/40 transition-colors duration-200",
-              "cursor-pointer appearance-none",
-              "bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20fill%3D%22none%22%20viewBox%3D%220%200%2024%2024%22%20stroke%3D%22%23a3a3a3%22%3E%3Cpath%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%20stroke-width%3D%222%22%20d%3D%22M19%209l-7%207-7-7%22/%3E%3C/svg%3E')] bg-no-repeat bg-[right_0.75rem_center] bg-[length:1.25rem] pr-10",
-            )}
-          >
-            <option value="">Tutti i modelli</option>
-            {availableModels.map((model) => (
-              <option key={model} value={model}>
-                {model}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setIsOpen((v) => !v)}
+              aria-haspopup="listbox"
+              aria-expanded={isOpen}
+              className={cn(
+                "min-w-[280px] flex items-center justify-between gap-3",
+                "px-4 py-2.5 rounded-lg",
+                "bg-card border border-border text-foreground",
+                "font-sans text-sm text-left",
+                "hover:border-brand-600/60 hover:bg-card-hover",
+                "focus:outline-none focus:ring-2 focus:ring-brand-600 focus:border-brand-600",
+                "transition-all duration-200",
+                isOpen && "border-brand-600 ring-2 ring-brand-600",
+              )}
+            >
+              <span className={cn(!selectedModel && "text-muted-foreground")}>
+                {selectedModel || "Tutti i modelli"}
+              </span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className={cn("transition-transform duration-300", isOpen && "rotate-180")}
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+
+            <AnimatePresence>
+              {isOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: DURATION.fast, ease: EASE.smooth }}
+                  className="absolute z-50 mt-2 w-full min-w-[280px] rounded-lg bg-card border border-border shadow-2xl shadow-black/60 overflow-hidden"
+                >
+                  {/* Search input dentro dropdown */}
+                  <div className="p-2 border-b border-border bg-card-hover">
+                    <input
+                      type="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Cerca modello…"
+                      autoFocus
+                      className={cn(
+                        "w-full px-3 py-2 rounded-md text-sm",
+                        "bg-card border border-border text-foreground",
+                        "placeholder:text-muted-foreground",
+                        "focus:outline-none focus:border-brand-600",
+                      )}
+                    />
+                  </div>
+
+                  <ul
+                    role="listbox"
+                    className="max-h-72 overflow-y-auto custom-scrollbar"
+                  >
+                    <li role="option">
+                      <button
+                        type="button"
+                        onClick={() => selectModel("")}
+                        className={cn(
+                          "w-full px-4 py-2.5 text-left text-sm font-sans",
+                          "transition-colors duration-150",
+                          "hover:bg-brand-600 hover:text-white",
+                          !selectedModel
+                            ? "bg-brand-600/10 text-brand-500"
+                            : "text-foreground",
+                        )}
+                      >
+                        Tutti i modelli
+                      </button>
+                    </li>
+                    {visibleModels.length === 0 ? (
+                      <li className="px-4 py-3 text-sm text-muted-foreground text-center">
+                        Nessun modello trovato
+                      </li>
+                    ) : (
+                      visibleModels.map((model) => (
+                        <li key={model} role="option">
+                          <button
+                            type="button"
+                            onClick={() => selectModel(model)}
+                            className={cn(
+                              "w-full px-4 py-2.5 text-left text-sm font-sans",
+                              "transition-colors duration-150",
+                              "hover:bg-brand-600 hover:text-white",
+                              selectedModel === model
+                                ? "bg-brand-600/10 text-brand-500"
+                                : "text-foreground",
+                            )}
+                          >
+                            {model}
+                          </button>
+                        </li>
+                      ))
+                    )}
+                  </ul>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
         <div className="flex items-center gap-3">
           {selectedModel && (
             <button
               onClick={() => setSelectedModel("")}
-              className="text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2"
+              className="text-xs text-muted-foreground hover:text-brand-500 transition-colors underline underline-offset-2"
             >
               Rimuovi filtro
             </button>

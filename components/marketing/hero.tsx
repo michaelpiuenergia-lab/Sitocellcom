@@ -5,6 +5,7 @@ import { LogoC } from "./logo-c";
 import { CubeCarousel } from "./cube-carousel";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { EASE, DURATION } from "@/lib/constants";
+import type { PublicProductListItem } from "@/lib/crm-client/types";
 
 const words = [
   { text: "Il", italic: false },
@@ -17,7 +18,7 @@ const words = [
   { text: "la vita.", italic: true },
 ];
 
-export function Hero() {
+export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
   const shouldReduce = useReducedMotion();
 
   const container = {
@@ -104,7 +105,7 @@ export function Hero() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: DURATION.cinematic, ease: EASE.smooth, delay: 0.4 }}
       >
-        <CubeCarousel />
+        <CubeCarousel devices={devices} />
       </motion.div>
     </section>
   );

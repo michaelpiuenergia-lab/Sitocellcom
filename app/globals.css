@@ -1,13 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --color-background: #050505;
+  /* Background: nero più caldo (sfumatura rosso scuro) invece di nero piatto */
+  --color-background: #0b0606;
   --color-foreground: #f5f5f5;
-  --color-muted: #737373;
-  --color-muted-foreground: #a3a3a3;
-  --color-border: #262626;
-  --color-card: #0a0a0a;
-  --color-card-hover: #141414;
+  --color-muted: #8a7777;
+  --color-muted-foreground: #b8a8a8;
+  --color-border: #3a1f1f;
+  --color-card: #150909;
+  --color-card-hover: #1f0c0c;
   --color-ring: #dc2626;
 
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
