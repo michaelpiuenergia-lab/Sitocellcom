@@ -7,6 +7,7 @@ import type {
   PublicHealthResponse,
   PublicChannel,
   PublicCondition,
+  PublicKind,
 } from "./types";
 
 type ListFilters = {
@@ -15,6 +16,8 @@ type ListFilters = {
   category?: string;
   condition?: PublicCondition;
   brand?: string;
+  kind?: PublicKind;
+  compatibleModels?: string;
   limit?: number;
   offset?: number;
 };

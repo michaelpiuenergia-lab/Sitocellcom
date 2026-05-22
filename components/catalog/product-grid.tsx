@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   formatPrice,
@@ -50,13 +51,23 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
       className="group flex flex-col gap-3 p-4 rounded-2xl border border-border bg-card hover:bg-card-hover hover:border-brand-600/20 transition-all duration-300"
       style={{ transformStyle: "preserve-3d" }}
     >
-      {/* Image placeholder */}
+      {/* Image: foto reale dal CRM (assoluta) o silhouette fallback */}
       <div className="aspect-[4/5] rounded-xl bg-gradient-to-b from-card-hover to-background border border-border flex items-center justify-center overflow-hidden relative">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15)_0%,transparent_70%)]" />
-        <PhoneSilhouette
-          variant={(parseInt(product.id.replace("p", "")) % 6 || 6) as 1 | 2 | 3 | 4 | 5 | 6}
-          className="w-auto h-[85%] drop-shadow-[0_12px_24px_rgba(0,0,0,0.5)]"
-        />
+        {product.photoUrl ? (
+          <Image
+            src={product.photoUrl}
+            alt={product.name}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            className="object-contain p-4 drop-shadow-[0_12px_24px_rgba(0,0,0,0.5)]"
+          />
+        ) : (
+          <PhoneSilhouette
+            variant={((Math.abs(product.id.split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6}
+            className="w-auto h-[85%] drop-shadow-[0_12px_24px_rgba(0,0,0,0.5)]"
+          />
+        )}
       </div>
 
       <div className="flex flex-col gap-1">

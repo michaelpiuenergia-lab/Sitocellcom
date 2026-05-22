@@ -4,6 +4,7 @@ import type {
   PublicHealthResponse,
   PublicChannel,
   PublicCondition,
+  PublicKind,
 } from "./types";
 import { mockProducts } from "./mocks/products";
 
@@ -13,6 +14,8 @@ type ListFilters = {
   category?: string;
   condition?: PublicCondition;
   brand?: string;
+  kind?: PublicKind;
+  compatibleModels?: string;
   limit?: number;
   offset?: number;
 };
@@ -42,6 +45,15 @@ export async function getProducts(
   }
   if (filters.brand) {
     items = items.filter((p) => p.brand === filters.brand);
+  }
+  if (filters.kind) {
+    items = items.filter((p) => p.kind === filters.kind);
+  }
+  if (filters.compatibleModels) {
+    const q = filters.compatibleModels.toLowerCase();
+    items = items.filter((p) =>
+      p.compatibleModels?.toLowerCase().includes(q) ?? false,
+    );
   }
 
   const offset = filters.offset ?? 0;
