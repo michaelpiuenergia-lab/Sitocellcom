@@ -1,17 +1,35 @@
 import { ProductGrid } from "@/components/catalog/product-grid";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { getProducts } from "@/lib/crm-client";
+import type { PublicCondition } from "@/lib/crm-client/types";
 
 export const metadata = {
   title: "Telefoni — Cellcom Group",
   description:
-    "Smartphone nuovi e ricondizionati. Disponibilità reale dai canali del Gruppo Cellcom.",
+    "Smartphone nuovi, usati e ricondizionati. Disponibilità reale dai canali del Gruppo Cellcom.",
 };
 
 export const revalidate = 60;
 
-export default async function TelefoniPage() {
-  const { items, total } = await getProducts({ kind: "device", limit: 48 });
+type SearchParams = Promise<{ condition?: string }>;
+
+export default async function TelefoniPage({
+  searchParams,
+}: {
+  searchParams?: SearchParams;
+}) {
+  // Filtro condizione via query string (?condition=used / new / refurbished)
+  // Per default carichiamo TUTTI fino a 100 + visualizziamo conteggi per categoria.
+  const sp = (await searchParams) ?? {};
+  const condition = sp.condition as PublicCondition | undefined;
+
+  // Fetch parallelo: total per condizione + grid filtrato
+  const [allNew, allUsed, allRefurb, grid] = await Promise.all([
+    getProducts({ kind: "device", condition: "new", limit: 1 }),
+    getProducts({ kind: "device", condition: "used", limit: 1 }),
+    getProducts({ kind: "device", condition: "refurbished", limit: 1 }),
+    getProducts({ kind: "device", condition, limit: 100 }),
+  ]);
 
   return (
     <>
@@ -29,11 +47,12 @@ export default async function TelefoniPage() {
               I nostri <span className="italic text-brand-500">telefoni</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-              {total} modelli a catalogo. Apple, Samsung, Google, Xiaomi e altri,
-              con stato di disponibilità reale aggiornato dal magazzino.
+              {allNew.total} nuovi · {allUsed.total} usati ·{" "}
+              {allRefurb.total} ricondizionati. Apple, Samsung, Google, Xiaomi e
+              altri, con stato di disponibilità reale dal magazzino.
             </p>
           </div>
-          <ProductGrid initialProducts={items} />
+          <ProductGrid initialProducts={grid.items} />
         </div>
       </main>
     </>

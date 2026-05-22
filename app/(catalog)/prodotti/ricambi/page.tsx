@@ -17,8 +17,10 @@ export const revalidate = 60;
 async function fetchAllPartsForModels(): Promise<{
   totalCount: number;
   models: string[];
+  brands: string[];
 }> {
   const models = new Set<string>();
+  const brands = new Set<string>();
   let total = 0;
   let offset = 0;
   const limit = 100;
@@ -29,6 +31,7 @@ async function fetchAllPartsForModels(): Promise<{
     total = res.total;
     res.items.forEach((p) => {
       if (p.compatibleModels) models.add(p.compatibleModels);
+      if (p.brand) brands.add(p.brand);
     });
     if (!res.hasMore) break;
     offset += limit;
@@ -37,6 +40,7 @@ async function fetchAllPartsForModels(): Promise<{
   return {
     totalCount: total,
     models: Array.from(models).sort((a, b) => a.localeCompare(b, "it")),
+    brands: Array.from(brands).sort((a, b) => a.localeCompare(b, "it")),
   };
 }
 
@@ -45,8 +49,8 @@ export default async function RicambiPage() {
   // poi /api/products che cerca server-side in tutto il catalogo.
   const initial = await getProducts({ kind: "part", limit: 100 });
 
-  // Lista modelli unificata (server-cached) per popolare il dropdown.
-  let modelsData: { totalCount: number; models: string[] };
+  // Lista modelli + brand unificata (server-cached) per popolare i dropdown.
+  let modelsData: { totalCount: number; models: string[]; brands: string[] };
   try {
     modelsData = await fetchAllPartsForModels();
   } catch {
@@ -56,7 +60,14 @@ export default async function RicambiPage() {
         new Set(
           initial.items
             .map((p: PublicProductListItem) => p.compatibleModels)
-            .filter((m): m is string => Boolean(m) && m.length > 0),
+            .filter((m): m is string => typeof m === "string" && m.length > 0),
+        ),
+      ).sort(),
+      brands: Array.from(
+        new Set(
+          initial.items
+            .map((p: PublicProductListItem) => p.brand)
+            .filter((b): b is string => typeof b === "string" && b.length > 0),
         ),
       ).sort(),
     };
@@ -87,6 +98,7 @@ export default async function RicambiPage() {
           <SpareParts
             initialProducts={initial.items}
             availableModels={modelsData.models}
+            availableBrands={modelsData.brands}
             totalCount={modelsData.totalCount}
           />
         </div>

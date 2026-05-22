@@ -10,15 +10,18 @@ import { EASE, DURATION } from "@/lib/constants";
 interface SparePartsProps {
   initialProducts: PublicProductListItem[];
   availableModels: string[];
+  availableBrands: string[];
   totalCount: number;
 }
 
 export function SpareParts({
   initialProducts,
   availableModels,
+  availableBrands,
   totalCount,
 }: SparePartsProps) {
   const [selectedModel, setSelectedModel] = useState<string>("");
+  const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [filteredProducts, setFilteredProducts] =
     useState<PublicProductListItem[]>(initialProducts);
   const [isLoading, setIsLoading] = useState(false);
@@ -46,20 +49,18 @@ export function SpareParts({
     };
   }, [isOpen]);
 
-  // Quando cambia il modello, fai fetch server-side per cercare in TUTTI
-  // i 1157 ricambi del CRM (non solo nei primi 100 caricati lato server).
+  // Quando cambia modello/brand, fai fetch server-side per cercare in
+  // TUTTI i 1157 ricambi del CRM (non solo nei primi 100 caricati).
   useEffect(() => {
-    if (!selectedModel) {
+    if (!selectedModel && !selectedBrand) {
       setFilteredProducts(initialProducts);
       return;
     }
     const ctrl = new AbortController();
     setIsLoading(true);
-    const params = new URLSearchParams({
-      kind: "part",
-      compatibleModels: selectedModel,
-      limit: "100",
-    });
+    const params = new URLSearchParams({ kind: "part", limit: "100" });
+    if (selectedModel) params.set("compatibleModels", selectedModel);
+    if (selectedBrand) params.set("brand", selectedBrand);
     fetch(`/api/products?${params}`, { signal: ctrl.signal })
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error("fetch failed"))))
       .then((data) => setFilteredProducts(data.items ?? []))
@@ -68,7 +69,7 @@ export function SpareParts({
       })
       .finally(() => setIsLoading(false));
     return () => ctrl.abort();
-  }, [selectedModel, initialProducts]);
+  }, [selectedModel, selectedBrand, initialProducts]);
 
   const visibleModels = useMemo(() => {
     if (!query) return availableModels;
@@ -82,10 +83,49 @@ export function SpareParts({
     setQuery("");
   };
 
-  const displayedCount = selectedModel ? filteredProducts.length : totalCount;
+  const displayedCount =
+    selectedModel || selectedBrand ? filteredProducts.length : totalCount;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
+      {/* Riga BRAND — pillole cliccabili (come magazzino: Apple, Samsung, ecc.) */}
+      <div className="flex flex-col gap-3">
+        <span className="font-mono text-[11px] text-muted-foreground uppercase tracking-[0.15em]">
+          Brand
+        </span>
+        <div className="flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={() => setSelectedBrand("")}
+            className={cn(
+              "px-4 py-2 rounded-full text-xs font-medium border transition-all duration-200",
+              selectedBrand === ""
+                ? "bg-brand-600 text-white border-brand-600"
+                : "bg-card text-muted-foreground border-border hover:border-brand-600/60 hover:text-foreground",
+            )}
+          >
+            Tutti
+          </button>
+          {availableBrands.map((brand) => (
+            <button
+              key={brand}
+              type="button"
+              onClick={() =>
+                setSelectedBrand((cur) => (cur === brand ? "" : brand))
+              }
+              className={cn(
+                "px-4 py-2 rounded-full text-xs font-medium border transition-all duration-200 uppercase tracking-wider",
+                selectedBrand === brand
+                  ? "bg-brand-600 text-white border-brand-600"
+                  : "bg-card text-muted-foreground border-border hover:border-brand-600/60 hover:text-foreground",
+              )}
+            >
+              {brand}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Filter row */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
         <div className="flex flex-col gap-2 w-full sm:w-auto" ref={wrapperRef}>
