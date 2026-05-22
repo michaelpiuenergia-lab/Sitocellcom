@@ -1,6 +1,7 @@
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { SpareParts } from "@/components/catalog/spare-parts";
 import { getProducts } from "@/lib/crm-client";
+import type { PublicProductListItem } from "@/lib/crm-client/types";
 
 export const metadata = {
   title: "Ricambi — Cellcom Group",
@@ -10,19 +11,56 @@ export const metadata = {
 
 export const revalidate = 60;
 
-export default async function RicambiPage() {
-  // Per MVP fetchiamo fino a 100 ricambi e filtriamo lato client per modello.
-  // In Phase 2 spostiamo il filtro a server-side via query string + fetch on-demand.
-  const { items, total } = await getProducts({ kind: "part", limit: 100 });
+// Per popolare il dropdown modelli con TUTTI i 1157 ricambi del CRM
+// facciamo più fetch sequenziali (Vercel limit page-level = 100/req).
+// Risultato cached lato server per 60s.
+async function fetchAllPartsForModels(): Promise<{
+  totalCount: number;
+  models: string[];
+}> {
+  const models = new Set<string>();
+  let total = 0;
+  let offset = 0;
+  const limit = 100;
+  const maxBatches = 15; // safety cap 1500 records
 
-  // Estrai elenco unico di modelli compatibili dai prodotti
-  const models = Array.from(
-    new Set(
-      items
-        .map((p) => p.compatibleModels)
-        .filter((m): m is string => Boolean(m) && m!.length > 0),
-    ),
-  ).sort();
+  for (let i = 0; i < maxBatches; i++) {
+    const res = await getProducts({ kind: "part", limit, offset });
+    total = res.total;
+    res.items.forEach((p) => {
+      if (p.compatibleModels) models.add(p.compatibleModels);
+    });
+    if (!res.hasMore) break;
+    offset += limit;
+  }
+
+  return {
+    totalCount: total,
+    models: Array.from(models).sort((a, b) => a.localeCompare(b, "it")),
+  };
+}
+
+export default async function RicambiPage() {
+  // Per il grid iniziale prendiamo i primi 100. Il filtro modello chiama
+  // poi /api/products che cerca server-side in tutto il catalogo.
+  const initial = await getProducts({ kind: "part", limit: 100 });
+
+  // Lista modelli unificata (server-cached) per popolare il dropdown.
+  let modelsData: { totalCount: number; models: string[] };
+  try {
+    modelsData = await fetchAllPartsForModels();
+  } catch {
+    modelsData = {
+      totalCount: initial.total,
+      models: Array.from(
+        new Set(
+          initial.items
+            .map((p: PublicProductListItem) => p.compatibleModels)
+            .filter((m): m is string => Boolean(m) && m.length > 0),
+        ),
+      ).sort(),
+    };
+  }
 
   return (
     <>
@@ -40,12 +78,17 @@ export default async function RicambiPage() {
               I nostri <span className="italic text-brand-500">ricambi</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-xl mx-auto">
-              {total} ricambi a catalogo. Display, batterie, scocche e schede
-              originali e compatibili. Filtra per modello per trovare il pezzo
-              giusto.
+              {modelsData.totalCount} ricambi a catalogo per{" "}
+              {modelsData.models.length} modelli. Display, batterie, scocche e
+              schede originali e compatibili. Filtra per modello per trovare il
+              pezzo giusto.
             </p>
           </div>
-          <SpareParts initialProducts={items} availableModels={models} />
+          <SpareParts
+            initialProducts={initial.items}
+            availableModels={modelsData.models}
+            totalCount={modelsData.totalCount}
+          />
         </div>
       </main>
     </>

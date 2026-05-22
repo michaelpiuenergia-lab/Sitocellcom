@@ -10,10 +10,18 @@ import { EASE, DURATION } from "@/lib/constants";
 interface SparePartsProps {
   initialProducts: PublicProductListItem[];
   availableModels: string[];
+  totalCount: number;
 }
 
-export function SpareParts({ initialProducts, availableModels }: SparePartsProps) {
+export function SpareParts({
+  initialProducts,
+  availableModels,
+  totalCount,
+}: SparePartsProps) {
   const [selectedModel, setSelectedModel] = useState<string>("");
+  const [filteredProducts, setFilteredProducts] =
+    useState<PublicProductListItem[]>(initialProducts);
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState("");
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -38,12 +46,28 @@ export function SpareParts({ initialProducts, availableModels }: SparePartsProps
     };
   }, [isOpen]);
 
-  const filtered = useMemo(() => {
-    if (!selectedModel) return initialProducts;
-    const q = selectedModel.toLowerCase();
-    return initialProducts.filter(
-      (p) => p.compatibleModels?.toLowerCase().includes(q) ?? false,
-    );
+  // Quando cambia il modello, fai fetch server-side per cercare in TUTTI
+  // i 1157 ricambi del CRM (non solo nei primi 100 caricati lato server).
+  useEffect(() => {
+    if (!selectedModel) {
+      setFilteredProducts(initialProducts);
+      return;
+    }
+    const ctrl = new AbortController();
+    setIsLoading(true);
+    const params = new URLSearchParams({
+      kind: "part",
+      compatibleModels: selectedModel,
+      limit: "100",
+    });
+    fetch(`/api/products?${params}`, { signal: ctrl.signal })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("fetch failed"))))
+      .then((data) => setFilteredProducts(data.items ?? []))
+      .catch((e) => {
+        if (e.name !== "AbortError") setFilteredProducts([]);
+      })
+      .finally(() => setIsLoading(false));
+    return () => ctrl.abort();
   }, [selectedModel, initialProducts]);
 
   const visibleModels = useMemo(() => {
@@ -57,6 +81,8 @@ export function SpareParts({ initialProducts, availableModels }: SparePartsProps
     setIsOpen(false);
     setQuery("");
   };
+
+  const displayedCount = selectedModel ? filteredProducts.length : totalCount;
 
   return (
     <div className="flex flex-col gap-8">
@@ -188,12 +214,18 @@ export function SpareParts({ initialProducts, availableModels }: SparePartsProps
             </button>
           )}
           <span className="font-mono text-xs text-muted-foreground tabular-nums">
-            {filtered.length} ricambi
+            {isLoading ? "…" : `${displayedCount} ricambi`}
           </span>
         </div>
       </div>
 
-      {filtered.length === 0 ? (
+      {isLoading ? (
+        <div className="text-center py-20">
+          <p className="font-serif italic text-xl text-muted-foreground">
+            Caricamento ricambi per “{selectedModel}”…
+          </p>
+        </div>
+      ) : filteredProducts.length === 0 ? (
         <div className="text-center py-20 flex flex-col gap-4">
           <p className="font-serif italic text-2xl text-muted-foreground">
             Nessun ricambio per “{selectedModel}”.
@@ -206,7 +238,7 @@ export function SpareParts({ initialProducts, availableModels }: SparePartsProps
           </button>
         </div>
       ) : (
-        <ProductGrid initialProducts={filtered} />
+        <ProductGrid initialProducts={filteredProducts} />
       )}
     </div>
   );

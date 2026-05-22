@@ -198,23 +198,23 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: DURATION.fast, ease: EASE.smooth }}
-          className="border-l-2 border-brand-600 pl-5 min-h-[140px] w-full max-w-xs"
+          className="border-l-2 border-brand-600 pl-4 min-h-[100px] w-full max-w-sm"
         >
           {device && stockInfo && condLabel ? (
             <>
-              <div className="font-mono text-[11px] text-brand-500 uppercase tracking-[0.15em] mb-2">
+              <div className="font-mono text-[10px] text-brand-500 uppercase tracking-[0.15em] mb-1.5">
                 {condLabel}
               </div>
-              <div className="font-serif text-[24px] italic text-foreground leading-tight mb-3 line-clamp-2">
+              <div className="font-serif text-[18px] italic text-foreground leading-tight mb-2 line-clamp-1" title={device.name}>
                 {device.name}
               </div>
               <div className="flex items-baseline gap-3 flex-wrap">
-                <span className="font-mono text-2xl font-medium text-foreground tabular-nums">
+                <span className="font-mono text-xl font-medium text-foreground tabular-nums">
                   {formatPrice(device.priceCents)}
                 </span>
                 <span
                   className={cn(
-                    "text-xs uppercase tracking-[0.1em] font-sans",
+                    "text-[10px] uppercase tracking-[0.1em] font-sans",
                     stockInfo.cls === "low"
                       ? "text-yellow-400"
                       : stockInfo.cls === "out"
