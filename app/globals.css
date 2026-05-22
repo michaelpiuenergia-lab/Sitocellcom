@@ -1,14 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  /* Background: nero più caldo (sfumatura rosso scuro) invece di nero piatto */
-  --color-background: #0b0606;
+  /* Background: dark puro, premium. Il rosso vive nelle animazioni
+     ambientali, non nel bg statico. */
+  --color-background: #050505;
   --color-foreground: #f5f5f5;
-  --color-muted: #8a7777;
-  --color-muted-foreground: #b8a8a8;
-  --color-border: #3a1f1f;
-  --color-card: #150909;
-  --color-card-hover: #1f0c0c;
+  --color-muted: #737373;
+  --color-muted-foreground: #a3a3a3;
+  --color-border: #262626;
+  --color-card: #0a0a0a;
+  --color-card-hover: #141414;
   --color-ring: #dc2626;
 
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
@@ -52,6 +53,78 @@ body {
   font-family: var(--font-sans);
   overflow-x: hidden;
   min-height: 100vh;
+  position: relative;
+}
+
+/* Ambient red effects — strato fisso dietro a tutto il contenuto.
+   Due "fari" rossi che si muovono lentamente + un pulse globale.
+   Tutto background-only, non interferisce con click/scroll. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(220, 38, 38, 0.10) 0%,
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(153, 27, 27, 0.08) 0%,
+      transparent 30%
+    );
+  animation: ambient-drift 24s ease-in-out infinite;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse at 50% 100%,
+    rgba(220, 38, 38, 0.06) 0%,
+    transparent 50%
+  );
+  animation: ambient-pulse 6s ease-in-out infinite;
+}
+
+@keyframes ambient-drift {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(-2%, 3%) rotate(120deg);
+  }
+  66% {
+    transform: translate(3%, -2%) rotate(240deg);
+  }
+}
+
+@keyframes ambient-pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Riga rossa sottile che scorre lentamente in alto come "scan line" */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  body::after {
+    animation: none;
+  }
 }
 
 /* Grain texture overlay base */

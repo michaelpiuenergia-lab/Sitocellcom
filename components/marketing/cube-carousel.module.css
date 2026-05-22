@@ -46,7 +46,9 @@
   cursor: grabbing;
 }
 
-/* Vetrina 3D — light box espositore con profondità reale */
+/* Faccia INVISIBILE — solo meccanismo di rotazione 3D.
+   I telefoni galleggiano nello spazio nero, niente vetrina,
+   niente cornice, niente light-box. */
 .face {
   position: absolute;
   width: var(--cube-size);
@@ -54,64 +56,66 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Sfondo: light-box caldo (bianco al centro, soft warm grey ai bordi) */
-  background:
-    radial-gradient(
-      ellipse at 50% 40%,
-      #ffffff 0%,
-      #f5f0ef 55%,
-      #d8c8c5 100%
-    );
-  /* Cornice scura per dare profondità 3D + glow rosso ambientale */
-  border: 1px solid rgba(20, 8, 8, 0.6);
-  border-radius: 28px;
+  background: transparent;
+  border: none;
   backface-visibility: hidden;
-  overflow: hidden;
-  /* Multi-layer shadows: inner top-light + outer glow rosso + cast shadow sotto */
-  box-shadow:
-    /* Riflesso superiore (luce ambientale) */
-    inset 0 2px 4px rgba(255, 255, 255, 0.9),
-    /* Inner shadow inferiore (profondità) */
-    inset 0 -12px 24px -8px rgba(100, 30, 30, 0.25),
-    /* Glow rosso esterno */
-    0 0 80px -20px rgba(220, 38, 38, 0.5),
-    /* Cast shadow proiettata (3D) */
-    0 30px 60px -20px rgba(0, 0, 0, 0.8);
+  overflow: visible;
 }
 
-/* Highlight di luce in cima — riflesso speculare del light-box */
+/* Alone luminoso rosso DIETRO ogni device — dà profondità + ancora il
+   telefono allo spazio 3D. Trick: senza questo i telefoni sembrano
+   "appiccicati" allo schermo, con il glow respirano nell'aria nera. */
 .face::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 35%;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.7) 0%,
-    rgba(255, 255, 255, 0) 100%
+  inset: 10% 5%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(220, 38, 38, 0.18) 0%,
+    rgba(127, 29, 29, 0.08) 40%,
+    transparent 70%
   );
+  filter: blur(24px);
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
-/* Ombra sotto al device — proiezione 3D che ancora l'oggetto alla superficie */
+/* Ombra proiettata sotto il device — pavimento immaginario */
 .face::after {
   content: "";
   position: absolute;
-  bottom: 8%;
-  left: 25%;
-  right: 25%;
-  height: 24px;
+  bottom: 5%;
+  left: 22%;
+  right: 22%;
+  height: 18px;
   background: radial-gradient(
     ellipse at center,
-    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.7) 0%,
     rgba(0, 0, 0, 0) 70%
   );
-  filter: blur(8px);
+  filter: blur(10px);
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
+}
+
+/* Mask radiale sull'immagine — dissolve lo sfondo bianco delle foto
+   Apple/Shopify ai bordi, lasciando emergere SOLO il telefono al centro
+   come se galleggiasse fuori dal nero. Il telefono in foto è già
+   sempre centrato col device che occupa ~60% dell'altezza, il bianco
+   è ai bordi → maschera lo nasconde. */
+.float-mask {
+  -webkit-mask-image: radial-gradient(
+    ellipse 50% 55% at center,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 0.5) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 50% 55% at center,
+    rgba(0, 0, 0, 1) 60%,
+    rgba(0, 0, 0, 0.5) 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 /* Reduced motion */

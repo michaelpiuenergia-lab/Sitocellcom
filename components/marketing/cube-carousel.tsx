@@ -167,7 +167,13 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
                 }}
               >
                 {faceDevice?.photoUrl ? (
-                  <div className="relative w-[78%] h-[78%] flex items-center justify-center" style={{ zIndex: 2 }}>
+                  <div
+                    className={cn(
+                      "relative w-[95%] h-[90%] flex items-center justify-center",
+                      styles["float-mask"],
+                    )}
+                    style={{ zIndex: 2 }}
+                  >
                     <Image
                       src={faceDevice.photoUrl}
                       alt={faceDevice.name}
@@ -176,13 +182,17 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
                       className="object-contain"
                       style={{
                         filter:
-                          "drop-shadow(0 20px 25px rgba(0,0,0,0.35)) drop-shadow(0 8px 10px rgba(0,0,0,0.25))",
+                          "drop-shadow(0 25px 30px rgba(0,0,0,0.6)) drop-shadow(0 10px 15px rgba(0,0,0,0.4))",
                       }}
                       priority={i === 0}
                     />
                   </div>
                 ) : (
-                  <PhoneSilhouette variant={((i % 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6} />
+                  <div className="relative" style={{ zIndex: 2 }}>
+                    <PhoneSilhouette
+                      variant={((i % 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6}
+                    />
+                  </div>
                 )}
               </div>
             );
