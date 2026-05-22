@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  mockProducts,
   formatPrice,
   CONDITION_LABELS,
   CHANNEL_URLS,
-  type ProductMock,
 } from "@/lib/crm-client/mocks/products";
-import type { PublicCondition } from "@/lib/crm-client/types";
+import type {
+  PublicCondition,
+  PublicProductListItem,
+} from "@/lib/crm-client/types";
 import { PhoneSilhouette } from "@/components/marketing/phone-silhouette";
 import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
@@ -23,7 +24,7 @@ const conditions: { value: PublicCondition | "all"; label: string }[] = [
 
 const categories = ["Tutte", "Smartphone", "Ricambio"];
 
-function ProductCard({ product }: { product: ProductMock }) {
+function ProductCard({ product }: { product: PublicProductListItem }) {
   const { stock } = product;
   const stockColor =
     stock.count === 0
@@ -94,11 +95,15 @@ function ProductCard({ product }: { product: ProductMock }) {
   );
 }
 
-export function ProductGrid() {
+export function ProductGrid({
+  initialProducts,
+}: {
+  initialProducts: PublicProductListItem[];
+}) {
   const [activeCondition, setActiveCondition] = useState<PublicCondition | "all">("all");
   const [activeCategory, setActiveCategory] = useState("Tutte");
 
-  const filtered = mockProducts.filter((p) => {
+  const filtered = initialProducts.filter((p) => {
     const condMatch = activeCondition === "all" || p.condition === activeCondition;
     const catMatch = activeCategory === "Tutte" || p.category === activeCategory;
     return condMatch && catMatch;

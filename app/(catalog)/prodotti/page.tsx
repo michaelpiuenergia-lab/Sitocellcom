@@ -1,12 +1,18 @@
 import { ProductGrid } from "@/components/catalog/product-grid";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { getProducts } from "@/lib/crm-client";
 
 export const metadata = {
   title: "Prodotti — Cellcom Group",
   description: "Catalogo prodotti, ricambi e accessori. Stock reale dai nostri store.",
 };
 
-export default function ProductsPage() {
+// ISR 60s — quando CRM è live, ogni 60s ricarica lo stock fresco.
+export const revalidate = 60;
+
+export default async function ProductsPage() {
+  const { items } = await getProducts({ limit: 24 });
+
   return (
     <>
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Prodotti" }]} />
@@ -20,7 +26,7 @@ export default function ProductsPage() {
               Smartphone, ricambi e accessori con disponibilità reale dai nostri store.
             </p>
           </div>
-          <ProductGrid />
+          <ProductGrid initialProducts={items} />
         </div>
       </main>
     </>
