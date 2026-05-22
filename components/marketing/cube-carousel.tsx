@@ -30,9 +30,16 @@ function buildConditionLabel(p: PublicProductListItem): string {
 
 function buildStockLabel(p: PublicProductListItem): {
   label: string;
-  cls: "" | "low" | "out";
+  cls: "" | "low" | "out" | "check";
 } {
-  if (p.stock.count === 0) return { label: "Esaurito", cls: "out" };
+  if (p.stock.count === 0) {
+    // Difesa contro bug CRM: la query aggregato stock_total per product_id
+    // a volte ritorna 0 anche se le varianti hanno stock (16 Pro Max 256GB
+    // Natural Italy mostrato Esaurito ma in CRM aveva 1 pezzo). Se il
+    // prodotto ha varianti, lasciamo l'utente al CRM per la verifica.
+    if (p.variantCount > 0) return { label: "Verifica disponibilità", cls: "check" };
+    return { label: "Esaurito", cls: "out" };
+  }
   if (!p.stock.capped && p.stock.count <= 3)
     return { label: `Ultimi ${p.stock.count} pezzi`, cls: "low" };
   return { label: "Disponibile", cls: "" };
@@ -229,7 +236,9 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
                       ? "text-yellow-400"
                       : stockInfo.cls === "out"
                         ? "text-brand-500"
-                        : "text-green-400",
+                        : stockInfo.cls === "check"
+                          ? "text-muted-foreground"
+                          : "text-green-400",
                   )}
                 >
                   {stockInfo.label}

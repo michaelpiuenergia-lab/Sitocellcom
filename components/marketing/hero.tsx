@@ -1,25 +1,11 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import { LogoC } from "./logo-c";
+import { CubeCarousel } from "./cube-carousel";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { EASE, DURATION } from "@/lib/constants";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
-
-// 3D phone caricato solo client-side (Three.js richiede WebGL).
-// Dynamic import evita di gonfiare il bundle SSR del landing.
-const Phone3D = dynamic(
-  () => import("./phone-3d").then((m) => m.Phone3D),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full min-h-[500px] lg:min-h-[700px] flex items-center justify-center">
-        <div className="w-16 h-16 border-2 border-brand-600 border-t-transparent rounded-full animate-spin" />
-      </div>
-    ),
-  },
-);
 
 const words = [
   { text: "Il", italic: false },
@@ -112,14 +98,14 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
         </motion.div>
       </div>
 
-      {/* Right column — Phone 3D che ruota nello spazio */}
+      {/* Right column — Cube carousel con i 6 telefoni veri che ruotano */}
       <motion.div
         className="flex-1 w-full flex items-center justify-center min-h-[500px] lg:min-h-[700px] relative"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: DURATION.cinematic, ease: EASE.smooth, delay: 0.4 }}
       >
-        <Phone3D />
+        <CubeCarousel devices={devices} />
       </motion.div>
     </section>
   );

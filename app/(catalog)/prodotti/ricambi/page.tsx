@@ -14,6 +14,26 @@ export const revalidate = 60;
 // Per popolare il dropdown modelli con TUTTI i 1157 ricambi del CRM
 // facciamo più fetch sequenziali (Vercel limit page-level = 100/req).
 // Risultato cached lato server per 60s.
+// Brand "fasulli" da escludere dal filtro: nomi di canali/store
+// che a volte finiscono nel campo brand del CRM ma non sono produttori reali.
+const NON_BRAND_VALUES = new Set([
+  "italian parts",
+  "italianparts",
+  "cellcom",
+  "fast-fix",
+  "fastfix",
+]);
+
+/** Title-case su una stringa, gestendo bene parole "ALL CAPS" tipo XIAOMI → Xiaomi. */
+function normalizeBrand(raw: string): string {
+  const trimmed = raw.trim();
+  if (!trimmed) return "";
+  return trimmed
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+}
+
 async function fetchAllPartsForModels(): Promise<{
   totalCount: number;
   models: string[];
@@ -31,7 +51,13 @@ async function fetchAllPartsForModels(): Promise<{
     total = res.total;
     res.items.forEach((p) => {
       if (p.compatibleModels) models.add(p.compatibleModels);
-      if (p.brand) brands.add(p.brand);
+      if (p.brand) {
+        const normalized = normalizeBrand(p.brand);
+        // Esclude valori vuoti, canali/store finiti per errore nel campo brand
+        if (normalized && !NON_BRAND_VALUES.has(normalized.toLowerCase())) {
+          brands.add(normalized);
+        }
+      }
     });
     if (!res.hasMore) break;
     offset += limit;
@@ -66,10 +92,17 @@ export default async function RicambiPage() {
       brands: Array.from(
         new Set(
           initial.items
-            .map((p: PublicProductListItem) => p.brand)
-            .filter((b): b is string => typeof b === "string" && b.length > 0),
+            .map((p: PublicProductListItem) =>
+              p.brand ? normalizeBrand(p.brand) : null,
+            )
+            .filter(
+              (b): b is string =>
+                typeof b === "string" &&
+                b.length > 0 &&
+                !NON_BRAND_VALUES.has(b.toLowerCase()),
+            ),
         ),
-      ).sort(),
+      ).sort((a, b) => a.localeCompare(b, "it")),
     };
   }
 

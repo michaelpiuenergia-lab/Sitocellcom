@@ -16,7 +16,8 @@ export const CONDITION_LABELS: Record<PublicCondition, string> = {
 
 export const CHANNEL_URLS: Record<PublicChannel, string> = {
   cellcom: "https://cellcom.it",
-  italianparts: "https://italianparts.it",
+  // www.italianparts.it: il bare-domain non ha cert valido (ERR_CERT_COMMON_NAME_INVALID)
+  italianparts: "https://www.italianparts.it",
   fastfix: "https://fast-fix.it",
 };
 

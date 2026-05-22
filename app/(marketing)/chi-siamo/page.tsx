@@ -32,7 +32,7 @@ const brands = [
     name: "ItalianParts.it",
     description:
       "I ricambi. Schermi, batterie, scocche e tools per i professionisti del settore.",
-    url: "https://italianparts.it",
+    url: "https://www.italianparts.it",
   },
   {
     name: "SmartphoneFix.it",

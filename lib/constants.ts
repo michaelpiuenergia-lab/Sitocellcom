@@ -48,7 +48,7 @@ export const BRAND = {
 /** Channel mapping per link-out */
 export const CHANNEL_URLS = {
   cellcom: "https://cellcom.it",
-  italianparts: "https://italianparts.it",
+  italianparts: "https://www.italianparts.it",
   fastfix: "https://fast-fix.it",
   smartphonefix: "https://smartphonefix.it",
   fixhub: "https://fixhub.it",

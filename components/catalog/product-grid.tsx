@@ -117,17 +117,27 @@ const conditions: { value: PublicCondition | "all"; label: string }[] = [
 const categories = ["Tutte", "Smartphone", "Ricambio"];
 
 function ProductCard({ product }: { product: PublicProductListItem }) {
-  const { stock } = product;
-  const stockColor =
-    stock.count === 0
-      ? "text-brand-500"
+  const { stock, variantCount } = product;
+
+  // Difesa contro bug CRM: lo stock_total aggregato per product_id a volte
+  // ritorna 0 anche se le varianti hanno disponibilità. Se il prodotto ha
+  // varianti, evitiamo l'etichetta "Esaurito" definitiva e mandiamo l'utente
+  // a verificare.
+  const treatAsOutOfStock = stock.count === 0 && variantCount === 0;
+  const treatAsCheckRequired = stock.count === 0 && variantCount > 0;
+
+  const stockColor = treatAsOutOfStock
+    ? "text-brand-500"
+    : treatAsCheckRequired
+      ? "text-muted-foreground"
       : !stock.capped && stock.count <= 3
         ? "text-yellow-400"
         : "text-green-400";
 
-  const stockLabel =
-    stock.count === 0
-      ? "Esaurito"
+  const stockLabel = treatAsOutOfStock
+    ? "Esaurito"
+    : treatAsCheckRequired
+      ? "Verifica disponibilità"
       : !stock.capped && stock.count <= 3
         ? `Ultimi ${stock.count} pezzi`
         : "Disponibile";
@@ -189,7 +199,7 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
         </span>
       </div>
 
-      {stock.count === 0 ? (
+      {treatAsOutOfStock ? (
         <button
           type="button"
           disabled
@@ -218,55 +228,73 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
 
 export function ProductGrid({
   initialProducts,
+  showConditionFilter = true,
+  showCategoryFilter = true,
 }: {
   initialProducts: PublicProductListItem[];
+  /** Nasconde le pillole Nuovo/Ricondizionato/Usato. Per la pagina ricambi: i ricambi non hanno questa distinzione. */
+  showConditionFilter?: boolean;
+  /** Nasconde le pillole Smartphone/Ricambio. Per la pagina ricambi: tutti i prodotti sono già ricambi. */
+  showCategoryFilter?: boolean;
 }) {
   const [activeCondition, setActiveCondition] = useState<PublicCondition | "all">("all");
   const [activeCategory, setActiveCategory] = useState("Tutte");
 
   const filtered = initialProducts.filter((p) => {
-    const condMatch = activeCondition === "all" || p.condition === activeCondition;
-    const catMatch = activeCategory === "Tutte" || p.category === activeCategory;
+    const condMatch =
+      !showConditionFilter || activeCondition === "all" || p.condition === activeCondition;
+    const catMatch =
+      !showCategoryFilter || activeCategory === "Tutte" || p.category === activeCategory;
     return condMatch && catMatch;
   });
+
+  const showFilterRow = showConditionFilter || showCategoryFilter;
 
   return (
     <div className="flex flex-col gap-8">
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <div className="flex flex-wrap gap-2">
-          {conditions.map((c) => (
-            <button
-              key={c.value}
-              onClick={() => setActiveCondition(c.value)}
-              className={cn(
-                "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200",
-                activeCondition === c.value
-                  ? "bg-brand-600 text-white border-brand-600"
-                  : "bg-card text-muted-foreground border-border hover:border-brand-600/40"
-              )}
-            >
-              {c.label}
-            </button>
-          ))}
+      {showFilterRow && (
+        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          {showConditionFilter ? (
+            <div className="flex flex-wrap gap-2">
+              {conditions.map((c) => (
+                <button
+                  key={c.value}
+                  onClick={() => setActiveCondition(c.value)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200",
+                    activeCondition === c.value
+                      ? "bg-brand-600 text-white border-brand-600"
+                      : "bg-card text-muted-foreground border-border hover:border-brand-600/40"
+                  )}
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div />
+          )}
+          {showCategoryFilter && (
+            <div className="flex flex-wrap gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveCategory(cat)}
+                  className={cn(
+                    "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200",
+                    activeCategory === cat
+                      ? "bg-brand-600 text-white border-brand-600"
+                      : "bg-card text-muted-foreground border-border hover:border-brand-600/40"
+                  )}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
-        <div className="flex flex-wrap gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={cn(
-                "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200",
-                activeCategory === cat
-                  ? "bg-brand-600 text-white border-brand-600"
-                  : "bg-card text-muted-foreground border-border hover:border-brand-600/40"
-              )}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
+      )}
 
       {/* Grid with cover flow swap */}
       <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

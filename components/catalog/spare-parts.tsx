@@ -278,7 +278,11 @@ export function SpareParts({
           </button>
         </div>
       ) : (
-        <ProductGrid initialProducts={filteredProducts} />
+        <ProductGrid
+          initialProducts={filteredProducts}
+          showConditionFilter={false}
+          showCategoryFilter={false}
+        />
       )}
     </div>
   );

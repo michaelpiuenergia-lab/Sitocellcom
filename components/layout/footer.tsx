@@ -3,7 +3,7 @@ import { LogoC } from "@/components/marketing/logo-c";
 const brands = [
   { name: "Cellcom.it", role: "B2B", url: "https://cellcom.it" },
   { name: "Fast-Fix.it", role: "Negozi", url: "https://fast-fix.it" },
-  { name: "ItalianParts.it", role: "Ricambi", url: "https://italianparts.it" },
+  { name: "ItalianParts.it", role: "Ricambi", url: "https://www.italianparts.it" },
   { name: "SmartphoneFix.it", role: "Corsi", url: "https://smartphonefix.it" },
   { name: "FixHub.it", role: "Gestionale per laboratori", url: "https://fixhub.it" },
 ];
