@@ -1,3 +1,5 @@
+import "server-only";
+
 import type { PublicApiError } from "./types";
 
 const CRM_BASE = process.env.CRM_API_URL;

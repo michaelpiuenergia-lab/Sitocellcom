@@ -1,32 +1,26 @@
-export type ProductCondition = "new" | "used" | "refurbished";
-export type ProductChannel = "cellcom" | "italianparts" | "fastfix";
+import type {
+  PublicProductListItem,
+  PublicCondition,
+  PublicChannel,
+  PublicProductDetail,
+} from "../types";
 
-export interface ProductMock {
-  id: string;
-  slug: string;
-  name: string;
-  brand: string;
-  category: string;
-  condition: ProductCondition;
-  priceCents: number;
-  stockTotal: number;
-  channel: ProductChannel;
-  photoUrl?: string;
-}
+export type { PublicCondition as ProductCondition, PublicChannel as ProductChannel };
+export type ProductMock = PublicProductListItem;
 
-export const CONDITION_LABELS: Record<ProductCondition, string> = {
+export const CONDITION_LABELS: Record<PublicCondition, string> = {
   new: "Nuovo",
   used: "Usato",
   refurbished: "Ricondizionato",
 };
 
-export const CHANNEL_URLS: Record<ProductChannel, string> = {
+export const CHANNEL_URLS: Record<PublicChannel, string> = {
   cellcom: "https://cellcom.it",
   italianparts: "https://italianparts.it",
   fastfix: "https://fast-fix.it",
 };
 
-export const mockProducts: ProductMock[] = [
+export const mockProducts: PublicProductListItem[] = [
   {
     id: "p1",
     slug: "iphone-15-pro-128gb",
@@ -35,8 +29,13 @@ export const mockProducts: ProductMock[] = [
     category: "Smartphone",
     condition: "new",
     priceCents: 124900,
-    stockTotal: 12,
+    stock: { count: 5, capped: true },
     channel: "cellcom",
+    photoUrl: null,
+    images: [],
+    compatibleModels: null,
+    kind: "device",
+    variantCount: 0,
   },
   {
     id: "p2",
@@ -46,8 +45,13 @@ export const mockProducts: ProductMock[] = [
     category: "Smartphone",
     condition: "new",
     priceCents: 89900,
-    stockTotal: 8,
+    stock: { count: 8, capped: true },
     channel: "cellcom",
+    photoUrl: null,
+    images: [],
+    compatibleModels: null,
+    kind: "device",
+    variantCount: 0,
   },
   {
     id: "p3",
@@ -57,8 +61,13 @@ export const mockProducts: ProductMock[] = [
     category: "Smartphone",
     condition: "refurbished",
     priceCents: 67900,
-    stockTotal: 3,
+    stock: { count: 3, capped: false },
     channel: "cellcom",
+    photoUrl: null,
+    images: [],
+    compatibleModels: null,
+    kind: "device",
+    variantCount: 0,
   },
   {
     id: "p4",
@@ -68,8 +77,13 @@ export const mockProducts: ProductMock[] = [
     category: "Smartphone",
     condition: "new",
     priceCents: 74900,
-    stockTotal: 5,
+    stock: { count: 5, capped: true },
     channel: "italianparts",
+    photoUrl: null,
+    images: [],
+    compatibleModels: null,
+    kind: "device",
+    variantCount: 0,
   },
   {
     id: "p5",
@@ -79,8 +93,13 @@ export const mockProducts: ProductMock[] = [
     category: "Smartphone",
     condition: "new",
     priceCents: 109900,
-    stockTotal: 2,
+    stock: { count: 2, capped: false },
     channel: "fastfix",
+    photoUrl: null,
+    images: [],
+    compatibleModels: null,
+    kind: "device",
+    variantCount: 0,
   },
   {
     id: "p6",
@@ -90,8 +109,13 @@ export const mockProducts: ProductMock[] = [
     category: "Smartphone",
     condition: "refurbished",
     priceCents: 54900,
-    stockTotal: 2,
+    stock: { count: 2, capped: false },
     channel: "cellcom",
+    photoUrl: null,
+    images: [],
+    compatibleModels: null,
+    kind: "device",
+    variantCount: 0,
   },
   {
     id: "p7",
@@ -101,8 +125,13 @@ export const mockProducts: ProductMock[] = [
     category: "Ricambio",
     condition: "new",
     priceCents: 18900,
-    stockTotal: 24,
+    stock: { count: 24, capped: true },
     channel: "italianparts",
+    photoUrl: null,
+    images: [],
+    compatibleModels: "iPhone 15 Pro",
+    kind: "part",
+    variantCount: 0,
   },
   {
     id: "p8",
@@ -112,8 +141,13 @@ export const mockProducts: ProductMock[] = [
     category: "Ricambio",
     condition: "new",
     priceCents: 4900,
-    stockTotal: 18,
+    stock: { count: 18, capped: true },
     channel: "italianparts",
+    photoUrl: null,
+    images: [],
+    compatibleModels: "Samsung Galaxy S24",
+    kind: "part",
+    variantCount: 0,
   },
 ];
 

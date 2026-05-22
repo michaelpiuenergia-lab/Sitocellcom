@@ -8,13 +8,13 @@ import {
   CONDITION_LABELS,
   CHANNEL_URLS,
   type ProductMock,
-  type ProductCondition,
 } from "@/lib/crm-client/mocks/products";
+import type { PublicCondition } from "@/lib/crm-client/types";
 import { PhoneSilhouette } from "@/components/marketing/phone-silhouette";
 import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
 
-const conditions: { value: ProductCondition | "all"; label: string }[] = [
+const conditions: { value: PublicCondition | "all"; label: string }[] = [
   { value: "all", label: "Tutte" },
   { value: "new", label: "Nuovo" },
   { value: "refurbished", label: "Ricondizionato" },
@@ -24,18 +24,19 @@ const conditions: { value: ProductCondition | "all"; label: string }[] = [
 const categories = ["Tutte", "Smartphone", "Ricambio"];
 
 function ProductCard({ product }: { product: ProductMock }) {
+  const { stock } = product;
   const stockColor =
-    product.stockTotal === 0
+    stock.count === 0
       ? "text-brand-500"
-      : product.stockTotal <= 3
+      : !stock.capped && stock.count <= 3
         ? "text-yellow-400"
         : "text-green-400";
 
   const stockLabel =
-    product.stockTotal === 0
+    stock.count === 0
       ? "Esaurito"
-      : product.stockTotal <= 3
-        ? `Ultimi ${product.stockTotal} pezzi`
+      : !stock.capped && stock.count <= 3
+        ? `Ultimi ${stock.count} pezzi`
         : "Disponibile";
 
   return (
@@ -63,7 +64,7 @@ function ProductCard({ product }: { product: ProductMock }) {
             {product.brand}
           </span>
           <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-muted/20 text-muted-foreground border border-border">
-            {CONDITION_LABELS[product.condition]}
+            {product.condition ? CONDITION_LABELS[product.condition] : "—"}
           </span>
         </div>
         <h3 className="font-serif text-base italic text-foreground group-hover:text-brand-500 transition-colors">
@@ -94,7 +95,7 @@ function ProductCard({ product }: { product: ProductMock }) {
 }
 
 export function ProductGrid() {
-  const [activeCondition, setActiveCondition] = useState<ProductCondition | "all">("all");
+  const [activeCondition, setActiveCondition] = useState<PublicCondition | "all">("all");
   const [activeCategory, setActiveCategory] = useState("Tutte");
 
   const filtered = mockProducts.filter((p) => {

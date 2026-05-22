@@ -96,14 +96,23 @@ export function StoreMap() {
         }
       ).addTo(map);
 
+      function escapeHtml(str: string): string {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
       sortedStores.forEach((store) => {
         L.marker([store.lat, store.lng], { icon: customIcon })
           .addTo(map)
           .bindPopup(
             `<div style="font-family: Geist, sans-serif; color: #050505;">
-              <strong>${store.name}</strong><br/>
-              ${store.address}<br/>
-              ${store.city}
+              <strong>${escapeHtml(store.name)}</strong><br/>
+              ${escapeHtml(store.address)}<br/>
+              ${escapeHtml(store.city)}
             </div>`
           );
       });
