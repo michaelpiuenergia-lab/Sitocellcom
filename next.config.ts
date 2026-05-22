@@ -23,6 +23,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "www.italianparts.it" },
       { protocol: "https", hostname: "fast-fix.it" },
       { protocol: "https", hostname: "www.fast-fix.it" },
+      { protocol: "https", hostname: "cellcom.vercel.app" },
     ],
   },
 
