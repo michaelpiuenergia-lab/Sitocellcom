@@ -83,14 +83,24 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
         </span>
       </div>
 
-      <a
-        href={`${CHANNEL_URLS[product.channel]}/products/${product.slug}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="mt-1 w-full py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold text-center hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300"
-      >
-        Acquista
-      </a>
+      {stock.count === 0 ? (
+        <button
+          type="button"
+          disabled
+          className="mt-1 w-full py-2.5 rounded-lg bg-card-hover text-muted-foreground text-sm font-semibold text-center border border-border cursor-not-allowed"
+        >
+          Avvisami quando torna
+        </button>
+      ) : (
+        <a
+          href={`${CHANNEL_URLS[product.channel]}/products/${product.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-1 w-full py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold text-center hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300"
+        >
+          Acquista
+        </a>
+      )}
     </motion.div>
   );
 }
