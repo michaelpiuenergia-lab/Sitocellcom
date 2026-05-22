@@ -16,6 +16,31 @@ import { PhoneSilhouette } from "@/components/marketing/phone-silhouette";
 import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
 
+/** Costruisce l'URL di ricerca sul sito di vendita giusto.
+ * Usa SEARCH invece di slug diretto perché lo slug del CRM non
+ * coincide sempre con lo slug originale del sito sorgente (WC/Shopify).
+ * La ricerca per nome è affidabile al 100%: l'utente atterra sulla
+ * pagina risultati col prodotto già cercato. */
+function buildBuyUrl(product: PublicProductListItem): string {
+  const base = CHANNEL_URLS[product.channel];
+  const query = encodeURIComponent(product.name);
+  // WooCommerce (cellcom.it): ?s=...
+  if (product.channel === "cellcom") return `${base}/?s=${query}&post_type=product`;
+  // Shopify (italianparts, fastfix): /search?q=...
+  return `${base}/search?q=${query}`;
+}
+
+function getChannelName(channel: PublicProductListItem["channel"]): string {
+  switch (channel) {
+    case "cellcom":
+      return "Cellcom";
+    case "italianparts":
+      return "ItalianParts";
+    case "fastfix":
+      return "Fast-Fix";
+  }
+}
+
 /** Icona generica ricambio — dipende dalla categoria (display/batteria/scocca/...) */
 function PartIcon({ category }: { category: string | null }) {
   const c = (category ?? "").toLowerCase();
@@ -174,12 +199,17 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
         </button>
       ) : (
         <a
-          href={`${CHANNEL_URLS[product.channel]}/products/${product.slug}`}
+          href={buildBuyUrl(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-1 w-full py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold text-center hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300"
+          className="mt-1 w-full py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold text-center hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300 inline-flex items-center justify-center gap-2"
+          title={`Acquista su ${getChannelName(product.channel)}`}
         >
-          Acquista
+          <span>Acquista su {getChannelName(product.channel)}</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M7 17L17 7" />
+            <path d="M7 7h10v10" />
+          </svg>
         </a>
       )}
     </motion.div>
