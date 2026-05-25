@@ -1,8 +1,10 @@
 # HUB-MASTER-PLAN.md
 
 > Architettura master plan per il nuovo HUB pubblico Gruppo Cellcom / Fast-Fix.
-> Versione: 2026-05-22 — MVP Phase 1.
+> Versione: 2026-05-24 — MVP Phase 1 + B2B Phase 1.5.
 > Stato: APPROVATO per sviluppo.
+
+> **Nota 2026-05-24**: aggiunta sezione §18 "Area B2B & Intake Richieste". La decisione "Zero auth nell'HUB" del 2026-05-22 viene parzialmente rivista: il sito pubblico resta senza auth, ma viene aggiunta un'area `/(b2b)/*` protetta. Vedi Decision Log §16 e sezione §18 per dettagli.
 
 ---
 
@@ -852,10 +854,151 @@ Soluzione: CSP con `'unsafe-inline'` per script/style (necessario per Next.js ru
 | 2026-05-22 | Cube Carousel CSS 3D | Zero JS per rotazione, 60fps garantito |
 | 2026-05-22 | Framer Motion, niente GSAP | Budget 25KB, tree-shaking, ecosystem React |
 | 2026-05-22 | CSP senza nonce | Next.js 16 + static pages, nonce non supportato senza dynamic override |
+| 2026-05-24 | **Aggiunta area B2B `/(b2b)/*` con login** | Direttiva cliente: gestione separata vendita pubblico vs B2B con prezzi differenziati. Sito pubblico resta senza auth. Vedi §18 |
+| 2026-05-24 | Auth B2B: cookie HttpOnly firmato + login via CRM | Niente NextAuth nell'HUB. Il CRM valida credenziali, ritorna token, l'HUB lo conserva in cookie firmato. Coerente con regola "zero DB locale" |
+| 2026-05-24 | Intake richieste: tabella unica `site_requests` nel CRM | Una sola entità con `kind: info \| spare-part \| repair \| b2b-quote`, payload JSON, stato iniziale "da gestire". Una view per smistare nel gestionale |
+| 2026-05-24 | Pricing differenziato via endpoint dedicato CRM | Stesso prodotto, prezzi diversi: `/api/v1/public/products` (pubblico) vs `/api/v1/b2b/products` (applica listino del cliente autenticato). Zero duplicazione |
 
 ---
 
-## 17. Prossimi passi
+## 18. Area B2B & Intake Richieste (Phase 1.5)
+
+### 18.1 Principio
+
+Estensione della regola fondamentale §1: il CRM resta fonte unica anche per utenti B2B, listini prezzi differenziati e richieste in arrivo dal sito. L'HUB non gestisce password, non duplica utenti, non tiene un secondo magazzino, non ha un suo DB di clienti.
+
+### 18.2 Separazione hard pubblico vs B2B
+
+| Sezione | Route | Auth | Endpoint CRM prezzi |
+|---------|-------|------|---------------------|
+| Pubblico | `/(public)/*` (rinominato da `(marketing)`, `(catalog)`, `(services)`) | No | `/api/v1/public/products` |
+| B2B | `/(b2b)/*` | Cookie sessione B2B obbligatorio | `/api/v1/b2b/products` |
+
+Il route group `(b2b)` è protetto da `proxy.ts`: se manca il cookie `b2b_session`, redirect a `/(b2b)/login?next=...`. Server Components nell'area B2B usano `requireB2bSession()` come guard duro.
+
+### 18.3 Pricing resolver
+
+Un solo modulo decide quale prezzo mostrare:
+
+```
+lib/pricing/resolver.ts
+  resolvePrice(product, viewer): { displayCents, label }
+  viewer = { kind: "public" } | { kind: "b2b", customerId, tierId }
+```
+
+Il prezzo arriva già "applicato" dal CRM (l'endpoint b2b/products ritorna `priceCents` con il listino del cliente). L'HUB non fa calcoli di prezzo, non tiene mai sconti locali. Il resolver serve solo a etichettare l'UI ("Prezzo pubblico" / "Tuo prezzo B2B") e gestire fallback (es. CRM non ritorna prezzo B2B → mostra "Richiedi preventivo").
+
+### 18.4 Intake richieste
+
+Un solo schema, una sola tabella CRM, una sola API HUB:
+
+```
+POST /api/requests        (HUB BFF)
+   ↓ valida con Zod, allega sessione se b2b
+POST /api/v1/public/requests   (CRM)
+   ↓ insert in site_requests con stato "da gestire"
+```
+
+Schema payload (Zod in `lib/requests/schemas.ts`):
+
+```ts
+{
+  kind: "info" | "spare-part" | "repair" | "b2b-quote",
+  source: "hub-public" | "hub-b2b",
+  customer: { name, email, phone, company? },
+  product?: { id, slug, name, variantId? },
+  message?: string,
+  // Solo per b2b-quote / b2b: customerId firmato dal cookie
+  b2bCustomerId?: string,
+  meta: { userAgent, referrer, locale }
+}
+```
+
+Il CRM deve esporre una view "Richieste sito" che mostra tutto in un'unica coda, filtrabile per `kind` e `source`. Stato iniziale: `"da gestire"`. Nessuna richiesta resta sul sito.
+
+### 18.5 Struttura cartelle (diff)
+
+Estensione della §4. Cambiamenti:
+
+```
+app/
+├── (public)/                 ← RINOMINATO da (marketing) + (catalog) + (services)
+│   ├── page.tsx              ← landing
+│   ├── prodotti/
+│   ├── riparazioni/
+│   ├── corsi/
+│   ├── negozi/
+│   └── chi-siamo/
+│
+├── (b2b)/                    ← NUOVO route group, layout proprio + guard
+│   ├── login/
+│   │   └── page.tsx
+│   ├── prodotti/
+│   │   └── page.tsx          ← stesso shape pubblico, prezzi B2B
+│   ├── richieste/
+│   │   └── page.tsx          ← storico richieste del cliente B2B
+│   ├── account/
+│   │   └── page.tsx
+│   └── layout.tsx            ← chiama requireB2bSession()
+│
+├── api/
+│   ├── auth/
+│   │   └── b2b/
+│   │       ├── login/route.ts    ← POST credenziali → CRM, set cookie
+│   │       ├── logout/route.ts
+│   │       └── me/route.ts       ← refresh dati cliente
+│   ├── products/route.ts          ← già esiste, ora context-aware
+│   └── requests/route.ts          ← NUOVO, intake unificato
+│
+lib/
+├── crm-client/
+│   ├── client.ts              (invariato)
+│   ├── types.ts               (estendere con PricingContext, B2bCustomer, RequestPayload)
+│   ├── products.ts            (firme accettano viewer: public | b2b)
+│   ├── auth.ts                ← NUOVO
+│   └── requests.ts            ← NUOVO
+├── pricing/
+│   └── resolver.ts            ← NUOVO
+├── auth/
+│   ├── session.ts             ← NUOVO (cookie firmato HttpOnly, jose o iron-session)
+│   └── guards.ts              ← NUOVO (requireB2bSession, optionalB2bSession)
+└── requests/
+    └── schemas.ts             ← NUOVO (Zod)
+
+proxy.ts                       ← AGGIUNGE matcher /(b2b)/* → gate cookie
+```
+
+### 18.6 Endpoint CRM richiesti (lavoro lato Kimi)
+
+Vedi `docs/architecture/CRM-BRIEF-B2B.md` per il brief tecnico completo da relayare nella sessione Kimi.
+
+In sintesi, il CRM deve esporre (tutti `X-API-Key` obbligatorio):
+
+| Metodo | Endpoint | Scopo |
+|--------|----------|-------|
+| POST | `/api/v1/b2b/login` | Valida `{ email, password }`, ritorna `{ sessionToken, customer, expiresAt }` |
+| POST | `/api/v1/b2b/logout` | Invalida sessionToken |
+| GET | `/api/v1/b2b/me` | Header `X-B2B-Session: <token>` → ritorna customer aggiornato |
+| GET | `/api/v1/b2b/products` | Stessa shape pubblica, `priceCents` con listino cliente |
+| GET | `/api/v1/b2b/products/:slug` | Idem dettaglio |
+| POST | `/api/v1/public/requests` | Crea record `site_requests` |
+| POST | `/api/v1/b2b/requests` | Idem, ma collegata al `customerId` autenticato |
+
+E le seguenti **nuove tabelle nel CRM** (vedi brief):
+
+- `customers.is_b2b` (bool), `customers.pricing_tier_id` (fk)
+- `pricing_tiers` (id, name, rules)
+- `customer_prices` (customer_id, product_id, price_cents) — override puntuali
+- `site_requests` (id, kind, source, customer_payload jsonb, product_payload jsonb, message, status, created_at, b2b_customer_id?)
+- `b2b_sessions` (token, customer_id, expires_at, revoked_at?)
+
+### 18.7 Sequenza di rollout
+
+Phase 1 dell'HUB (master plan §10) procede invariata. La Phase 1.5 B2B parte solo quando il CRM ha esposto gli endpoint elencati in §18.6. Lato HUB lo scaffolding può partire subito con mock locali in `lib/crm-client/mocks/b2b-*.ts`, allineati ai tipi del brief CRM. Il flip mock→reale resta su un singolo flag d'ambiente, come già fatto per i prodotti pubblici.
+
+---
+
+## 19. Prossimi passi
 
 1. **Approva questo master plan** (o commenta modifiche).
 2. Inizializzo repo Next.js 16 + scheletro completo.

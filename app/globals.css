@@ -1,15 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  /* Background: dark puro, premium. Il rosso vive nelle animazioni
-     ambientali, non nel bg statico. */
-  --color-background: #050505;
-  --color-foreground: #f5f5f5;
-  --color-muted: #737373;
-  --color-muted-foreground: #a3a3a3;
-  --color-border: #262626;
-  --color-card: #0a0a0a;
-  --color-card-hover: #141414;
+  /* Dark "premium grey" — più vicino a Linear/Vercel che a un theatre.
+     Le card si stagliano nettamente sul bg, i border si vedono, il testo
+     muted è chiaramente leggibile. */
+  --color-background: #141414;
+  --color-foreground: #fafafa;
+  --color-muted: #8a8a8a;
+  --color-muted-foreground: #c4c4c4;
+  --color-border: #353535;
+  --color-card: #1f1f1f;
+  --color-card-hover: #2a2a2a;
+  --color-popover: #232323;
   --color-ring: #dc2626;
 
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
@@ -29,6 +31,7 @@
   --color-border: var(--color-border);
   --color-muted: var(--color-muted);
   --color-muted-foreground: var(--color-muted-foreground);
+  --color-popover: var(--color-popover);
   --color-ring: var(--color-ring);
 
   --color-brand-50: #fef2f2;
@@ -56,41 +59,55 @@ body {
   position: relative;
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Light theme — applicato SOLO sotto [data-theme="light"] (es. workspace B2B).
+   Le pagine vetrina (landing, catalogo pubblico, login B2B) restano dark.
+   I tier brand-* sono identici a dark: il rosso Cellcom funziona su entrambi
+   i background. ───────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --color-background: #fafafa;
+  --color-foreground: #0a0a0a;
+  --color-muted: #737373;
+  --color-muted-foreground: #525252;
+  --color-border: #e5e5e5;
+  --color-card: #ffffff;
+  --color-card-hover: #f4f4f5;
+  --color-popover: #ffffff;
+
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* Disattiva i "fari" rossi ambient nelle aree light — risultano sporchi
+   su sfondo chiaro. Restano disponibili nel resto del sito. */
+[data-theme="light"]::before,
+[data-theme="light"]::after {
+  display: none;
+}
+
 /* Ambient red effects — strato fisso dietro a tutto il contenuto.
    Due "fari" rossi che si muovono lentamente + un pulse globale.
    Tutto background-only, non interferisce con click/scroll. */
+/* Ambient lights STATICI — niente più rotazione/pulse continui. Sono semplici
+   sorgenti di luce fisse dietro al contenuto per dare profondità senza
+   muoversi (la rotazione faceva girare la testa). */
 body::before {
-  content: "";
-  position: fixed;
-  inset: -20%;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(
-      circle at 20% 20%,
-      rgba(220, 38, 38, 0.10) 0%,
-      transparent 25%
-    ),
-    radial-gradient(
-      circle at 80% 70%,
-      rgba(153, 27, 27, 0.08) 0%,
-      transparent 30%
-    );
-  animation: ambient-drift 24s ease-in-out infinite;
-}
-
-body::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background: radial-gradient(
-    ellipse at 50% 100%,
-    rgba(220, 38, 38, 0.06) 0%,
-    transparent 50%
-  );
-  animation: ambient-pulse 6s ease-in-out infinite;
+  background:
+    radial-gradient(
+      circle at 20% 10%,
+      rgba(220, 38, 38, 0.10) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(153, 27, 27, 0.08) 0%,
+      transparent 40%
+    );
 }
 
 @keyframes ambient-drift {
@@ -135,4 +152,75 @@ body > * {
   z-index: 1000;
   opacity: 0.03;
   mix-blend-mode: overlay;
+}
+
+/* Titolo rubino: gradient statico, niente animazione (il loop continuo
+   distraeva). Mantiene la profondità del colore senza muoversi. */
+.shimmer-ruby {
+  background: linear-gradient(
+    100deg,
+    var(--color-brand-500) 0%,
+    #ff6b6b 50%,
+    var(--color-brand-500) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Shine bianco su bottoni primari: striscia diagonale che scorre al hover.
+   Usato come ::after del bottone — richiede `relative overflow-hidden`.
+   ───────────────────────────────────────────────────────────────────── */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.22) 50%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  transition: left 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  pointer-events: none;
+}
+.btn-shine:hover::after {
+  left: 130%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn-shine::after {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Marquee — strip orizzontale infinita. Due copie sequenziali del contenuto
+   nello stesso .marquee-track, animazione che trasla del 50%.
+   ───────────────────────────────────────────────────────────────────── */
+.marquee {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+}
+.marquee-track {
+  display: flex;
+  gap: 3rem;
+  width: max-content;
+  animation: marquee-scroll 42s linear infinite;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; }
 }

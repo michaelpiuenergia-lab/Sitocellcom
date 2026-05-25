@@ -40,8 +40,10 @@ function TiltCard({ icon, title, description, href, external, disabled, badge, c
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
       className={cn(
-        "group relative flex flex-col gap-4 p-6 rounded-2xl border border-border bg-card transition-colors duration-300",
-        "hover:bg-card-hover hover:border-brand-600/30 hover:shadow-[0_8px_32px_-8px_rgba(220,38,38,0.15)]",
+        "group relative flex flex-col gap-4 p-6 rounded-2xl border border-border bg-card transition-all duration-300",
+        "hover:bg-card-hover hover:border-brand-500/60 hover:shadow-[0_16px_48px_-12px_rgba(220,38,38,0.45)]",
+        "before:absolute before:inset-0 before:rounded-2xl before:opacity-0 before:transition-opacity before:duration-500 before:pointer-events-none",
+        "before:bg-[radial-gradient(circle_at_top_left,rgba(239,68,68,0.18)_0%,transparent_60%)] hover:before:opacity-100",
         disabled && "pointer-events-none opacity-60"
       )}
       style={{
@@ -83,10 +85,11 @@ const services: ServiceCardProps[] = [
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
       </svg>
     ),
-    title: "Compra",
-    description: "Smartphone, tablet e accessori dai cinque brand del Gruppo. Oltre 20.000 prodotti, disponibilità verificata in magazzino, spedizione in 24-48 ore.",
+    title: "Vendita",
+    description:
+      "Smartphone nuovi, ricondizionati certificati e usati testati. Apple, Samsung, Xiaomi, Google Pixel e tutti i principali brand. Accessori originali, ricambi compatibili. Spedizione 24-48h, pagamenti sicuri, ritiro gratuito in negozio.",
     href: "/prodotti",
-    ctaLabel: "Scopri",
+    ctaLabel: "Esplora il catalogo",
   },
   {
     icon: (
@@ -94,10 +97,26 @@ const services: ServiceCardProps[] = [
         <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
       </svg>
     ),
-    title: "Ripara",
-    description: "Schermo, batteria, scheda madre. Riparazione professionale con garanzia 12 mesi sui ricambi e tracciamento ticket online.",
+    title: "Assistenza",
+    description:
+      "Centro riparazioni con laboratorio interno: schermo, batteria, scheda madre, microsaldatura BGA. Diagnosi gratuita, preventivo prima di mettere mano, garanzia 12 mesi sul ricambio E sulla manodopera. Tracking ticket online.",
     href: "/riparazioni",
-    ctaLabel: "Traccia la tua",
+    ctaLabel: "Richiedi preventivo",
+    badge: "12 mesi garanzia",
+  },
+  {
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2" />
+        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+      </svg>
+    ),
+    title: "Ingrosso B2B",
+    description:
+      "Per rivenditori, centri assistenza autorizzati, operatori di telefonia, aziende. Listino tier dedicato, disponibilità prioritaria sul magazzino, pagamenti a 30/60 giorni, fattura elettronica automatica, account manager dedicato.",
+    href: "/b2b",
+    ctaLabel: "Accedi all'area B2B",
+    badge: "P.IVA",
   },
   {
     icon: (
@@ -106,24 +125,12 @@ const services: ServiceCardProps[] = [
         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
       </svg>
     ),
-    title: "Impara",
-    description: "Corsi di riparazione smartphone per professionisti e curiosi. Dal saper aprire un device alla microsaldatura BGA.",
+    title: "Formazione",
+    description:
+      "SmartphoneFix Academy: la nostra scuola di riparazione interna. Corsi per chi vuole aprire un laboratorio, per i tecnici dei centri assistenza, o per curiosi che vogliono capire come si lavora dentro un telefono. Stessi formatori che addestrano i nostri tecnici.",
     href: "https://smartphonefix.it",
     external: true,
-    ctaLabel: "Vai ai corsi",
-  },
-  {
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" />
-        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
-      </svg>
-    ),
-    title: "Rivendi",
-    description: "Valuta il tuo vecchio device in 60 secondi e ritira credito sull'acquisto del nuovo.",
-    href: "#",
-    disabled: true,
-    ctaLabel: "Disponibile a breve",
+    ctaLabel: "Scopri i corsi",
   },
 ];
 

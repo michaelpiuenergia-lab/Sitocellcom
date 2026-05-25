@@ -170,11 +170,19 @@ export function RepairTracker() {
   return (
     <div className="max-w-[800px] mx-auto flex flex-col gap-8">
       <div className="text-center flex flex-col gap-4">
+        <span className="font-mono text-xs uppercase tracking-[0.24em] text-brand-500">
+          <span className="text-brand-600">◢</span> Stato live dal nostro laboratorio
+        </span>
         <h1 className="font-serif text-[clamp(36px,5vw,64px)] font-normal leading-[0.95] tracking-[-0.02em] text-foreground">
-          Traccia la tua <span className="italic text-brand-500">riparazione</span>
+          Traccia la tua <span className="italic shimmer-ruby">riparazione</span>
         </h1>
-        <p className="text-lg text-muted-foreground max-w-md mx-auto">
-          Inserisci il numero ticket e le ultime cifre del telefono per vedere lo stato in tempo reale.
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          Hai consegnato il telefono in laboratorio e vuoi sapere a che punto siamo?
+          Inserisci il numero ticket (lo trovi sulla ricevuta) e le ultime cifre del
+          telefono che hai lasciato. Ti mostriamo lo stato in tempo reale dal nostro
+          gestionale: ricevuto, in diagnosi, in attesa preventivo, in lavorazione,
+          pronto al ritiro. Niente "chiami in negozio per sapere", niente attese al
+          telefono, niente sorprese sul prezzo.
         </p>
       </div>
 

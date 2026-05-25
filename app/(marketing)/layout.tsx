@@ -1,16 +1,13 @@
-import { Navbar } from "@/components/layout/navbar";
-import { Footer } from "@/components/layout/footer";
-
+/**
+ * Layout (marketing): passthrough. Navbar e Footer vivono dentro i layout
+ * figli specifici, così possono ereditare il theme giusto:
+ *  - landing root (page.tsx): dark
+ *  - (secondary) sub-group: light
+ */
 export default function MarketingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      <Navbar />
-      <div className="pt-16">{children}</div>
-      <Footer />
-    </>
-  );
+  return <>{children}</>;
 }

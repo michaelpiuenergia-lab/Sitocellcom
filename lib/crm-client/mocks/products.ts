@@ -30,6 +30,7 @@ export const mockProducts: PublicProductListItem[] = [
     category: "Smartphone",
     condition: "new",
     priceCents: 124900,
+    priceHidden: false,
     stock: { count: 5, capped: true },
     channel: "cellcom",
     photoUrl: null,
@@ -46,6 +47,7 @@ export const mockProducts: PublicProductListItem[] = [
     category: "Smartphone",
     condition: "new",
     priceCents: 89900,
+    priceHidden: false,
     stock: { count: 8, capped: true },
     channel: "cellcom",
     photoUrl: null,
@@ -62,6 +64,7 @@ export const mockProducts: PublicProductListItem[] = [
     category: "Smartphone",
     condition: "refurbished",
     priceCents: 67900,
+    priceHidden: false,
     stock: { count: 3, capped: false },
     channel: "cellcom",
     photoUrl: null,
@@ -78,6 +81,7 @@ export const mockProducts: PublicProductListItem[] = [
     category: "Smartphone",
     condition: "new",
     priceCents: 74900,
+    priceHidden: false,
     stock: { count: 5, capped: true },
     channel: "italianparts",
     photoUrl: null,
@@ -94,6 +98,7 @@ export const mockProducts: PublicProductListItem[] = [
     category: "Smartphone",
     condition: "new",
     priceCents: 109900,
+    priceHidden: false,
     stock: { count: 2, capped: false },
     channel: "fastfix",
     photoUrl: null,
@@ -110,6 +115,7 @@ export const mockProducts: PublicProductListItem[] = [
     category: "Smartphone",
     condition: "refurbished",
     priceCents: 54900,
+    priceHidden: false,
     stock: { count: 2, capped: false },
     channel: "cellcom",
     photoUrl: null,
@@ -126,6 +132,7 @@ export const mockProducts: PublicProductListItem[] = [
     category: "Ricambio",
     condition: "new",
     priceCents: 18900,
+    priceHidden: true,
     stock: { count: 24, capped: true },
     channel: "italianparts",
     photoUrl: null,
@@ -142,6 +149,7 @@ export const mockProducts: PublicProductListItem[] = [
     category: "Ricambio",
     condition: "new",
     priceCents: 4900,
+    priceHidden: true,
     stock: { count: 18, capped: true },
     channel: "italianparts",
     photoUrl: null,
@@ -152,6 +160,7 @@ export const mockProducts: PublicProductListItem[] = [
   },
 ];
 
-export function formatPrice(cents: number): string {
+export function formatPrice(cents: number | null): string {
+  if (cents === null) return "Su richiesta";
   return `€ ${(cents / 100).toFixed(2).replace(".", ",")}`;
 }

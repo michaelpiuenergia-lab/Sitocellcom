@@ -40,6 +40,12 @@ export function Navbar() {
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-brand-600 transition-[width] duration-300 ease-smooth group-hover:w-full" />
             </a>
           ))}
+          <a
+            href="/b2b"
+            className="text-xs font-mono uppercase tracking-wider px-3 py-1.5 rounded-full border border-brand-600/40 text-brand-500 hover:bg-brand-600/10 hover:border-brand-600 transition-colors duration-200"
+          >
+            Area B2B
+          </a>
         </nav>
 
         {/* Mobile hamburger */}
@@ -85,6 +91,13 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
+              <a
+                href="/b2b"
+                onClick={() => setIsOpen(false)}
+                className="mt-2 self-start text-sm font-mono uppercase tracking-wider px-4 py-2 rounded-full border border-brand-600/40 text-brand-500"
+              >
+                Area B2B
+              </a>
             </nav>
           </motion.div>
         )}

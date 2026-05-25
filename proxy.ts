@@ -50,12 +50,35 @@ function handleHtmlRequest() {
   return applySecurityHeaders(response);
 }
 
+const B2B_PUBLIC_PATHS = new Set<string>(["/b2b/login"]);
+const B2B_SESSION_COOKIE = "b2b_session";
+
+function b2bGate(request: NextRequest): NextResponse | null {
+  const { pathname } = request.nextUrl;
+  if (!pathname.startsWith("/b2b")) return null;
+  if (B2B_PUBLIC_PATHS.has(pathname)) return null;
+
+  // Edge runtime: non possiamo verificare la firma HMAC qui (no node:crypto).
+  // Controlliamo solo la presenza del cookie — la verifica firma + customer
+  // fresh avviene in lib/auth/guards.ts (Node runtime, Server Components).
+  const cookie = request.cookies.get(B2B_SESSION_COOKIE);
+  if (cookie?.value) return null;
+
+  const url = request.nextUrl.clone();
+  url.pathname = "/b2b/login";
+  url.search = `?next=${encodeURIComponent(pathname)}`;
+  return applySecurityHeaders(NextResponse.redirect(url));
+}
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/api/")) {
     return applySecurityHeaders(NextResponse.next());
   }
+
+  const gateResponse = b2bGate(request);
+  if (gateResponse) return gateResponse;
 
   return handleHtmlRequest();
 }

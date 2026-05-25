@@ -227,7 +227,7 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
               </div>
               <div className="flex items-baseline gap-3 flex-wrap">
                 <span className="font-mono text-xl font-medium text-foreground tabular-nums">
-                  {formatPrice(device.priceCents)}
+                  {device.priceHidden ? "Su richiesta" : formatPrice(device.priceCents)}
                 </span>
                 <span
                   className={cn(

@@ -64,6 +64,14 @@ export function Footer() {
                   Negozi
                 </a>
               </li>
+              <li>
+                <a
+                  href="/b2b"
+                  className="text-sm text-brand-500 hover:text-brand-400 transition-colors"
+                >
+                  Area B2B / Rivenditori
+                </a>
+              </li>
             </ul>
           </div>
 

@@ -8,14 +8,12 @@ import { EASE, DURATION } from "@/lib/constants";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 
 const words = [
-  { text: "Il", italic: false },
-  { text: "telefono", italic: false },
-  { text: "ha", italic: false },
-  { text: "una", italic: false },
-  { text: "casa", italic: true },
-  { text: "per", italic: false },
-  { text: "tutta", italic: true },
-  { text: "la vita.", italic: true },
+  { text: "Vendiamo,", italic: false },
+  { text: "ripariamo,", italic: true },
+  { text: "riforniamo", italic: false },
+  { text: "chi", italic: false },
+  { text: "li", italic: false },
+  { text: "vende.", italic: true },
 ];
 
 export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
@@ -53,7 +51,7 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: DURATION.slow, ease: EASE.smooth, delay: 0.6 }}
         >
-          <span className="text-brand-600">◢</span> Phone Lifecycle Hub
+          <span className="text-brand-600">◢</span> Gruppo Cellcom · Da Parma per l'Italia
         </motion.span>
 
         <motion.h1
@@ -74,12 +72,16 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
         </motion.h1>
 
         <motion.p
-          className="text-lg text-muted-foreground leading-relaxed max-w-[460px]"
+          className="text-lg text-muted-foreground leading-relaxed max-w-[540px]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: DURATION.slow, ease: EASE.smooth, delay: 1.7 }}
         >
-          Compra, ripara, impara, rivendi. Un solo gruppo, cinque brand, oltre 20.000 prodotti — dal primo giorno fino al riciclo.
+          Tre attività, un solo magazzino. <strong className="text-foreground font-semibold">Vendita al pubblico</strong> di
+          smartphone, accessori e ricambi. <strong className="text-foreground font-semibold">Centro assistenza</strong> con
+          laboratorio interno e garanzia 12 mesi. <strong className="text-foreground font-semibold">Ingrosso B2B</strong>
+          per rivenditori, centri assistenza e aziende — listino dedicato,
+          disponibilità prioritaria, account manager.
         </motion.p>
 
         <motion.div
@@ -89,11 +91,14 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
           transition={{ duration: DURATION.slow, ease: EASE.smooth, delay: 1.9 }}
         >
           <MagneticButton variant="primary" href="/prodotti" className="group">
-            Esplora il catalogo
+            Compra ora
             <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1">→</span>
           </MagneticButton>
           <MagneticButton variant="ghost" href="/riparazioni">
-            Traccia riparazione
+            Centro riparazioni
+          </MagneticButton>
+          <MagneticButton variant="ghost" href="/b2b">
+            Area B2B
           </MagneticButton>
         </motion.div>
       </div>

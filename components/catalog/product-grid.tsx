@@ -149,12 +149,13 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
       animate={{ opacity: 1, rotateY: 0 }}
       exit={{ opacity: 0, rotateY: 90 }}
       transition={{ duration: DURATION.normal, ease: EASE.smooth }}
-      className="group flex flex-col gap-3 p-4 rounded-2xl border border-border bg-card hover:bg-card-hover hover:border-brand-600/20 transition-all duration-300"
+      className="group flex flex-col gap-3 p-4 rounded-2xl border border-border bg-card hover:bg-card-hover hover:border-brand-600/40 hover:-translate-y-1 hover:shadow-[0_18px_48px_-18px_rgba(220,38,38,0.55)] transition-all duration-300"
       style={{ transformStyle: "preserve-3d" }}
     >
       {/* Image: foto reale dal CRM (assoluta) o icona-tipo specifica per kind */}
       <div className="aspect-[4/5] rounded-xl bg-gradient-to-b from-card-hover to-background border border-border flex items-center justify-center overflow-hidden relative">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.15)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.28)_0%,rgba(220,38,38,0.06)_45%,transparent_75%)] group-hover:bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.45)_0%,rgba(220,38,38,0.12)_45%,transparent_75%)] transition-all duration-500" />
+        <div className="absolute inset-x-8 bottom-4 h-px bg-gradient-to-r from-transparent via-brand-600/50 to-transparent group-hover:via-brand-500 transition-colors duration-500" />
         {product.photoUrl ? (
           <Image
             src={product.photoUrl}
@@ -170,7 +171,7 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
         ) : (
           <PhoneSilhouette
             variant={((Math.abs(product.id.split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6}
-            className="w-auto h-[85%] drop-shadow-[0_12px_24px_rgba(0,0,0,0.5)]"
+            className="w-auto h-[85%] drop-shadow-[0_8px_28px_rgba(220,38,38,0.32)]"
           />
         )}
       </div>
@@ -191,8 +192,14 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
       </div>
 
       <div className="mt-auto flex items-baseline justify-between">
-        <span className="font-mono text-lg font-medium text-foreground tabular-nums">
-          {formatPrice(product.priceCents)}
+        <span
+          className={cn(
+            "font-mono text-lg font-medium tabular-nums",
+            product.priceHidden ? "text-brand-500 italic font-serif text-base" : "text-foreground",
+          )}
+          title={product.priceHidden ? "Il prezzo pubblico non è esposto per questo articolo. Contattaci per il listino." : undefined}
+        >
+          {product.priceHidden ? "Su richiesta" : formatPrice(product.priceCents)}
         </span>
         <span className={cn("text-[10px] uppercase tracking-wider font-mono", stockColor)}>
           {stockLabel}
@@ -212,7 +219,7 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
           href={buildBuyUrl(product)}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-1 w-full py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold text-center hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300 inline-flex items-center justify-center gap-2"
+          className="btn-shine mt-1 w-full py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold text-center hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300 inline-flex items-center justify-center gap-2"
           title={`Acquista su ${getChannelName(product.channel)}`}
         >
           <span>Acquista su {getChannelName(product.channel)}</span>
