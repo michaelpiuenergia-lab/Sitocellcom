@@ -33,6 +33,17 @@ type MockB2bAccount = {
 export const MOCK_B2B_ACCOUNTS: MockB2bAccount[] = [
   {
     customer: {
+      id: "b2b-admin",
+      name: "Admin Cellcom",
+      company: "Gruppo Cellcom",
+      vatNumber: null,
+      email: "admin@cellcom.it",
+      pricingTier: MOCK_TIERS.vip,
+    },
+    password: "admin",
+  },
+  {
+    customer: {
       id: "b2b-001",
       name: "Marco Bianchi",
       company: "TecnoStore Milano S.r.l.",
