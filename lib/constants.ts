@@ -25,15 +25,6 @@ export const DURATION = {
   cinematic: 1.2,
 } as const;
 
-/** Cube config */
-export const CUBE = {
-  size: 360,        // +40px = telefoni più grandi
-  height: 600,
-  depth: 220,       // ridotto da 277: telefoni laterali più vicini, meno persi nel buio
-  angleStep: 60,
-  autoInterval: 4500,
-} as const;
-
 /** Brand config — allineato con CRM brand-templates.ts */
 export const BRAND = {
   name: "Cellcom",

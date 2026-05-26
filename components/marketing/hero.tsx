@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
@@ -28,10 +28,32 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
   const shouldReduce = useReducedMotion();
   const [phase, setPhase] = useState<Phase>(shouldReduce ? "content" : "video");
   const [isVideoNearEnd, setIsVideoNearEnd] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const newDevices = devices
     .filter((d) => d.condition !== "used" && d.condition !== "refurbished")
     .slice(0, 3);
+
+  // Pausa il video quando la Hero esce dal viewport: niente decode inutile.
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        const v = videoRef.current;
+        if (!v) return;
+        if (entry.isIntersecting) {
+          v.play().catch(() => {});
+        } else {
+          v.pause();
+        }
+      },
+      { threshold: 0 },
+    );
+    obs.observe(node);
+    return () => obs.disconnect();
+  }, []);
 
   useEffect(() => {
     if (phase !== "video") return;
@@ -61,6 +83,7 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
 
   return (
     <section
+      ref={sectionRef}
       className="relative overflow-hidden transition-colors duration-700 flex flex-col"
       style={{
         backgroundColor: isWhite ? "#ffffff" : "#050505",
@@ -73,10 +96,11 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
       <div className="absolute inset-0 z-0">
         {!shouldReduce && (
           <video
+            ref={videoRef}
             autoPlay
             muted
             playsInline
-            preload="auto"
+            preload="metadata"
             onEnded={handleVideoEnd}
             onTimeUpdate={handleVideoTimeUpdate}
             className="w-full h-full object-cover"

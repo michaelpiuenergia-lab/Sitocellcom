@@ -38,10 +38,6 @@
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
-
-  --cube-size: 360px;
-  --cube-height: 600px;
-  --cube-depth: 220px;
 }
 
 @theme inline {

@@ -6,6 +6,12 @@
 
 # testing
 /coverage
+/tests/
+*.screenshot.png
+
+# review/screenshot temporanei in public/
+/public/screenshot-*.png
+/public/review-*.png
 
 # next.js
 /.next/
