@@ -2,7 +2,6 @@
 
 import {
   motion,
-  useMotionValue,
   useScroll,
   useSpring,
   useTransform,
@@ -47,7 +46,6 @@ export function ImmersivePin({
   device?: PublicProductListItem;
 }) {
   const containerRef = useRef<HTMLElement>(null);
-  const sceneRef = useRef<HTMLDivElement>(null);
 
   // Scroll progress sull'intero contenitore (h=300vh) da 0 → 1
   const { scrollYProgress } = useScroll({
@@ -85,30 +83,6 @@ export function ImmersivePin({
   );
   const glowOpacity = useTransform(sp, [0, 0.4, 0.75, 1], [0.2, 0.85, 1, 1]);
 
-  // Mouse tilt (overlay sopra al rotateY scroll-driven)
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const mouseTiltX = useSpring(useTransform(my, [-0.5, 0.5], [10, -10]), {
-    stiffness: 150,
-    damping: 20,
-  });
-  const mouseTiltY = useSpring(useTransform(mx, [-0.5, 0.5], [-15, 15]), {
-    stiffness: 150,
-    damping: 20,
-  });
-
-  function onPointerMove(e: React.PointerEvent<HTMLDivElement>) {
-    const rect = sceneRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    mx.set((e.clientX - rect.left) / rect.width - 0.5);
-    my.set((e.clientY - rect.top) / rect.height - 0.5);
-  }
-
-  function onPointerLeave() {
-    mx.set(0);
-    my.set(0);
-  }
-
   return (
     <section
       ref={containerRef}
@@ -117,9 +91,6 @@ export function ImmersivePin({
       aria-label="Scopri Cellcom"
     >
       <motion.div
-        ref={sceneRef}
-        onPointerMove={onPointerMove}
-        onPointerLeave={onPointerLeave}
         style={{ backgroundColor: bgColor }}
         className="sticky top-0 h-screen overflow-hidden flex items-center justify-center"
       >
