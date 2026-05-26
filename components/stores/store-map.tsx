@@ -1,50 +1,34 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils/cn";
-
-interface StoreLocation {
-  name: string;
-  address: string;
-  city: string;
-  lat: number;
-  lng: number;
-  phone: string;
-}
-
-const stores: StoreLocation[] = [
-  { name: "Cellcom Parma", address: "Via Roma 1", city: "Parma", lat: 44.8015, lng: 10.328, phone: "+39 000 000 0001" },
-  { name: "Fast-Fix Milano", address: "Corso Buenos Aires 42", city: "Milano", lat: 45.4773, lng: 9.1955, phone: "+39 000 000 0002" },
-  { name: "ItalianParts Roma", address: "Via Nazionale 89", city: "Roma", lat: 41.9028, lng: 12.4964, phone: "+39 000 000 0003" },
-  { name: "SmartphoneFix Bologna", address: "Via dell'Indipendenza 25", city: "Bologna", lat: 44.4949, lng: 11.3426, phone: "+39 000 000 0004" },
-  { name: "Cellcom Torino", address: "Via Roma 100", city: "Torino", lat: 45.0703, lng: 7.6869, phone: "+39 000 000 0005" },
-];
+import { STORES, sortStoresByDistance, type Store } from "@/lib/stores";
 
 function useDistanceSort() {
-  const [sorted, setSorted] = useState<StoreLocation[]>(stores);
+  const [sorted, setSorted] = useState<Store[]>(STORES);
 
   useEffect(() => {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const userLat = pos.coords.latitude;
-        const userLng = pos.coords.longitude;
-        const withDist = stores.map((s) => ({
-          ...s,
-          dist: Math.sqrt((s.lat - userLat) ** 2 + (s.lng - userLng) ** 2),
-        }));
-        withDist.sort((a, b) => (a.dist ?? 0) - (b.dist ?? 0));
-        setSorted(withDist);
+        setSorted(
+          sortStoresByDistance(STORES, pos.coords.latitude, pos.coords.longitude),
+        );
       },
-      () => setSorted(stores),
-      { enableHighAccuracy: false, timeout: 5000 }
+      () => setSorted(STORES),
+      { enableHighAccuracy: false, timeout: 5000 },
     );
   }, []);
 
   return sorted;
 }
 
-function StoreCard({ store, isNearest }: { store: StoreLocation; isNearest?: boolean }) {
+function StoreCard({
+  store,
+  isNearest,
+}: {
+  store: Store;
+  isNearest?: boolean;
+}) {
   return (
     <div className="p-4 rounded-xl border border-border bg-card hover:bg-card-hover transition-colors duration-200 relative">
       {isNearest && (
@@ -52,10 +36,18 @@ function StoreCard({ store, isNearest }: { store: StoreLocation; isNearest?: boo
           Più vicino
         </span>
       )}
+      <div className="flex items-center gap-2 mb-1">
+        <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-card-hover border border-border text-muted-foreground">
+          {store.brand}
+        </span>
+      </div>
       <h3 className="font-serif text-lg italic text-foreground">{store.name}</h3>
       <p className="text-sm text-muted-foreground">{store.address}</p>
-      <p className="text-sm text-muted-foreground">{store.city}</p>
+      <p className="text-sm text-muted-foreground">
+        {store.cap} {store.city} ({store.province})
+      </p>
       <p className="text-sm text-muted-foreground font-mono mt-1">{store.phone}</p>
+      <p className="text-xs text-muted-foreground/80 mt-1">{store.hours}</p>
     </div>
   );
 }

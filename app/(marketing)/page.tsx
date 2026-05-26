@@ -4,6 +4,8 @@ import { StatsStrip, type StatItem } from "@/components/marketing/stats-strip";
 import { BrandMarquee } from "@/components/marketing/brand-marquee";
 import { WhyCellcomBento } from "@/components/marketing/why-cellcom-bento";
 import { B2bPitch } from "@/components/marketing/b2b-pitch";
+import { LifecycleShowcase } from "@/components/marketing/lifecycle-showcase";
+import { ImmersivePin } from "@/components/marketing/immersive-pin";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { getProducts } from "@/lib/crm-client";
@@ -70,6 +72,11 @@ export default async function MarketingPage() {
       <main>
         <Hero devices={devices} />
         <BrandMarquee />
+        {/* Cinematic moment — telefono REALE che ruota leggermente con lo
+            scroll, 3 momenti testuali in cross-fade, sfondo che vira. */}
+        <ImmersivePin device={devices[0]} />
+        {/* Divider bianco/cream con 4 telefoni REALI 3D tilt al mouse */}
+        <LifecycleShowcase devices={devices.slice(1, 5)} />
         <StatsStrip stats={stats} />
         <WhyCellcomBento />
         <ServiceCards />

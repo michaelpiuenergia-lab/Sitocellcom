@@ -53,73 +53,63 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
   const [currentRotation, setCurrentRotation] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
   const [captionKey, setCaptionKey] = useState(0);
   const dragStartX = useRef(0);
   const dragStartRotation = useRef(0);
-  const autoTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  /**
+   * goTo: navigazione manuale a un indice specifico (prev/next, dots).
+   * Calcola la rotazione minima per arrivarci, no flip drastici.
+   */
   const goTo = useCallback(
     (targetIndex: number) => {
-      const prevIdx = currentIndex;
-      const idx = ((targetIndex % 6) + 6) % 6;
-      let diff = idx - prevIdx;
-      if (Math.abs(diff) > 3) {
-        diff = diff > 0 ? diff - 6 : diff + 6;
-      }
-      const newRotation = currentRotation + diff * CUBE.angleStep;
-      setCurrentRotation(newRotation);
-      setCurrentIndex(idx);
-      setCaptionKey((k) => k + 1);
+      setCurrentIndex((prevIdx) => {
+        const idx = ((targetIndex % 6) + 6) % 6;
+        let diff = idx - prevIdx;
+        if (Math.abs(diff) > 3) {
+          diff = diff > 0 ? diff - 6 : diff + 6;
+        }
+        setCurrentRotation((r) => r + diff * CUBE.angleStep);
+        setCaptionKey((k) => k + 1);
+        return idx;
+      });
     },
-    [currentIndex, currentRotation]
+    [],
   );
 
   const next = useCallback(() => goTo(currentIndex + 1), [goTo, currentIndex]);
   const prev = useCallback(() => goTo(currentIndex - 1), [goTo, currentIndex]);
 
-  const startAuto = useCallback(() => {
-    if (autoTimer.current) clearInterval(autoTimer.current);
-    autoTimer.current = setInterval(() => {
-      if (!isPaused && !isDragging) {
-        next();
-      }
-    }, CUBE.autoInterval);
-  }, [isPaused, isDragging, next]);
-
-  const stopAuto = useCallback(() => {
-    if (autoTimer.current) {
-      clearInterval(autoTimer.current);
-      autoTimer.current = null;
-    }
-  }, []);
-
+  /**
+   * Auto-rotation: una sola useEffect, dipendenze minime (solo isDragging).
+   * Usa l'updater functional di setState così non dipende da currentIndex —
+   * niente reset dell'interval ad ogni rotazione.
+   */
   useEffect(() => {
-    startAuto();
-    return () => stopAuto();
-  }, [startAuto, stopAuto]);
+    if (isDragging) return;
+    const id = setInterval(() => {
+      setCurrentIndex((i) => (i + 1) % 6);
+      setCurrentRotation((r) => r + CUBE.angleStep);
+      setCaptionKey((k) => k + 1);
+    }, CUBE.autoInterval);
+    return () => clearInterval(id);
+  }, [isDragging]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") {
-        next();
-        startAuto();
-      }
-      if (e.key === "ArrowLeft") {
-        prev();
-        startAuto();
-      }
+      if (e.key === "ArrowRight") next();
+      if (e.key === "ArrowLeft") prev();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [next, prev, startAuto]);
+  }, [next, prev]);
 
+  // L'auto-rotation è bloccata mentre isDragging=true (vedi useEffect sopra).
   const onPointerDown = (e: React.PointerEvent) => {
     setIsDragging(true);
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     dragStartX.current = e.clientX;
     dragStartRotation.current = currentRotation;
-    stopAuto();
   };
 
   const onPointerMove = (e: React.PointerEvent) => {
@@ -138,7 +128,6 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
     setCurrentRotation(snappedRotation);
     setCurrentIndex(snappedIndex);
     setCaptionKey((k) => k + 1);
-    startAuto();
   };
 
   const device = devices[currentIndex];
@@ -150,8 +139,6 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
     <div className="flex flex-col items-center gap-8">
       <div
         className={styles["cube-stage"]}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -165,12 +152,23 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
         >
           {[0, 1, 2, 3, 4, 5].map((i) => {
             const faceDevice = hasDevices ? devices[i % devices.length] : null;
+            // Distanza angolare dalla faccia frontale (currentIndex) — wrapping su 6.
+            const diff = Math.min(
+              Math.abs(i - currentIndex),
+              6 - Math.abs(i - currentIndex),
+            );
+            // diff = 0 (frontale) → 1.0, 1 (laterale) → 0.4, 2 (quasi dietro) → 0.1, 3 (dietro) → 0
+            const faceOpacity =
+              diff === 0 ? 1 : diff === 1 ? 0.45 : diff === 2 ? 0.12 : 0;
+            const faceScale = diff === 0 ? 1 : 0.92;
             return (
               <div
                 key={i}
                 className={styles.face}
                 style={{
                   transform: `rotateY(${i * 60}deg) translateZ(${CUBE.depth}px)`,
+                  opacity: faceOpacity,
+                  transition: "opacity 0.6s cubic-bezier(0.65, 0, 0.35, 1)",
                 }}
               >
                 {faceDevice?.photoUrl ? (
@@ -179,13 +177,17 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
                       "relative w-[95%] h-[90%] flex items-center justify-center",
                       styles["float-mask"],
                     )}
-                    style={{ zIndex: 2 }}
+                    style={{
+                      zIndex: 2,
+                      transform: `scale(${faceScale})`,
+                      transition: "transform 0.6s cubic-bezier(0.65, 0, 0.35, 1)",
+                    }}
                   >
                     <Image
                       src={faceDevice.photoUrl}
                       alt={faceDevice.name}
                       fill
-                      sizes="320px"
+                      sizes="360px"
                       className="object-contain"
                       style={{
                         filter:
@@ -257,10 +259,7 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
       <div className="flex items-center gap-5">
         <button
           className="w-11 h-11 rounded-full bg-card border border-border text-foreground flex items-center justify-center cursor-pointer transition-all duration-200 ease-snappy hover:bg-card-hover hover:border-brand-600 hover:text-brand-500 hover:scale-[1.08]"
-          onClick={() => {
-            prev();
-            startAuto();
-          }}
+          onClick={() => prev()}
           aria-label="Precedente"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -278,10 +277,7 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
                     ? "bg-brand-600 w-6 shadow-[0_0_12px_rgba(220,38,38,0.6)]"
                     : "bg-border w-1.5 hover:bg-neutral-700",
                 )}
-                onClick={() => {
-                  goTo(i);
-                  startAuto();
-                }}
+                onClick={() => goTo(i)}
                 aria-label={d ? `Vai a ${d.name}` : `Modello ${i + 1}`}
               />
             );
@@ -290,10 +286,7 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
 
         <button
           className="w-11 h-11 rounded-full bg-card border border-border text-foreground flex items-center justify-center cursor-pointer transition-all duration-200 ease-snappy hover:bg-card-hover hover:border-brand-600 hover:text-brand-500 hover:scale-[1.08]"
-          onClick={() => {
-            next();
-            startAuto();
-          }}
+          onClick={() => next()}
           aria-label="Successivo"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>

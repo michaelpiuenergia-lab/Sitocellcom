@@ -34,6 +34,10 @@ const KIND_LABELS: Record<SiteRequestKind, { title: string; cta: string }> = {
     title: "Richiedi preventivo B2B",
     cta: "Invia richiesta preventivo",
   },
+  "trade-in": {
+    title: "Richiedi valutazione usato",
+    cta: "Invia richiesta valutazione",
+  },
 };
 
 type FormState = {

@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
   },
 
   images: {
+    // Next.js 16 blocca il fetch ottimizzato verso IP privati (127.0.0.1, ::1).
+    // In dev parliamo col CRM locale → bypassiamo l'ottimizzazione lasciando
+    // che il browser carichi le foto direttamente. In prod (Vercel) i CRM
+    // images sono su https://cellcom.vercel.app, ottimizzazione attiva.
+    unoptimized: process.env.NODE_ENV === "development",
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
       { protocol: "https", hostname: "**.vercel.app" },
@@ -24,6 +29,14 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "fast-fix.it" },
       { protocol: "https", hostname: "www.fast-fix.it" },
       { protocol: "https", hostname: "cellcom.vercel.app" },
+      // CRM dev locale: il CRM Next.js può girare su :3000, :3001 o :3002
+      // a seconda del setup. Teniamo tutte e tre le porte per compat.
+      { protocol: "http", hostname: "127.0.0.1", port: "3000" },
+      { protocol: "http", hostname: "localhost", port: "3000" },
+      { protocol: "http", hostname: "127.0.0.1", port: "3001" },
+      { protocol: "http", hostname: "localhost", port: "3001" },
+      { protocol: "http", hostname: "127.0.0.1", port: "3002" },
+      { protocol: "http", hostname: "localhost", port: "3002" },
     ],
   },
 

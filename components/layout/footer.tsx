@@ -50,6 +50,14 @@ export function Footer() {
               </li>
               <li>
                 <a
+                  href="/rivendi"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Rivendi il tuo
+                </a>
+              </li>
+              <li>
+                <a
                   href="/corsi"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >

@@ -18,9 +18,9 @@
   --font-mono: var(--font-geist-mono), monospace;
   --font-serif: var(--font-instrument-serif), Georgia, serif;
 
-  --cube-size: 320px;
-  --cube-height: 560px;
-  --cube-depth: 277px;
+  --cube-size: 360px;
+  --cube-height: 600px;
+  --cube-depth: 220px;
 }
 
 @theme inline {

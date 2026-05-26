@@ -30,7 +30,7 @@ function buildCspHeader(): string {
     "default-src 'self'",
     `script-src 'self' 'unsafe-inline' ${evalDirective} https://va.vercel-scripts.com https://vitals.vercel-insights.com`,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-    "img-src 'self' data: blob: https://*.vercel.app https://cdn.shopify.com https://*.shopifycdn.com https://cellcom.it https://www.cellcom.it https://italianparts.it https://www.italianparts.it https://fast-fix.it https://www.fast-fix.it https://*.global.ssl.fastly.net",
+    "img-src 'self' data: blob: https://*.vercel.app https://cdn.shopify.com https://*.shopifycdn.com https://cellcom.it https://www.cellcom.it https://italianparts.it https://www.italianparts.it https://fast-fix.it https://www.fast-fix.it https://*.global.ssl.fastly.net http://127.0.0.1:3000 http://localhost:3000 http://127.0.0.1:3001 http://localhost:3001 http://127.0.0.1:3002 http://localhost:3002",
     "font-src 'self' https://fonts.gstatic.com data:",
     "connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com",
     "worker-src 'self' blob:",

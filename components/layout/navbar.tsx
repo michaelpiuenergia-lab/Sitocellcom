@@ -9,6 +9,7 @@ import { EASE, DURATION } from "@/lib/constants";
 const navLinks = [
   { label: "Prodotti", href: "/prodotti" },
   { label: "Riparazioni", href: "/riparazioni" },
+  { label: "Rivendi", href: "/rivendi" },
   { label: "Corsi", href: "/corsi" },
   { label: "Negozi", href: "/negozi" },
   { label: "Chi siamo", href: "/chi-siamo" },

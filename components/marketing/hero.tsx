@@ -77,9 +77,12 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: DURATION.slow, ease: EASE.smooth, delay: 1.7 }}
         >
-          Tre attività, un solo magazzino. <strong className="text-foreground font-semibold">Vendita al pubblico</strong> di
-          smartphone, accessori e ricambi. <strong className="text-foreground font-semibold">Centro assistenza</strong> con
-          laboratorio interno e garanzia 12 mesi. <strong className="text-foreground font-semibold">Ingrosso B2B</strong>
+          Tre attività, un solo magazzino.{" "}
+          <strong className="text-foreground font-semibold">Vendita al pubblico</strong>{" "}
+          di smartphone, accessori e ricambi.{" "}
+          <strong className="text-foreground font-semibold">Centro assistenza</strong>{" "}
+          con laboratorio interno e garanzia 12 mesi.{" "}
+          <strong className="text-foreground font-semibold">Ingrosso B2B</strong>{" "}
           per rivenditori, centri assistenza e aziende — listino dedicato,
           disponibilità prioritaria, account manager.
         </motion.p>
@@ -96,6 +99,9 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
           </MagneticButton>
           <MagneticButton variant="ghost" href="/riparazioni">
             Centro riparazioni
+          </MagneticButton>
+          <MagneticButton variant="ghost" href="/rivendi">
+            Rivendi il tuo
           </MagneticButton>
           <MagneticButton variant="ghost" href="/b2b">
             Area B2B

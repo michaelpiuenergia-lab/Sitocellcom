@@ -100,9 +100,9 @@
 
 /* Mask radiale sull'immagine — dissolve lo sfondo bianco delle foto
    Apple/Shopify ai bordi, lasciando emergere SOLO il telefono al centro
-   come se galleggiasse fuori dal nero. Il telefono in foto è già
-   sempre centrato col device che occupa ~60% dell'altezza, il bianco
-   è ai bordi → maschera lo nasconde. */
+   come se galleggiasse fuori dal nero. Tornata stretta (50%/55%)
+   perché allargandola si vedevano i "quadrati bianchi" dello sfondo
+   delle foto WC/Shopify. */
 .float-mask {
   -webkit-mask-image: radial-gradient(
     ellipse 50% 55% at center,

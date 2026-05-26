@@ -1,200 +1,105 @@
 "use client";
 
-import { Suspense, useRef, useMemo } from "react";
+import { Suspense, useRef, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, ContactShadows } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
+import type { MotionValue } from "framer-motion";
 
-/**
- * Smartphone 3D — modello generato proceduralmente con primitive Three.js,
- * niente GLB da caricare. Ruota lentamente, materiale glass premium con
- * riflessi e accenti rossi sullo schermo.
- */
-function PhoneModel() {
+const MODEL_PATH = "/models/samsung-phone.glb";
+useGLTF.preload(MODEL_PATH);
+
+type Phone3DProps = {
+  rotationDeg?: MotionValue<number>;
+  photoUrl?: string | null;
+};
+
+function SamsungPhoneModel({ rotationDeg }: { rotationDeg?: MotionValue<number> }) {
+  const gltf = useGLTF(MODEL_PATH);
   const groupRef = useRef<THREE.Group>(null!);
+  const [scale, setScale] = useState(1);
 
-  // Auto-rotation continua sull'asse Y (orizzontale)
+  useEffect(() => {
+    if (!gltf.scene) return;
+
+    gltf.scene.rotation.set(0, Math.PI / 2, 0);
+    gltf.scene.updateMatrixWorld(true);
+
+    const box = new THREE.Box3().setFromObject(gltf.scene);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    gltf.scene.position.set(-center.x, -center.y, -center.z);
+
+    const maxDim = Math.max(size.x, size.y, size.z);
+    // Target 3.2 unità (era 5) → telefono più piccolo, lascia più spazio
+    // alla composizione tipografica della sezione.
+    const fit = maxDim > 0 ? 3.2 / maxDim : 1;
+    setScale(fit);
+
+    // Materiali GLB originali (cover blu profondo del Samsung), solo
+    // bump leggero di envMapIntensity per riflessi più visibili.
+    gltf.scene.traverse((obj) => {
+      if (!(obj instanceof THREE.Mesh)) return;
+      if (obj.material instanceof THREE.MeshStandardMaterial) {
+        obj.material.envMapIntensity = 2;
+        if (obj.material.transparent && obj.material.opacity < 0.1) {
+          obj.material.opacity = 1;
+          obj.material.transparent = false;
+        }
+      }
+    });
+
+    console.log("[Phone3D] Samsung GLB loaded — bbox:", size.toArray(), "scale:", fit);
+  }, [gltf.scene]);
+
   useFrame(({ clock }) => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y = clock.elapsedTime * 0.4;
+    if (!groupRef.current) return;
+    if (rotationDeg) {
+      // Offset 30° per partire da una vista 3/4 (mai pure frontale nera)
+      groupRef.current.rotation.y = ((rotationDeg.get() + 30) * Math.PI) / 180;
+    } else {
+      groupRef.current.rotation.y = clock.elapsedTime * 0.35;
     }
   });
 
-  // Geometria phone: rounded box con corner radius simulato
-  const phoneGeometry = useMemo(() => {
-    const w = 1.5;
-    const h = 3;
-    const d = 0.12;
-    const r = 0.18;
-    const shape = new THREE.Shape();
-    shape.moveTo(-w / 2 + r, -h / 2);
-    shape.lineTo(w / 2 - r, -h / 2);
-    shape.quadraticCurveTo(w / 2, -h / 2, w / 2, -h / 2 + r);
-    shape.lineTo(w / 2, h / 2 - r);
-    shape.quadraticCurveTo(w / 2, h / 2, w / 2 - r, h / 2);
-    shape.lineTo(-w / 2 + r, h / 2);
-    shape.quadraticCurveTo(-w / 2, h / 2, -w / 2, h / 2 - r);
-    shape.lineTo(-w / 2, -h / 2 + r);
-    shape.quadraticCurveTo(-w / 2, -h / 2, -w / 2 + r, -h / 2);
-    return new THREE.ExtrudeGeometry(shape, {
-      depth: d,
-      bevelEnabled: true,
-      bevelThickness: 0.025,
-      bevelSize: 0.025,
-      bevelSegments: 8,
-      curveSegments: 32,
-    });
-  }, []);
-
+  // Tilt X costante -12° per vedere sempre il top del telefono → mai
+  // perfettamente di profilo (avoid edge-on invisible state)
   return (
-    <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.3}>
-      <group ref={groupRef} position={[0, 0, 0]} scale={1.5}>
-        {/* Body — alluminio scuro */}
-        <mesh geometry={phoneGeometry} castShadow receiveShadow>
-          <meshPhysicalMaterial
-            color="#1a1a1a"
-            metalness={0.9}
-            roughness={0.25}
-            clearcoat={0.6}
-            clearcoatRoughness={0.3}
-          />
-        </mesh>
-
-        {/* Schermo nero brillante con accent rosso */}
-        <mesh position={[0, 0.05, 0.13]}>
-          <planeGeometry args={[1.35, 2.85]} />
-          <meshPhysicalMaterial
-            color="#050505"
-            emissive="#dc2626"
-            emissiveIntensity={0.08}
-            metalness={0.4}
-            roughness={0.05}
-            clearcoat={1}
-            clearcoatRoughness={0.02}
-          />
-        </mesh>
-
-        {/* Linea rossa sullo schermo come "logo highlight" */}
-        <mesh position={[0, -1.3, 0.131]}>
-          <planeGeometry args={[0.8, 0.025]} />
-          <meshBasicMaterial color="#ef4444" />
-        </mesh>
-
-        {/* Dynamic Island / notch */}
-        <mesh position={[0, 1.2, 0.131]}>
-          <planeGeometry args={[0.5, 0.13]} />
-          <meshBasicMaterial color="#000000" />
-        </mesh>
-
-        {/* Camera bump posteriore (square) */}
-        <mesh position={[-0.4, 1, -0.13]} rotation={[0, Math.PI, 0]}>
-          <boxGeometry args={[0.55, 0.55, 0.06]} />
-          <meshPhysicalMaterial
-            color="#0a0a0a"
-            metalness={0.95}
-            roughness={0.2}
-            clearcoat={1}
-          />
-        </mesh>
-
-        {/* 3 camera lens */}
-        {[
-          [-0.55, 1.15, -0.17],
-          [-0.25, 1.15, -0.17],
-          [-0.4, 0.85, -0.17],
-        ].map((p, i) => (
-          <mesh key={i} position={p as [number, number, number]} rotation={[0, Math.PI, 0]}>
-            <cylinderGeometry args={[0.09, 0.09, 0.04, 32]} />
-            <meshPhysicalMaterial
-              color="#1a1a1a"
-              metalness={1}
-              roughness={0.1}
-              clearcoat={1}
-            />
-          </mesh>
-        ))}
-
-        {/* Flash LED */}
-        <mesh position={[-0.1, 1.05, -0.165]} rotation={[0, Math.PI, 0]}>
-          <cylinderGeometry args={[0.04, 0.04, 0.02, 16]} />
-          <meshBasicMaterial color="#fef2f2" />
-        </mesh>
-
-        {/* Bordi rossi laterali (Cellcom signature) */}
-        <mesh position={[0.755, 0, 0.06]}>
-          <boxGeometry args={[0.003, 2.4, 0.04]} />
-          <meshBasicMaterial color="#dc2626" />
-        </mesh>
-        <mesh position={[-0.755, 0, 0.06]}>
-          <boxGeometry args={[0.003, 2.4, 0.04]} />
-          <meshBasicMaterial color="#dc2626" />
-        </mesh>
-      </group>
-    </Float>
+    <group ref={groupRef} scale={scale} rotation={[-0.21, 0, 0]}>
+      <primitive object={gltf.scene} />
+    </group>
   );
 }
 
-export function Phone3D() {
+export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
   return (
-    <div className="w-full h-full min-h-[500px] lg:min-h-[700px]">
+    <div className="w-full h-full min-h-[500px] lg:min-h-[700px] relative">
       <Canvas
-        camera={{ position: [0, 0, 7], fov: 35 }}
-        shadows
+        camera={{ position: [0, 0, 7], fov: 32 }}
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
       >
+        {/* Lighting OMNIDIREZIONALE per tenere il telefono visibile a 360°:
+            - hemisphere light: bianco dall'alto + bordeaux dal basso, illumina
+              tutto in modo uniforme così il telefono non sparisce mai
+            - 4 directional light dai 4 lati cardinali (rim light a 360°)
+            - point lights rossi per accenti caldi
+        */}
+        <hemisphereLight args={["#ffffff", "#3a0a0a", 1.2]} />
+        <ambientLight intensity={0.6} color="#ffffff" />
+
+        {/* Rim lights ai 4 lati per illuminare il phone da qualsiasi angolo */}
+        <directionalLight position={[5, 3, 5]} intensity={2.2} color="#ffffff" />
+        <directionalLight position={[-5, 3, -5]} intensity={2.2} color="#dc2626" />
+        <directionalLight position={[5, 3, -5]} intensity={1.8} color="#ffffff" />
+        <directionalLight position={[-5, 3, 5]} intensity={1.8} color="#ff8888" />
+
+        {/* Accent points */}
+        <pointLight position={[3, 0, 3]} intensity={1.2} color="#ef4444" />
+        <pointLight position={[-3, 0, -3]} intensity={1} color="#991b1b" />
+
         <Suspense fallback={null}>
-          {/* Lighting setup completo — 6 luci compensano la mancanza di HDR.
-             Key light bianca + rim light rosso + fill ambient + accenti. */}
-          <ambientLight intensity={0.35} color="#1a1a1a" />
-
-          {/* KEY light — direzionale principale */}
-          <directionalLight
-            position={[4, 6, 5]}
-            intensity={1.8}
-            color="#ffffff"
-            castShadow
-            shadow-mapSize={[1024, 1024]}
-          />
-
-          {/* RIM light rossa — separa il phone dal background nero */}
-          <directionalLight
-            position={[-6, 2, -4]}
-            intensity={1.5}
-            color="#dc2626"
-          />
-
-          {/* FILL bianca soft — riempie le ombre */}
-          <directionalLight
-            position={[-3, -2, 3]}
-            intensity={0.5}
-            color="#ffffff"
-          />
-
-          {/* Spotlight cinematico dall'alto */}
-          <spotLight
-            position={[0, 8, 5]}
-            angle={0.4}
-            penumbra={1}
-            intensity={1.2}
-            color="#ffffff"
-          />
-
-          {/* Glow rosso ambientale — illumina il metallo del body */}
-          <pointLight position={[2, -1, 4]} intensity={0.8} color="#ef4444" />
-          <pointLight position={[-2, 1, -2]} intensity={0.6} color="#991b1b" />
-
-          <PhoneModel />
-
-          {/* Pavimento per ombra rossa proiettata */}
-          <ContactShadows
-            position={[0, -2.2, 0]}
-            opacity={0.65}
-            scale={6}
-            blur={2.5}
-            far={4}
-            color="#dc2626"
-          />
+          <SamsungPhoneModel rotationDeg={rotationDeg} />
         </Suspense>
       </Canvas>
     </div>

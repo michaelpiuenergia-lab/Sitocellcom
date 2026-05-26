@@ -183,7 +183,8 @@ export type SiteRequestKind =
   | "info"
   | "spare-part"
   | "repair"
-  | "b2b-quote";
+  | "b2b-quote"
+  | "trade-in"; // valutazione usato proposta dall'utente pubblico
 
 export type SiteRequestSource = "hub-public" | "hub-b2b";
 

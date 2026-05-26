@@ -7,6 +7,7 @@ import { CONDITION_LABELS } from "@/lib/crm-client/mocks/products";
 import type {
   B2bProductListItem,
   PublicCondition,
+  PublicKind,
   SiteRequestKind,
 } from "@/lib/crm-client/types";
 import { PhoneSilhouette } from "@/components/marketing/phone-silhouette";
@@ -137,6 +138,13 @@ const conditions: { value: PublicCondition | "all"; label: string }[] = [
   { value: "used", label: "Usato" },
 ];
 
+const kinds: { value: PublicKind | "all"; label: string }[] = [
+  { value: "all", label: "Tutti" },
+  { value: "device", label: "Telefoni" },
+  { value: "part", label: "Ricambi" },
+  { value: "accessory", label: "Accessori" },
+];
+
 export function ProductGridB2b({
   initialProducts,
   viewer,
@@ -147,34 +155,92 @@ export function ProductGridB2b({
   const [activeCondition, setActiveCondition] = useState<
     PublicCondition | "all"
   >("all");
+  const [activeKind, setActiveKind] = useState<PublicKind | "all">("all");
   const [activeProduct, setActiveProduct] =
     useState<B2bProductListItem | null>(null);
 
-  const filtered = initialProducts.filter(
-    (p) => activeCondition === "all" || p.condition === activeCondition,
-  );
+  const filtered = initialProducts.filter((p) => {
+    if (activeCondition !== "all" && p.condition !== activeCondition) return false;
+    if (activeKind !== "all" && p.kind !== activeKind) return false;
+    return true;
+  });
+
+  const counts = {
+    all: initialProducts.length,
+    device: initialProducts.filter((p) => p.kind === "device").length,
+    part: initialProducts.filter((p) => p.kind === "part").length,
+    accessory: initialProducts.filter((p) => p.kind === "accessory").length,
+    other: initialProducts.filter((p) => p.kind === "other").length,
+  };
 
   const requestKind: SiteRequestKind =
     activeProduct?.kind === "part" ? "spare-part" : "b2b-quote";
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="flex flex-wrap gap-2">
-        {conditions.map((c) => (
-          <button
-            key={c.value}
-            onClick={() => setActiveCondition(c.value)}
-            className={cn(
-              "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200",
-              activeCondition === c.value
-                ? "bg-brand-600 text-white border-brand-600"
-                : "bg-card text-muted-foreground border-border hover:border-brand-600/40",
-            )}
-          >
-            {c.label}
-          </button>
-        ))}
+      {/* Filtro per tipo: Telefoni / Ricambi / Accessori */}
+      <div className="flex flex-col gap-2">
+        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+          Tipo
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {kinds.map((k) => {
+            const count =
+              k.value === "all"
+                ? counts.all
+                : counts[k.value as keyof typeof counts] ?? 0;
+            return (
+              <button
+                key={k.value}
+                onClick={() => setActiveKind(k.value)}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 inline-flex items-center gap-1.5",
+                  activeKind === k.value
+                    ? "bg-brand-600 text-white border-brand-600"
+                    : "bg-card text-muted-foreground border-border hover:border-brand-600/40",
+                )}
+              >
+                {k.label}
+                <span
+                  className={cn(
+                    "tabular-nums text-[10px]",
+                    activeKind === k.value
+                      ? "opacity-80"
+                      : "text-muted-foreground/70",
+                  )}
+                >
+                  ({count})
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Filtro per condition (rilevante solo per Telefoni) */}
+      {(activeKind === "all" || activeKind === "device") && (
+        <div className="flex flex-col gap-2">
+          <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-muted-foreground">
+            Condizione
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {conditions.map((c) => (
+              <button
+                key={c.value}
+                onClick={() => setActiveCondition(c.value)}
+                className={cn(
+                  "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200",
+                  activeCondition === c.value
+                    ? "bg-brand-600 text-white border-brand-600"
+                    : "bg-card text-muted-foreground border-border hover:border-brand-600/40",
+                )}
+              >
+                {c.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       <motion.div
         layout
