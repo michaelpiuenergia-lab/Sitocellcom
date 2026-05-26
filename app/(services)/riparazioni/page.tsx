@@ -10,17 +10,6 @@ export const metadata = {
     "Riparazione professionale di smartphone con garanzia 12 mesi. Diagnosi gratuita, ricambi originali, ritiro in negozio o spedizione. Traccia il tuo ticket in tempo reale.",
 };
 
-const HERO_BRANDS = [
-  "Apple",
-  "Samsung",
-  "Google",
-  "Xiaomi",
-  "Honor",
-  "Huawei",
-  "OnePlus",
-  "OPPO",
-] as const;
-
 export default function RepairsPage() {
   return (
     <>
@@ -164,61 +153,6 @@ export default function RepairsPage() {
             </div>
           </div>
 
-          {/* Brand grid teaser */}
-          <div
-            className="rounded-2xl p-7 lg:p-10"
-            style={{
-              backgroundColor: "#fafaf8",
-              border: "1px solid #ececec",
-            }}
-          >
-            <h2
-              className="font-sans tracking-[-0.015em] mb-6"
-              style={{ fontSize: "20px", fontWeight: 600, color: "#0a0a0a" }}
-            >
-              Ripariamo questi brand{" "}
-              <span style={{ color: "#dc2626", fontWeight: 500 }}>
-                (e anche altri).
-              </span>
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-              {HERO_BRANDS.map((b) => (
-                <div
-                  key={b}
-                  className="rounded-xl py-5 text-center transition-colors duration-300 hover:border-[#dc2626]"
-                  style={{
-                    backgroundColor: "#ffffff",
-                    border: "1px solid #ececec",
-                  }}
-                >
-                  <span
-                    className="font-sans"
-                    style={{
-                      fontSize: "14px",
-                      color: "#525252",
-                      fontWeight: 500,
-                      letterSpacing: "-0.01em",
-                    }}
-                  >
-                    {b}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <p
-              className="mt-5"
-              style={{ fontSize: "13px", color: "#737373" }}
-            >
-              Non trovi il tuo brand?{" "}
-              <Link
-                href="/riparazioni/richiedi"
-                style={{ color: "#dc2626", fontWeight: 500 }}
-              >
-                Aprici una richiesta lo stesso
-              </Link>
-              : valutiamo caso per caso.
-            </p>
-          </div>
         </div>
       </section>
 
