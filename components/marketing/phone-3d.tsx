@@ -7,6 +7,9 @@ import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
 
 const MODEL_PATH = "/models/samsung-phone.glb";
+// DRACO decoder dalla CDN Google: serve esplicito per drei.useGLTF
+// quando il GLB è compresso DRACO (samsung-phone.glb è -89% via gltf-transform).
+useGLTF.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
 useGLTF.preload(MODEL_PATH);
 
 type Phone3DProps = {
