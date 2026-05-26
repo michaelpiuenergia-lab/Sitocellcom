@@ -1,6 +1,6 @@
 .cube-stage {
-  perspective: 1600px;
-  perspective-origin: 50% 50%;
+  perspective: 1100px;
+  perspective-origin: 50% 45%;
   width: var(--cube-size);
   height: var(--cube-height);
   position: relative;

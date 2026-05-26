@@ -1,13 +1,12 @@
 /**
- * Marquee orizzontale dei brand presenti nel catalogo. Loop infinito CSS-only,
- * 40s per giro. Effetto "tanti brand sotto un solo tetto" senza occupare spazio
- * verticale eccessivo.
+ * BrandStrip — banner ROSSO Cellcom che cammina.
  *
- * - Niente immagini esterne: nomi in font-mono uppercase con separatore "+".
- * - Su prefers-reduced-motion l'animazione si ferma.
+ * Striscia stretta (py-3.5 lg:py-4) montata in cima alla pagina, subito
+ * sotto la navbar. Fondo rosso brand pieno, testi bianchi, marquee
+ * orizzontale infinita. Sempre visibile nel primo fold.
  */
 
-const BRANDS = [
+const ITEMS = [
   "Apple",
   "Samsung",
   "Xiaomi",
@@ -20,38 +19,41 @@ const BRANDS = [
   "Motorola",
   "Nothing",
   "Asus",
+  "Spedizione 24-48h",
+  "Garanzia 12 mesi",
+  "Ritiro gratis in negozio",
+  "Stock verificato dal CRM",
 ] as const;
 
 export function BrandMarquee() {
   return (
-    <section className="relative border-y border-border bg-card/20 overflow-hidden py-6">
-      <div
-        className="pointer-events-none absolute inset-y-0 left-0 w-32 z-10"
-        style={{
-          background:
-            "linear-gradient(to right, var(--color-background), transparent)",
-        }}
-      />
-      <div
-        className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10"
-        style={{
-          background:
-            "linear-gradient(to left, var(--color-background), transparent)",
-        }}
-      />
-      <div className="marquee">
-        <div className="marquee-track">
-          {[...BRANDS, ...BRANDS].map((b, i) => (
-            <span
-              key={`${b}-${i}`}
-              className="font-mono text-sm tracking-[0.2em] uppercase text-muted-foreground/70 flex items-center gap-12 shrink-0"
-            >
-              {b}
-              <span className="text-brand-600/50" aria-hidden>
-                ◢
+    <section
+      aria-label="Brand e servizi"
+      className="relative"
+      style={{ backgroundColor: "#dc2626" }}
+    >
+      <div className="py-3.5 lg:py-4">
+        <div className="marquee">
+          <div className="marquee-track">
+            {[...ITEMS, ...ITEMS].map((b, i) => (
+              <span
+                key={`${b}-${i}`}
+                className="font-mono uppercase flex items-center gap-10 shrink-0"
+                style={{
+                  fontSize: "12px",
+                  letterSpacing: "0.32em",
+                  color: "#ffffff",
+                }}
+              >
+                {b}
+                <span
+                  aria-hidden
+                  className="w-px h-3 inline-block"
+                  style={{ background: "#ffffff", opacity: 0.45 }}
+                />
               </span>
-            </span>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

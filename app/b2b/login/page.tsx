@@ -19,41 +19,66 @@ export default async function B2bLoginPage({
   }
 
   return (
-    <main className="relative min-h-screen flex items-center justify-center px-6 py-12">
-      {/* Sfondo ambient: gradiente radiale rosso soft, niente di invadente */}
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(220,38,38,0.12)_0%,transparent_60%)]" />
-
-      <div className="w-full max-w-[420px] flex flex-col items-center gap-8">
-        {/* Logo + nome */}
+    <main
+      className="relative min-h-screen flex items-center justify-center px-6 py-16"
+      style={{ backgroundColor: "#fafaf8" }}
+    >
+      <div className="w-full max-w-[440px] flex flex-col items-center gap-9">
+        {/* Logo + eyebrow */}
         <a
           href="/"
-          className="flex items-center gap-3 group"
+          className="flex flex-col items-center gap-3"
           aria-label="Torna alla home"
         >
-          <LogoC className="w-10 h-10" />
-          <div className="flex flex-col leading-tight">
-            <span className="font-sans font-semibold text-sm tracking-[0.15em] uppercase text-foreground">
-              Cellcom Group
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
-              Area B2B
-            </span>
-          </div>
+          <LogoC className="w-12 h-12" />
+          <span
+            className="font-mono uppercase"
+            style={{
+              fontSize: "11px",
+              letterSpacing: "0.32em",
+              color: "#dc2626",
+            }}
+          >
+            Area B2B
+          </span>
         </a>
 
         {/* Card form */}
-        <div className="w-full flex flex-col gap-6 bg-card border border-border rounded-2xl p-8 shadow-[0_24px_64px_-24px_rgba(0,0,0,0.7)]">
-          <div className="flex flex-col gap-1.5 text-center">
-            <h1 className="font-serif italic text-3xl text-foreground">
+        <div
+          className="w-full flex flex-col gap-7 rounded-2xl p-9 lg:p-10"
+          style={{
+            backgroundColor: "#ffffff",
+            border: "1px solid #ececec",
+            boxShadow: "0 24px 60px -28px rgba(0,0,0,0.12)",
+          }}
+        >
+          <div className="flex flex-col gap-2">
+            <h1
+              className="font-sans tracking-[-0.02em]"
+              style={{
+                fontSize: "28px",
+                color: "#0a0a0a",
+                fontWeight: 700,
+                lineHeight: 1.1,
+              }}
+            >
               Accedi al tuo listino
             </h1>
-            <p className="text-sm text-muted-foreground">
-              Prezzi riservati per rivenditori, operatori e aziende.
+            <p style={{ fontSize: "14px", color: "#525252" }}>
+              Prezzi riservati per rivenditori, operatori e aziende del Gruppo.
             </p>
           </div>
 
           {reason === "expired" && (
-            <p className="text-sm text-yellow-400 bg-yellow-400/10 border border-yellow-400/30 rounded-lg px-4 py-2 text-center">
+            <p
+              className="rounded-xl px-4 py-3 text-center"
+              style={{
+                fontSize: "13px",
+                color: "#92400e",
+                backgroundColor: "#fef3c7",
+                border: "1px solid #fde68a",
+              }}
+            >
               Sessione scaduta. Effettua di nuovo l&apos;accesso.
             </p>
           )}
@@ -61,20 +86,26 @@ export default async function B2bLoginPage({
           <LoginForm next={next} />
         </div>
 
-        {/* Footer: attivazione + back */}
+        {/* Footer */}
         <div className="flex flex-col items-center gap-3 text-center">
-          <p className="text-sm text-muted-foreground">
+          <p style={{ fontSize: "14px", color: "#525252" }}>
             Non hai ancora le credenziali?{" "}
             <a
               href="mailto:b2b@cellcom.it?subject=Richiesta%20attivazione%20account%20B2B"
-              className="text-brand-500 hover:text-brand-400 underline-offset-4 hover:underline"
+              className="hover:underline"
+              style={{ color: "#dc2626", fontWeight: 500 }}
             >
               Richiedi attivazione →
             </a>
           </p>
           <a
             href="/"
-            className="text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+            className="font-mono uppercase transition-colors hover:text-[#0a0a0a]"
+            style={{
+              fontSize: "10px",
+              letterSpacing: "0.28em",
+              color: "#737373",
+            }}
           >
             ← Torna al sito pubblico
           </a>

@@ -9,7 +9,9 @@ export default function ServicesLayout({
   return (
     <>
       <Navbar />
-      <div className="pt-16">{children}</div>
+      <div data-theme="light" className="bg-background text-foreground min-h-screen pt-20">
+        {children}
+      </div>
       <Footer />
     </>
   );

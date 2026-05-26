@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { FadeInView } from "@/components/ui/fade-in-view";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 
 export const metadata: Metadata = {
@@ -9,41 +8,46 @@ export const metadata: Metadata = {
 };
 
 const stats = [
-  { value: "20.000+", label: "prodotti a catalogo" },
-  { value: "5", label: "brand verticali integrati" },
-  { value: "24-48h", label: "consegna in Italia" },
-  { value: "12 mesi", label: "garanzia ricambi originali" },
+  { value: "20K+", label: "Prodotti a catalogo" },
+  { value: "5", label: "Brand verticali" },
+  { value: "24-48h", label: "Consegna in Italia" },
+  { value: "12 mesi", label: "Garanzia ricambi" },
 ];
 
 const brands = [
   {
     name: "Cellcom.it",
+    role: "Magazzino B2B",
     description:
-      "Il magazzino centrale. Distribuzione all'ingrosso per negozi, rivenditori e aziende.",
+      "L'ingrosso del gruppo. Vendiamo a rivenditori, centri assistenza e aziende con listini a volumi.",
     url: "https://cellcom.it",
   },
   {
     name: "Fast-Fix.it",
+    role: "Negozi e riparazioni",
     description:
-      "Il laboratorio fisico. Riparazioni rapide e vendita locale.",
+      "I punti vendita fisici dove porti il telefono a riparare o vieni a comprarne uno nuovo.",
     url: "https://fast-fix.it",
   },
   {
     name: "ItalianParts.it",
+    role: "Ricambi",
     description:
-      "I ricambi. Schermi, batterie, scocche e tools per i professionisti del settore.",
+      "Display, batterie, scocche, schede madri. Per chi ripara smartphone di mestiere.",
     url: "https://www.italianparts.it",
   },
   {
     name: "SmartphoneFix.it",
+    role: "Academy",
     description:
-      "La scuola. Corsi di riparazione smartphone per chi vuole imparare il mestiere.",
+      "La scuola interna dove formiamo i nostri tecnici. Aperta anche a chi vuole imparare il mestiere.",
     url: "https://smartphonefix.it",
   },
   {
     name: "FixHub.it",
+    role: "Gestionale",
     description:
-      "Il software. Gestionale cloud per laboratori di riparazione e catene multi-negozio.",
+      "Il software che usiamo noi per gestire ticket, magazzino e clienti. Lo vendiamo anche ad altri laboratori.",
     url: "https://fixhub.it",
   },
 ];
@@ -51,21 +55,21 @@ const brands = [
 const statements = [
   {
     num: "01",
-    title: "TRASPARENZA",
+    title: "Prezzi onesti",
     description:
-      "Niente trucchi. Niente offerte civetta. Niente prodotti senza storia. Ogni device ha una scheda tecnica, una garanzia, un'origine certa.",
+      "Stessi listini su tutti i nostri canali. Quello che vedi al pubblico è quello che paga il pubblico — il B2B paga meno, ma solo se compra a volumi.",
   },
   {
     num: "02",
-    title: "TRACCIABILITÀ",
+    title: "Ogni intervento tracciato",
     description:
-      "Ogni riparazione è registrata, fotografata, archiviata. Puoi seguirla in tempo reale dal momento in cui ce la consegni.",
+      "Sei riparazioni o ordini entrano nel gestionale, lo vedi anche tu in tempo reale. Foto del device, ricambi usati, tecnico responsabile — tutto registrato.",
   },
   {
     num: "03",
-    title: "SPECIALIZZAZIONE",
+    title: "Una specializzazione per brand",
     description:
-      "Cinque marchi che fanno una cosa sola, ognuno con la sua competenza. Insieme coprono l'intero ciclo di vita del telefono.",
+      "Cinque marchi che fanno una cosa sola e la fanno seriamente. Mettendoli insieme copriamo tutto il ciclo di vita del telefono.",
   },
 ];
 
@@ -73,87 +77,265 @@ export default function ChiSiamoPage() {
   return (
     <>
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Chi siamo" }]} />
-      <main className="flex flex-col gap-24 pt-8 pb-20 px-6 lg:px-16 max-w-[1600px] mx-auto">
-      {/* SEZIONE 1 — Hero */}
-      <FadeInView className="flex flex-col gap-6 text-center max-w-3xl mx-auto">
-        <span className="font-mono text-xs text-brand-500 uppercase tracking-[0.2em]">
-          <span className="text-brand-600">◢</span> Il gruppo
-        </span>
-        <h1 className="font-serif text-[clamp(36px,5vw,64px)] font-normal leading-[0.95] tracking-[-0.02em] text-foreground">
-          Cinque brand. Una sola <span className="italic text-brand-500">fiducia</span>.
-        </h1>
-        <p className="text-lg text-muted-foreground leading-relaxed">
-          Un'impresa italiana che segue il telefono per tutta la sua vita — dalla scatola al riciclo,
-          passando per la riparazione, i ricambi e la formazione.
-        </p>
-      </FadeInView>
 
-      {/* SEZIONE 2 — Numeri */}
-      <section className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, i) => (
-          <FadeInView key={stat.label} delay={i * 0.1}>
-            <div className="flex flex-col gap-2 p-6 rounded-2xl border border-border bg-card">
-              <span className="font-serif text-4xl italic text-brand-500">{stat.value}</span>
-              <span className="text-sm text-muted-foreground">{stat.label}</span>
-            </div>
-          </FadeInView>
-        ))}
+      {/* HERO bianco */}
+      <section style={{ backgroundColor: "#ffffff" }}>
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-12 lg:pt-16 pb-16">
+          <div className="max-w-4xl flex flex-col gap-5">
+            <span
+              className="font-mono uppercase inline-flex items-center gap-3"
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.32em",
+                color: "#dc2626",
+              }}
+            >
+              <span
+                aria-hidden
+                className="inline-block h-px w-9"
+                style={{ backgroundColor: "#dc2626" }}
+              />
+              Il gruppo
+            </span>
+            <h1
+              className="font-sans tracking-[-0.025em]"
+              style={{
+                fontSize: "clamp(40px, 5vw, 72px)",
+                lineHeight: 1.02,
+                color: "#0a0a0a",
+                fontWeight: 700,
+              }}
+            >
+              Cinque brand. Una sola{" "}
+              <span style={{ color: "#dc2626" }}>fiducia.</span>
+            </h1>
+            <p
+              className="leading-relaxed"
+              style={{
+                fontSize: "19px",
+                color: "#525252",
+                maxWidth: "640px",
+              }}
+            >
+              Vendiamo, ripariamo e riforniamo telefoni. Siamo di Parma, ma
+              lavoriamo in tutta Italia. Cinque brand specializzati, un
+              magazzino solo, le stesse persone dietro a tutto.
+            </p>
+          </div>
+        </div>
       </section>
 
-      {/* SEZIONE 3 — I Nostri Brand */}
-      <section className="flex flex-col gap-8">
-        <FadeInView className="flex flex-col gap-4 text-center max-w-2xl mx-auto">
-          <h2 className="font-serif text-[clamp(28px,3vw,42px)] font-normal leading-[1.1] tracking-[-0.02em] text-foreground">
-            I nostri <span className="italic text-brand-500">brand</span>
-          </h2>
-        </FadeInView>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {brands.map((brand, i) => (
-            <FadeInView key={brand.name} delay={i * 0.1}>
+      {/* STATS (nero) */}
+      <section
+        aria-label="Numeri del gruppo"
+        style={{ backgroundColor: "#0a0a0a" }}
+      >
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-20 lg:py-24">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-8 lg:gap-x-12">
+            {stats.map((stat) => (
+              <div key={stat.label} className="flex flex-col gap-2">
+                <span
+                  className="font-sans tabular-nums leading-none"
+                  style={{
+                    fontSize: "clamp(40px, 4.5vw, 64px)",
+                    letterSpacing: "-0.025em",
+                    color: "#fafafa",
+                    fontWeight: 700,
+                  }}
+                >
+                  {stat.value}
+                </span>
+                <span
+                  style={{
+                    fontSize: "14px",
+                    color: "#a3a3a3",
+                  }}
+                >
+                  {stat.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 5 BRAND (bianco) */}
+      <section
+        aria-label="I cinque brand del gruppo"
+        style={{ backgroundColor: "#ffffff" }}
+      >
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-28">
+          <div className="grid lg:grid-cols-[1.1fr,1fr] gap-10 lg:gap-20 items-end mb-14">
+            <div className="flex flex-col gap-5">
+              <span
+                className="font-mono uppercase inline-flex items-center gap-3"
+                style={{
+                  fontSize: "11px",
+                  letterSpacing: "0.32em",
+                  color: "#dc2626",
+                }}
+              >
+                <span
+                  aria-hidden
+                  className="inline-block h-px w-9"
+                  style={{ backgroundColor: "#dc2626" }}
+                />
+                I 5 brand
+              </span>
+              <h2
+                className="font-sans tracking-[-0.025em]"
+                style={{
+                  fontSize: "clamp(32px, 4.2vw, 56px)",
+                  lineHeight: 1.05,
+                  color: "#0a0a0a",
+                  fontWeight: 700,
+                }}
+              >
+                Un gruppo,{" "}
+                <span style={{ color: "#dc2626" }}>cinque specializzazioni.</span>
+              </h2>
+            </div>
+            <p
+              className="leading-relaxed"
+              style={{ fontSize: "17px", color: "#525252", maxWidth: "520px" }}
+            >
+              Ogni marchio fa una cosa sola e la fa bene. Insieme coprono
+              l'intero ciclo di vita del telefono: vendita, riparazione,
+              ricambi, formazione, software. Stesso magazzino, stessi
+              standard.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
+            {brands.map((brand) => (
               <a
+                key={brand.name}
                 href={brand.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col gap-3 p-6 rounded-2xl border border-border bg-card hover:bg-card-hover hover:border-brand-600/30 transition-colors duration-300 h-full"
+                className="group rounded-2xl p-7 lg:p-8 flex flex-col gap-3 transition-colors duration-300 hover:border-[#dc2626]"
+                style={{
+                  backgroundColor: "#fafaf8",
+                  border: "1px solid #ececec",
+                }}
               >
-                <h3 className="font-serif text-xl italic text-foreground group-hover:text-brand-500 transition-colors">
-                  {brand.name}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3
+                    className="font-sans"
+                    style={{
+                      fontSize: "22px",
+                      letterSpacing: "-0.02em",
+                      color: "#0a0a0a",
+                      fontWeight: 700,
+                    }}
+                  >
+                    {brand.name}
+                  </h3>
+                  <span
+                    aria-hidden
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                    style={{ color: "#dc2626", fontSize: "18px" }}
+                  >
+                    ↗
+                  </span>
+                </div>
+                <span
+                  className="font-mono uppercase"
+                  style={{
+                    fontSize: "10px",
+                    letterSpacing: "0.28em",
+                    color: "#dc2626",
+                  }}
+                >
+                  {brand.role}
+                </span>
+                <p
+                  className="leading-relaxed mt-1"
+                  style={{ fontSize: "14px", color: "#525252" }}
+                >
                   {brand.description}
                 </p>
-                <span className="mt-auto text-sm font-medium text-brand-500 group-hover:text-brand-400 inline-flex items-center gap-1">
-                  Visita il sito
-                  <span className="transition-transform duration-300 group-hover:translate-x-1">↗</span>
-                </span>
               </a>
-            </FadeInView>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* SEZIONE 4 — Cosa ci distingue */}
-      <section className="flex flex-col gap-8">
-        <FadeInView className="flex flex-col gap-4 text-center max-w-2xl mx-auto">
-          <h2 className="font-serif text-[clamp(28px,3vw,42px)] font-normal leading-[1.1] tracking-[-0.02em] text-foreground">
-            Cosa ci <span className="italic text-brand-500">distingue</span>
-          </h2>
-        </FadeInView>
-        <div className="flex flex-col gap-6">
-          {statements.map((s, i) => (
-            <FadeInView key={s.num} delay={i * 0.15}>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 p-6 lg:p-8 rounded-2xl border border-border bg-card">
-                <span className="font-mono text-sm text-brand-500 shrink-0">{s.num}</span>
-                <div className="flex flex-col gap-2">
-                  <h3 className="font-serif text-lg italic text-foreground">{s.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{s.description}</p>
-                </div>
+      {/* MANIFESTO (nero) */}
+      <section
+        aria-label="I principi del gruppo"
+        style={{ backgroundColor: "#0a0a0a" }}
+      >
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-32">
+          <div className="flex flex-col gap-5 max-w-2xl mb-16">
+            <span
+              className="font-mono uppercase inline-flex items-center gap-3"
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.32em",
+                color: "#dc2626",
+              }}
+            >
+              <span
+                aria-hidden
+                className="inline-block h-px w-9"
+                style={{ backgroundColor: "#dc2626" }}
+              />
+              Cosa ci distingue
+            </span>
+            <h2
+              className="font-sans tracking-[-0.025em]"
+              style={{
+                fontSize: "clamp(32px, 4.2vw, 56px)",
+                lineHeight: 1.05,
+                color: "#fafafa",
+                fontWeight: 700,
+              }}
+            >
+              Tre principi,{" "}
+              <span style={{ color: "#dc2626" }}>non negoziabili.</span>
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {statements.map((s) => (
+              <div
+                key={s.num}
+                className="flex flex-col gap-4 pt-7"
+                style={{ borderTop: "1px solid #1f1f1f" }}
+              >
+                <span
+                  className="font-mono tabular-nums"
+                  style={{
+                    fontSize: "11px",
+                    letterSpacing: "0.28em",
+                    color: "#dc2626",
+                  }}
+                >
+                  {s.num}
+                </span>
+                <h3
+                  className="font-sans"
+                  style={{
+                    fontSize: "26px",
+                    letterSpacing: "-0.02em",
+                    color: "#fafafa",
+                    fontWeight: 700,
+                  }}
+                >
+                  {s.title}
+                </h3>
+                <p
+                  className="leading-relaxed"
+                  style={{ fontSize: "15px", color: "#a3a3a3" }}
+                >
+                  {s.description}
+                </p>
               </div>
-            </FadeInView>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
-    </main>
-  </>
+    </>
   );
 }

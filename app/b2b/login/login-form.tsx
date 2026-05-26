@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils/cn";
 
 export function LoginForm({ next }: { next?: string }) {
   const router = useRouter();
@@ -25,9 +24,7 @@ export function LoginForm({ next }: { next?: string }) {
         const data = (await res.json().catch(() => ({}))) as {
           error?: { message?: string };
         };
-        throw new Error(
-          data?.error?.message ?? "Credenziali non valide",
-        );
+        throw new Error(data?.error?.message ?? "Credenziali non valide");
       }
       router.push(next ?? "/b2b/prodotti");
       router.refresh();
@@ -40,8 +37,15 @@ export function LoginForm({ next }: { next?: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
-        <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+      <div className="flex flex-col gap-2">
+        <label
+          className="font-mono uppercase"
+          style={{
+            fontSize: "10px",
+            letterSpacing: "0.22em",
+            color: "#737373",
+          }}
+        >
           Email
         </label>
         <input
@@ -51,17 +55,26 @@ export function LoginForm({ next }: { next?: string }) {
           required
           autoComplete="email"
           autoFocus
-          className={cn(
-            "w-full px-4 py-3 rounded-lg bg-popover border border-border",
-            "text-sm text-foreground placeholder:text-muted-foreground",
-            "focus:outline-none focus:ring-2 focus:ring-brand-600/40 focus:border-brand-600/40",
-            "transition-colors duration-200",
-          )}
+          placeholder="nome@azienda.it"
+          className="w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors duration-200"
+          style={{
+            backgroundColor: "#ffffff",
+            border: "1px solid #e5e5e5",
+            fontSize: "15px",
+            color: "#0a0a0a",
+          }}
         />
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+      <div className="flex flex-col gap-2">
+        <label
+          className="font-mono uppercase"
+          style={{
+            fontSize: "10px",
+            letterSpacing: "0.22em",
+            color: "#737373",
+          }}
+        >
           Password
         </label>
         <input
@@ -70,17 +83,27 @@ export function LoginForm({ next }: { next?: string }) {
           onChange={(e) => setPassword(e.target.value)}
           required
           autoComplete="current-password"
-          className={cn(
-            "w-full px-4 py-3 rounded-lg bg-popover border border-border",
-            "text-sm text-foreground placeholder:text-muted-foreground",
-            "focus:outline-none focus:ring-2 focus:ring-brand-600/40 focus:border-brand-600/40",
-            "transition-colors duration-200",
-          )}
+          placeholder="••••••••"
+          className="w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors duration-200"
+          style={{
+            backgroundColor: "#ffffff",
+            border: "1px solid #e5e5e5",
+            fontSize: "15px",
+            color: "#0a0a0a",
+          }}
         />
       </div>
 
       {error && (
-        <p className="text-sm text-brand-500 bg-brand-600/10 border border-brand-600/30 rounded-lg px-4 py-2">
+        <p
+          className="rounded-xl px-4 py-3"
+          style={{
+            fontSize: "14px",
+            color: "#dc2626",
+            backgroundColor: "#fef2f2",
+            border: "1px solid #fecaca",
+          }}
+        >
           {error}
         </p>
       )}
@@ -88,13 +111,16 @@ export function LoginForm({ next }: { next?: string }) {
       <button
         type="submit"
         disabled={busy}
-        className={cn(
-          "btn-shine w-full py-3 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold",
-          "hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300",
-          "disabled:opacity-60 disabled:cursor-not-allowed",
-        )}
+        className="w-full py-3.5 rounded-full transition-all duration-300 hover:shadow-[0_18px_44px_-12px_rgba(220,38,38,0.55)] disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+        style={{
+          backgroundColor: "#dc2626",
+          color: "#ffffff",
+          fontSize: "15px",
+          fontWeight: 600,
+          letterSpacing: "-0.01em",
+        }}
       >
-        {busy ? "Accesso in corso…" : "Accedi all'area B2B"}
+        {busy ? "Accesso in corso…" : "Accedi all'area B2B →"}
       </button>
     </form>
   );

@@ -147,7 +147,7 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
         <div
           className={cn(styles.cube, isDragging && styles.dragging)}
           style={{
-            transform: `rotateY(${-currentRotation}deg)`,
+            transform: `rotateX(-12deg) rotateY(${-currentRotation}deg)`,
           }}
         >
           {[0, 1, 2, 3, 4, 5].map((i) => {
@@ -191,7 +191,7 @@ export function CubeCarousel({ devices = [] }: CubeCarouselProps) {
                       className="object-contain"
                       style={{
                         filter:
-                          "drop-shadow(0 25px 30px rgba(0,0,0,0.6)) drop-shadow(0 10px 15px rgba(0,0,0,0.4))",
+                          "drop-shadow(0 45px 55px rgba(0,0,0,0.7)) drop-shadow(0 20px 30px rgba(220,38,38,0.28)) drop-shadow(0 8px 12px rgba(0,0,0,0.5))",
                       }}
                       priority={i === 0}
                     />

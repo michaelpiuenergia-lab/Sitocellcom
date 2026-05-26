@@ -1,22 +1,43 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────────────────
+   DESIGN TOKENS — Cellcom Hub
+   Bi-tone: dark editoriale (default) per home/marketing-secondary/B2B,
+   light tech per catalogo/services/rivendi via [data-theme="light"].
+   ───────────────────────────────────────────────────────────────────── */
+
 :root {
-  /* Dark "premium grey" — più vicino a Linear/Vercel che a un theatre.
-     Le card si stagliano nettamente sul bg, i border si vedono, il testo
-     muted è chiaramente leggibile. */
-  --color-background: #141414;
+  /* Dark editoriale — profondo, no "grigio Vercel" */
+  --color-background: #0f0f0f;
   --color-foreground: #fafafa;
   --color-muted: #8a8a8a;
-  --color-muted-foreground: #c4c4c4;
-  --color-border: #353535;
-  --color-card: #1f1f1f;
-  --color-card-hover: #2a2a2a;
-  --color-popover: #232323;
+  --color-muted-foreground: #b8b8b8;
+  --color-border: #262626;
+  --color-card: #181818;
+  --color-card-hover: #1f1f1f;
+  --color-popover: #1c1c1c;
   --color-ring: #dc2626;
+  --color-ink: #050505;
+
+  /* Scala tipografica unica per tutto il sito */
+  --text-display: clamp(56px, 8vw, 120px);
+  --text-h1: clamp(40px, 6vw, 84px);
+  --text-h2: clamp(32px, 4.5vw, 60px);
+  --text-h3: clamp(22px, 2.4vw, 32px);
+  --text-body-lg: clamp(17px, 1.3vw, 20px);
+  --text-body: 17px;
+  --text-body-sm: 15px;
+  --text-eyebrow: 11px;
+  --text-mono-sm: 12px;
 
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
   --font-serif: var(--font-instrument-serif), Georgia, serif;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 
   --cube-size: 360px;
   --cube-height: 600px;
@@ -33,6 +54,7 @@
   --color-muted-foreground: var(--color-muted-foreground);
   --color-popover: var(--color-popover);
   --color-ring: var(--color-ring);
+  --color-ink: var(--color-ink);
 
   --color-brand-50: #fef2f2;
   --color-brand-100: #fee2e2;
@@ -50,6 +72,42 @@
   --font-serif: var(--font-serif);
 }
 
+/* ─────────────────────────────────────────────────────────────────────────
+   Light tech — off-white warm, applicato a catalog/services/rivendi
+   via wrapper data-theme="light" sul layout group.
+   ───────────────────────────────────────────────────────────────────── */
+[data-theme="light"] {
+  --color-background: #fbfaf7;
+  --color-foreground: #0a0a0a;
+  --color-muted: #737373;
+  --color-muted-foreground: #525252;
+  --color-border: #e7e5e0;
+  --color-card: #ffffff;
+  --color-card-hover: #f4f3ee;
+  --color-popover: #ffffff;
+  --color-ink: #050505;
+
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   Ink — nero profondo per sezioni CTA finali (footer, B2B pitch).
+   ───────────────────────────────────────────────────────────────────── */
+[data-theme="ink"] {
+  --color-background: #050505;
+  --color-foreground: #fafafa;
+  --color-muted: #707070;
+  --color-muted-foreground: #a3a3a3;
+  --color-border: #1c1c1c;
+  --color-card: #0f0f0f;
+  --color-card-hover: #161616;
+  --color-popover: #121212;
+
+  background: var(--color-background);
+  color: var(--color-foreground);
+}
+
 body {
   background: var(--color-background);
   color: var(--color-foreground);
@@ -60,91 +118,8 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Light theme — applicato SOLO sotto [data-theme="light"] (es. workspace B2B).
-   Le pagine vetrina (landing, catalogo pubblico, login B2B) restano dark.
-   I tier brand-* sono identici a dark: il rosso Cellcom funziona su entrambi
-   i background. ───────────────────────────────────────────────────────── */
-[data-theme="light"] {
-  --color-background: #fafafa;
-  --color-foreground: #0a0a0a;
-  --color-muted: #737373;
-  --color-muted-foreground: #525252;
-  --color-border: #e5e5e5;
-  --color-card: #ffffff;
-  --color-card-hover: #f4f4f5;
-  --color-popover: #ffffff;
-
-  background: var(--color-background);
-  color: var(--color-foreground);
-}
-
-/* Disattiva i "fari" rossi ambient nelle aree light — risultano sporchi
-   su sfondo chiaro. Restano disponibili nel resto del sito. */
-[data-theme="light"]::before,
-[data-theme="light"]::after {
-  display: none;
-}
-
-/* Ambient red effects — strato fisso dietro a tutto il contenuto.
-   Due "fari" rossi che si muovono lentamente + un pulse globale.
-   Tutto background-only, non interferisce con click/scroll. */
-/* Ambient lights STATICI — niente più rotazione/pulse continui. Sono semplici
-   sorgenti di luce fisse dietro al contenuto per dare profondità senza
-   muoversi (la rotazione faceva girare la testa). */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background:
-    radial-gradient(
-      circle at 20% 10%,
-      rgba(220, 38, 38, 0.10) 0%,
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at 80% 80%,
-      rgba(153, 27, 27, 0.08) 0%,
-      transparent 40%
-    );
-}
-
-@keyframes ambient-drift {
-  0%, 100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  33% {
-    transform: translate(-2%, 3%) rotate(120deg);
-  }
-  66% {
-    transform: translate(3%, -2%) rotate(240deg);
-  }
-}
-
-@keyframes ambient-pulse {
-  0%, 100% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
-/* Riga rossa sottile che scorre lentamente in alto come "scan line" */
-body > * {
-  position: relative;
-  z-index: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before,
-  body::after {
-    animation: none;
-  }
-}
-
-/* Grain texture overlay base */
+   Grain texture overlay base — riservato a quando lo richiediamo
+   ───────────────────────────────────────────────────────────────────── */
 .grain-overlay {
   position: fixed;
   inset: 0;
@@ -154,23 +129,8 @@ body > * {
   mix-blend-mode: overlay;
 }
 
-/* Titolo rubino: gradient statico, niente animazione (il loop continuo
-   distraeva). Mantiene la profondità del colore senza muoversi. */
-.shimmer-ruby {
-  background: linear-gradient(
-    100deg,
-    var(--color-brand-500) 0%,
-    #ff6b6b 50%,
-    var(--color-brand-500) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 /* ─────────────────────────────────────────────────────────────────────────
-   Shine bianco su bottoni primari: striscia diagonale che scorre al hover.
-   Usato come ::after del bottone — richiede `relative overflow-hidden`.
+   Shine bianco su bottoni primari (varianti `primary` con shine={true}).
    ───────────────────────────────────────────────────────────────────── */
 .btn-shine {
   position: relative;
@@ -203,13 +163,26 @@ body > * {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────
-   Marquee — strip orizzontale infinita. Due copie sequenziali del contenuto
-   nello stesso .marquee-track, animazione che trasla del 50%.
+   Marquee — strip orizzontale infinita per BrandMarquee.
    ───────────────────────────────────────────────────────────────────── */
 .marquee {
   display: flex;
   overflow: hidden;
   width: 100%;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 8%,
+    black 92%,
+    transparent 100%
+  );
 }
 .marquee-track {
   display: flex;

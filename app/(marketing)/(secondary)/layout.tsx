@@ -9,7 +9,7 @@ export default function SecondaryMarketingLayout({
   return (
     <>
       <Navbar />
-      <div className="pt-16">{children}</div>
+      <div className="pt-20">{children}</div>
       <Footer />
     </>
   );

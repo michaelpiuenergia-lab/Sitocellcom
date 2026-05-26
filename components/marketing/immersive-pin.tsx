@@ -75,13 +75,15 @@ export function ImmersivePin({
   const opacity3 = useTransform(sp, [0.64, 0.72, 0.95, 1], [0, 1, 1, 1]);
   const y3 = useTransform(sp, [0.64, 0.72, 1], ["20px", "0px", "0px"]);
 
-  // Sfondo che vira: nero → cremisi → rosso → nero
+  // Sfondo che vira: nero profondo → cremisi → rosso acceso e RESTA acceso.
+  // Niente reverse a fine sezione: la prossima zona della pagina raccoglie
+  // la temperatura calda con un bridge gradient.
   const bgColor = useTransform(
     sp,
-    [0, 0.4, 0.7, 1],
-    ["#050505", "#180404", "#2a0606", "#0a0a0a"],
+    [0, 0.3, 0.6, 1],
+    ["#050505", "#1a0303", "#3a0808", "#5a0c0c"],
   );
-  const glowOpacity = useTransform(sp, [0, 0.5, 1], [0.3, 1, 0.5]);
+  const glowOpacity = useTransform(sp, [0, 0.4, 0.75, 1], [0.2, 0.85, 1, 1]);
 
   // Mouse tilt (overlay sopra al rotateY scroll-driven)
   const mx = useMotionValue(0);

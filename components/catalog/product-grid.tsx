@@ -15,18 +15,13 @@ import type {
 import { PhoneSilhouette } from "@/components/marketing/phone-silhouette";
 import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
+import { Chip } from "@/components/ui/card";
 
-/** Costruisce l'URL di ricerca sul sito di vendita giusto.
- * Usa SEARCH invece di slug diretto perché lo slug del CRM non
- * coincide sempre con lo slug originale del sito sorgente (WC/Shopify).
- * La ricerca per nome è affidabile al 100%: l'utente atterra sulla
- * pagina risultati col prodotto già cercato. */
 function buildBuyUrl(product: PublicProductListItem): string {
   const base = CHANNEL_URLS[product.channel];
   const query = encodeURIComponent(product.name);
-  // WooCommerce (cellcom.it): ?s=...
   if (product.channel === "cellcom") return `${base}/?s=${query}&post_type=product`;
-  // Shopify (italianparts, fastfix): /search?q=...
   return `${base}/search?q=${query}`;
 }
 
@@ -41,12 +36,11 @@ function getChannelName(channel: PublicProductListItem["channel"]): string {
   }
 }
 
-/** Icona generica ricambio — dipende dalla categoria (display/batteria/scocca/...) */
 function PartIcon({ category }: { category: string | null }) {
   const c = (category ?? "").toLowerCase();
   if (c.includes("display") || c.includes("schermo")) {
     return (
-      <svg viewBox="0 0 100 120" className="w-2/5 text-brand-500/60" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 100 120" className="w-2/5 text-brand-500/70" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="15" y="10" width="70" height="100" rx="8" />
         <line x1="15" y1="22" x2="85" y2="22" />
         <line x1="50" y1="100" x2="50" y2="105" />
@@ -58,7 +52,7 @@ function PartIcon({ category }: { category: string | null }) {
   }
   if (c.includes("batter")) {
     return (
-      <svg viewBox="0 0 120 60" className="w-3/5 text-brand-500/60" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 120 60" className="w-3/5 text-brand-500/70" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="5" y="10" width="100" height="40" rx="4" />
         <rect x="105" y="22" width="10" height="16" rx="2" />
         <rect x="15" y="20" width="45" height="20" fill="currentColor" opacity="0.4" />
@@ -67,16 +61,15 @@ function PartIcon({ category }: { category: string | null }) {
   }
   if (c.includes("scocca") || c.includes("housing") || c.includes("back")) {
     return (
-      <svg viewBox="0 0 80 120" className="w-2/5 text-brand-500/60" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <svg viewBox="0 0 80 120" className="w-2/5 text-brand-500/70" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="8" y="8" width="64" height="104" rx="10" />
         <rect x="14" y="20" width="22" height="22" rx="4" />
         <circle cx="24" cy="31" r="4" />
       </svg>
     );
   }
-  // generico — chip / scheda madre
   return (
-    <svg viewBox="0 0 120 120" className="w-2/5 text-brand-500/60" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 120 120" className="w-2/5 text-brand-500/70" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <rect x="25" y="25" width="70" height="70" rx="6" />
       <rect x="40" y="40" width="40" height="40" rx="2" fill="currentColor" opacity="0.2" />
       {[15, 35, 55, 75, 95].map((y) => (
@@ -95,10 +88,9 @@ function PartIcon({ category }: { category: string | null }) {
   );
 }
 
-/** Icona generica accessorio — cavo/caricabatterie */
 function AccessoryIcon() {
   return (
-    <svg viewBox="0 0 120 120" className="w-2/5 text-brand-500/60" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 120 120" className="w-2/5 text-brand-500/70" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="60" cy="35" r="22" />
       <path d="M 60 57 Q 60 80 80 90 Q 100 100 100 110" />
       <rect x="50" y="20" width="20" height="6" rx="1" />
@@ -119,20 +111,8 @@ const categories = ["Tutte", "Smartphone", "Ricambio"];
 function ProductCard({ product }: { product: PublicProductListItem }) {
   const { stock, variantCount } = product;
 
-  // Difesa contro bug CRM: lo stock_total aggregato per product_id a volte
-  // ritorna 0 anche se le varianti hanno disponibilità. Se il prodotto ha
-  // varianti, evitiamo l'etichetta "Esaurito" definitiva e mandiamo l'utente
-  // a verificare.
   const treatAsOutOfStock = stock.count === 0 && variantCount === 0;
   const treatAsCheckRequired = stock.count === 0 && variantCount > 0;
-
-  const stockColor = treatAsOutOfStock
-    ? "text-brand-500"
-    : treatAsCheckRequired
-      ? "text-muted-foreground"
-      : !stock.capped && stock.count <= 3
-        ? "text-yellow-400"
-        : "text-green-400";
 
   const stockLabel = treatAsOutOfStock
     ? "Esaurito"
@@ -142,27 +122,32 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
         ? `Ultimi ${stock.count} pezzi`
         : "Disponibile";
 
+  const stockToneClass = treatAsOutOfStock
+    ? "text-brand-600"
+    : treatAsCheckRequired
+      ? "text-muted-foreground"
+      : !stock.capped && stock.count <= 3
+        ? "text-amber-600"
+        : "text-emerald-600";
+
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, rotateY: -90 }}
-      animate={{ opacity: 1, rotateY: 0 }}
-      exit={{ opacity: 0, rotateY: 90 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: DURATION.normal, ease: EASE.smooth }}
-      className="group flex flex-col gap-3 p-4 rounded-2xl border border-border bg-card hover:bg-card-hover hover:border-brand-600/40 hover:-translate-y-1 hover:shadow-[0_18px_48px_-18px_rgba(220,38,38,0.55)] transition-all duration-300"
-      style={{ transformStyle: "preserve-3d" }}
+      className="group flex flex-col gap-4 rounded-2xl border border-border bg-card hover:border-brand-600/40 transition-colors duration-300 overflow-hidden"
     >
-      {/* Image: foto reale dal CRM (assoluta) o icona-tipo specifica per kind */}
-      <div className="aspect-[4/5] rounded-xl bg-gradient-to-b from-card-hover to-background border border-border flex items-center justify-center overflow-hidden relative">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.28)_0%,rgba(220,38,38,0.06)_45%,transparent_75%)] group-hover:bg-[radial-gradient(circle_at_center,rgba(220,38,38,0.45)_0%,rgba(220,38,38,0.12)_45%,transparent_75%)] transition-all duration-500" />
-        <div className="absolute inset-x-8 bottom-4 h-px bg-gradient-to-r from-transparent via-brand-600/50 to-transparent group-hover:via-brand-500 transition-colors duration-500" />
+      {/* Media — telefono protagonista 3:4 */}
+      <div className="aspect-[3/4] relative bg-card-hover flex items-center justify-center overflow-hidden">
         {product.photoUrl ? (
           <Image
             src={product.photoUrl}
             alt={product.name}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="object-contain p-4 drop-shadow-[0_12px_24px_rgba(0,0,0,0.5)]"
+            className="object-contain p-7 transition-transform duration-500 ease-out group-hover:scale-[1.04]"
           />
         ) : product.kind === "part" ? (
           <PartIcon category={product.category} />
@@ -171,64 +156,83 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
         ) : (
           <PhoneSilhouette
             variant={((Math.abs(product.id.split("").reduce((a, c) => a + c.charCodeAt(0), 0)) % 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6}
-            className="w-auto h-[85%] drop-shadow-[0_8px_28px_rgba(220,38,38,0.32)]"
+            className="w-auto h-[80%]"
           />
         )}
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="px-5 pt-1 flex flex-col gap-3">
+        {/* Brand chip + condition */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-600/10 text-brand-500 border border-brand-600/20">
-            {product.brand}
-          </span>
-          <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-muted/20 text-muted-foreground border border-border">
-            {product.condition ? CONDITION_LABELS[product.condition] : "—"}
-          </span>
+          {product.brand && (
+            <Chip tone="ink" size="sm">
+              {product.brand}
+            </Chip>
+          )}
+          {product.condition && (
+            <Chip tone="outline" size="sm">
+              {CONDITION_LABELS[product.condition]}
+            </Chip>
+          )}
         </div>
-        <h3 className="font-serif text-base italic text-foreground group-hover:text-brand-500 transition-colors">
+
+        {/* Title */}
+        <h3 className="font-sans font-semibold text-base leading-snug text-foreground line-clamp-2">
           {product.name}
         </h3>
-        <p className="text-xs text-muted-foreground">{product.category}</p>
+
+        {product.category && (
+          <p className="text-xs text-muted-foreground">{product.category}</p>
+        )}
       </div>
 
-      <div className="mt-auto flex items-baseline justify-between">
-        <span
-          className={cn(
-            "font-mono text-lg font-medium tabular-nums",
-            product.priceHidden ? "text-brand-500 italic font-serif text-base" : "text-foreground",
-          )}
-          title={product.priceHidden ? "Il prezzo pubblico non è esposto per questo articolo. Contattaci per il listino." : undefined}
-        >
-          {product.priceHidden ? "Su richiesta" : formatPrice(product.priceCents)}
-        </span>
-        <span className={cn("text-[10px] uppercase tracking-wider font-mono", stockColor)}>
-          {stockLabel}
-        </span>
-      </div>
+      {/* Price + stock */}
+      <div className="px-5 pb-5 mt-auto flex flex-col gap-3">
+        <div className="flex items-baseline justify-between">
+          <span
+            className={cn(
+              "font-sans font-semibold tabular-nums",
+              product.priceHidden
+                ? "text-brand-600 italic font-serif text-base"
+                : "text-foreground text-xl",
+            )}
+            title={
+              product.priceHidden
+                ? "Il prezzo pubblico non è esposto per questo articolo. Contattaci per il listino."
+                : undefined
+            }
+          >
+            {product.priceHidden ? "Su richiesta" : formatPrice(product.priceCents)}
+          </span>
+          <span
+            className={cn(
+              "font-mono text-[10px] uppercase tracking-[0.18em]",
+              stockToneClass,
+            )}
+          >
+            {stockLabel}
+          </span>
+        </div>
 
-      {treatAsOutOfStock ? (
-        <button
-          type="button"
-          disabled
-          className="mt-1 w-full py-2.5 rounded-lg bg-card-hover text-muted-foreground text-sm font-semibold text-center border border-border cursor-not-allowed"
-        >
-          Avvisami quando torna
-        </button>
-      ) : (
-        <a
-          href={buildBuyUrl(product)}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-shine mt-1 w-full py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold text-center hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300 inline-flex items-center justify-center gap-2"
-          title={`Acquista su ${getChannelName(product.channel)}`}
-        >
-          <span>Acquista su {getChannelName(product.channel)}</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M7 17L17 7" />
-            <path d="M7 7h10v10" />
-          </svg>
-        </a>
-      )}
+        {treatAsOutOfStock ? (
+          <Button variant="secondary" size="sm" disabled className="w-full">
+            Avvisami quando torna
+          </Button>
+        ) : (
+          <Button
+            href={buildBuyUrl(product)}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="primary"
+            size="sm"
+            shine
+            iconEnd="↗"
+            className="w-full"
+          >
+            Acquista su {getChannelName(product.channel)}
+          </Button>
+        )}
+      </div>
     </motion.div>
   );
 }
@@ -239,9 +243,7 @@ export function ProductGrid({
   showCategoryFilter = true,
 }: {
   initialProducts: PublicProductListItem[];
-  /** Nasconde le pillole Nuovo/Ricondizionato/Usato. Per la pagina ricambi: i ricambi non hanno questa distinzione. */
   showConditionFilter?: boolean;
-  /** Nasconde le pillole Smartphone/Ricambio. Per la pagina ricambi: tutti i prodotti sono già ricambi. */
   showCategoryFilter?: boolean;
 }) {
   const [activeCondition, setActiveCondition] = useState<PublicCondition | "all">("all");
@@ -258,25 +260,20 @@ export function ProductGrid({
   const showFilterRow = showConditionFilter || showCategoryFilter;
 
   return (
-    <div className="flex flex-col gap-8">
-      {/* Filters */}
+    <div className="flex flex-col gap-10">
       {showFilterRow && (
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           {showConditionFilter ? (
             <div className="flex flex-wrap gap-2">
               {conditions.map((c) => (
-                <button
+                <Chip
                   key={c.value}
+                  size="md"
+                  active={activeCondition === c.value}
                   onClick={() => setActiveCondition(c.value)}
-                  className={cn(
-                    "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200",
-                    activeCondition === c.value
-                      ? "bg-brand-600 text-white border-brand-600"
-                      : "bg-card text-muted-foreground border-border hover:border-brand-600/40"
-                  )}
                 >
                   {c.label}
-                </button>
+                </Chip>
               ))}
             </div>
           ) : (
@@ -285,26 +282,21 @@ export function ProductGrid({
           {showCategoryFilter && (
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
-                <button
+                <Chip
                   key={cat}
+                  size="md"
+                  active={activeCategory === cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={cn(
-                    "px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200",
-                    activeCategory === cat
-                      ? "bg-brand-600 text-white border-brand-600"
-                      : "bg-card text-muted-foreground border-border hover:border-brand-600/40"
-                  )}
                 >
                   {cat}
-                </button>
+                </Chip>
               ))}
             </div>
           )}
         </div>
       )}
 
-      {/* Grid with cover flow swap */}
-      <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
         <AnimatePresence mode="popLayout">
           {filtered.map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -313,7 +305,9 @@ export function ProductGrid({
       </motion.div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-muted-foreground py-12">Nessun prodotto trovato.</p>
+        <p className="text-center text-muted-foreground py-12">
+          Nessun prodotto trovato.
+        </p>
       )}
     </div>
   );

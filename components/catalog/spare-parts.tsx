@@ -6,6 +6,8 @@ import { ProductGrid } from "./product-grid";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
+import { Chip } from "@/components/ui/card";
+import { Eyebrow } from "@/components/ui/eyebrow";
 
 interface SparePartsProps {
   initialProducts: PublicProductListItem[];
@@ -88,40 +90,28 @@ export function SpareParts({
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Riga BRAND — pillole cliccabili (come magazzino: Apple, Samsung, ecc.) */}
+      {/* Riga BRAND */}
       <div className="flex flex-col gap-3">
-        <span className="font-mono text-[11px] text-muted-foreground uppercase tracking-[0.15em]">
-          Brand
-        </span>
+        <Eyebrow tone="muted">Brand</Eyebrow>
         <div className="flex flex-wrap gap-2">
-          <button
-            type="button"
+          <Chip
+            size="md"
+            active={selectedBrand === ""}
             onClick={() => setSelectedBrand("")}
-            className={cn(
-              "px-4 py-2 rounded-full text-xs font-medium border transition-all duration-200",
-              selectedBrand === ""
-                ? "bg-brand-600 text-white border-brand-600"
-                : "bg-card text-muted-foreground border-border hover:border-brand-600/60 hover:text-foreground",
-            )}
           >
             Tutti
-          </button>
+          </Chip>
           {availableBrands.map((brand) => (
-            <button
+            <Chip
               key={brand}
-              type="button"
+              size="md"
+              active={selectedBrand === brand}
               onClick={() =>
                 setSelectedBrand((cur) => (cur === brand ? "" : brand))
               }
-              className={cn(
-                "px-4 py-2 rounded-full text-xs font-medium border transition-all duration-200 uppercase tracking-wider",
-                selectedBrand === brand
-                  ? "bg-brand-600 text-white border-brand-600"
-                  : "bg-card text-muted-foreground border-border hover:border-brand-600/60 hover:text-foreground",
-              )}
             >
               {brand}
-            </button>
+            </Chip>
           ))}
         </div>
       </div>
