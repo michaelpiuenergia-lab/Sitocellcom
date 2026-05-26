@@ -69,8 +69,8 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
         minHeight: "calc(100vh - 120px)",
       }}
     >
-      {/* Video background */}
-      <div className="absolute inset-0 z-0">
+      {/* Video background — contain su mobile (no crop), cover da sm in su */}
+      <div className="absolute inset-0 z-0 flex items-center justify-center">
         {!shouldReduce && (
           <video
             autoPlay
@@ -79,7 +79,8 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
             preload="auto"
             onEnded={handleVideoEnd}
             onTimeUpdate={handleVideoTimeUpdate}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain sm:object-cover"
+            style={{ objectPosition: "center" }}
             aria-hidden="true"
           >
             <source src={VIDEO_SRC} type="video/mp4" />
