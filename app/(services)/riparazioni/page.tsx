@@ -104,55 +104,6 @@ export default function RepairsPage() {
             </p>
           </div>
 
-          {/* Step indicator */}
-          <div className="mt-14 lg:mt-16 mb-10">
-            <div className="flex items-center justify-center gap-4 lg:gap-8 max-w-3xl mx-auto">
-              {[
-                "Seleziona dispositivo",
-                "Seleziona riparazione",
-                "Conferma ordine",
-              ].map((label, i) => (
-                <div
-                  key={label}
-                  className="flex items-center gap-3 lg:gap-4 flex-1"
-                >
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span
-                      className="w-9 h-9 rounded-full flex items-center justify-center tabular-nums"
-                      style={{
-                        backgroundColor: i === 0 ? "#dc2626" : "#f5f5f4",
-                        color: i === 0 ? "#ffffff" : "#a3a3a3",
-                        fontSize: "14px",
-                        fontWeight: 600,
-                      }}
-                    >
-                      {i + 1}
-                    </span>
-                    <span
-                      className="font-sans hidden sm:inline-block"
-                      style={{
-                        fontSize: "13px",
-                        fontWeight: 500,
-                        color: i === 0 ? "#0a0a0a" : "#737373",
-                      }}
-                    >
-                      {label}
-                    </span>
-                  </div>
-                  {i < 2 && (
-                    <span
-                      aria-hidden
-                      className="flex-1 h-px"
-                      style={{
-                        backgroundColor: i === 0 ? "#dc2626" : "#e5e5e5",
-                      }}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
         </div>
       </section>
 
