@@ -58,8 +58,14 @@ export const OTHER_BRAND_ID = "altro";
 
 export const TRADE_IN_MODELS: TradeInModel[] = [
   // ═════════════════════════════════════════════════════════════════════════
-  // APPLE iPhone — 33 modelli (2015-2025)
+  // APPLE iPhone — 2015-2026
   // ═════════════════════════════════════════════════════════════════════════
+  // 2025 → linea 17 (settembre 2025)
+  { id: "iphone-17-pro-max", brand: "Apple", name: "iPhone 17 Pro Max", year: 2025, storage: [256, 512, 1024, 2048], basePriceEur: 1280 },
+  { id: "iphone-17-pro",     brand: "Apple", name: "iPhone 17 Pro",     year: 2025, storage: [256, 512, 1024], basePriceEur: 1100 },
+  { id: "iphone-17-air",     brand: "Apple", name: "iPhone 17 Air",     year: 2025, storage: [256, 512, 1024], basePriceEur: 980 },
+  { id: "iphone-17",         brand: "Apple", name: "iPhone 17",         year: 2025, storage: [256, 512], basePriceEur: 820 },
+
   // 2024 → linea 16 (rilasciata sett 2024)
   { id: "iphone-16-pro-max", brand: "Apple", name: "iPhone 16 Pro Max", year: 2024, storage: [256, 512, 1024], basePriceEur: 1080 },
   { id: "iphone-16-pro",     brand: "Apple", name: "iPhone 16 Pro",     year: 2024, storage: [128, 256, 512, 1024], basePriceEur: 900 },
@@ -114,8 +120,13 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "iphone-6s",         brand: "Apple", name: "iPhone 6s",         year: 2015, storage: [32, 64, 128], basePriceEur: 25 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // SAMSUNG GALAXY S — 22 modelli (2017-2025)
+  // SAMSUNG GALAXY S — 2017-2026
   // ═════════════════════════════════════════════════════════════════════════
+  // 2026 → linea S26 (gennaio 2026)
+  { id: "galaxy-s26-ultra", brand: "Samsung", name: "Galaxy S26 Ultra", year: 2026, storage: [256, 512, 1024, 2048], basePriceEur: 1240 },
+  { id: "galaxy-s26-plus",  brand: "Samsung", name: "Galaxy S26+",      year: 2026, storage: [256, 512, 1024], basePriceEur: 920 },
+  { id: "galaxy-s26",       brand: "Samsung", name: "Galaxy S26",       year: 2026, storage: [256, 512], basePriceEur: 760 },
+  { id: "galaxy-s25-edge",  brand: "Samsung", name: "Galaxy S25 Edge",  year: 2025, storage: [256, 512], basePriceEur: 780 },
   { id: "galaxy-s25-ultra", brand: "Samsung", name: "Galaxy S25 Ultra", year: 2025, storage: [256, 512, 1024], basePriceEur: 1020 },
   { id: "galaxy-s25-plus",  brand: "Samsung", name: "Galaxy S25+",      year: 2025, storage: [256, 512], basePriceEur: 760 },
   { id: "galaxy-s25",       brand: "Samsung", name: "Galaxy S25",       year: 2025, storage: [128, 256, 512], basePriceEur: 620 },
@@ -147,8 +158,10 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "galaxy-s8",        brand: "Samsung", name: "Galaxy S8",        year: 2017, storage: [64, 128], basePriceEur: 30 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // SAMSUNG Z FOLD / Z FLIP / NOTE — 14 modelli (2019-2024)
+  // SAMSUNG Z FOLD / Z FLIP / NOTE — 2019-2025
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "galaxy-z-fold-7", brand: "Samsung", name: "Galaxy Z Fold7",  year: 2025, storage: [256, 512, 1024], basePriceEur: 1380 },
+  { id: "galaxy-z-flip-7", brand: "Samsung", name: "Galaxy Z Flip7",  year: 2025, storage: [256, 512], basePriceEur: 820 },
   { id: "galaxy-z-fold-6", brand: "Samsung", name: "Galaxy Z Fold6",  year: 2024, storage: [256, 512, 1024], basePriceEur: 1040 },
   { id: "galaxy-z-flip-6", brand: "Samsung", name: "Galaxy Z Flip6",  year: 2024, storage: [256, 512], basePriceEur: 640 },
   { id: "galaxy-z-fold-5", brand: "Samsung", name: "Galaxy Z Fold5",  year: 2023, storage: [256, 512, 1024], basePriceEur: 780 },
@@ -165,8 +178,12 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "galaxy-note-9",        brand: "Samsung", name: "Galaxy Note 9",        year: 2018, storage: [128, 512], basePriceEur: 90 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // SAMSUNG GALAXY A — 12 modelli (mid-range gettonatissimi)
+  // SAMSUNG GALAXY A — mid-range gettonatissimi
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "galaxy-a56",   brand: "Samsung", name: "Galaxy A56 5G",   year: 2025, storage: [128, 256], basePriceEur: 280 },
+  { id: "galaxy-a36",   brand: "Samsung", name: "Galaxy A36 5G",   year: 2025, storage: [128, 256], basePriceEur: 220 },
+  { id: "galaxy-a26",   brand: "Samsung", name: "Galaxy A26 5G",   year: 2025, storage: [128, 256], basePriceEur: 170 },
+  { id: "galaxy-a16",   brand: "Samsung", name: "Galaxy A16 5G",   year: 2025, storage: [128, 256], basePriceEur: 140 },
   { id: "galaxy-a55",   brand: "Samsung", name: "Galaxy A55 5G",   year: 2024, storage: [128, 256], basePriceEur: 220 },
   { id: "galaxy-a35",   brand: "Samsung", name: "Galaxy A35 5G",   year: 2024, storage: [128, 256], basePriceEur: 170 },
   { id: "galaxy-a25",   brand: "Samsung", name: "Galaxy A25 5G",   year: 2024, storage: [128, 256], basePriceEur: 130 },
@@ -181,8 +198,13 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "galaxy-a32",   brand: "Samsung", name: "Galaxy A32",      year: 2021, storage: [64, 128], basePriceEur: 70 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // GOOGLE PIXEL — 17 modelli (2018-2025)
+  // GOOGLE PIXEL — 2018-2026
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "pixel-10-pro-fold", brand: "Google", name: "Pixel 10 Pro Fold", year: 2025, storage: [256, 512, 1024], basePriceEur: 1280 },
+  { id: "pixel-10-pro-xl",   brand: "Google", name: "Pixel 10 Pro XL",   year: 2025, storage: [256, 512, 1024], basePriceEur: 880 },
+  { id: "pixel-10-pro",      brand: "Google", name: "Pixel 10 Pro",      year: 2025, storage: [128, 256, 512, 1024], basePriceEur: 780 },
+  { id: "pixel-10",          brand: "Google", name: "Pixel 10",          year: 2025, storage: [128, 256], basePriceEur: 660 },
+  { id: "pixel-10a",         brand: "Google", name: "Pixel 10a",         year: 2026, storage: [128, 256], basePriceEur: 480 },
   { id: "pixel-9-pro-fold", brand: "Google", name: "Pixel 9 Pro Fold", year: 2024, storage: [256, 512], basePriceEur: 1180 },
   { id: "pixel-9-pro-xl",   brand: "Google", name: "Pixel 9 Pro XL",   year: 2024, storage: [128, 256, 512, 1024], basePriceEur: 780 },
   { id: "pixel-9-pro",      brand: "Google", name: "Pixel 9 Pro",      year: 2024, storage: [128, 256, 512, 1024], basePriceEur: 680 },
@@ -203,8 +225,11 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "pixel-3-xl",       brand: "Google", name: "Pixel 3 XL",       year: 2018, storage: [64, 128], basePriceEur: 50 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // XIAOMI + REDMI + POCO — 32 modelli (2021-2025)
+  // XIAOMI + REDMI + POCO — 2021-2026
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "xiaomi-16-ultra",   brand: "Xiaomi", name: "Xiaomi 16 Ultra",   year: 2026, storage: [512, 1024], basePriceEur: 1080 },
+  { id: "xiaomi-16-pro",     brand: "Xiaomi", name: "Xiaomi 16 Pro",     year: 2025, storage: [256, 512, 1024], basePriceEur: 860 },
+  { id: "xiaomi-16",         brand: "Xiaomi", name: "Xiaomi 16",         year: 2025, storage: [256, 512], basePriceEur: 720 },
   { id: "xiaomi-15-ultra",   brand: "Xiaomi", name: "Xiaomi 15 Ultra",   year: 2025, storage: [256, 512, 1024], basePriceEur: 920 },
   { id: "xiaomi-15-pro",     brand: "Xiaomi", name: "Xiaomi 15 Pro",     year: 2024, storage: [256, 512, 1024], basePriceEur: 720 },
   { id: "xiaomi-15",         brand: "Xiaomi", name: "Xiaomi 15",         year: 2024, storage: [256, 512], basePriceEur: 600 },
@@ -221,6 +246,9 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "xiaomi-12",         brand: "Xiaomi", name: "Xiaomi 12",         year: 2022, storage: [128, 256], basePriceEur: 180 },
   { id: "xiaomi-12t-pro",    brand: "Xiaomi", name: "Xiaomi 12T Pro",    year: 2022, storage: [128, 256], basePriceEur: 230 },
   { id: "xiaomi-11t-pro",    brand: "Xiaomi", name: "Xiaomi 11T Pro",    year: 2021, storage: [128, 256], basePriceEur: 160 },
+  { id: "redmi-note-15-pro-plus", brand: "Xiaomi", name: "Redmi Note 15 Pro+", year: 2025, storage: [256, 512], basePriceEur: 280 },
+  { id: "redmi-note-15-pro", brand: "Xiaomi", name: "Redmi Note 15 Pro", year: 2025, storage: [128, 256, 512], basePriceEur: 200 },
+  { id: "redmi-note-15",     brand: "Xiaomi", name: "Redmi Note 15",     year: 2025, storage: [128, 256], basePriceEur: 150 },
   { id: "redmi-note-14-pro-plus", brand: "Xiaomi", name: "Redmi Note 14 Pro+", year: 2024, storage: [256, 512], basePriceEur: 220 },
   { id: "redmi-note-14-pro", brand: "Xiaomi", name: "Redmi Note 14 Pro", year: 2024, storage: [128, 256, 512], basePriceEur: 160 },
   { id: "redmi-note-14",     brand: "Xiaomi", name: "Redmi Note 14",     year: 2024, storage: [128, 256], basePriceEur: 110 },
@@ -232,6 +260,9 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "redmi-note-12",     brand: "Xiaomi", name: "Redmi Note 12",     year: 2023, storage: [128, 256], basePriceEur: 80 },
   { id: "redmi-note-11-pro", brand: "Xiaomi", name: "Redmi Note 11 Pro", year: 2022, storage: [128, 256], basePriceEur: 80 },
   { id: "redmi-note-11",     brand: "Xiaomi", name: "Redmi Note 11",     year: 2022, storage: [64, 128], basePriceEur: 55 },
+  { id: "poco-f7-ultra",     brand: "Xiaomi", name: "POCO F7 Ultra",     year: 2025, storage: [256, 512], basePriceEur: 420 },
+  { id: "poco-f7-pro",       brand: "Xiaomi", name: "POCO F7 Pro",       year: 2025, storage: [256, 512], basePriceEur: 360 },
+  { id: "poco-x7-pro",       brand: "Xiaomi", name: "POCO X7 Pro",       year: 2025, storage: [256, 512], basePriceEur: 250 },
   { id: "poco-f6-pro",       brand: "Xiaomi", name: "POCO F6 Pro",       year: 2024, storage: [256, 512, 1024], basePriceEur: 320 },
   { id: "poco-f6",           brand: "Xiaomi", name: "POCO F6",           year: 2024, storage: [256, 512], basePriceEur: 240 },
   { id: "poco-x6-pro",       brand: "Xiaomi", name: "POCO X6 Pro",       year: 2024, storage: [256, 512], basePriceEur: 200 },
@@ -239,8 +270,12 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "poco-f5",           brand: "Xiaomi", name: "POCO F5",           year: 2023, storage: [256], basePriceEur: 180 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // OPPO — 13 modelli (2022-2025) — assenti dalla v1, brand importante in IT
+  // OPPO — 2022-2025
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "oppo-find-x9-pro", brand: "Oppo", name: "Find X9 Pro",  year: 2025, storage: [256, 512, 1024], basePriceEur: 880 },
+  { id: "oppo-find-x9",     brand: "Oppo", name: "Find X9",      year: 2025, storage: [256, 512], basePriceEur: 680 },
+  { id: "oppo-reno-13-pro", brand: "Oppo", name: "Reno 13 Pro",  year: 2025, storage: [256, 512], basePriceEur: 380 },
+  { id: "oppo-reno-13",     brand: "Oppo", name: "Reno 13",      year: 2025, storage: [256, 512], basePriceEur: 300 },
   { id: "oppo-find-n5",     brand: "Oppo", name: "Find N5",      year: 2025, storage: [256, 512, 1024], basePriceEur: 1300 },
   { id: "oppo-find-x8-pro", brand: "Oppo", name: "Find X8 Pro",  year: 2024, storage: [256, 512, 1024], basePriceEur: 720 },
   { id: "oppo-find-x8",     brand: "Oppo", name: "Find X8",      year: 2024, storage: [256, 512], basePriceEur: 540 },
@@ -257,8 +292,12 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "oppo-reno-8-pro",  brand: "Oppo", name: "Reno 8 Pro",   year: 2022, storage: [256], basePriceEur: 150 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // VIVO — 11 modelli (2022-2025) — assenti dalla v1
+  // VIVO — 2022-2025
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "vivo-x300-pro",  brand: "Vivo", name: "X300 Pro",  year: 2025, storage: [256, 512, 1024], basePriceEur: 860 },
+  { id: "vivo-x300",      brand: "Vivo", name: "X300",      year: 2025, storage: [256, 512], basePriceEur: 660 },
+  { id: "vivo-v50-pro",   brand: "Vivo", name: "V50 Pro",   year: 2025, storage: [256, 512], basePriceEur: 380 },
+  { id: "vivo-v50",       brand: "Vivo", name: "V50",       year: 2025, storage: [256, 512], basePriceEur: 320 },
   { id: "vivo-x200-pro",  brand: "Vivo", name: "X200 Pro",  year: 2024, storage: [256, 512, 1024], basePriceEur: 720 },
   { id: "vivo-x200",      brand: "Vivo", name: "X200",      year: 2024, storage: [256, 512], basePriceEur: 540 },
   { id: "vivo-x100-ultra",brand: "Vivo", name: "X100 Ultra",year: 2024, storage: [512, 1024], basePriceEur: 760 },
@@ -272,8 +311,11 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "vivo-v29-pro",   brand: "Vivo", name: "V29 Pro",   year: 2023, storage: [256, 512], basePriceEur: 220 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // ONEPLUS — 16 modelli (2019-2025)
+  // ONEPLUS — 2019-2026
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "oneplus-14",        brand: "OnePlus", name: "OnePlus 14",        year: 2026, storage: [256, 512, 1024], basePriceEur: 820 },
+  { id: "oneplus-13s",       brand: "OnePlus", name: "OnePlus 13s",       year: 2025, storage: [256, 512], basePriceEur: 540 },
+  { id: "oneplus-nord-5",    brand: "OnePlus", name: "OnePlus Nord 5",    year: 2025, storage: [256, 512], basePriceEur: 340 },
   { id: "oneplus-13",        brand: "OnePlus", name: "OnePlus 13",        year: 2025, storage: [256, 512, 1024], basePriceEur: 680 },
   { id: "oneplus-13r",       brand: "OnePlus", name: "OnePlus 13R",       year: 2025, storage: [256, 512], basePriceEur: 460 },
   { id: "oneplus-12",        brand: "OnePlus", name: "OnePlus 12",        year: 2024, storage: [256, 512], basePriceEur: 500 },
@@ -311,8 +353,13 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "huawei-mate-20-pro", brand: "Huawei", name: "Mate 20 Pro",   year: 2018, storage: [128, 256], basePriceEur: 90 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // HONOR — 11 modelli
+  // HONOR
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "honor-magic-8-pro",  brand: "Honor", name: "Magic 8 Pro",  year: 2025, storage: [256, 512, 1024], basePriceEur: 840 },
+  { id: "honor-magic-8",      brand: "Honor", name: "Magic 8",      year: 2025, storage: [256, 512], basePriceEur: 660 },
+  { id: "honor-magic-v5",     brand: "Honor", name: "Magic V5",     year: 2025, storage: [512, 1024], basePriceEur: 1320 },
+  { id: "honor-400-pro",      brand: "Honor", name: "Honor 400 Pro",year: 2025, storage: [256, 512], basePriceEur: 460 },
+  { id: "honor-400",          brand: "Honor", name: "Honor 400",    year: 2025, storage: [256, 512], basePriceEur: 340 },
   { id: "honor-magic-7-pro",  brand: "Honor", name: "Magic 7 Pro",  year: 2025, storage: [256, 512, 1024], basePriceEur: 740 },
   { id: "honor-magic-v3",     brand: "Honor", name: "Magic V3",     year: 2024, storage: [512, 1024], basePriceEur: 1180 },
   { id: "honor-magic-v2",     brand: "Honor", name: "Magic V2",     year: 2023, storage: [256, 512, 1024], basePriceEur: 740 },
@@ -326,8 +373,12 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "honor-50",           brand: "Honor", name: "Honor 50",     year: 2021, storage: [128, 256], basePriceEur: 110 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // REALME — 9 modelli
+  // REALME
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "realme-gt-8-pro",   brand: "Realme", name: "GT 8 Pro",     year: 2025, storage: [256, 512, 1024], basePriceEur: 540 },
+  { id: "realme-gt-8",       brand: "Realme", name: "GT 8",         year: 2025, storage: [256, 512], basePriceEur: 420 },
+  { id: "realme-14-pro-plus",brand: "Realme", name: "14 Pro+",      year: 2025, storage: [256, 512], basePriceEur: 320 },
+  { id: "realme-14-pro",     brand: "Realme", name: "14 Pro",       year: 2025, storage: [256, 512], basePriceEur: 240 },
   { id: "realme-gt-7-pro",   brand: "Realme", name: "GT 7 Pro",     year: 2024, storage: [256, 512], basePriceEur: 440 },
   { id: "realme-gt-6",       brand: "Realme", name: "GT 6",         year: 2024, storage: [256, 512], basePriceEur: 340 },
   { id: "realme-gt-5-pro",   brand: "Realme", name: "GT 5 Pro",     year: 2024, storage: [256, 512], basePriceEur: 380 },
@@ -339,8 +390,14 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "realme-9-pro-plus", brand: "Realme", name: "9 Pro+",       year: 2022, storage: [128, 256], basePriceEur: 110 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // MOTOROLA — 11 modelli
+  // MOTOROLA
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "moto-edge-60-ultra",brand: "Motorola", name: "Edge 60 Ultra",   year: 2025, storage: [512, 1024], basePriceEur: 620 },
+  { id: "moto-edge-60-pro",  brand: "Motorola", name: "Edge 60 Pro",     year: 2025, storage: [256, 512], basePriceEur: 460 },
+  { id: "moto-edge-60",      brand: "Motorola", name: "Edge 60",         year: 2025, storage: [256, 512], basePriceEur: 360 },
+  { id: "moto-razr-60-ultra",brand: "Motorola", name: "Razr 60 Ultra",   year: 2025, storage: [512, 1024], basePriceEur: 680 },
+  { id: "moto-razr-60",      brand: "Motorola", name: "Razr 60",         year: 2025, storage: [256, 512], basePriceEur: 460 },
+  { id: "moto-g95",          brand: "Motorola", name: "Moto G95",        year: 2025, storage: [128, 256], basePriceEur: 180 },
   { id: "moto-edge-50-ultra",brand: "Motorola", name: "Edge 50 Ultra",   year: 2024, storage: [512, 1024], basePriceEur: 540 },
   { id: "moto-edge-50-pro",  brand: "Motorola", name: "Edge 50 Pro",     year: 2024, storage: [256, 512], basePriceEur: 380 },
   { id: "moto-edge-50",      brand: "Motorola", name: "Edge 50",         year: 2024, storage: [256, 512], basePriceEur: 280 },
@@ -356,8 +413,9 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "moto-g54",          brand: "Motorola", name: "Moto G54",        year: 2023, storage: [128, 256], basePriceEur: 100 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // NOTHING — 5 modelli
+  // NOTHING
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "nothing-phone-3", brand: "Nothing", name: "Phone (3)",     year: 2025, storage: [256, 512], basePriceEur: 540 },
   { id: "nothing-phone-3a-pro", brand: "Nothing", name: "Phone (3a) Pro", year: 2025, storage: [256, 512], basePriceEur: 360 },
   { id: "nothing-phone-3a",     brand: "Nothing", name: "Phone (3a)",     year: 2025, storage: [128, 256], basePriceEur: 260 },
   { id: "nothing-phone-2a-plus",brand: "Nothing", name: "Phone (2a) Plus",year: 2024, storage: [256, 512], basePriceEur: 280 },
@@ -366,8 +424,10 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "nothing-phone-1",      brand: "Nothing", name: "Phone (1)",      year: 2022, storage: [128, 256], basePriceEur: 180 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // SONY XPERIA — 7 modelli
+  // SONY XPERIA
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "sony-xperia-1-vii", brand: "Sony", name: "Xperia 1 VII", year: 2025, storage: [256, 512], basePriceEur: 840 },
+  { id: "sony-xperia-10-vii",brand: "Sony", name: "Xperia 10 VII",year: 2025, storage: [128, 256], basePriceEur: 320 },
   { id: "sony-xperia-1-vi",  brand: "Sony", name: "Xperia 1 VI",  year: 2024, storage: [256, 512], basePriceEur: 720 },
   { id: "sony-xperia-10-vi", brand: "Sony", name: "Xperia 10 VI", year: 2024, storage: [128], basePriceEur: 240 },
   { id: "sony-xperia-1-v",   brand: "Sony", name: "Xperia 1 V",   year: 2023, storage: [256, 512], basePriceEur: 540 },
@@ -377,8 +437,10 @@ export const TRADE_IN_MODELS: TradeInModel[] = [
   { id: "sony-xperia-1-iii", brand: "Sony", name: "Xperia 1 III", year: 2021, storage: [256, 512], basePriceEur: 240 },
 
   // ═════════════════════════════════════════════════════════════════════════
-  // ASUS — 5 modelli
+  // ASUS
   // ═════════════════════════════════════════════════════════════════════════
+  { id: "asus-rog-10-pro",     brand: "Asus", name: "ROG Phone 10 Pro",   year: 2025, storage: [512, 1024], basePriceEur: 980 },
+  { id: "asus-zenfone-12-ultra", brand: "Asus", name: "Zenfone 12 Ultra", year: 2025, storage: [256, 512], basePriceEur: 620 },
   { id: "asus-rog-9-pro",      brand: "Asus", name: "ROG Phone 9 Pro",    year: 2024, storage: [512, 1024], basePriceEur: 880 },
   { id: "asus-rog-8-pro",      brand: "Asus", name: "ROG Phone 8 Pro",    year: 2024, storage: [512, 1024], basePriceEur: 680 },
   { id: "asus-rog-7",          brand: "Asus", name: "ROG Phone 7",        year: 2023, storage: [256, 512], basePriceEur: 420 },
