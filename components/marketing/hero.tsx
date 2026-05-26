@@ -117,9 +117,15 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
               <motion.svg
                 viewBox="10 15 80 70"
                 aria-label="Cellcom"
-                width={120}
-                height={105}
-                style={{ display: "block", overflow: "visible", flexShrink: 0 }}
+                preserveAspectRatio="xMidYMid meet"
+                style={{
+                  display: "block",
+                  overflow: "visible",
+                  flexShrink: 0,
+                  // Responsive: cresce col viewport ma resta proporzionata a ELLCOM.
+                  width: "clamp(60px, 8.6vw, 120px)",
+                  height: "clamp(53px, 7.5vw, 105px)",
+                }}
                 initial={
                   shouldReduce
                     ? { rotate: 0, opacity: 1 }
