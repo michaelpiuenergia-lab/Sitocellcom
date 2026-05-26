@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { GrainOverlay } from "@/components/ui/grain-overlay";
-import { SpotlightCursor } from "@/components/effects/spotlight-cursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,7 +46,6 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
-        <SpotlightCursor />
         {children}
         <GrainOverlay />
       </body>
