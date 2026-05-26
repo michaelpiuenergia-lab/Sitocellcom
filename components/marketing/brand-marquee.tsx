@@ -32,16 +32,16 @@ export function BrandMarquee() {
       className="relative"
       style={{ backgroundColor: "#dc2626" }}
     >
-      <div className="py-3.5 lg:py-4">
+      <div className="py-3 sm:py-3.5 lg:py-4">
         <div className="marquee">
           <div className="marquee-track">
             {[...ITEMS, ...ITEMS].map((b, i) => (
               <span
                 key={`${b}-${i}`}
-                className="font-mono uppercase flex items-center gap-10 shrink-0"
+                className="font-mono uppercase flex items-center gap-8 sm:gap-10 shrink-0"
                 style={{
-                  fontSize: "12px",
-                  letterSpacing: "0.32em",
+                  fontSize: "11px",
+                  letterSpacing: "0.28em",
                   color: "#ffffff",
                 }}
               >

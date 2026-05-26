@@ -104,10 +104,10 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
         + lg:px-12). Flex-1 cresce, in fondo alla sezione c'è il BrandMarquee
         rosso così è visibile nel primo fold senza scrollare.
        */}
-      <div className="relative z-30 flex-1 flex items-center max-w-[1400px] mx-auto px-6 lg:px-12 pt-8 pb-10 w-full">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-12 lg:gap-16 w-full">
+      <div className="relative z-30 flex-1 flex items-center max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-12 pt-4 sm:pt-8 pb-8 sm:pb-10 w-full">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8 sm:gap-12 lg:gap-16 w-full">
           {/* === Colonna sinistra === */}
-          <div className="flex-1 flex flex-col gap-8 items-start text-left max-w-[640px]">
+          <div className="flex-1 flex flex-col gap-6 sm:gap-8 items-start text-left max-w-[640px] w-full">
             {/*
               Wordmark — SOLO fade-in + rotazione iniziale.
               Niente cambio di dimensione: il banner resta ancorato al posto
@@ -259,7 +259,7 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                 >
                   <Link
                     href={btn.href}
-                    className="group relative inline-flex items-center gap-3 px-7 py-4 rounded-xl overflow-hidden transition-all duration-300 ease-snappy hover:shadow-[0_14px_36px_-10px_rgba(220,38,38,0.55),0_0_0_1px_rgba(248,113,113,0.3)]"
+                    className="group relative inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-4 rounded-xl overflow-hidden transition-all duration-300 ease-snappy hover:shadow-[0_14px_36px_-10px_rgba(220,38,38,0.55),0_0_0_1px_rgba(248,113,113,0.3)]"
                     style={{
                       backgroundImage:
                         "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)",
@@ -271,13 +271,13 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                       style={{
                         fontFamily:
                           '"Geist", ui-sans-serif, system-ui, sans-serif',
-                        fontSize: "clamp(20px, 2.1vw, 26px)",
+                        fontSize: "clamp(16px, 2.1vw, 26px)",
                         letterSpacing: "-0.015em",
                       }}
                     >
                       {btn.label}
                     </span>
-                    <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-lg">
+                    <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-base sm:text-lg">
                       →
                     </span>
                   </Link>
@@ -353,15 +353,15 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                     >
                       <Link
                         href={`/prodotti/${d.slug}`}
-                        className="group flex items-center gap-5 rounded-2xl border border-neutral-200/80 bg-white hover:border-brand-600 transition-all duration-300 ease-snappy hover:shadow-[0_22px_50px_-22px_rgba(220,38,38,0.32)] p-4"
+                        className="group flex items-center gap-4 sm:gap-5 rounded-2xl border border-neutral-200/80 bg-white hover:border-brand-600 transition-all duration-300 ease-snappy hover:shadow-[0_22px_50px_-22px_rgba(220,38,38,0.32)] p-3 sm:p-4"
                       >
-                        <div className="relative w-[136px] h-[136px] flex-shrink-0 flex items-center justify-center overflow-hidden rounded-xl bg-neutral-50">
+                        <div className="relative w-[108px] h-[108px] sm:w-[136px] sm:h-[136px] flex-shrink-0 flex items-center justify-center overflow-hidden rounded-xl bg-neutral-50">
                           {d.photoUrl ? (
                             <Image
                               src={d.photoUrl}
                               alt={d.name}
                               fill
-                              sizes="136px"
+                              sizes="(max-width: 640px) 108px, 136px"
                               className="object-contain p-3 transition-transform duration-500 ease-snappy group-hover:scale-110"
                             />
                           ) : (
@@ -413,13 +413,13 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                 {/* CTA catalogo — rosso brand */}
                 <Link
                   href="/prodotti"
-                  className="group relative mt-1 inline-flex items-center justify-between gap-4 rounded-2xl px-6 py-5 text-white transition-all duration-300 hover:shadow-[0_20px_50px_-18px_rgba(220,38,38,0.6)]"
+                  className="group relative mt-1 inline-flex items-center justify-between gap-3 sm:gap-4 rounded-2xl px-5 sm:px-6 py-4 sm:py-5 text-white transition-all duration-300 hover:shadow-[0_20px_50px_-18px_rgba(220,38,38,0.6)]"
                   style={{
                     backgroundColor: "#dc2626",
                     border: "1px solid #dc2626",
                   }}
                 >
-                  <span className="flex flex-col gap-1">
+                  <span className="flex flex-col gap-1 min-w-0">
                     <span
                       className="font-mono uppercase"
                       style={{
@@ -434,7 +434,7 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                     <span
                       className="font-semibold"
                       style={{
-                        fontSize: "17px",
+                        fontSize: "clamp(14px, 1.3vw, 17px)",
                         letterSpacing: "-0.015em",
                       }}
                     >
@@ -442,16 +442,16 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                     </span>
                   </span>
                   <span
-                    className="font-mono uppercase flex items-center gap-2 shrink-0"
+                    className="font-mono uppercase flex items-center gap-1.5 sm:gap-2 shrink-0"
                     style={{
-                      fontSize: "11px",
+                      fontSize: "10px",
                       letterSpacing: "0.28em",
                     }}
                   >
-                    Esplora
+                    <span className="hidden sm:inline">Esplora</span>
                     <span
                       aria-hidden
-                      className="transition-transform duration-300 group-hover:translate-x-1"
+                      className="transition-transform duration-300 group-hover:translate-x-1 text-base"
                     >
                       →
                     </span>

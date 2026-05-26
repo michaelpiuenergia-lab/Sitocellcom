@@ -102,7 +102,7 @@ export function PillarsGrid() {
       aria-label="Quattro modi di toccare un telefono"
       style={{ backgroundColor: "#ffffff" }}
     >
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-32">
+      <div className="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
         <div className="grid lg:grid-cols-[1.1fr,1fr] gap-10 lg:gap-20 items-end mb-14 lg:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -215,7 +215,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
       style={{
         backgroundColor: bg,
         border: `1px solid ${surfaceBorder}`,
-        minHeight: "420px",
+        minHeight: "320px",
       }}
     >
       {/* fanale rosso solo se dark */}
@@ -227,7 +227,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
         />
       )}
 
-      <div className="relative h-full flex flex-col gap-6 p-9 lg:p-12">
+      <div className="relative h-full flex flex-col gap-5 sm:gap-6 p-7 sm:p-9 lg:p-12">
         <span
           className="font-mono uppercase self-start px-2.5 py-1 rounded-md"
           style={{

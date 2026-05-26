@@ -114,9 +114,9 @@ export function MarketingPanel({
         />
       )}
 
-      <div className="relative max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-32">
+      <div className="relative max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
         {/* Header: due colonne — intro a sinistra, paragrafo a destra */}
-        <div className="grid lg:grid-cols-[1.1fr,1fr] gap-10 lg:gap-20 items-end mb-14 lg:mb-20">
+        <div className="grid lg:grid-cols-[1.1fr,1fr] gap-8 sm:gap-10 lg:gap-20 items-end mb-10 sm:mb-14 lg:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 18 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -170,7 +170,7 @@ export function MarketingPanel({
 
         {/* 3 feature cards FastFix-style: bordo sottile, padding generoso */}
         {features && features.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5 mb-12 lg:mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-5 mb-10 sm:mb-12 lg:mb-16">
             {features.map((f, i) => (
               <motion.div
                 key={f.title}
@@ -182,7 +182,7 @@ export function MarketingPanel({
                   ease: EASE.drift,
                   delay: 0.1 + i * 0.08,
                 }}
-                className="rounded-2xl p-7 flex flex-col gap-3 transition-colors duration-300 hover:border-[#dc2626]"
+                className="rounded-2xl p-6 sm:p-7 flex flex-col gap-3 transition-colors duration-300 hover:border-[#dc2626]"
                 style={{
                   backgroundColor: c.surface,
                   border: `1px solid ${c.surfaceBorder}`,
@@ -307,7 +307,7 @@ export function PanelStat({
   const c = COLORS[tone];
   return (
     <div
-      className="flex flex-col gap-1.5 rounded-2xl p-7"
+      className="flex flex-col gap-1.5 rounded-2xl p-5 sm:p-7"
       style={{
         backgroundColor: c.surface,
         border: `1px solid ${c.surfaceBorder}`,
@@ -316,7 +316,7 @@ export function PanelStat({
       <span
         className="font-sans tabular-nums leading-none"
         style={{
-          fontSize: "clamp(36px, 4vw, 56px)",
+          fontSize: "clamp(32px, 4vw, 56px)",
           letterSpacing: "-0.025em",
           color: c.title,
           fontWeight: 700,
