@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   motion,
   useMotionValue,
@@ -9,6 +9,19 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { EASE } from "@/lib/constants";
+
+function useIsTouch(): boolean {
+  const [touch, setTouch] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+    setTouch(mq.matches);
+    const cb = (e: MediaQueryListEvent) => setTouch(e.matches);
+    mq.addEventListener("change", cb);
+    return () => mq.removeEventListener("change", cb);
+  }, []);
+  return touch;
+}
 
 type Tone = "light" | "dark";
 
@@ -88,8 +101,9 @@ export function MarketingPanel({
     const [x, y] = latest as [string, string];
     return `radial-gradient(circle 780px at ${x} ${y}, rgba(220,38,38,0.45) 0%, rgba(220,38,38,0.16) 32%, rgba(220,38,38,0.04) 55%, transparent 75%)`;
   });
-  // Fanale rosso SOLO sui pannelli neri.
-  const spotlightOn = tone === "dark";
+  // Fanale rosso SOLO sui pannelli neri E solo con mouse (no touch).
+  const isTouch = useIsTouch();
+  const spotlightOn = tone === "dark" && !isTouch;
 
   function onPointerMove(e: React.PointerEvent<HTMLElement>) {
     if (!spotlightOn) return;

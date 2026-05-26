@@ -72,12 +72,30 @@ function SamsungPhoneModel({ rotationDeg }: { rotationDeg?: MotionValue<number> 
 }
 
 export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const node = wrapperRef.current;
+    if (!node) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { threshold: 0, rootMargin: "100px" },
+    );
+    obs.observe(node);
+    return () => obs.disconnect();
+  }, []);
+
   return (
-    <div className="w-full h-full min-h-[500px] lg:min-h-[700px] relative">
+    <div
+      ref={wrapperRef}
+      className="w-full h-full min-h-[500px] lg:min-h-[700px] relative"
+    >
       <Canvas
         camera={{ position: [0, 0, 7], fov: 32 }}
-        dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true }}
+        dpr={[1, 1.5]}
+        gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
+        frameloop={inView ? "always" : "never"}
       >
         {/* Lighting OMNIDIREZIONALE per tenere il telefono visibile a 360°:
             - hemisphere light: bianco dall'alto + bordeaux dal basso, illumina

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   motion,
   useMotionValue,
@@ -9,6 +9,20 @@ import {
 } from "framer-motion";
 import Link from "next/link";
 import { EASE } from "@/lib/constants";
+
+/** true se il device usa solo input touch (no mouse): allora niente spotlight. */
+function useIsTouch(): boolean {
+  const [touch, setTouch] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(hover: none) and (pointer: coarse)");
+    setTouch(mq.matches);
+    const cb = (e: MediaQueryListEvent) => setTouch(e.matches);
+    mq.addEventListener("change", cb);
+    return () => mq.removeEventListener("change", cb);
+  }, []);
+  return touch;
+}
 
 type Tone = "light" | "dark";
 
@@ -169,6 +183,8 @@ export function PillarsGrid() {
 
 function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
   const isDark = pillar.tone === "dark";
+  const isTouch = useIsTouch();
+  const spotlightActive = isDark && !isTouch;
   const ref = useRef<HTMLAnchorElement>(null);
   const mx = useMotionValue(0.5);
   const my = useMotionValue(0.5);
@@ -184,7 +200,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
   });
 
   function onPointerMove(e: React.PointerEvent<HTMLAnchorElement>) {
-    if (!isDark) return;
+    if (!spotlightActive) return;
     const rect = ref.current?.getBoundingClientRect();
     if (!rect) return;
     mx.set((e.clientX - rect.left) / rect.width);
@@ -218,8 +234,8 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
         minHeight: "320px",
       }}
     >
-      {/* fanale rosso solo se dark */}
-      {isDark && (
+      {/* fanale rosso solo se dark + non touch */}
+      {spotlightActive && (
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0"
