@@ -122,9 +122,9 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                   display: "block",
                   overflow: "visible",
                   flexShrink: 0,
-                  // Responsive: cresce col viewport ma resta proporzionata a ELLCOM.
-                  width: "clamp(60px, 8.6vw, 120px)",
-                  height: "clamp(53px, 7.5vw, 105px)",
+                  // C grande, dominante rispetto a ELLCOM (ratio ~2.5-3x).
+                  width: "clamp(110px, 14vw, 200px)",
+                  height: "clamp(96px, 12.3vw, 175px)",
                 }}
                 initial={
                   shouldReduce
@@ -181,7 +181,7 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                         fontFamily:
                           '"Geist", ui-sans-serif, system-ui, -apple-system, sans-serif',
                         fontWeight: 800,
-                        fontSize: "clamp(44px, 6.5vw, 92px)",
+                        fontSize: "clamp(32px, 4.8vw, 72px)",
                         color: "#0a0a0a",
                         lineHeight: 0.85,
                         letterSpacing: "-0.045em",
