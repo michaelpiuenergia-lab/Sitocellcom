@@ -104,8 +104,16 @@
   color: var(--color-foreground);
 }
 
+html {
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
 body {
-  background: var(--color-background);
+  /* Fondo neutro bianco: le sezioni hanno il loro bg pieno (bianco o nero),
+     così se per qualche reason una sezione non copre l'intera viewport
+     l'utente vede bianco e non il dark token. */
+  background: #ffffff;
   color: var(--color-foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
