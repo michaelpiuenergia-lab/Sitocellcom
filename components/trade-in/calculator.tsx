@@ -179,36 +179,51 @@ export function TradeInCalculator() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: DURATION.normal, ease: EASE.smooth }}
-        className="bg-card border border-border rounded-2xl p-10 text-center max-w-2xl mx-auto flex flex-col items-center gap-6"
+        className="rounded-2xl p-10 text-center max-w-2xl mx-auto flex flex-col items-center gap-6"
+        style={{ backgroundColor: "#ffffff", border: "1px solid #ececec" }}
       >
-        <div className="w-16 h-16 rounded-full bg-brand-600/10 border border-brand-600/30 flex items-center justify-center">
+        <div
+          className="w-16 h-16 rounded-full flex items-center justify-center"
+          style={{
+            backgroundColor: "#fef2f2",
+            border: "1px solid #fecaca",
+          }}
+        >
           <svg
             width="28"
             height="28"
             viewBox="0 0 24 24"
             fill="none"
-            stroke="currentColor"
+            stroke="#dc2626"
             strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-brand-500"
           >
             <path d="M5 12l5 5L20 7" />
           </svg>
         </div>
         <div className="flex flex-col gap-2">
-          <h2 className="font-serif italic text-3xl text-foreground">
+          <h2
+            className="font-sans tracking-[-0.02em]"
+            style={{ fontSize: "28px", color: "#0a0a0a", fontWeight: 700 }}
+          >
             Richiesta ricevuta
           </h2>
-          <p className="text-muted-foreground max-w-md">
+          <p style={{ color: "#525252", maxWidth: "30rem" }}>
             Un nostro tecnico ti contatta via email entro{" "}
-            <strong className="text-foreground">24 ore lavorative</strong>:
+            <strong style={{ color: "#0a0a0a" }}>24 ore lavorative</strong>:
             ti chiederà 4-6 foto del telefono per la valutazione personalizzata.
           </p>
         </div>
         <a
           href="/"
-          className="text-sm font-mono uppercase tracking-wider text-brand-500 hover:text-brand-400 transition-colors"
+          className="font-mono uppercase hover:underline"
+          style={{
+            fontSize: "11px",
+            letterSpacing: "0.28em",
+            color: "#dc2626",
+            fontWeight: 500,
+          }}
         >
           ← Torna alla home
         </a>
@@ -269,11 +284,12 @@ export function TradeInCalculator() {
                       })
                     }
                     className={fieldClass}
+                    style={fieldStyle}
                   >
                     <option value="">Seleziona il modello…</option>
                     {models.map((m) => (
                       <option key={m.id} value={m.id}>
-                        {m.name} ({m.year})
+                        {m.name}
                       </option>
                     ))}
                   </select>
@@ -308,6 +324,7 @@ export function TradeInCalculator() {
                       }
                       maxLength={120}
                       className={fieldClass}
+                      style={fieldStyle}
                     />
                     <p className="text-xs text-muted-foreground/80 mt-1.5">
                       Modello non trovato nella lista? Scrivilo qui — il
@@ -324,6 +341,7 @@ export function TradeInCalculator() {
                       }
                       maxLength={40}
                       className={fieldClass}
+                      style={fieldStyle}
                     />
                   </Field>
                 </>
@@ -352,14 +370,21 @@ export function TradeInCalculator() {
                   type="button"
                   disabled={!canContinue}
                   onClick={() => setStep("contact")}
-                  className={cn(
-                    "btn-shine px-6 py-3 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold inline-flex items-center gap-2",
-                    "hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300",
-                    "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none",
-                  )}
+                  className="group inline-flex items-center gap-2.5 rounded-full px-7 py-3.5 transition-all duration-300 hover:shadow-[0_18px_44px_-12px_rgba(220,38,38,0.55)] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+                  style={{
+                    backgroundColor: "#dc2626",
+                    color: "#ffffff",
+                    fontSize: "15px",
+                    fontWeight: 600,
+                  }}
                 >
                   Continua
-                  <span aria-hidden>→</span>
+                  <span
+                    aria-hidden
+                    className="transition-transform duration-300 group-hover:translate-x-1"
+                  >
+                    →
+                  </span>
                 </button>
               </div>
             </motion.div>
@@ -386,6 +411,7 @@ export function TradeInCalculator() {
                     value={form.name}
                     onChange={(e) => setForm({ ...form, name: e.target.value })}
                     className={fieldClass}
+                    style={fieldStyle}
                   />
                 </Field>
                 <Field label="Email *">
@@ -396,6 +422,7 @@ export function TradeInCalculator() {
                     value={form.email}
                     onChange={(e) => setForm({ ...form, email: e.target.value })}
                     className={fieldClass}
+                    style={fieldStyle}
                   />
                 </Field>
               </div>
@@ -418,12 +445,21 @@ export function TradeInCalculator() {
                   maxLength={1000}
                   placeholder="Es. scatola originale presente, cover dal day-1, sostituito vetro l'anno scorso, batteria già cambiata, …"
                   className={cn(fieldClass, "resize-none")}
+                  style={fieldStyle}
                 />
               </Field>
 
-              <div className="bg-brand-600/5 border border-brand-600/20 rounded-lg p-4 text-sm leading-relaxed">
-                <p className="text-foreground">
-                  <strong className="text-brand-500">Prossimo step:</strong>{" "}
+              <div
+                className="rounded-xl p-4 leading-relaxed"
+                style={{
+                  fontSize: "14px",
+                  backgroundColor: "#fef2f2",
+                  border: "1px solid #fecaca",
+                  color: "#0a0a0a",
+                }}
+              >
+                <p>
+                  <strong style={{ color: "#dc2626" }}>Prossimo step:</strong>{" "}
                   ti rispondiamo via email entro 24h chiedendoti 4-6 foto
                   del telefono. Dopo le foto, ricevi la nostra valutazione
                   personalizzata.
@@ -454,7 +490,10 @@ export function TradeInCalculator() {
                 </label>
               </div>
 
-              <label className="flex items-start gap-3 text-xs text-muted-foreground leading-relaxed cursor-pointer select-none">
+              <label
+                className="flex items-start gap-3 leading-relaxed cursor-pointer select-none"
+                style={{ fontSize: "12px", color: "#525252" }}
+              >
                 <input
                   type="checkbox"
                   required
@@ -462,7 +501,10 @@ export function TradeInCalculator() {
                   onChange={(e) =>
                     setForm({ ...form, privacyAccepted: e.target.checked })
                   }
-                  className="mt-0.5 w-4 h-4 rounded border-border bg-popover accent-brand-600 shrink-0"
+                  className="mt-0.5 w-4 h-4 rounded shrink-0"
+                  style={{
+                    accentColor: "#dc2626",
+                  }}
                 />
                 <span>
                   Ho letto l&apos;
@@ -470,18 +512,27 @@ export function TradeInCalculator() {
                     href="/privacy"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-brand-500 hover:underline"
+                    className="hover:underline"
+                    style={{ color: "#dc2626" }}
                   >
                     informativa privacy
                   </a>{" "}
                   e acconsento al trattamento dei miei dati per ricevere la
                   valutazione.
-                  <span className="text-brand-500"> *</span>
+                  <span style={{ color: "#dc2626" }}> *</span>
                 </span>
               </label>
 
               {submitState.error && (
-                <p className="text-sm text-brand-500 bg-brand-600/10 border border-brand-600/30 rounded-lg px-4 py-2">
+                <p
+                  className="rounded-xl px-4 py-3"
+                  style={{
+                    fontSize: "14px",
+                    color: "#dc2626",
+                    backgroundColor: "#fef2f2",
+                    border: "1px solid #fecaca",
+                  }}
+                >
                   {submitState.error}
                 </p>
               )}
@@ -490,22 +541,39 @@ export function TradeInCalculator() {
                 <button
                   type="button"
                   onClick={() => setStep("model")}
-                  className="px-6 py-3 rounded-lg border border-border text-sm text-muted-foreground hover:text-foreground hover:border-brand-600/40 transition-colors"
+                  className="rounded-full px-6 py-3 transition-colors hover:border-[#dc2626] hover:text-[#0a0a0a]"
+                  style={{
+                    border: "1px solid #e5e5e5",
+                    fontSize: "14px",
+                    color: "#525252",
+                    backgroundColor: "#ffffff",
+                    fontWeight: 500,
+                  }}
                 >
                   ← Modifica telefono
                 </button>
                 <button
                   type="submit"
                   disabled={submitState.status === "submitting"}
-                  className={cn(
-                    "btn-shine px-6 py-3 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold",
-                    "hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-shadow duration-300",
-                    "disabled:opacity-50 disabled:cursor-not-allowed",
-                  )}
+                  className="group inline-flex items-center gap-2.5 rounded-full px-7 py-3.5 transition-all duration-300 hover:shadow-[0_18px_44px_-12px_rgba(220,38,38,0.55)] disabled:opacity-60 disabled:cursor-not-allowed"
+                  style={{
+                    backgroundColor: "#dc2626",
+                    color: "#ffffff",
+                    fontSize: "15px",
+                    fontWeight: 600,
+                  }}
                 >
                   {submitState.status === "submitting"
                     ? "Invio in corso…"
                     : "Invia richiesta"}
+                  {submitState.status !== "submitting" && (
+                    <span
+                      aria-hidden
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    >
+                      →
+                    </span>
+                  )}
                 </button>
               </div>
             </motion.form>
@@ -546,32 +614,50 @@ function Stepper({
   ];
   const currentIdx = steps.findIndex((s) => s.id === current);
   return (
-    <div className="flex items-center gap-3 text-xs font-mono uppercase tracking-wider">
+    <div className="flex items-center gap-3 font-mono uppercase tracking-wider">
       {steps.map((s, i) => {
         const isActive = i === currentIdx;
         const isPast =
           i < currentIdx || (i === 0 && canContinue && current !== "model");
+        const bg = isActive
+          ? "#dc2626"
+          : isPast
+            ? "#fef2f2"
+            : "#f5f5f4";
+        const bd = isActive
+          ? "#dc2626"
+          : isPast
+            ? "#fecaca"
+            : "#e5e5e5";
+        const fg = isActive ? "#ffffff" : isPast ? "#dc2626" : "#a3a3a3";
         return (
           <div key={s.id} className="flex items-center gap-3">
             <span
-              className={cn(
-                "w-6 h-6 rounded-full border flex items-center justify-center tabular-nums",
-                isActive
-                  ? "bg-brand-600 border-brand-600 text-white"
-                  : isPast
-                    ? "bg-brand-600/20 border-brand-600/50 text-brand-500"
-                    : "border-border text-muted-foreground",
-              )}
+              className="w-7 h-7 rounded-full flex items-center justify-center tabular-nums"
+              style={{
+                backgroundColor: bg,
+                border: `1px solid ${bd}`,
+                color: fg,
+                fontSize: "12px",
+                fontWeight: 600,
+              }}
             >
               {i + 1}
             </span>
             <span
-              className={isActive ? "text-foreground" : "text-muted-foreground"}
+              style={{
+                fontSize: "11px",
+                color: isActive ? "#0a0a0a" : "#737373",
+              }}
             >
               {s.label}
             </span>
             {i < steps.length - 1 && (
-              <span className="w-8 h-px bg-border" aria-hidden />
+              <span
+                className="w-8 h-px"
+                style={{ backgroundColor: "#e5e5e5" }}
+                aria-hidden
+              />
             )}
           </div>
         );
@@ -583,10 +669,24 @@ function Stepper({
 function SectionLabel({ num, title }: { num: string; title: string }) {
   return (
     <div className="flex items-baseline gap-3">
-      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-500 tabular-nums">
+      <span
+        className="font-mono uppercase tabular-nums"
+        style={{
+          fontSize: "10px",
+          letterSpacing: "0.28em",
+          color: "#dc2626",
+        }}
+      >
         {num}
       </span>
-      <h2 className="font-serif italic text-2xl sm:text-3xl text-foreground">
+      <h2
+        className="font-sans tracking-[-0.02em]"
+        style={{
+          fontSize: "clamp(22px, 2.4vw, 32px)",
+          color: "#0a0a0a",
+          fontWeight: 700,
+        }}
+      >
         {title}
       </h2>
     </div>
@@ -602,7 +702,14 @@ function Field({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <label className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+      <label
+        className="font-mono uppercase"
+        style={{
+          fontSize: "10px",
+          letterSpacing: "0.22em",
+          color: "#737373",
+        }}
+      >
         {label}
       </label>
       {children}
@@ -611,11 +718,17 @@ function Field({
 }
 
 const fieldClass = cn(
-  "w-full px-4 py-3 rounded-lg bg-popover border border-border",
-  "text-sm text-foreground placeholder:text-muted-foreground",
-  "focus:outline-none focus:ring-2 focus:ring-brand-600/40 focus:border-brand-600/40",
+  "w-full px-4 py-3 rounded-xl",
+  "focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626]",
   "transition-colors duration-200",
 );
+
+const fieldStyle: React.CSSProperties = {
+  backgroundColor: "#ffffff",
+  border: "1px solid #e5e5e5",
+  fontSize: "15px",
+  color: "#0a0a0a",
+};
 
 function Pill({
   active,
@@ -630,12 +743,15 @@ function Pill({
     <button
       type="button"
       onClick={onClick}
-      className={cn(
-        "px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200",
-        active
-          ? "bg-brand-600 text-white border-brand-600"
-          : "bg-card text-muted-foreground border-border hover:border-brand-600/40 hover:text-foreground",
-      )}
+      className="rounded-full transition-all duration-200"
+      style={{
+        backgroundColor: active ? "#dc2626" : "#ffffff",
+        border: `1px solid ${active ? "#dc2626" : "#e5e5e5"}`,
+        color: active ? "#ffffff" : "#0a0a0a",
+        fontSize: "14px",
+        fontWeight: 500,
+        padding: "8px 16px",
+      }}
     >
       {children}
     </button>
@@ -656,22 +772,30 @@ function ConditionCard({
     <button
       type="button"
       onClick={onClick}
-      className={cn(
-        "text-left p-4 rounded-xl border transition-all duration-200 flex flex-col gap-2",
-        active
-          ? "bg-brand-600/10 border-brand-600 shadow-[0_0_24px_-8px_rgba(220,38,38,0.4)]"
-          : "bg-card border-border hover:border-brand-600/40",
-      )}
+      className="text-left rounded-2xl transition-all duration-200 flex flex-col gap-2 p-5"
+      style={{
+        backgroundColor: active ? "#fef2f2" : "#ffffff",
+        border: `1px solid ${active ? "#dc2626" : "#ececec"}`,
+        boxShadow: active
+          ? "0 18px 44px -18px rgba(220,38,38,0.35)"
+          : undefined,
+      }}
     >
       <span
-        className={cn(
-          "font-serif italic text-lg",
-          active ? "text-foreground" : "text-foreground/90",
-        )}
+        className="font-sans"
+        style={{
+          fontSize: "17px",
+          color: "#0a0a0a",
+          fontWeight: 600,
+          letterSpacing: "-0.01em",
+        }}
       >
         {info.label}
       </span>
-      <span className="text-xs text-muted-foreground leading-relaxed">
+      <span
+        className="leading-relaxed"
+        style={{ fontSize: "12px", color: "#525252" }}
+      >
         {info.short}
       </span>
     </button>
@@ -699,27 +823,53 @@ function RecapPanel({
     : model && storage && condition;
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-6 flex flex-col gap-5 shadow-[0_24px_64px_-24px_rgba(0,0,0,0.6)]">
-      <div className="flex flex-col gap-1">
-        <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-500">
+    <div
+      className="rounded-2xl p-6 flex flex-col gap-5"
+      style={{
+        backgroundColor: "#ffffff",
+        border: "1px solid #ececec",
+        boxShadow: "0 24px 60px -28px rgba(0,0,0,0.12)",
+      }}
+    >
+      <div className="flex flex-col gap-2">
+        <span
+          className="font-mono uppercase"
+          style={{
+            fontSize: "10px",
+            letterSpacing: "0.28em",
+            color: "#dc2626",
+          }}
+        >
           {hasData ? "Riepilogo" : "Come funziona"}
         </span>
-        <h3 className="font-serif italic text-xl text-foreground">
+        <h3
+          className="font-sans tracking-[-0.01em]"
+          style={{
+            fontSize: "20px",
+            color: "#0a0a0a",
+            fontWeight: 700,
+          }}
+        >
           {hasData ? "Il tuo telefono" : "Quattro passi semplici"}
         </h3>
       </div>
 
       {hasData ? (
-        <div className="flex flex-col gap-1 text-sm">
+        <div className="flex flex-col gap-2" style={{ fontSize: "14px" }}>
           <div className="flex justify-between gap-3">
-            <span className="text-muted-foreground">Modello</span>
-            <span className="text-foreground text-right">
+            <span style={{ color: "#737373" }}>Modello</span>
+            <span
+              style={{ color: "#0a0a0a", textAlign: "right", fontWeight: 500 }}
+            >
               {isOther ? customModelName : model?.name}
             </span>
           </div>
           <div className="flex justify-between gap-3">
-            <span className="text-muted-foreground">Memoria</span>
-            <span className="text-foreground tabular-nums">
+            <span style={{ color: "#737373" }}>Memoria</span>
+            <span
+              className="tabular-nums"
+              style={{ color: "#0a0a0a", fontWeight: 500 }}
+            >
               {isOther
                 ? customStorage || "—"
                 : storage && storage < 1024
@@ -728,12 +878,17 @@ function RecapPanel({
             </span>
           </div>
           <div className="flex justify-between gap-3">
-            <span className="text-muted-foreground">Condizione</span>
-            <span className="text-foreground">{conditionInfo?.label}</span>
+            <span style={{ color: "#737373" }}>Condizione</span>
+            <span style={{ color: "#0a0a0a", fontWeight: 500 }}>
+              {conditionInfo?.label}
+            </span>
           </div>
         </div>
       ) : (
-        <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
+        <ul
+          className="flex flex-col gap-2"
+          style={{ fontSize: "14px", color: "#525252" }}
+        >
           <Step n="1" text="Scegli marca, modello e condizione" />
           <Step n="2" text="Lascia nome ed email" />
           <Step n="3" text="Ti scriviamo per le foto del telefono" />
@@ -741,7 +896,10 @@ function RecapPanel({
         </ul>
       )}
 
-      <div className="border-t border-border pt-4 flex flex-col gap-2">
+      <div
+        className="pt-4 flex flex-col gap-2"
+        style={{ borderTop: "1px solid #ececec" }}
+      >
         <Bullet>Valutazione gratuita e senza impegno</Bullet>
         <Bullet>Risposta via email entro 24 ore lavorative</Bullet>
         <Bullet>Spedizione gratis o ritiro in negozio</Bullet>
@@ -754,7 +912,16 @@ function RecapPanel({
 function Step({ n, text }: { n: string; text: string }) {
   return (
     <li className="flex items-start gap-2">
-      <span className="font-mono text-[10px] tabular-nums px-1.5 py-0.5 rounded bg-card-hover border border-border shrink-0 mt-0.5">
+      <span
+        className="font-mono tabular-nums shrink-0 px-2 py-0.5 rounded mt-0.5"
+        style={{
+          fontSize: "10px",
+          backgroundColor: "#fef2f2",
+          color: "#dc2626",
+          border: "1px solid #fecaca",
+          fontWeight: 600,
+        }}
+      >
         {n}
       </span>
       <span>{text}</span>
@@ -764,17 +931,20 @@ function Step({ n, text }: { n: string; text: string }) {
 
 function Bullet({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-start gap-2 text-xs text-muted-foreground">
+    <div
+      className="flex items-start gap-2"
+      style={{ fontSize: "12px", color: "#525252" }}
+    >
       <svg
         width="14"
         height="14"
         viewBox="0 0 24 24"
         fill="none"
-        stroke="currentColor"
+        stroke="#dc2626"
         strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="text-brand-500 shrink-0 mt-0.5"
+        className="shrink-0 mt-0.5"
       >
         <path d="M5 12l5 5L20 7" />
       </svg>
