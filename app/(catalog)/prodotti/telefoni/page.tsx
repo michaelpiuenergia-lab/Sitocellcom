@@ -3,6 +3,7 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { CatalogHero } from "@/components/catalog/catalog-hero";
 import { Container } from "@/components/ui/container";
 import { getProducts } from "@/lib/crm-client";
+import { canSeePrices } from "@/lib/auth/pricing-access";
 import type { PublicCondition } from "@/lib/crm-client/types";
 
 export const metadata = {
@@ -23,11 +24,12 @@ export default async function TelefoniPage({
   const sp = (await searchParams) ?? {};
   const condition = sp.condition as PublicCondition | undefined;
 
-  const [allNew, allUsed, allRefurb, grid] = await Promise.all([
+  const [allNew, allUsed, allRefurb, grid, showPrices] = await Promise.all([
     getProducts({ kind: "device", condition: "new", limit: 1 }),
     getProducts({ kind: "device", condition: "used", limit: 1 }),
     getProducts({ kind: "device", condition: "refurbished", limit: 1 }),
     getProducts({ kind: "device", condition, limit: 100 }),
+    canSeePrices(),
   ]);
 
   return (
@@ -52,7 +54,7 @@ export default async function TelefoniPage({
         ]}
       />
       <Container className="pb-24">
-        <ProductGrid initialProducts={grid.items} />
+        <ProductGrid initialProducts={grid.items} canSeePrices={showPrices} />
       </Container>
     </>
   );

@@ -22,7 +22,13 @@ function silhouetteVariant(id: string): 1 | 2 | 3 | 4 | 5 | 6 {
   return ((Math.abs(sum) % 6) + 1) as 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-function UsedDeviceCard({ device }: { device: UsedDevice }) {
+function UsedDeviceCard({
+  device,
+  canSeePrices,
+}: {
+  device: UsedDevice;
+  canSeePrices: boolean;
+}) {
   const photo = device.photos[0] ?? null;
 
   return (
@@ -79,9 +85,15 @@ function UsedDeviceCard({ device }: { device: UsedDevice }) {
 
       <div className="px-5 pb-5 mt-auto flex flex-col gap-3">
         <div className="flex items-baseline justify-between">
-          <span className="font-sans font-semibold tabular-nums text-foreground text-xl">
-            € {device.priceEur}
-          </span>
+          {canSeePrices ? (
+            <span className="font-sans font-semibold tabular-nums text-foreground text-xl">
+              € {device.priceEur}
+            </span>
+          ) : (
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              Prezzo riservato
+            </span>
+          )}
           <span
             className={cn(
               "font-mono text-[10px] uppercase tracking-[0.18em]",
@@ -92,18 +104,27 @@ function UsedDeviceCard({ device }: { device: UsedDevice }) {
           </span>
         </div>
 
-        <RequestTrigger
-          kind="info"
-          product={{
-            id: null,
-            slug: null,
-            name: device.title,
-            variantId: null,
-            variantLabel: device.variant,
-          }}
-          label="Lo voglio · richiedi info"
-          className="w-full"
-        />
+        {canSeePrices ? (
+          <RequestTrigger
+            kind="info"
+            product={{
+              id: null,
+              slug: null,
+              name: device.title,
+              variantId: null,
+              variantLabel: device.variant,
+            }}
+            label="Lo voglio · richiedi info"
+            className="w-full"
+          />
+        ) : (
+          <a
+            href="/clienti/login"
+            className="w-full text-center py-2.5 px-5 rounded-lg text-sm font-semibold bg-linear-to-br from-brand-600 to-brand-800 text-white hover:shadow-[0_4px_16px_-4px_rgba(220,38,38,0.5)] transition-all duration-300"
+          >
+            Accedi per il prezzo →
+          </a>
+        )}
       </div>
     </motion.div>
   );
@@ -116,7 +137,13 @@ const conditionFilters: { value: UsedDeviceCondition | "all"; label: string }[] 
   { value: "discreto", label: "Discreto" },
 ];
 
-export function UsedDeviceGrid({ initialDevices }: { initialDevices: UsedDevice[] }) {
+export function UsedDeviceGrid({
+  initialDevices,
+  canSeePrices = false,
+}: {
+  initialDevices: UsedDevice[];
+  canSeePrices?: boolean;
+}) {
   const [activeCondition, setActiveCondition] = useState<UsedDeviceCondition | "all">("all");
   const [activeBrand, setActiveBrand] = useState("Tutte");
 
@@ -158,7 +185,7 @@ export function UsedDeviceGrid({ initialDevices }: { initialDevices: UsedDevice[
       >
         <AnimatePresence mode="popLayout">
           {filtered.map((device) => (
-            <UsedDeviceCard key={device.id} device={device} />
+            <UsedDeviceCard key={device.id} device={device} canSeePrices={canSeePrices} />
           ))}
         </AnimatePresence>
       </motion.div>

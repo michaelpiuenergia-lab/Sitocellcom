@@ -14,6 +14,7 @@ interface SparePartsProps {
   availableModels: string[];
   availableBrands: string[];
   totalCount: number;
+  canSeePrices?: boolean;
 }
 
 export function SpareParts({
@@ -21,6 +22,7 @@ export function SpareParts({
   availableModels,
   availableBrands,
   totalCount,
+  canSeePrices = false,
 }: SparePartsProps) {
   const [selectedModel, setSelectedModel] = useState<string>("");
   const [selectedBrand, setSelectedBrand] = useState<string>("");
@@ -270,6 +272,7 @@ export function SpareParts({
       ) : (
         <ProductGrid
           initialProducts={filteredProducts}
+          canSeePrices={canSeePrices}
           showConditionFilter={false}
           showCategoryFilter={false}
         />

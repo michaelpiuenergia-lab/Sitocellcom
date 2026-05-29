@@ -108,7 +108,13 @@ const conditions: { value: PublicCondition | "all"; label: string }[] = [
 
 const categories = ["Tutte", "Smartphone", "Ricambio"];
 
-function ProductCard({ product }: { product: PublicProductListItem }) {
+function ProductCard({
+  product,
+  canSeePrices,
+}: {
+  product: PublicProductListItem;
+  canSeePrices: boolean;
+}) {
   const { stock, variantCount } = product;
 
   const treatAsOutOfStock = stock.count === 0 && variantCount === 0;
@@ -189,21 +195,27 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
       {/* Price + stock */}
       <div className="px-5 pb-5 mt-auto flex flex-col gap-3">
         <div className="flex items-baseline justify-between">
-          <span
-            className={cn(
-              "font-sans font-semibold tabular-nums",
-              product.priceHidden
-                ? "text-brand-600 italic font-serif text-base"
-                : "text-foreground text-xl",
-            )}
-            title={
-              product.priceHidden
-                ? "Il prezzo pubblico non è esposto per questo articolo. Contattaci per il listino."
-                : undefined
-            }
-          >
-            {product.priceHidden ? "Su richiesta" : formatPrice(product.priceCents)}
-          </span>
+          {canSeePrices ? (
+            <span
+              className={cn(
+                "font-sans font-semibold tabular-nums",
+                product.priceHidden
+                  ? "text-brand-600 italic font-serif text-base"
+                  : "text-foreground text-xl",
+              )}
+              title={
+                product.priceHidden
+                  ? "Il prezzo pubblico non è esposto per questo articolo. Contattaci per il listino."
+                  : undefined
+              }
+            >
+              {product.priceHidden ? "Su richiesta" : formatPrice(product.priceCents)}
+            </span>
+          ) : (
+            <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
+              Prezzo riservato
+            </span>
+          )}
           <span
             className={cn(
               "font-mono text-[10px] uppercase tracking-[0.18em]",
@@ -214,7 +226,11 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
           </span>
         </div>
 
-        {treatAsOutOfStock ? (
+        {!canSeePrices ? (
+          <Button href="/clienti/login" variant="primary" size="sm" iconEnd="→" className="w-full">
+            Accedi per il prezzo
+          </Button>
+        ) : treatAsOutOfStock ? (
           <Button variant="secondary" size="sm" disabled className="w-full">
             Avvisami quando torna
           </Button>
@@ -239,10 +255,12 @@ function ProductCard({ product }: { product: PublicProductListItem }) {
 
 export function ProductGrid({
   initialProducts,
+  canSeePrices = false,
   showConditionFilter = true,
   showCategoryFilter = true,
 }: {
   initialProducts: PublicProductListItem[];
+  canSeePrices?: boolean;
   showConditionFilter?: boolean;
   showCategoryFilter?: boolean;
 }) {
@@ -299,7 +317,7 @@ export function ProductGrid({
       <motion.div layout className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
         <AnimatePresence mode="popLayout">
           {filtered.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} canSeePrices={canSeePrices} />
           ))}
         </AnimatePresence>
       </motion.div>

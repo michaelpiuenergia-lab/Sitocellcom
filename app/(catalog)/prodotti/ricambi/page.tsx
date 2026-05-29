@@ -3,6 +3,7 @@ import { SpareParts } from "@/components/catalog/spare-parts";
 import { CatalogHero } from "@/components/catalog/catalog-hero";
 import { Container } from "@/components/ui/container";
 import { getProducts } from "@/lib/crm-client";
+import { canSeePrices } from "@/lib/auth/pricing-access";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 
 export const metadata = {
@@ -66,7 +67,10 @@ async function fetchAllPartsForModels(): Promise<{
 }
 
 export default async function RicambiPage() {
-  const initial = await getProducts({ kind: "part", limit: 100 });
+  const [initial, showPrices] = await Promise.all([
+    getProducts({ kind: "part", limit: 100 }),
+    canSeePrices(),
+  ]);
 
   let modelsData: { totalCount: number; models: string[]; brands: string[] };
   try {
@@ -123,6 +127,7 @@ export default async function RicambiPage() {
           availableModels={modelsData.models}
           availableBrands={modelsData.brands}
           totalCount={modelsData.totalCount}
+          canSeePrices={showPrices}
         />
       </Container>
     </>

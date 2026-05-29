@@ -3,6 +3,7 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { CatalogHero } from "@/components/catalog/catalog-hero";
 import { Container } from "@/components/ui/container";
 import { getProducts } from "@/lib/crm-client";
+import { canSeePrices } from "@/lib/auth/pricing-access";
 
 export const metadata = {
   title: "Accessori — Cellcom Group",
@@ -13,7 +14,10 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function AccessoriPage() {
-  const { items, total } = await getProducts({ kind: "accessory", limit: 48 });
+  const [{ items, total }, showPrices] = await Promise.all([
+    getProducts({ kind: "accessory", limit: 48 }),
+    canSeePrices(),
+  ]);
 
   return (
     <>
@@ -32,7 +36,7 @@ export default async function AccessoriPage() {
         metrics={[{ label: "A catalogo", value: String(total) }]}
       />
       <Container className="pb-24">
-        <ProductGrid initialProducts={items} />
+        <ProductGrid initialProducts={items} canSeePrices={showPrices} />
       </Container>
     </>
   );

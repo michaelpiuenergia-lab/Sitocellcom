@@ -3,6 +3,7 @@ import { CatalogHero } from "@/components/catalog/catalog-hero";
 import { Container } from "@/components/ui/container";
 import { UsedDeviceGrid } from "@/components/catalog/used-device-grid";
 import { getUsedDevices } from "@/lib/crm-client";
+import { canSeePrices } from "@/lib/auth/pricing-access";
 
 export const metadata = {
   title: "Usato garantito — Cellcom Group",
@@ -13,7 +14,10 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function UsatoPage() {
-  const grid = await getUsedDevices({ channel: "cellcom", limit: 100 });
+  const [grid, showPrices] = await Promise.all([
+    getUsedDevices({ channel: "cellcom", limit: 100 }),
+    canSeePrices(),
+  ]);
 
   const ottimo = grid.items.filter((d) => d.condition === "ottimo").length;
   const buono = grid.items.filter((d) => d.condition === "buono").length;
@@ -36,7 +40,7 @@ export default async function UsatoPage() {
         ]}
       />
       <Container className="pb-24">
-        <UsedDeviceGrid initialDevices={grid.items} />
+        <UsedDeviceGrid initialDevices={grid.items} canSeePrices={showPrices} />
       </Container>
     </>
   );

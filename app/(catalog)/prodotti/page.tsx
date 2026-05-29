@@ -7,6 +7,7 @@ import { Eyebrow } from "@/components/ui/eyebrow";
 import { H2, Accent } from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { getProducts } from "@/lib/crm-client";
+import { canSeePrices } from "@/lib/auth/pricing-access";
 
 export const metadata = {
   title: "Catalogo — Cellcom Group",
@@ -66,9 +67,10 @@ async function getFeatured() {
 }
 
 export default async function CatalogLanding() {
-  const [counts, featured] = await Promise.all([
+  const [counts, featured, showPrices] = await Promise.all([
     Promise.all(sections.map((s) => getCount(s.kind))),
     getFeatured(),
+    canSeePrices(),
   ]);
 
   return (
@@ -112,6 +114,7 @@ export default async function CatalogLanding() {
           </div>
           <ProductGrid
             initialProducts={featured}
+            canSeePrices={showPrices}
             showConditionFilter={false}
             showCategoryFilter={false}
           />
