@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useRef, useEffect, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
@@ -22,6 +22,7 @@ function SamsungPhoneModel({
   const gltf = useGLTF(MODEL_PATH);
   const groupRef = useRef<THREE.Group>(null!);
   const [scale, setScale] = useState(1);
+  const { invalidate } = useThree();
 
   useEffect(() => {
     if (!gltf.scene) return;
@@ -48,7 +49,17 @@ function SamsungPhoneModel({
         }
       }
     });
-  }, [gltf.scene]);
+
+    invalidate();
+  }, [gltf.scene, invalidate]);
+
+  // frameloop="demand": ridipingiamo solo quando rotationDeg cambia
+  // (scroll-driven). Niente 60fps continui sul nulla.
+  useEffect(() => {
+    if (!rotationDeg) return;
+    const unsub = rotationDeg.on("change", () => invalidate());
+    return () => unsub();
+  }, [rotationDeg, invalidate]);
 
   useFrame(() => {
     if (!groupRef.current || !rotationDeg) return;
@@ -87,9 +98,9 @@ export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
         camera={{ position: [0, 0, 7], fov: 32 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
-        // In viewport: "always" — il telefono ruota fluido sullo scroll.
-        // Fuori viewport: "never" — zero render, ventole ferme sul resto del sito.
-        frameloop={inView ? "always" : "never"}
+        // demand: render solo dopo invalidate() (es. rotation cambia).
+        // Quando fuori viewport: "never" — nessun render.
+        frameloop={inView ? "demand" : "never"}
       >
         {/* Lighting alleggerito: hemisphere (full ambient) + 2 directional.
             Tolti 2 directional e 2 point lights — meno shader work. */}
