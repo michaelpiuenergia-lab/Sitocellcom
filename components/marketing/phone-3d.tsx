@@ -50,16 +50,10 @@ function SamsungPhoneModel({
     });
   }, [gltf.scene]);
 
-  // Rotazione cinematic: continua e sempre in avanti.
-  // ~22s per giro completo. Lo scroll aggiunge una piccola spinta in avanti
-  // (max +30%), ma NON inverte: andare su rallenta soltanto, mai indietro.
-  useFrame((state) => {
-    if (!groupRef.current) return;
-    const auto = state.clock.elapsedTime * ((Math.PI * 2) / 22);
-    const scrollBoost = rotationDeg
-      ? Math.max(0, rotationDeg.get() / 360) * 0.3
-      : 0;
-    groupRef.current.rotation.y = Math.PI / 6 + auto * (1 + scrollBoost);
+  useFrame(() => {
+    if (!groupRef.current || !rotationDeg) return;
+    groupRef.current.rotation.y =
+      ((rotationDeg.get() + 30) * Math.PI) / 180;
   });
 
   return (
@@ -71,10 +65,7 @@ function SamsungPhoneModel({
 
 export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  // Inizia true così la rotazione parte SUBITO al mount: l'IntersectionObserver
-  // qua sotto spegne il rendering solo quando prova che il phone è uscito dal
-  // viewport. Evita il caso in cui un IO che non scatta lascia frameloop="never".
-  const [inView, setInView] = useState(true);
+  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const node = wrapperRef.current;
