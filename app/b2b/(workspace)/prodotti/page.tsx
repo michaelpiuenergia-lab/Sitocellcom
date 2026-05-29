@@ -104,7 +104,7 @@ export default async function B2bProductsPage() {
               <em>Richiedi disponibilità</em> sul prodotto.
             </p>
           </div>
-          <ListinoExport products={allItems} tierCode={ctx.tierCode} />
+          <ListinoExport disabled={allItems.length === 0} />
         </div>
 
         <ProductGridB2b

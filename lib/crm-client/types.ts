@@ -449,3 +449,294 @@ export type UsedDeviceListParams = {
   limit?: number;
   offset?: number;
 };
+
+// ============================================================================
+// B2B PORTALE — ordini, preventivi, fatture, note credito, pagamenti,
+// spedizioni, documenti. Allineato al brief inviato + contratto CRM.
+//
+// Auth: X-API-Key + X-B2B-Session. Tutti gli endpoint filtrano server-side
+// per customer autenticato. Date ISO 8601, importi sempre in cents.
+// ============================================================================
+
+/** Wrapper risposta lista — riusato da tutti gli endpoint list portale B2B. */
+export type B2bListResponse<T> = {
+  items: T[];
+  total: number;
+  hasMore: boolean;
+  limit: number;
+  offset: number;
+};
+
+export type B2bListParams = {
+  limit?: number;
+  offset?: number;
+  fromDate?: string;
+  toDate?: string;
+  status?: string;
+};
+
+export type B2bAddress = {
+  line1: string;
+  line2: string | null;
+  city: string;
+  postalCode: string;
+  province: string;
+  country: string;
+};
+
+export type B2bDocumentLine = {
+  productId: string | null;
+  productName: string;
+  sku: string | null;
+  qty: number;
+  unitPriceCents: number;
+  lineTotalCents: number;
+  notes: string | null;
+};
+
+// ─── Ordini ────────────────────────────────────────────────────────────────
+
+export type B2bOrderStatus =
+  | "draft"
+  | "confirmed"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
+
+export const B2B_ORDER_STATUS_LABELS: Record<B2bOrderStatus, string> = {
+  draft: "Bozza",
+  confirmed: "Confermato",
+  shipped: "Spedito",
+  delivered: "Consegnato",
+  cancelled: "Annullato",
+};
+
+export type B2bOrderListItem = {
+  id: string;
+  number: string;
+  createdAt: string;
+  status: B2bOrderStatus;
+  totalCents: number;
+  currency: string;
+  itemsCount: number;
+  shipmentId: string | null;
+};
+
+export type B2bOrderDetail = B2bOrderListItem & {
+  customer: { id: string; name: string; company: string | null };
+  shippingAddress: B2bAddress;
+  billingAddress: B2bAddress;
+  lines: B2bDocumentLine[];
+  notes: string | null;
+  shippedAt: string | null;
+  deliveredAt: string | null;
+};
+
+// ─── Preventivi / Proforma ─────────────────────────────────────────────────
+
+export type B2bQuoteStatus =
+  | "draft"
+  | "sent"
+  | "accepted"
+  | "declined"
+  | "expired";
+
+export const B2B_QUOTE_STATUS_LABELS: Record<B2bQuoteStatus, string> = {
+  draft: "Bozza",
+  sent: "Inviato",
+  accepted: "Accettato",
+  declined: "Rifiutato",
+  expired: "Scaduto",
+};
+
+export type B2bQuoteListItem = {
+  id: string;
+  number: string;
+  createdAt: string;
+  validUntil: string | null;
+  status: B2bQuoteStatus;
+  totalCents: number;
+  currency: string;
+  itemsCount: number;
+};
+
+export type B2bQuoteDetail = B2bQuoteListItem & {
+  lines: B2bDocumentLine[];
+  notes: string | null;
+  terms: string | null;
+  orderId: string | null;
+};
+
+export type B2bQuoteAcceptResponse = {
+  quote: B2bQuoteDetail;
+  order: B2bOrderDetail;
+};
+
+// ─── Fatture ───────────────────────────────────────────────────────────────
+
+export type B2bInvoiceStatus =
+  | "draft"
+  | "sent"
+  | "paid"
+  | "partial"
+  | "overdue"
+  | "cancelled";
+
+export const B2B_INVOICE_STATUS_LABELS: Record<B2bInvoiceStatus, string> = {
+  draft: "Bozza",
+  sent: "Inviata",
+  paid: "Pagata",
+  partial: "Pagamento parziale",
+  overdue: "Scaduta",
+  cancelled: "Annullata",
+};
+
+export type B2bVatBreakdownLine = {
+  rate: number; // % es. 22
+  baseCents: number;
+  taxCents: number;
+};
+
+export type B2bInvoiceListItem = {
+  id: string;
+  number: string;
+  issuedAt: string;
+  dueAt: string | null;
+  totalCents: number;
+  paidCents: number;
+  balanceCents: number;
+  currency: string;
+  status: B2bInvoiceStatus;
+  pdfAvailable: boolean;
+  orderId: string | null;
+};
+
+export type B2bInvoiceDetail = B2bInvoiceListItem & {
+  customer: {
+    name: string;
+    company: string | null;
+    vatNumber: string | null;
+  };
+  lines: B2bDocumentLine[];
+  vatBreakdown: B2bVatBreakdownLine[];
+  paymentTerms: string | null;
+  paymentMethod: string | null;
+  notes: string | null;
+};
+
+// ─── Note di credito ───────────────────────────────────────────────────────
+
+export type B2bCreditNoteListItem = B2bInvoiceListItem & {
+  invoiceId: string | null;
+  reason: string | null;
+};
+
+export type B2bCreditNoteDetail = Omit<B2bInvoiceDetail, "status"> & {
+  status: B2bInvoiceStatus;
+  invoiceId: string | null;
+  reason: string | null;
+};
+
+// ─── Pagamenti ─────────────────────────────────────────────────────────────
+
+export type B2bPaymentMethod =
+  | "bonifico"
+  | "carta"
+  | "contanti"
+  | "rid"
+  | "altro";
+
+export const B2B_PAYMENT_METHOD_LABELS: Record<B2bPaymentMethod, string> = {
+  bonifico: "Bonifico",
+  carta: "Carta",
+  contanti: "Contanti",
+  rid: "RID",
+  altro: "Altro",
+};
+
+export type B2bPayment = {
+  id: string;
+  paidAt: string;
+  amountCents: number;
+  currency: string;
+  method: B2bPaymentMethod;
+  reference: string | null;
+  invoiceIds: string[];
+  notes: string | null;
+};
+
+// ─── Spedizioni ────────────────────────────────────────────────────────────
+
+export type B2bShipmentStatus =
+  | "preparing"
+  | "shipped"
+  | "in_transit"
+  | "out_for_delivery"
+  | "delivered"
+  | "returned"
+  | "exception";
+
+export const B2B_SHIPMENT_STATUS_LABELS: Record<B2bShipmentStatus, string> = {
+  preparing: "In preparazione",
+  shipped: "Spedito",
+  in_transit: "In transito",
+  out_for_delivery: "In consegna",
+  delivered: "Consegnato",
+  returned: "Reso",
+  exception: "Problema",
+};
+
+export type B2bShipmentEvent = {
+  at: string;
+  status: string;
+  location: string | null;
+  note: string | null;
+};
+
+export type B2bShipmentListItem = {
+  id: string;
+  orderId: string | null;
+  carrier: string;
+  trackingNumber: string | null;
+  trackingUrl: string | null;
+  status: B2bShipmentStatus;
+  shippedAt: string | null;
+  deliveredAt: string | null;
+};
+
+export type B2bShipmentDetail = B2bShipmentListItem & {
+  events: B2bShipmentEvent[];
+  recipient: { name: string; company: string | null; phone: string | null };
+  shippingAddress: B2bAddress;
+};
+
+// ─── Documenti amministrativi (catch-all) ──────────────────────────────────
+
+export type B2bDocumentKind =
+  | "ddt"
+  | "contract"
+  | "delivery_note"
+  | "tax_id"
+  | "ce_certificate"
+  | "warranty"
+  | "other";
+
+export const B2B_DOCUMENT_KIND_LABELS: Record<B2bDocumentKind, string> = {
+  ddt: "DDT",
+  contract: "Contratto",
+  delivery_note: "Bolla di consegna",
+  tax_id: "Certificato fiscale",
+  ce_certificate: "Certificato CE",
+  warranty: "Garanzia",
+  other: "Altro",
+};
+
+export type B2bDocumentListItem = {
+  id: string;
+  kind: B2bDocumentKind;
+  title: string;
+  issuedAt: string;
+  pdfAvailable: boolean;
+  relatedOrderId: string | null;
+  relatedInvoiceId: string | null;
+};

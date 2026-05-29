@@ -65,7 +65,10 @@ function SamsungPhoneModel({
 
 export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  // Inizia true così la rotazione parte SUBITO al mount: l'IntersectionObserver
+  // qua sotto spegne il rendering solo quando prova che il phone è uscito dal
+  // viewport. Evita il caso in cui un IO che non scatta lascia frameloop="never".
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const node = wrapperRef.current;

@@ -12,6 +12,8 @@ import * as realCustomerAuth from "./customer-auth";
 import * as mockCustomerAuth from "./customer-auth-mock";
 import * as realRepairs from "./repairs";
 import * as mockRepairs from "./repairs-mock";
+import * as realB2bPortal from "./b2b-portal";
+import * as mockB2bPortal from "./b2b-portal-mock";
 
 /**
  * Flag mock granulari.
@@ -94,3 +96,19 @@ export const lookupRepair = USE_MOCK_PUBLIC
 export const respondToQuote = USE_MOCK_PUBLIC
   ? mockRepairs.respondToQuote
   : realRepairs.respondToQuote;
+
+// Portale B2B (ordini, preventivi, fatture, NC, pagamenti, spedizioni, docs)
+export const listB2bOrders = USE_MOCK_B2B ? mockB2bPortal.listB2bOrders : realB2bPortal.listB2bOrders;
+export const getB2bOrder = USE_MOCK_B2B ? mockB2bPortal.getB2bOrder : realB2bPortal.getB2bOrder;
+export const listB2bQuotes = USE_MOCK_B2B ? mockB2bPortal.listB2bQuotes : realB2bPortal.listB2bQuotes;
+export const getB2bQuote = USE_MOCK_B2B ? mockB2bPortal.getB2bQuote : realB2bPortal.getB2bQuote;
+export const acceptB2bQuote = USE_MOCK_B2B ? mockB2bPortal.acceptB2bQuote : realB2bPortal.acceptB2bQuote;
+export const listB2bInvoices = USE_MOCK_B2B ? mockB2bPortal.listB2bInvoices : realB2bPortal.listB2bInvoices;
+export const getB2bInvoice = USE_MOCK_B2B ? mockB2bPortal.getB2bInvoice : realB2bPortal.getB2bInvoice;
+export const listB2bCreditNotes = USE_MOCK_B2B ? mockB2bPortal.listB2bCreditNotes : realB2bPortal.listB2bCreditNotes;
+export const getB2bCreditNote = USE_MOCK_B2B ? mockB2bPortal.getB2bCreditNote : realB2bPortal.getB2bCreditNote;
+export const listB2bPayments = USE_MOCK_B2B ? mockB2bPortal.listB2bPayments : realB2bPortal.listB2bPayments;
+export const listB2bShipments = USE_MOCK_B2B ? mockB2bPortal.listB2bShipments : realB2bPortal.listB2bShipments;
+export const getB2bShipment = USE_MOCK_B2B ? mockB2bPortal.getB2bShipment : realB2bPortal.getB2bShipment;
+export const listB2bDocuments = USE_MOCK_B2B ? mockB2bPortal.listB2bDocuments : realB2bPortal.listB2bDocuments;
+export { b2bDownloadCrmPath } from "./b2b-portal";
