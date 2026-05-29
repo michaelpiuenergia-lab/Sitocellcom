@@ -50,10 +50,16 @@ function SamsungPhoneModel({
     });
   }, [gltf.scene]);
 
-  useFrame(() => {
-    if (!groupRef.current || !rotationDeg) return;
-    groupRef.current.rotation.y =
-      ((rotationDeg.get() + 30) * Math.PI) / 180;
+  // Rotazione cinematic: continua e sempre in avanti.
+  // ~22s per giro completo. Lo scroll aggiunge una piccola spinta in avanti
+  // (max +30%), ma NON inverte: andare su rallenta soltanto, mai indietro.
+  useFrame((state) => {
+    if (!groupRef.current) return;
+    const auto = state.clock.elapsedTime * ((Math.PI * 2) / 22);
+    const scrollBoost = rotationDeg
+      ? Math.max(0, rotationDeg.get() / 360) * 0.3
+      : 0;
+    groupRef.current.rotation.y = Math.PI / 6 + auto * (1 + scrollBoost);
   });
 
   return (
