@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils/cn";
 
 const navLinks = [
   { label: "Prodotti", href: "/prodotti" },
+  { label: "Usato", href: "/usato" },
   { label: "Riparazioni", href: "/riparazioni" },
   { label: "Rivendi", href: "/rivendi" },
   { label: "Corsi", href: "/corsi" },

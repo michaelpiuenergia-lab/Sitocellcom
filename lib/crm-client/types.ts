@@ -257,3 +257,169 @@ export type PricingViewer =
       tierCode: string | null;
       tierName: string | null;
     };
+
+// ============================================================================
+// Riparazioni — tracking pubblico + preventivo
+//
+// CONTRATTO CANONICO HUB↔CRM. Allineato a lib/repairs/types.ts del CRM
+// (REPAIR_STATUSES). Il CRM deve esporre questi shape sull'API pubblica v1.
+// ============================================================================
+
+/** Stati ticket — identici a REPAIR_STATUSES del CRM (lib/repairs/types.ts). */
+export type RepairPublicStatus =
+  | "accepted"
+  | "diagnosed"
+  | "in_repair"
+  | "awaiting_parts"
+  | "ready_for_pickup"
+  | "delivered"
+  | "cancelled";
+
+export const REPAIR_PUBLIC_STATUS_LABELS: Record<RepairPublicStatus, string> = {
+  accepted: "Accettato",
+  diagnosed: "Diagnosticato",
+  in_repair: "In lavorazione",
+  awaiting_parts: "Attesa ricambi",
+  ready_for_pickup: "Pronto al ritiro",
+  delivered: "Consegnato",
+  cancelled: "Annullato",
+};
+
+/** Ordine lineare per la timeline (cancelled è terminale fuori sequenza). */
+export const REPAIR_PUBLIC_STATUS_FLOW: RepairPublicStatus[] = [
+  "accepted",
+  "diagnosed",
+  "in_repair",
+  "awaiting_parts",
+  "ready_for_pickup",
+  "delivered",
+];
+
+/**
+ * Stato del preventivo. RICHIEDE estensione lato CRM: oggi il ticket ha
+ * `estimateCents` ma nessuno stato di approvazione cliente. Il CRM deve
+ * aggiungere il ciclo sent → approved/declined.
+ */
+export type RepairQuoteStatus = "none" | "sent" | "approved" | "declined";
+
+export type RepairQuotePublic = {
+  status: RepairQuoteStatus;
+  amountCents: number | null;
+  description: string | null;
+  validUntil: string | null; // ISO 8601
+  sentAt: string | null;
+  respondedAt: string | null;
+};
+
+export type RepairStatusHistoryPublic = {
+  status: RepairPublicStatus;
+  note: string | null;
+  timestamp: string; // ISO 8601
+};
+
+/** Vista pubblica del ticket — campi sensibili (devicePassword, costi interni,
+ *  customerId, tecnico) MAI esposti. imei già mascherato lato CRM. */
+export type RepairPublic = {
+  ticketNumber: string;
+  status: RepairPublicStatus;
+  deviceBrand: string | null;
+  deviceModel: string | null;
+  imeiMasked: string | null;
+  defectReported: string;
+  defectDiagnosed: string | null;
+  quote: RepairQuotePublic;
+  statusHistory: RepairStatusHistoryPublic[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type RepairLookupInput = {
+  ticket: string;
+  /** Ultime 4-6 cifre, match server-side su customerSnapshotPhone. */
+  phoneSuffix: string;
+};
+
+export type RepairQuoteAction = "accept" | "decline";
+
+export type RepairQuoteResponseInput = {
+  ticket: string;
+  phoneSuffix: string;
+  action: RepairQuoteAction;
+  reason?: string | null;
+};
+
+// ============================================================================
+// Area clienti B2C — login cliente finale
+//
+// RICHIEDE auth B2C lato CRM: oggi solo i customer con `isB2b=true` hanno
+// credenziali. Il CRM deve abilitare login per categoria locale/riparazione
+// (stesso meccanismo password dei B2B). Shape speculari a B2bLogin*.
+// ============================================================================
+
+export type CustomerProfile = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+};
+
+export type CustomerLoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type CustomerLoginResponse = {
+  sessionToken: string;
+  expiresAt: string;
+  customer: CustomerProfile;
+};
+
+/** Cruscotto area clienti: i ticket riparazione del cliente autenticato. */
+export type CustomerRepairsResponse = {
+  items: RepairPublic[];
+  total: number;
+};
+
+// ============================================================================
+// Usato in vendita — catalogo (GET /api/v1/public/used-devices)
+//
+// Allineato a docs/USED-DEVICES-API.md del CRM. Endpoint GIÀ LIVE.
+// ============================================================================
+
+export type UsedDeviceCondition = "ottimo" | "buono" | "discreto" | "rotto";
+
+export type UsedDevice = {
+  id: string;
+  channel: PublicChannel | "smartphonefix" | "fixhub";
+  brand: string;
+  model: string;
+  variant: string | null;
+  color: string | null;
+  condition: UsedDeviceCondition;
+  conditionLabel: string;
+  functional: boolean;
+  accessories: string | null;
+  warrantyMonths: number | null;
+  priceCents: number;
+  priceEur: string; // formattato it-IT, comodità
+  title: string;
+  description: string | null;
+  /** URL relativi al dominio CRM — vanno prefissati con CRM_PUBLIC_BASE_URL. */
+  photos: string[];
+  publishedAt: string; // ISO 8601
+};
+
+export type UsedDeviceListResponse = {
+  items: UsedDevice[];
+  total: number;
+  hasMore: boolean;
+};
+
+export type UsedDeviceListParams = {
+  channel?: string;
+  brand?: string;
+  condition?: UsedDeviceCondition;
+  search?: string;
+  limit?: number;
+  offset?: number;
+};

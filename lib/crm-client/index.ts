@@ -6,6 +6,8 @@ import * as realB2bProducts from "./b2b-products";
 import * as mockB2bProducts from "./mocks/b2b-products";
 import * as realRequests from "./requests";
 import * as mockRequests from "./mocks/requests";
+import * as realUsedDevices from "./used-devices";
+import * as mockUsedDevices from "./mocks/used-devices";
 
 /**
  * Flag mock granulari.
@@ -58,3 +60,8 @@ export const getB2bProductBySlug = USE_MOCK_B2B
 export const postSiteRequest = USE_MOCK_REQUESTS
   ? mockRequests.postSiteRequest
   : realRequests.postSiteRequest;
+
+// Usato in vendita (catalogo pubblico)
+export const getUsedDevices = USE_MOCK_PUBLIC
+  ? mockUsedDevices.getUsedDevices
+  : realUsedDevices.getUsedDevices;
