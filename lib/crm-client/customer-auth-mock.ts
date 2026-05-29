@@ -12,6 +12,7 @@ import {
   findMockCustomerByEmail,
   findMockCustomerById,
 } from "./mocks/customers";
+import { listRepairsByCustomer } from "./mocks/repairs";
 
 /**
  * Mock auth cliente B2C. Sostituisce ./customer-auth.ts finché il CRM non
@@ -65,7 +66,7 @@ export async function customerRegister(
     email: body.email,
     phone: body.phone,
   };
-  MOCK_CUSTOMER_ACCOUNTS.push({ customer, password: body.password, repairs: [] });
+  MOCK_CUSTOMER_ACCOUNTS.push({ customer, password: body.password });
   return issueSession(customer);
 }
 
@@ -96,7 +97,6 @@ export async function customerRepairs(
   sessionToken: string,
 ): Promise<CustomerRepairsResponse> {
   const customerId = requireSession(sessionToken);
-  const account = findMockCustomerById(customerId);
-  const items = account?.repairs ?? [];
+  const items = listRepairsByCustomer(customerId);
   return { items, total: items.length };
 }

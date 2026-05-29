@@ -1,98 +1,162 @@
-export type RepairStatusPublic =
-  | "ricevuto"
-  | "diagnosi"
-  | "preventivo"
-  | "approvato"
-  | "lavorazione"
-  | "pronto"
-  | "consegnato";
+import type { RepairPublic, RepairQuoteAction } from "../types";
 
-export interface RepairMock {
-  ticketNumber: string;
-  phoneSuffix: string; // ultime 4-6 cifre per verifica
-  status: RepairStatusPublic;
-  deviceBrand: string;
-  deviceModel: string;
-  imei: string;
-  defectReported: string;
-  statusHistory: {
-    status: RepairStatusPublic;
-    timestamp: string;
-    note: string;
-  }[];
-}
+/**
+ * Mock riparazioni allineato agli stati REALI del CRM (lib/repairs/types.ts:
+ * accepted/diagnosed/in_repair/awaiting_parts/ready_for_pickup/delivered/
+ * cancelled). Fonte unica usata sia dal tracker pubblico (lookup ticket +
+ * ultime cifre telefono) sia dalla dashboard area clienti.
+ *
+ * I campi `phoneSuffix` e `ownerCustomerId` sono interni: vengono rimossi
+ * prima di restituire un RepairPublic (toPublic).
+ */
 
-export const REPAIR_STATUSES: RepairStatusPublic[] = [
-  "ricevuto",
-  "diagnosi",
-  "preventivo",
-  "approvato",
-  "lavorazione",
-  "pronto",
-  "consegnato",
-];
-
-export const REPAIR_STATUS_LABELS: Record<RepairStatusPublic, string> = {
-  ricevuto: "Ricevuto",
-  diagnosi: "Diagnosi",
-  preventivo: "Preventivo",
-  approvato: "Approvato",
-  lavorazione: "Lavorazione",
-  pronto: "Pronto",
-  consegnato: "Consegnato",
+export type MockRepairRecord = RepairPublic & {
+  phoneSuffix: string;
+  ownerCustomerId: string | null;
 };
 
-export const mockRepairs: RepairMock[] = [
-  {
-    ticketNumber: "TKT-2026-0042",
-    phoneSuffix: "4567",
-    status: "lavorazione",
-    deviceBrand: "Apple",
-    deviceModel: "iPhone 15 Pro",
-    imei: "351234567890123",
-    defectReported: "Schermo rotto, touch non risponde",
-    statusHistory: [
-      { status: "ricevuto", timestamp: "2026-05-20T09:00:00Z", note: "Dispositivo ricevuto in negozio" },
-      { status: "diagnosi", timestamp: "2026-05-20T11:30:00Z", note: "Diagnosi: sostituzione display OLED" },
-      { status: "preventivo", timestamp: "2026-05-20T14:00:00Z", note: "Preventivo inviato al cliente: € 189,00" },
-      { status: "approvato", timestamp: "2026-05-20T16:15:00Z", note: "Preventivo approvato dal cliente" },
-      { status: "lavorazione", timestamp: "2026-05-21T08:00:00Z", note: "In lavorazione — sostituzione in corso" },
-    ],
-  },
-  {
-    ticketNumber: "TKT-2026-0038",
-    phoneSuffix: "8910",
-    status: "pronto",
-    deviceBrand: "Samsung",
-    deviceModel: "Galaxy S24 Ultra",
-    imei: "358765432109876",
-    defectReported: "Batteria si scarica in 2 ore",
-    statusHistory: [
-      { status: "ricevuto", timestamp: "2026-05-18T10:00:00Z", note: "Dispositivo ricevuto" },
-      { status: "diagnosi", timestamp: "2026-05-18T12:00:00Z", note: "Diagnosi: batteria degradata" },
-      { status: "preventivo", timestamp: "2026-05-18T15:00:00Z", note: "Preventivo: € 89,00" },
-      { status: "approvato", timestamp: "2026-05-18T17:00:00Z", note: "Approvato" },
-      { status: "lavorazione", timestamp: "2026-05-19T09:00:00Z", note: "Sostituzione batteria" },
-      { status: "pronto", timestamp: "2026-05-19T16:00:00Z", note: "Dispositivo pronto per il ritiro" },
-    ],
-  },
-  {
-    ticketNumber: "TKT-2026-0051",
-    phoneSuffix: "1122",
-    status: "diagnosi",
-    deviceBrand: "Google",
-    deviceModel: "Pixel 8 Pro",
-    imei: "354321098765432",
-    defectReported: "Fotocamera anteriore sfocata",
-    statusHistory: [
-      { status: "ricevuto", timestamp: "2026-05-22T08:30:00Z", note: "Dispositivo ricevuto" },
-      { status: "diagnosi", timestamp: "2026-05-22T10:00:00Z", note: "Diagnosi in corso" },
-    ],
-  },
-];
+function seed(): MockRepairRecord[] {
+  return [
+    {
+      ticketNumber: "TKT-2026-0042",
+      phoneSuffix: "4567",
+      ownerCustomerId: "cust-001",
+      status: "in_repair",
+      deviceBrand: "Apple",
+      deviceModel: "iPhone 15 Pro",
+      imeiMasked: "35****0123",
+      defectReported: "Schermo rotto, touch non risponde",
+      defectDiagnosed: "Sostituzione display OLED",
+      quote: {
+        status: "approved",
+        amountCents: 18900,
+        description: "Sostituzione display OLED originale + sigillatura",
+        validUntil: "2026-05-28T00:00:00.000Z",
+        sentAt: "2026-05-20T14:00:00.000Z",
+        respondedAt: "2026-05-20T16:15:00.000Z",
+      },
+      statusHistory: [
+        { status: "accepted", note: "Dispositivo ricevuto in negozio", timestamp: "2026-05-20T09:00:00.000Z" },
+        { status: "diagnosed", note: "Diagnosi: sostituzione display OLED", timestamp: "2026-05-20T11:30:00.000Z" },
+        { status: "in_repair", note: "Sostituzione in corso", timestamp: "2026-05-21T08:00:00.000Z" },
+      ],
+      createdAt: "2026-05-20T09:00:00.000Z",
+      updatedAt: "2026-05-21T08:00:00.000Z",
+    },
+    {
+      ticketNumber: "TKT-2026-0051",
+      phoneSuffix: "4567",
+      ownerCustomerId: "cust-001",
+      status: "diagnosed",
+      deviceBrand: "Samsung",
+      deviceModel: "Galaxy S24 Ultra",
+      imeiMasked: "35****9876",
+      defectReported: "Batteria si scarica in poche ore",
+      defectDiagnosed: "Batteria degradata",
+      quote: {
+        status: "sent",
+        amountCents: 8900,
+        description: "Sostituzione batteria originale Samsung",
+        validUntil: "2026-06-05T00:00:00.000Z",
+        sentAt: "2026-05-29T10:00:00.000Z",
+        respondedAt: null,
+      },
+      statusHistory: [
+        { status: "accepted", note: "Dispositivo ricevuto", timestamp: "2026-05-29T08:30:00.000Z" },
+        { status: "diagnosed", note: "Diagnosi: batteria degradata", timestamp: "2026-05-29T10:00:00.000Z" },
+      ],
+      createdAt: "2026-05-29T08:30:00.000Z",
+      updatedAt: "2026-05-29T10:00:00.000Z",
+    },
+    {
+      ticketNumber: "TKT-2026-0033",
+      phoneSuffix: "1122",
+      ownerCustomerId: null,
+      status: "ready_for_pickup",
+      deviceBrand: "Google",
+      deviceModel: "Pixel 8 Pro",
+      imeiMasked: "35****4432",
+      defectReported: "Vetro posteriore rotto",
+      defectDiagnosed: "Sostituzione back cover",
+      quote: {
+        status: "approved",
+        amountCents: 7900,
+        description: "Sostituzione vetro posteriore",
+        validUntil: "2026-05-26T00:00:00.000Z",
+        sentAt: "2026-05-23T10:00:00.000Z",
+        respondedAt: "2026-05-23T12:00:00.000Z",
+      },
+      statusHistory: [
+        { status: "accepted", note: "Ricevuto", timestamp: "2026-05-23T09:00:00.000Z" },
+        { status: "diagnosed", note: "Diagnosi: back cover", timestamp: "2026-05-23T10:00:00.000Z" },
+        { status: "in_repair", note: "Sostituzione", timestamp: "2026-05-24T09:00:00.000Z" },
+        { status: "ready_for_pickup", note: "Pronto al ritiro in negozio", timestamp: "2026-05-25T15:00:00.000Z" },
+      ],
+      createdAt: "2026-05-23T09:00:00.000Z",
+      updatedAt: "2026-05-25T15:00:00.000Z",
+    },
+  ];
+}
 
-export function findRepair(ticket: string, phoneSuffix: string): RepairMock | undefined {
-  return mockRepairs.find(
-    (r) => r.ticketNumber.toLowerCase() === ticket.toLowerCase() && r.phoneSuffix === phoneSuffix
+type GlobalWithRepairs = typeof globalThis & {
+  __mockRepairs?: MockRepairRecord[];
+};
+const g = globalThis as GlobalWithRepairs;
+const STORE: MockRepairRecord[] = g.__mockRepairs ?? (g.__mockRepairs = seed());
+
+function toPublic(r: MockRepairRecord): RepairPublic {
+  const { phoneSuffix: _ps, ownerCustomerId: _oc, ...pub } = r;
+  void _ps;
+  void _oc;
+  return pub;
+}
+
+export function findRepairPublic(
+  ticket: string,
+  phoneSuffix: string,
+): RepairPublic | null {
+  const r = STORE.find(
+    (x) =>
+      x.ticketNumber.toLowerCase() === ticket.toLowerCase() &&
+      x.phoneSuffix === phoneSuffix,
   );
+  return r ? toPublic(r) : null;
+}
+
+export function listRepairsByCustomer(customerId: string): RepairPublic[] {
+  return STORE.filter((x) => x.ownerCustomerId === customerId).map(toPublic);
+}
+
+export function respondToQuoteMock(
+  ticket: string,
+  phoneSuffix: string,
+  action: RepairQuoteAction,
+  reason?: string | null,
+): RepairPublic {
+  const r = STORE.find(
+    (x) =>
+      x.ticketNumber.toLowerCase() === ticket.toLowerCase() &&
+      x.phoneSuffix === phoneSuffix,
+  );
+  if (!r) {
+    const err = new Error("Ticket non trovato");
+    (err as Error & { code?: string }).code = "NOT_FOUND";
+    throw err;
+  }
+  if (r.quote.status !== "sent") {
+    const err = new Error("Nessun preventivo in attesa di risposta");
+    (err as Error & { code?: string }).code = "CONFLICT";
+    throw err;
+  }
+  r.quote = {
+    ...r.quote,
+    status: action === "accept" ? "approved" : "declined",
+    respondedAt: new Date().toISOString(),
+  };
+  if (action === "accept") {
+    r.status = "in_repair";
+  }
+  void reason;
+  r.updatedAt = new Date().toISOString();
+  return toPublic(r);
 }

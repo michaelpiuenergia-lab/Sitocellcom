@@ -4,64 +4,80 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
 import {
-  REPAIR_STATUSES,
-  REPAIR_STATUS_LABELS,
-  findRepair,
-  type RepairMock,
-} from "@/lib/crm-client/mocks/repairs";
-import { cn } from "@/lib/utils/cn";
-import { EASE, DURATION } from "@/lib/constants";
+  REPAIR_PUBLIC_STATUS_LABELS,
+  REPAIR_PUBLIC_STATUS_FLOW,
+  type RepairPublic,
+  type RepairPublicStatus,
+} from "@/lib/crm-client/types";
+import { RepairStatusBadge } from "./repair-status-badge";
 
 const schema = z.object({
   ticket: z.string().min(1, "Inserisci il numero ticket"),
-  phone: z.string().min(4, "Inserisci almeno 4 cifre").max(6, "Max 6 cifre"),
+  phone: z
+    .string()
+    .min(4, "Inserisci almeno 4 cifre")
+    .max(6, "Massimo 6 cifre"),
 });
 
-function maskImei(imei: string): string {
-  if (imei.length < 8) return imei;
-  return `${imei.slice(0, 2)}****${imei.slice(-4)}`;
+function formatEur(cents: number | null): string {
+  if (cents == null) return "—";
+  return new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(
+    cents / 100,
+  );
 }
 
-function StatusTimeline({ repair }: { repair: RepairMock }) {
-  const currentIndex = REPAIR_STATUSES.indexOf(repair.status);
+const inputClass =
+  "w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 transition-colors";
+const inputStyle = {
+  backgroundColor: "#ffffff",
+  border: "1px solid #e5e5e5",
+  fontSize: "15px",
+  color: "#0a0a0a",
+} as const;
+
+function StatusTimeline({ status }: { status: RepairPublicStatus }) {
+  if (status === "cancelled") {
+    return (
+      <div className="rounded-xl px-4 py-3" style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca" }}>
+        <span className="font-mono uppercase" style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#b91c1c" }}>
+          Riparazione annullata
+        </span>
+      </div>
+    );
+  }
+  const currentIndex = REPAIR_PUBLIC_STATUS_FLOW.indexOf(status);
 
   return (
-    <div className="w-full overflow-x-auto pb-4">
-      <div className="flex items-center gap-2 min-w-max">
-        {REPAIR_STATUSES.map((status, idx) => {
-          const isCompleted = idx < currentIndex;
-          const isActive = idx === currentIndex;
-          const isFuture = idx > currentIndex;
-
+    <div className="w-full overflow-x-auto pb-2">
+      <div className="flex items-center gap-1 min-w-max">
+        {REPAIR_PUBLIC_STATUS_FLOW.map((s, idx) => {
+          const done = idx < currentIndex;
+          const active = idx === currentIndex;
           return (
-            <div key={status} className="flex items-center gap-2">
-              <div className="flex flex-col items-center gap-2">
+            <div key={s} className="flex items-center gap-1">
+              <div className="flex flex-col items-center gap-2 w-[84px]">
                 <div
-                  className={cn(
-                    "w-3 h-3 rounded-full border-2 transition-all duration-500",
-                    isCompleted && "bg-green-500 border-green-500",
-                    isActive && "bg-brand-600 border-brand-600 shadow-[0_0_12px_rgba(220,38,38,0.6)] animate-pulse",
-                    isFuture && "bg-transparent border-muted"
-                  )}
+                  className="w-3 h-3 rounded-full"
+                  style={{
+                    backgroundColor: done ? "#16a34a" : active ? "#dc2626" : "transparent",
+                    border: `2px solid ${done ? "#16a34a" : active ? "#dc2626" : "#d4d4d4"}`,
+                    boxShadow: active ? "0 0 0 4px rgba(220,38,38,0.15)" : undefined,
+                  }}
                 />
                 <span
-                  className={cn(
-                    "text-[10px] uppercase tracking-wider whitespace-nowrap",
-                    isCompleted && "text-green-500",
-                    isActive && "text-brand-500 font-medium",
-                    isFuture && "text-muted-foreground"
-                  )}
+                  className="font-mono uppercase text-center leading-tight"
+                  style={{
+                    fontSize: "9px",
+                    letterSpacing: "0.08em",
+                    color: done ? "#16a34a" : active ? "#dc2626" : "#a3a3a3",
+                    fontWeight: active ? 600 : 400,
+                  }}
                 >
-                  {REPAIR_STATUS_LABELS[status]}
+                  {REPAIR_PUBLIC_STATUS_LABELS[s]}
                 </span>
               </div>
-              {idx < REPAIR_STATUSES.length - 1 && (
-                <div
-                  className={cn(
-                    "w-8 h-px transition-all duration-500",
-                    isCompleted ? "bg-green-500/50" : "bg-border"
-                  )}
-                />
+              {idx < REPAIR_PUBLIC_STATUS_FLOW.length - 1 && (
+                <div className="w-6 h-px mb-5" style={{ backgroundColor: done ? "#16a34a" : "#e5e5e5" }} />
               )}
             </div>
           );
@@ -71,65 +87,153 @@ function StatusTimeline({ repair }: { repair: RepairMock }) {
   );
 }
 
-function RepairResult({ repair }: { repair: RepairMock }) {
+function QuotePanel({
+  repair,
+  ticket,
+  phone,
+  onUpdated,
+}: {
+  repair: RepairPublic;
+  ticket: string;
+  phone: string;
+  onUpdated: (r: RepairPublic) => void;
+}) {
+  const [busy, setBusy] = useState<null | "accept" | "decline">(null);
+  const [error, setError] = useState<string | null>(null);
+  const q = repair.quote;
+
+  if (q.status === "none") return null;
+
+  async function respond(action: "accept" | "decline") {
+    setBusy(action);
+    setError(null);
+    try {
+      const res = await fetch("/api/repairs/respond", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticket, phone, action }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data?.error?.message ?? "Operazione non riuscita");
+      }
+      onUpdated(data as RepairPublic);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Errore");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  const tone =
+    q.status === "approved"
+      ? { bg: "#ecfdf5", border: "#a7f3d0", color: "#047857", label: "Preventivo accettato" }
+      : q.status === "declined"
+        ? { bg: "#fef2f2", border: "#fecaca", color: "#b91c1c", label: "Preventivo rifiutato" }
+        : { bg: "#fffbeb", border: "#fde68a", color: "#92400e", label: "Preventivo da approvare" };
+
+  return (
+    <div className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: tone.bg, border: `1px solid ${tone.border}` }}>
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <span className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.18em", color: tone.color }}>
+            {tone.label}
+          </span>
+          {q.description && <span style={{ fontSize: "14px", color: "#404040" }}>{q.description}</span>}
+          {q.validUntil && q.status === "sent" && (
+            <span style={{ fontSize: "12px", color: "#737373" }}>
+              Valido fino al {new Date(q.validUntil).toLocaleDateString("it-IT")}
+            </span>
+          )}
+        </div>
+        <span className="font-sans font-bold tabular-nums" style={{ fontSize: "26px", color: "#0a0a0a" }}>
+          {formatEur(q.amountCents)}
+        </span>
+      </div>
+
+      {q.status === "sent" && (
+        <>
+          {error && (
+            <p className="rounded-lg px-3 py-2" style={{ fontSize: "13px", color: "#b91c1c", backgroundColor: "#fff" }}>
+              {error}
+            </p>
+          )}
+          <div className="flex gap-3">
+            <button
+              type="button"
+              disabled={busy !== null}
+              onClick={() => respond("accept")}
+              className="flex-1 py-3 rounded-full transition-all disabled:opacity-60"
+              style={{ backgroundColor: "#16a34a", color: "#fff", fontSize: "14px", fontWeight: 600 }}
+            >
+              {busy === "accept" ? "Attendi…" : "Accetta il preventivo"}
+            </button>
+            <button
+              type="button"
+              disabled={busy !== null}
+              onClick={() => respond("decline")}
+              className="flex-1 py-3 rounded-full transition-all disabled:opacity-60"
+              style={{ border: "1px solid #dc2626", color: "#dc2626", fontSize: "14px", fontWeight: 600, backgroundColor: "transparent" }}
+            >
+              {busy === "decline" ? "Attendi…" : "Rifiuta"}
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+function RepairResult({
+  repair,
+  ticket,
+  phone,
+  onUpdated,
+}: {
+  repair: RepairPublic;
+  ticket: string;
+  phone: string;
+  onUpdated: (r: RepairPublic) => void;
+}) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: DURATION.slow, ease: EASE.smooth }}
-      className="flex flex-col gap-8"
+      className="flex flex-col gap-6"
     >
-      {/* Device info */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-6 rounded-2xl border border-border bg-card">
-          <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-4">
-            Dispositivo
-          </h3>
-          <div className="flex flex-col gap-2">
-            <p className="text-lg font-serif italic text-foreground">
+      <div className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "#ffffff", border: "1px solid #ececec" }}>
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-col gap-1">
+            <span className="font-mono" style={{ fontSize: "12px", color: "#737373" }}>{repair.ticketNumber}</span>
+            <h3 className="font-sans font-semibold" style={{ fontSize: "20px", color: "#0a0a0a" }}>
               {repair.deviceBrand} {repair.deviceModel}
-            </p>
-            <p className="text-sm text-muted-foreground font-mono">
-              IMEI: {maskImei(repair.imei)}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              {repair.defectReported}
-            </p>
+            </h3>
+            <p style={{ fontSize: "14px", color: "#525252" }}>{repair.defectReported}</p>
+            {repair.imeiMasked && (
+              <p className="font-mono" style={{ fontSize: "12px", color: "#a3a3a3" }}>IMEI {repair.imeiMasked}</p>
+            )}
           </div>
-        </div>
-
-        <div className="p-6 rounded-2xl border border-border bg-card">
-          <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-4">
-            Ticket
-          </h3>
-          <div className="flex flex-col gap-2">
-            <p className="text-lg font-mono text-foreground">{repair.ticketNumber}</p>
-            <p className="text-sm text-muted-foreground">
-              Stato attuale:{" "}
-              <span className="text-brand-500 font-medium">
-                {REPAIR_STATUS_LABELS[repair.status]}
-              </span>
-            </p>
-          </div>
+          <RepairStatusBadge status={repair.status} />
         </div>
       </div>
 
-      {/* Timeline */}
-      <div className="p-6 rounded-2xl border border-border bg-card">
-        <h3 className="text-xs font-mono uppercase tracking-wider text-muted-foreground mb-6">
-          Storico lavorazione
-        </h3>
-        <StatusTimeline repair={repair} />
-        <div className="mt-6 flex flex-col gap-3">
-          {repair.statusHistory.map((entry, i) => (
-            <div key={i} className="flex items-start gap-4">
-              <div className="w-2 h-2 mt-1.5 rounded-full bg-brand-600 shrink-0" />
+      <QuotePanel repair={repair} ticket={ticket} phone={phone} onUpdated={onUpdated} />
+
+      <div className="rounded-2xl p-6" style={{ backgroundColor: "#ffffff", border: "1px solid #ececec" }}>
+        <h4 className="font-mono uppercase mb-5" style={{ fontSize: "11px", letterSpacing: "0.18em", color: "#737373" }}>
+          Avanzamento
+        </h4>
+        <StatusTimeline status={repair.status} />
+        <div className="mt-5 flex flex-col gap-3">
+          {[...repair.statusHistory].reverse().map((entry, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <div className="w-2 h-2 mt-1.5 rounded-full shrink-0" style={{ backgroundColor: "#dc2626" }} />
               <div className="flex flex-col">
-                <span className="text-sm text-foreground">
-                  {REPAIR_STATUS_LABELS[entry.status]}
+                <span style={{ fontSize: "14px", color: "#0a0a0a" }}>
+                  {REPAIR_PUBLIC_STATUS_LABELS[entry.status]}
                 </span>
-                <span className="text-xs text-muted-foreground">{entry.note}</span>
-                <span className="text-[10px] text-muted-foreground font-mono">
+                {entry.note && <span style={{ fontSize: "13px", color: "#737373" }}>{entry.note}</span>}
+                <span className="font-mono" style={{ fontSize: "11px", color: "#a3a3a3" }}>
                   {new Date(entry.timestamp).toLocaleString("it-IT")}
                 </span>
               </div>
@@ -141,13 +245,14 @@ function RepairResult({ repair }: { repair: RepairMock }) {
   );
 }
 
-export function RepairTracker() {
-  const [ticket, setTicket] = useState("");
+export function RepairTracker({ initialTicket = "" }: { initialTicket?: string }) {
+  const [ticket, setTicket] = useState(initialTicket);
   const [phone, setPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [result, setResult] = useState<RepairMock | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [result, setResult] = useState<RepairPublic | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
     setResult(null);
@@ -158,69 +263,75 @@ export function RepairTracker() {
       return;
     }
 
-    const found = findRepair(ticket, phone);
-    if (!found) {
-      setError("Ticket non trovato. Verifica i dati inseriti.");
-      return;
+    setBusy(true);
+    try {
+      const qs = new URLSearchParams({ ticket, phone }).toString();
+      const res = await fetch(`/api/repairs/lookup?${qs}`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        throw new Error(data?.error?.message ?? "Ticket non trovato.");
+      }
+      setResult(data as RepairPublic);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Errore");
+    } finally {
+      setBusy(false);
     }
-
-    setResult(found);
-  };
+  }
 
   return (
-    <div className="max-w-[800px] mx-auto flex flex-col gap-8">
-      <div className="text-center flex flex-col gap-4">
-        <span className="font-mono text-xs uppercase tracking-[0.24em] text-brand-500">
-          <span className="text-brand-600">◢</span> Stato live dal nostro laboratorio
+    <div className="max-w-[760px] mx-auto flex flex-col gap-8">
+      <div className="flex flex-col gap-4">
+        <span className="font-mono uppercase" style={{ fontSize: "11px", letterSpacing: "0.28em", color: "#dc2626" }}>
+          Stato live dal laboratorio
         </span>
-        <h1 className="font-serif text-[clamp(36px,5vw,64px)] font-normal leading-[0.95] tracking-[-0.02em] text-foreground">
-          Traccia la tua <span className="italic shimmer-ruby">riparazione</span>
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Hai consegnato il telefono in laboratorio e vuoi sapere a che punto siamo?
-          Inserisci il numero ticket (lo trovi sulla ricevuta) e le ultime cifre del
-          telefono che hai lasciato. Ti mostriamo lo stato in tempo reale dal nostro
-          gestionale: ricevuto, in diagnosi, in attesa preventivo, in lavorazione,
-          pronto al ritiro. Niente "chiami in negozio per sapere", niente attese al
-          telefono, niente sorprese sul prezzo.
+        <h2 className="font-sans tracking-[-0.02em]" style={{ fontSize: "clamp(28px,4vw,44px)", fontWeight: 700, color: "#0a0a0a", lineHeight: 1.05 }}>
+          Traccia la tua riparazione
+        </h2>
+        <p style={{ fontSize: "16px", color: "#525252", maxWidth: "560px" }}>
+          Inserisci il numero ticket (sulla ricevuta) e le ultime cifre del telefono.
+          Vedi lo stato in tempo reale e, se c&apos;è un preventivo, lo accetti o rifiuti da qui.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="flex flex-col gap-2">
-            <label htmlFor="ticket" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-              Numero Ticket
+            <label htmlFor="ticket" className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#737373" }}>
+              Numero ticket
             </label>
             <input
               id="ticket"
-              type="text"
               value={ticket}
               onChange={(e) => setTicket(e.target.value)}
               placeholder="TKT-2026-0042"
-              className="px-4 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-600 transition-all"
+              className={inputClass}
+              style={inputStyle}
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="phone" className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
+            <label htmlFor="phone" className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#737373" }}>
               Telefono (ultime 4-6 cifre)
             </label>
             <input
               id="phone"
-              type="tel"
+              inputMode="numeric"
               value={phone}
               onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 6))}
               placeholder="4567"
-              className="px-4 py-3 rounded-xl bg-card border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-brand-600 transition-all"
+              className={inputClass}
+              style={inputStyle}
             />
           </div>
         </div>
 
         <button
           type="submit"
-          className="self-start px-7 py-3.5 rounded-[10px] bg-linear-to-br from-brand-600 to-brand-800 text-white font-semibold text-[15px] hover:shadow-[0_8px_32px_-8px_rgba(220,38,38,0.6)] transition-shadow duration-300"
+          disabled={busy}
+          className="self-start px-7 py-3.5 rounded-full transition-all duration-300 hover:shadow-[0_18px_44px_-12px_rgba(220,38,38,0.55)] disabled:opacity-60"
+          style={{ backgroundColor: "#dc2626", color: "#fff", fontSize: "15px", fontWeight: 600 }}
         >
-          Cerca riparazione
+          {busy ? "Cerco…" : "Cerca riparazione"}
         </button>
 
         <AnimatePresence>
@@ -229,7 +340,7 @@ export function RepairTracker() {
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
-              className="text-sm text-brand-500"
+              style={{ fontSize: "14px", color: "#dc2626" }}
             >
               {error}
             </motion.p>
@@ -238,7 +349,15 @@ export function RepairTracker() {
       </form>
 
       <AnimatePresence mode="wait">
-        {result && <RepairResult key={result.ticketNumber} repair={result} />}
+        {result && (
+          <RepairResult
+            key={result.ticketNumber}
+            repair={result}
+            ticket={ticket}
+            phone={phone}
+            onUpdated={setResult}
+          />
+        )}
       </AnimatePresence>
     </div>
   );

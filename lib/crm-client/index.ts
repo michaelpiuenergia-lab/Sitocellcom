@@ -10,6 +10,8 @@ import * as realUsedDevices from "./used-devices";
 import * as mockUsedDevices from "./mocks/used-devices";
 import * as realCustomerAuth from "./customer-auth";
 import * as mockCustomerAuth from "./customer-auth-mock";
+import * as realRepairs from "./repairs";
+import * as mockRepairs from "./repairs-mock";
 
 /**
  * Flag mock granulari.
@@ -84,3 +86,11 @@ export const customerMe = USE_MOCK_B2B
 export const customerRepairs = USE_MOCK_B2B
   ? mockCustomerAuth.customerRepairs
   : realCustomerAuth.customerRepairs;
+
+// Tracking riparazioni pubblico (lookup + risposta preventivo)
+export const lookupRepair = USE_MOCK_PUBLIC
+  ? mockRepairs.lookupRepair
+  : realRepairs.lookupRepair;
+export const respondToQuote = USE_MOCK_PUBLIC
+  ? mockRepairs.respondToQuote
+  : realRepairs.respondToQuote;
