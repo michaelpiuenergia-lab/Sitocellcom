@@ -5,18 +5,19 @@ import type {
   CustomerLoginRequest,
   CustomerLoginResponse,
   CustomerProfile,
-  CustomerRegisterRequest,
   CustomerRepairsResponse,
+  CustomerSetPasswordRequest,
 } from "./types";
 
 /**
  * Wrapper degli endpoint CRM auth cliente finale (B2C).
+ * Speculari ai B2B ma con header X-Customer-Session.
  *
- * Speculari ai B2B (lib/crm-client/auth.ts) ma per i customer non-B2B
- * (category locale/riparazione). Header sessione: X-Customer-Session.
+ * Onboarding: NO self-register. Lo staff CRM invita il cliente via email
+ * (token monouso, 7gg) → la pagina HUB /imposta-password chiama setPassword.
  *
- * RICHIEDE che il CRM esponga questi endpoint pubblici (vedi brief inviato):
- *   POST /api/v1/public/customer/login | register | logout
+ * Endpoint CRM:
+ *   POST /api/v1/public/customer/login | logout | set-password
  *   GET  /api/v1/public/customer/me | repairs
  */
 
@@ -29,10 +30,10 @@ export async function customerLogin(
   });
 }
 
-export async function customerRegister(
-  body: CustomerRegisterRequest,
-): Promise<CustomerLoginResponse> {
-  return crmFetch<CustomerLoginResponse>("/api/v1/public/customer/register", {
+export async function customerSetPassword(
+  body: CustomerSetPasswordRequest,
+): Promise<{ ok: true }> {
+  return crmFetch<{ ok: true }>("/api/v1/public/customer/set-password", {
     method: "POST",
     body,
   });

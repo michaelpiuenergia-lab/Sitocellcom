@@ -74,9 +74,9 @@ export const getUsedDevices = USE_MOCK_PUBLIC
 export const customerLogin = USE_MOCK_B2B
   ? mockCustomerAuth.customerLogin
   : realCustomerAuth.customerLogin;
-export const customerRegister = USE_MOCK_B2B
-  ? mockCustomerAuth.customerRegister
-  : realCustomerAuth.customerRegister;
+export const customerSetPassword = USE_MOCK_B2B
+  ? mockCustomerAuth.customerSetPassword
+  : realCustomerAuth.customerSetPassword;
 export const customerLogout = USE_MOCK_B2B
   ? mockCustomerAuth.customerLogout
   : realCustomerAuth.customerLogout;

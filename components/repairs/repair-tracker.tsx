@@ -234,7 +234,7 @@ function RepairResult({
                 </span>
                 {entry.note && <span style={{ fontSize: "13px", color: "#737373" }}>{entry.note}</span>}
                 <span className="font-mono" style={{ fontSize: "11px", color: "#a3a3a3" }}>
-                  {new Date(entry.timestamp).toLocaleString("it-IT")}
+                  {new Date(entry.at).toLocaleString("it-IT")}
                 </span>
               </div>
             </div>

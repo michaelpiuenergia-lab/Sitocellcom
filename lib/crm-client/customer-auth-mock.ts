@@ -4,8 +4,8 @@ import type {
   CustomerLoginRequest,
   CustomerLoginResponse,
   CustomerProfile,
-  CustomerRegisterRequest,
   CustomerRepairsResponse,
+  CustomerSetPasswordRequest,
 } from "./types";
 import {
   MOCK_CUSTOMER_ACCOUNTS,
@@ -18,6 +18,10 @@ import { listRepairsByCustomer } from "./mocks/repairs";
  * Mock auth cliente B2C. Sostituisce ./customer-auth.ts finché il CRM non
  * espone i veri endpoint. Token mock non sicuro; il cookie HttpOnly è
  * comunque firmato in lib/auth/customer-session.ts.
+ *
+ * Mock invite token: per testare set-password in dev usa
+ *   /imposta-password?token=invite-cust-001-demo
+ * (associa la nuova password a cliente@demo.cellcom.it).
  */
 
 type GlobalWithSessions = typeof globalThis & {
@@ -54,20 +58,27 @@ export async function customerLogin(
   return issueSession(account.customer);
 }
 
-export async function customerRegister(
-  body: CustomerRegisterRequest,
-): Promise<CustomerLoginResponse> {
-  if (findMockCustomerByEmail(body.email)) {
-    throw authError("EMAIL_EXISTS", "Email già registrata");
+/**
+ * Mock set-password. Token format: `invite-<customerId>-<random>`.
+ * In dev usa `invite-cust-001-demo` per il seed account.
+ */
+export async function customerSetPassword(
+  body: CustomerSetPasswordRequest,
+): Promise<{ ok: true }> {
+  const match = body.token.match(/^invite-(.+?)-[a-z0-9]+$/i);
+  if (!match) {
+    throw authError("INVALID_TOKEN", "Link non valido o scaduto");
   }
-  const customer: CustomerProfile = {
-    id: `cust-${Math.random().toString(36).slice(2, 8)}`,
-    name: body.name,
-    email: body.email,
-    phone: body.phone,
-  };
-  MOCK_CUSTOMER_ACCOUNTS.push({ customer, password: body.password });
-  return issueSession(customer);
+  const customerId = match[1];
+  const account = MOCK_CUSTOMER_ACCOUNTS.find((a) => a.customer.id === customerId);
+  if (!account) {
+    throw authError("INVALID_TOKEN", "Link non valido o scaduto");
+  }
+  if (body.password.length < 8) {
+    throw authError("INVALID_PAYLOAD", "Minimo 8 caratteri");
+  }
+  account.password = body.password;
+  return { ok: true };
 }
 
 export async function customerLogout(sessionToken: string): Promise<void> {
@@ -76,10 +87,10 @@ export async function customerLogout(sessionToken: string): Promise<void> {
 
 function requireSession(sessionToken: string): string {
   const session = SESSIONS.get(sessionToken);
-  if (!session) throw authError("UNAUTHORIZED", "Sessione non valida");
+  if (!session) throw authError("INVALID_SESSION", "Sessione non valida");
   if (new Date(session.expiresAt).getTime() < Date.now()) {
     SESSIONS.delete(sessionToken);
-    throw authError("UNAUTHORIZED", "Sessione scaduta");
+    throw authError("INVALID_SESSION", "Sessione scaduta");
   }
   return session.customerId;
 }
@@ -89,7 +100,7 @@ export async function customerMe(
 ): Promise<CustomerProfile> {
   const customerId = requireSession(sessionToken);
   const account = findMockCustomerById(customerId);
-  if (!account) throw authError("UNAUTHORIZED", "Cliente non trovato");
+  if (!account) throw authError("INVALID_SESSION", "Cliente non trovato");
   return account.customer;
 }
 
@@ -97,6 +108,11 @@ export async function customerRepairs(
   sessionToken: string,
 ): Promise<CustomerRepairsResponse> {
   const customerId = requireSession(sessionToken);
-  const items = listRepairsByCustomer(customerId);
-  return { items, total: items.length };
+  // In lista lo statusHistory è vuoto (vedi doc CRM §3) — per il dettaglio
+  // si chiama lookupRepair.
+  const repairs = listRepairsByCustomer(customerId).map((r) => ({
+    ...r,
+    statusHistory: [],
+  }));
+  return { repairs };
 }

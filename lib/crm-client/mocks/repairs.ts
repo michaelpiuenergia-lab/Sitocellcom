@@ -34,11 +34,12 @@ function seed(): MockRepairRecord[] {
         validUntil: "2026-05-28T00:00:00.000Z",
         sentAt: "2026-05-20T14:00:00.000Z",
         respondedAt: "2026-05-20T16:15:00.000Z",
+        declineReason: null,
       },
       statusHistory: [
-        { status: "accepted", note: "Dispositivo ricevuto in negozio", timestamp: "2026-05-20T09:00:00.000Z" },
-        { status: "diagnosed", note: "Diagnosi: sostituzione display OLED", timestamp: "2026-05-20T11:30:00.000Z" },
-        { status: "in_repair", note: "Sostituzione in corso", timestamp: "2026-05-21T08:00:00.000Z" },
+        { status: "accepted", note: "Dispositivo ricevuto in negozio", at: "2026-05-20T09:00:00.000Z" },
+        { status: "diagnosed", note: "Diagnosi: sostituzione display OLED", at: "2026-05-20T11:30:00.000Z" },
+        { status: "in_repair", note: "Sostituzione in corso", at: "2026-05-21T08:00:00.000Z" },
       ],
       createdAt: "2026-05-20T09:00:00.000Z",
       updatedAt: "2026-05-21T08:00:00.000Z",
@@ -60,10 +61,11 @@ function seed(): MockRepairRecord[] {
         validUntil: "2026-06-05T00:00:00.000Z",
         sentAt: "2026-05-29T10:00:00.000Z",
         respondedAt: null,
+        declineReason: null,
       },
       statusHistory: [
-        { status: "accepted", note: "Dispositivo ricevuto", timestamp: "2026-05-29T08:30:00.000Z" },
-        { status: "diagnosed", note: "Diagnosi: batteria degradata", timestamp: "2026-05-29T10:00:00.000Z" },
+        { status: "accepted", note: "Dispositivo ricevuto", at: "2026-05-29T08:30:00.000Z" },
+        { status: "diagnosed", note: "Diagnosi: batteria degradata", at: "2026-05-29T10:00:00.000Z" },
       ],
       createdAt: "2026-05-29T08:30:00.000Z",
       updatedAt: "2026-05-29T10:00:00.000Z",
@@ -85,12 +87,13 @@ function seed(): MockRepairRecord[] {
         validUntil: "2026-05-26T00:00:00.000Z",
         sentAt: "2026-05-23T10:00:00.000Z",
         respondedAt: "2026-05-23T12:00:00.000Z",
+        declineReason: null,
       },
       statusHistory: [
-        { status: "accepted", note: "Ricevuto", timestamp: "2026-05-23T09:00:00.000Z" },
-        { status: "diagnosed", note: "Diagnosi: back cover", timestamp: "2026-05-23T10:00:00.000Z" },
-        { status: "in_repair", note: "Sostituzione", timestamp: "2026-05-24T09:00:00.000Z" },
-        { status: "ready_for_pickup", note: "Pronto al ritiro in negozio", timestamp: "2026-05-25T15:00:00.000Z" },
+        { status: "accepted", note: "Ricevuto", at: "2026-05-23T09:00:00.000Z" },
+        { status: "diagnosed", note: "Diagnosi: back cover", at: "2026-05-23T10:00:00.000Z" },
+        { status: "in_repair", note: "Sostituzione", at: "2026-05-24T09:00:00.000Z" },
+        { status: "ready_for_pickup", note: "Pronto al ritiro in negozio", at: "2026-05-25T15:00:00.000Z" },
       ],
       createdAt: "2026-05-23T09:00:00.000Z",
       updatedAt: "2026-05-25T15:00:00.000Z",
@@ -152,11 +155,11 @@ export function respondToQuoteMock(
     ...r.quote,
     status: action === "accept" ? "approved" : "declined",
     respondedAt: new Date().toISOString(),
+    declineReason: action === "decline" ? (reason ?? null) : null,
   };
   if (action === "accept") {
     r.status = "in_repair";
   }
-  void reason;
   r.updatedAt = new Date().toISOString();
   return toPublic(r);
 }

@@ -3,7 +3,7 @@ import { optionalCustomerSession } from "@/lib/auth/customer-guards";
 import { AuthForm } from "./auth-form";
 import { LogoC } from "@/components/marketing/logo-c";
 
-type SearchParams = Promise<{ next?: string; reason?: string; mode?: string }>;
+type SearchParams = Promise<{ next?: string; reason?: string }>;
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +12,7 @@ export default async function ClientiLoginPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const { next, reason, mode } = await searchParams;
+  const { next, reason } = await searchParams;
   const existing = await optionalCustomerSession();
   if (existing) {
     redirect(next ?? "/clienti");
@@ -56,7 +56,7 @@ export default async function ClientiLoginPage({
             </p>
           )}
 
-          <AuthForm next={next} initialMode={mode === "register" ? "register" : "login"} />
+          <AuthForm next={next} />
         </div>
 
         <a

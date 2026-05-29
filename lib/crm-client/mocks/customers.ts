@@ -20,6 +20,7 @@ export const MOCK_CUSTOMER_ACCOUNTS: MockCustomerAccount[] = [
       name: "Mario Rossi",
       email: "cliente@demo.cellcom.it",
       phone: "3331234567",
+      category: "riparazione",
     },
     password: "demo1234",
   },

@@ -92,9 +92,8 @@ function RepairCard({ repair }: { repair: RepairPublic }) {
 
 export default async function ClientiDashboardPage() {
   const { customer, sessionToken } = await requireCustomerSession("/clienti");
-  const { items } = await customerRepairs(sessionToken).catch(() => ({
-    items: [] as RepairPublic[],
-    total: 0,
+  const { repairs } = await customerRepairs(sessionToken).catch(() => ({
+    repairs: [] as RepairPublic[],
   }));
 
   return (
@@ -113,9 +112,9 @@ export default async function ClientiDashboardPage() {
           </p>
         </div>
 
-        {items.length > 0 ? (
+        {repairs.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {items.map((r) => (
+            {repairs.map((r) => (
               <RepairCard key={r.ticketNumber} repair={r} />
             ))}
           </div>

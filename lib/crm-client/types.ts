@@ -309,12 +309,13 @@ export type RepairQuotePublic = {
   validUntil: string | null; // ISO 8601
   sentAt: string | null;
   respondedAt: string | null;
+  declineReason: string | null;
 };
 
 export type RepairStatusHistoryPublic = {
   status: RepairPublicStatus;
   note: string | null;
-  timestamp: string; // ISO 8601
+  at: string; // ISO 8601
 };
 
 /** Vista pubblica del ticket — campi sensibili (devicePassword, costi interni,
@@ -356,11 +357,23 @@ export type RepairQuoteResponseInput = {
 // (stesso meccanismo password dei B2B). Shape speculari a B2bLogin*.
 // ============================================================================
 
+/**
+ * Categorie cliente CRM (vedi lib/customers/types.ts CRM). Per il portale B2C
+ * tipicamente `riparazione` o `locale`. `b2b` non passa di qui (usa /api/v1/b2b).
+ */
+export type CustomerCategory =
+  | "locale"
+  | "b2b"
+  | "ricambi"
+  | "corsista"
+  | "riparazione";
+
 export type CustomerProfile = {
   id: string;
   name: string;
   email: string;
   phone: string | null;
+  category: CustomerCategory;
 };
 
 export type CustomerLoginRequest = {
@@ -368,11 +381,14 @@ export type CustomerLoginRequest = {
   password: string;
 };
 
-export type CustomerRegisterRequest = {
-  name: string;
-  email: string;
+/**
+ * Set-password onboarding (link email). Il CRM non espone self-register:
+ * lo staff invita il cliente da admin, parte email con token monouso (7gg),
+ * la pagina HUB /imposta-password chiama questo endpoint.
+ */
+export type CustomerSetPasswordRequest = {
+  token: string;
   password: string;
-  phone: string | null;
 };
 
 export type CustomerLoginResponse = {
@@ -381,10 +397,13 @@ export type CustomerLoginResponse = {
   customer: CustomerProfile;
 };
 
-/** Cruscotto area clienti: i ticket riparazione del cliente autenticato. */
+/**
+ * Cruscotto area clienti: i ticket riparazione del cliente autenticato.
+ * In lista lo `statusHistory` è `[]` per performance (vedi doc CRM):
+ * per lo storico completo si chiama `lookupRepair`.
+ */
 export type CustomerRepairsResponse = {
-  items: RepairPublic[];
-  total: number;
+  repairs: RepairPublic[];
 };
 
 // ============================================================================

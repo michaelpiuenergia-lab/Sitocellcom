@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-type Mode = "login" | "register";
-
 const inputClass =
   "w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors duration-200";
 const inputStyle = {
@@ -13,25 +11,15 @@ const inputStyle = {
   fontSize: "15px",
   color: "#0a0a0a",
 } as const;
-const labelClass = "font-mono uppercase";
 const labelStyle = {
   fontSize: "10px",
   letterSpacing: "0.22em",
   color: "#737373",
 } as const;
 
-export function AuthForm({
-  next,
-  initialMode = "login",
-}: {
-  next?: string;
-  initialMode?: Mode;
-}) {
+export function AuthForm({ next }: { next?: string }) {
   const router = useRouter();
-  const [mode, setMode] = useState<Mode>(initialMode);
-  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -41,22 +29,16 @@ export function AuthForm({
     setError(null);
     setBusy(true);
     try {
-      const endpoint =
-        mode === "login" ? "/api/auth/customer/login" : "/api/auth/customer/register";
-      const body =
-        mode === "login"
-          ? { email, password }
-          : { name, email, password, phone: phone || null };
-      const res = await fetch(endpoint, {
+      const res = await fetch("/api/auth/customer/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ email, password }),
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as {
           error?: { message?: string };
         };
-        throw new Error(data?.error?.message ?? "Operazione non riuscita");
+        throw new Error(data?.error?.message ?? "Credenziali non valide");
       }
       router.push(next ?? "/clienti");
       router.refresh();
@@ -74,36 +56,16 @@ export function AuthForm({
           className="font-sans tracking-[-0.02em]"
           style={{ fontSize: "28px", color: "#0a0a0a", fontWeight: 700, lineHeight: 1.1 }}
         >
-          {mode === "login" ? "Accedi" : "Crea il tuo account"}
+          Accedi
         </h1>
         <p style={{ fontSize: "14px", color: "#525252" }}>
-          {mode === "login"
-            ? "Vedi le tue riparazioni, i preventivi e i prezzi riservati."
-            : "Registrati per seguire le riparazioni e vedere i prezzi."}
+          Vedi le tue riparazioni, i preventivi e i prezzi riservati.
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {mode === "register" && (
-          <div className="flex flex-col gap-2">
-            <label className={labelClass} style={labelStyle}>
-              Nome e cognome
-            </label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              autoComplete="name"
-              placeholder="Mario Rossi"
-              className={inputClass}
-              style={inputStyle}
-            />
-          </div>
-        )}
-
         <div className="flex flex-col gap-2">
-          <label className={labelClass} style={labelStyle}>
+          <label className="font-mono uppercase" style={labelStyle}>
             Email
           </label>
           <input
@@ -112,31 +74,15 @@ export function AuthForm({
             onChange={(e) => setEmail(e.target.value)}
             required
             autoComplete="email"
+            autoFocus
             placeholder="nome@email.it"
             className={inputClass}
             style={inputStyle}
           />
         </div>
 
-        {mode === "register" && (
-          <div className="flex flex-col gap-2">
-            <label className={labelClass} style={labelStyle}>
-              Telefono (opzionale)
-            </label>
-            <input
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              autoComplete="tel"
-              placeholder="333 1234567"
-              className={inputClass}
-              style={inputStyle}
-            />
-          </div>
-        )}
-
         <div className="flex flex-col gap-2">
-          <label className={labelClass} style={labelStyle}>
+          <label className="font-mono uppercase" style={labelStyle}>
             Password
           </label>
           <input
@@ -144,7 +90,7 @@ export function AuthForm({
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            autoComplete={mode === "login" ? "current-password" : "new-password"}
+            autoComplete="current-password"
             placeholder="••••••••"
             className={inputClass}
             style={inputStyle}
@@ -177,46 +123,16 @@ export function AuthForm({
             letterSpacing: "-0.01em",
           }}
         >
-          {busy
-            ? "Attendi…"
-            : mode === "login"
-              ? "Accedi →"
-              : "Crea account →"}
+          {busy ? "Accesso in corso…" : "Accedi →"}
         </button>
       </form>
 
       <p className="text-center" style={{ fontSize: "14px", color: "#525252" }}>
-        {mode === "login" ? (
-          <>
-            Non hai un account?{" "}
-            <button
-              type="button"
-              onClick={() => {
-                setMode("register");
-                setError(null);
-              }}
-              className="hover:underline"
-              style={{ color: "#dc2626", fontWeight: 500 }}
-            >
-              Registrati
-            </button>
-          </>
-        ) : (
-          <>
-            Hai già un account?{" "}
-            <button
-              type="button"
-              onClick={() => {
-                setMode("login");
-                setError(null);
-              }}
-              className="hover:underline"
-              style={{ color: "#dc2626", fontWeight: 500 }}
-            >
-              Accedi
-            </button>
-          </>
-        )}
+        Non hai ancora le credenziali?{" "}
+        <span style={{ color: "#0a0a0a" }}>
+          Porta un dispositivo in riparazione: ti arriverà via email un link per
+          impostare la password.
+        </span>
       </p>
     </div>
   );
