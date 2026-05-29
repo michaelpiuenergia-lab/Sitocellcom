@@ -368,6 +368,13 @@ export type CustomerLoginRequest = {
   password: string;
 };
 
+export type CustomerRegisterRequest = {
+  name: string;
+  email: string;
+  password: string;
+  phone: string | null;
+};
+
 export type CustomerLoginResponse = {
   sessionToken: string;
   expiresAt: string;

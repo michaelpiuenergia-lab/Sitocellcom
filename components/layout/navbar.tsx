@@ -87,8 +87,20 @@ export function Navbar() {
         {/* CTA destra */}
         <div className="hidden lg:flex items-center gap-3 shrink-0">
           <a
+            href="/clienti"
+            className="px-3 py-2 transition-colors duration-200 hover:text-brand-600"
+            style={{
+              fontSize: "13px",
+              fontWeight: 500,
+              color: "#525252",
+              letterSpacing: "0.02em",
+            }}
+          >
+            Accedi
+          </a>
+          <a
             href="/b2b"
-            className="px-4 py-2 transition-colors duration-200 hover:text-brand-600"
+            className="px-3 py-2 transition-colors duration-200 hover:text-brand-600"
             style={{
               fontSize: "13px",
               fontWeight: 500,
@@ -170,6 +182,14 @@ export function Navbar() {
                   {link.label}
                 </a>
               ))}
+              <a
+                href="/clienti"
+                onClick={() => setIsOpen(false)}
+                className="py-2.5"
+                style={{ fontSize: "16px", fontWeight: 500, color: "#0a0a0a" }}
+              >
+                Area clienti
+              </a>
               <div className="flex items-center gap-3 mt-3 pt-4 border-t border-[#ececec]">
                 <a
                   href="/b2b"

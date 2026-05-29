@@ -8,6 +8,8 @@ import * as realRequests from "./requests";
 import * as mockRequests from "./mocks/requests";
 import * as realUsedDevices from "./used-devices";
 import * as mockUsedDevices from "./mocks/used-devices";
+import * as realCustomerAuth from "./customer-auth";
+import * as mockCustomerAuth from "./customer-auth-mock";
 
 /**
  * Flag mock granulari.
@@ -65,3 +67,20 @@ export const postSiteRequest = USE_MOCK_REQUESTS
 export const getUsedDevices = USE_MOCK_PUBLIC
   ? mockUsedDevices.getUsedDevices
   : realUsedDevices.getUsedDevices;
+
+// Auth cliente finale (B2C) — area clienti
+export const customerLogin = USE_MOCK_B2B
+  ? mockCustomerAuth.customerLogin
+  : realCustomerAuth.customerLogin;
+export const customerRegister = USE_MOCK_B2B
+  ? mockCustomerAuth.customerRegister
+  : realCustomerAuth.customerRegister;
+export const customerLogout = USE_MOCK_B2B
+  ? mockCustomerAuth.customerLogout
+  : realCustomerAuth.customerLogout;
+export const customerMe = USE_MOCK_B2B
+  ? mockCustomerAuth.customerMe
+  : realCustomerAuth.customerMe;
+export const customerRepairs = USE_MOCK_B2B
+  ? mockCustomerAuth.customerRepairs
+  : realCustomerAuth.customerRepairs;
