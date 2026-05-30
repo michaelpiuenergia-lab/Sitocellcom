@@ -76,14 +76,17 @@ function SamsungPhoneModel({
 
 export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [inView, setInView] = useState(false);
+  // inView parte a true così la rotazione attacca SUBITO al mount; l'IO
+  // spegne solo quando prova che siamo offscreen. Risolve il timing in cui
+  // un IO che non scatta lasciava frameloop="never".
+  const [inView, setInView] = useState(true);
 
   useEffect(() => {
     const node = wrapperRef.current;
     if (!node) return;
     const obs = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0, rootMargin: "100px" },
+      { threshold: 0, rootMargin: "200px" },
     );
     obs.observe(node);
     return () => obs.disconnect();
@@ -98,9 +101,10 @@ export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
         camera={{ position: [0, 0, 7], fov: 32 }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: true, powerPreference: "low-power" }}
-        // demand: render solo dopo invalidate() (es. rotation cambia).
-        // Quando fuori viewport: "never" — nessun render.
-        frameloop={inView ? "demand" : "never"}
+        // "always" in viewport: garantisce che useFrame giri ad ogni frame e
+        // legga rotationDeg.get() (senza dipendere dalla subscription change
+        // fragile del demand). "never" fuori: zero render quando offscreen.
+        frameloop={inView ? "always" : "never"}
       >
         {/* Lighting alleggerito: hemisphere (full ambient) + 2 directional.
             Tolti 2 directional e 2 point lights — meno shader work. */}
