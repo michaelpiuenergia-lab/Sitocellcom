@@ -37,11 +37,11 @@ const brands = [
     url: "https://www.italianparts.it",
   },
   {
-    name: "SmartphoneFix.it",
+    name: "Cellcom Academy",
     role: "Academy",
     description:
       "La scuola interna dove formiamo i nostri tecnici. Aperta anche a chi vuole imparare il mestiere.",
-    url: "https://smartphonefix.it",
+    url: "/corsi",
   },
   {
     name: "FixHub.it",

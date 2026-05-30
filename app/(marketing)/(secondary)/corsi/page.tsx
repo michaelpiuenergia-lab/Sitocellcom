@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { RequestTrigger } from "@/components/forms/request-trigger";
 
 export const metadata: Metadata = {
   title: "Corsi — Cellcom Group",
@@ -60,7 +61,7 @@ export default function CorsiPage() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              SmartphoneFix Academy
+              Cellcom Academy
             </span>
             <h1
               className="font-sans tracking-[-0.025em]"
@@ -88,26 +89,18 @@ export default function CorsiPage() {
               di frequenza e corsia preferenziale per assunzioni interne.
             </p>
             <div className="flex flex-wrap gap-4 mt-3">
-              <a
-                href="https://smartphonefix.it"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2.5 rounded-full px-7 py-3.5 transition-all duration-300 hover:shadow-[0_18px_44px_-12px_rgba(220,38,38,0.55)]"
-                style={{
-                  backgroundColor: "#dc2626",
-                  color: "#ffffff",
-                  fontSize: "15px",
-                  fontWeight: 600,
+              <RequestTrigger
+                kind="info"
+                product={{
+                  id: null,
+                  slug: null,
+                  name: "Cellcom Academy — Corsi di riparazione",
+                  variantId: null,
+                  variantLabel: null,
                 }}
-              >
-                Iscriviti sul portale Academy
-                <span
-                  aria-hidden
-                  className="transition-transform duration-300 group-hover:translate-x-1"
-                >
-                  ↗
-                </span>
-              </a>
+                label="Richiedi info iscrizioni →"
+                className="px-7 py-3.5 rounded-full"
+              />
               <Link
                 href="#livelli"
                 className="inline-flex items-center gap-2 rounded-full px-7 py-3.5"
@@ -328,8 +321,8 @@ export default function CorsiPage() {
               fontWeight: 700,
             }}
           >
-            Iscrizioni, calendario e dettagli economici{" "}
-            <span style={{ color: "#dc2626" }}>sul portale Academy.</span>
+            Iscriviti al prossimo{" "}
+            <span style={{ color: "#dc2626" }}>corso in partenza.</span>
           </h2>
           <p
             className="mx-auto mt-6 leading-relaxed"
@@ -339,30 +332,23 @@ export default function CorsiPage() {
               maxWidth: "560px",
             }}
           >
-            La parte didattica è gestita direttamente da SmartphoneFix.it: lì
-            trovi tutte le date, prezzi tier (privati / centri assistenza /
-            scuole), agevolazioni e form di iscrizione.
+            Calendario, prezzi tier (privati / centri assistenza / scuole) e
+            agevolazioni: ti rispondiamo entro 24h con tutto quello che ti serve.
           </p>
-          <a
-            href="https://smartphonefix.it"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2.5 rounded-full px-7 py-3.5 mt-8 transition-all duration-300 hover:shadow-[0_18px_44px_-12px_rgba(220,38,38,0.55)]"
-            style={{
-              backgroundColor: "#dc2626",
-              color: "#ffffff",
-              fontSize: "15px",
-              fontWeight: 600,
-            }}
-          >
-            Vai a SmartphoneFix.it
-            <span
-              aria-hidden
-              className="transition-transform duration-300 group-hover:translate-x-1"
-            >
-              ↗
-            </span>
-          </a>
+          <div className="flex justify-center mt-8">
+            <RequestTrigger
+              kind="info"
+              product={{
+                id: null,
+                slug: null,
+                name: "Cellcom Academy — Iscrizione corso",
+                variantId: null,
+                variantLabel: null,
+              }}
+              label="Richiedi calendario e iscrizione →"
+              className="px-7 py-3.5 rounded-full"
+            />
+          </div>
         </div>
       </section>
     </>

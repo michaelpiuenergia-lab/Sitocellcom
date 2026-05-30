@@ -100,7 +100,7 @@ const PILLARS: readonly Pillar[] = [
       </>
     ),
     body:
-      "Tre livelli alla SmartphoneFix Academy: base, intermedio, microsaldatura BGA. Gli stessi formatori dei nostri tecnici.",
+      "Tre livelli alla Cellcom Academy: base, intermedio, microsaldatura BGA. Gli stessi formatori dei nostri tecnici.",
     bullets: [
       "Postazioni ESD professionali",
       "Aule limitate a 6 allievi",
