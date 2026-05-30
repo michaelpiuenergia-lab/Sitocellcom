@@ -71,6 +71,28 @@ export function Footer() {
           </span>
         </div>
       </div>
+      <div
+        className="max-w-[1400px] mx-auto px-6 lg:px-12 pb-8"
+        style={{ borderTop: "1px solid #1f1f1f", paddingTop: "24px" }}
+      >
+        <p
+          className="text-center font-mono"
+          style={{
+            fontSize: "10px",
+            letterSpacing: "0.06em",
+            color: "#525252",
+            lineHeight: 1.7,
+          }}
+        >
+          CELLCOM SRLS · Via Calatafimi 52, 63074 San Benedetto del Tronto (AP) · P.IVA 02576350447 · PEC{" "}
+          <a href="mailto:cellcom25@pec.it" className="hover:text-brand-500">cellcom25@pec.it</a> · Tel{" "}
+          <a href="tel:+393444555678" className="hover:text-brand-500">+39 344 455 5678</a>
+          <span className="mx-2">|</span>
+          FAST-FIX di Sarker Srabon · Piazza G. Garibaldi 31, 63074 San Benedetto del Tronto (AP) · Tel{" "}
+          <a href="tel:0735501637" className="hover:text-brand-500">0735 501637</a> · WhatsApp{" "}
+          <a href="tel:+393208574006" className="hover:text-brand-500">320 857 4006</a>
+        </p>
+      </div>
     </footer>
   );
 }

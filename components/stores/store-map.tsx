@@ -46,8 +46,31 @@ function StoreCard({
       <p className="text-sm text-muted-foreground">
         {store.cap} {store.city} ({store.province})
       </p>
-      <p className="text-sm text-muted-foreground font-mono mt-1">{store.phone}</p>
-      <p className="text-xs text-muted-foreground/80 mt-1">{store.hours}</p>
+      <p className="text-sm text-muted-foreground font-mono mt-2">{store.phone}</p>
+      {store.mobile && (
+        <p className="text-sm text-muted-foreground font-mono">
+          {store.mobile} <span className="text-[10px]">(cell. / WhatsApp)</span>
+        </p>
+      )}
+      <p className="text-sm text-muted-foreground font-mono">
+        <a href={`mailto:${store.email}`} className="hover:text-brand-500">{store.email}</a>
+      </p>
+      <p className="text-xs text-muted-foreground/80 mt-2">{store.hours}</p>
+      <div className="mt-3 pt-3 border-t border-border/60">
+        <p className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground/70">
+          {store.legalName}
+        </p>
+        {store.vatNumber && (
+          <p className="text-[10px] font-mono text-muted-foreground/70">
+            P.IVA {store.vatNumber}
+          </p>
+        )}
+        {store.pec && (
+          <p className="text-[10px] font-mono text-muted-foreground/70">
+            PEC {store.pec}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
@@ -75,10 +98,11 @@ export function StoreMap() {
         iconAnchor: [14, 14],
       });
 
+      // Centro mappa su San Benedetto del Tronto (le 2 sedi sono entrambe lì)
       const map = L.map(mapRef.current, {
-        zoomControl: false,
+        zoomControl: true,
         attributionControl: false,
-      }).setView([42.5, 12.5], 6);
+      }).setView([42.9434, 13.8800], 14);
 
       L.tileLayer(
         "https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png",
@@ -104,7 +128,9 @@ export function StoreMap() {
             `<div style="font-family: Geist, sans-serif; color: #050505;">
               <strong>${escapeHtml(store.name)}</strong><br/>
               ${escapeHtml(store.address)}<br/>
-              ${escapeHtml(store.city)}
+              ${escapeHtml(store.cap)} ${escapeHtml(store.city)} (${escapeHtml(store.province)})<br/>
+              <a href="tel:${escapeHtml(store.phone.replace(/\s/g, ""))}" style="color:#dc2626;">${escapeHtml(store.phone)}</a><br/>
+              <a href="mailto:${escapeHtml(store.email)}" style="color:#dc2626;">${escapeHtml(store.email)}</a>
             </div>`
           );
       });

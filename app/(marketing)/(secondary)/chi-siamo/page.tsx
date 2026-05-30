@@ -43,13 +43,6 @@ const brands = [
       "La scuola interna dove formiamo i nostri tecnici. Aperta anche a chi vuole imparare il mestiere.",
     url: "/corsi",
   },
-  {
-    name: "FixHub.it",
-    role: "Gestionale",
-    description:
-      "Il software che usiamo noi per gestire ticket, magazzino e clienti. Lo vendiamo anche ad altri laboratori.",
-    url: "https://fixhub.it",
-  },
 ];
 
 const statements = [
@@ -69,7 +62,7 @@ const statements = [
     num: "03",
     title: "Una specializzazione per brand",
     description:
-      "Cinque marchi che fanno una cosa sola e la fanno seriamente. Mettendoli insieme copriamo tutto il ciclo di vita del telefono.",
+      "I brand del Gruppo fanno ognuno una cosa sola e la fanno seriamente. Mettendoli insieme copriamo tutto il ciclo di vita del telefono.",
   },
 ];
 
@@ -117,9 +110,9 @@ export default function ChiSiamoPage() {
                 maxWidth: "640px",
               }}
             >
-              Vendiamo, ripariamo e riforniamo telefoni. Siamo di Parma, ma
-              lavoriamo in tutta Italia. Cinque brand specializzati, un
-              magazzino solo, le stesse persone dietro a tutto.
+              Vendiamo, ripariamo e riforniamo telefoni. Siamo di San Benedetto
+              del Tronto, ma lavoriamo in tutta Italia. Tre brand specializzati,
+              un magazzino solo, le stesse persone dietro a tutto.
             </p>
           </div>
         </div>

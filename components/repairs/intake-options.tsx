@@ -35,7 +35,7 @@ const OPTIONS = [
   {
     eyebrow: "Opzione 3",
     title: "Lo veniamo a prendere",
-    text: "Solo in alcune zone (Parma e provincia, principali città su richiesta). Passiamo a ritirare, riportiamo riparato. Disponibile sopra una soglia minima.",
+    text: "Solo in alcune zone (San Benedetto del Tronto e provincia, principali città di Marche e Abruzzo su richiesta). Passiamo a ritirare, riportiamo riparato. Disponibile sopra una soglia minima.",
     cta: { label: "Verifica la tua zona", kind: "repair" as const } as const,
     icon: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">

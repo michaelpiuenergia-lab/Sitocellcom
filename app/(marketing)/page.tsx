@@ -67,15 +67,15 @@ export default async function MarketingPage() {
           eyebrow="I numeri del gruppo"
           title={
             <>
-              Cinque brand. Un solo <Accent>magazzino.</Accent>
+              Tre brand. Un solo <Accent>magazzino.</Accent>
             </>
           }
           intro={
             <>
-              Cellcom (B2B), Fast-Fix (negozi), ItalianParts (ricambi),
-              SmartphoneFix (Academy), FixHub (gestionale). Specializzati
-              ognuno nel suo, ma con lo stesso stock dietro. I numeri qui
-              sotto arrivano live dal CRM — niente vetrine vuote.
+              Cellcom (e-commerce + B2B), Fast-Fix (negozi e riparazioni),
+              ItalianParts (ricambi). Specializzati ognuno nel suo, stesso
+              stock dietro le quinte. I numeri qui sotto arrivano live dal
+              CRM — niente vetrine vuote.
             </>
           }
           extra={

@@ -81,7 +81,7 @@ export default async function CatalogLanding() {
         eyebrow="Magazzino unificato del Gruppo"
         title="Il nostro"
         accent="catalogo"
-        description="Tre famiglie di prodotti, un unico magazzino dietro le quinte. Stock aggregato in tempo reale dai 5 canali — Cellcom, Fast-Fix, ItalianParts, SmartphoneFix, FixHub. Niente esauriti che spuntano dopo l'ordine, niente prezzi che cambiano: tutto verificato dal gestionale, spedito in 24-48h, garanzia 12 mesi."
+        description="Tre famiglie di prodotti, un unico magazzino dietro le quinte. Stock aggregato in tempo reale dai brand del Gruppo — Cellcom, Fast-Fix, ItalianParts. Niente esauriti che spuntano dopo l'ordine, niente prezzi che cambiano: tutto verificato dal gestionale, spedito in 24-48h, garanzia 12 mesi."
       />
 
       <Container className="pb-16">
