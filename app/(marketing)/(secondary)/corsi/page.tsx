@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { RequestTrigger } from "@/components/forms/request-trigger";
+import { getCourses } from "@/lib/crm-client";
+import { COURSE_LEVEL_LABELS, type CoursePublic } from "@/lib/crm-client/types";
 
 export const metadata: Metadata = {
   title: "Corsi — Cellcom Group",
@@ -9,26 +11,7 @@ export const metadata: Metadata = {
     "Corsi di riparazione smartphone per professionisti e hobbisti. Formazione pratica su tutti i modelli.",
 };
 
-const LEVELS = [
-  {
-    n: "01",
-    title: "Base",
-    duration: "2 giornate",
-    text: "Smontaggio/montaggio iPhone e Android, sostituzione schermo e batteria, gestione adesivi e guarnizioni. Pensato per chi parte da zero o vuole formalizzare le basi.",
-  },
-  {
-    n: "02",
-    title: "Intermedio",
-    duration: "3 giornate",
-    text: "Riparazione scocca, vetro posteriore, fotocamera, connettore di ricarica. Calibrazione True Tone, sigillatura impermeabile. Uso del microscopio.",
-  },
-  {
-    n: "03",
-    title: "Avanzato · BGA",
-    duration: "5 giornate",
-    text: "Microsaldatura, riparazione scheda madre, gestione ball BGA, dump NAND, recupero dati. Postazioni ESD, stazione ad aria calda professionale.",
-  },
-];
+export const revalidate = 300;
 
 const TOOLS = [
   "Microscopio Mantis triangolare",
@@ -39,7 +22,14 @@ const TOOLS = [
   "Stencil BGA per i chip più diffusi",
 ];
 
-export default function CorsiPage() {
+const eur = (cents: number) =>
+  new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(cents / 100);
+
+export default async function CorsiPage() {
+  // Source-of-truth: CRM Cellcom Academy. Fallback su lista vuota se CRM giù.
+  const data = await getCourses().catch(() => ({ items: [] as CoursePublic[], total: 0 }));
+  const courses = data.items;
+
   return (
     <>
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Corsi" }]} />
@@ -50,11 +40,7 @@ export default function CorsiPage() {
           <div className="max-w-3xl flex flex-col gap-5">
             <span
               className="font-mono uppercase inline-flex items-center gap-3"
-              style={{
-                fontSize: "11px",
-                letterSpacing: "0.32em",
-                color: "#dc2626",
-              }}
+              style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}
             >
               <span
                 aria-hidden
@@ -77,11 +63,7 @@ export default function CorsiPage() {
             </h1>
             <p
               className="leading-relaxed"
-              style={{
-                fontSize: "19px",
-                color: "#525252",
-                maxWidth: "640px",
-              }}
+              style={{ fontSize: "19px", color: "#525252", maxWidth: "640px" }}
             >
               Tre livelli — base, intermedio, avanzato BGA. Postazioni ESD,
               strumentazione professionale, gli stessi formatori che addestrano
@@ -94,7 +76,7 @@ export default function CorsiPage() {
                 product={{
                   id: null,
                   slug: null,
-                  name: "Cellcom Academy — Corsi di riparazione",
+                  name: "Cellcom Academy — Richiesta iscrizione",
                   variantId: null,
                   variantLabel: null,
                 }}
@@ -115,33 +97,31 @@ export default function CorsiPage() {
                 Confronta i livelli
               </Link>
             </div>
+            <p
+              className="font-mono uppercase mt-2"
+              style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#737373" }}
+            >
+              Iscrizione su approvazione · Pagamento online · Materiale incluso
+            </p>
           </div>
         </div>
       </section>
 
-      {/* 3 LIVELLI (nero) */}
-      <section
-        id="livelli"
-        aria-label="Livelli del corso"
-        style={{ backgroundColor: "#0a0a0a" }}
-      >
+      {/* LIVELLI dinamici dal CRM (nero) */}
+      <section id="livelli" aria-label="Livelli del corso" style={{ backgroundColor: "#0a0a0a" }}>
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-28">
           <div className="grid lg:grid-cols-[1.1fr,1fr] gap-10 lg:gap-20 items-end mb-14">
             <div className="flex flex-col gap-5">
               <span
                 className="font-mono uppercase inline-flex items-center gap-3"
-                style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.32em",
-                  color: "#dc2626",
-                }}
+                style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}
               >
                 <span
                   aria-hidden
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                Tre livelli, in crescita
+                I livelli
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -158,90 +138,38 @@ export default function CorsiPage() {
             </div>
             <p
               className="leading-relaxed"
-              style={{
-                fontSize: "17px",
-                color: "#a3a3a3",
-                maxWidth: "520px",
-              }}
+              style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "520px" }}
             >
               Il percorso completo è pensato per crescere: ogni livello apre il
               successivo. Puoi anche entrare direttamente dal Base o
-              dall'Intermedio se hai già esperienza — chiediamo solo una breve
-              chiamata di valutazione.
+              dall&apos;Intermedio se hai già esperienza — chiediamo solo una
+              breve chiamata di valutazione.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
-            {LEVELS.map((l) => (
-              <div
-                key={l.n}
-                className="rounded-2xl p-7 lg:p-8 flex flex-col gap-4 transition-colors duration-300 hover:border-[#dc2626]"
-                style={{
-                  backgroundColor: "#141414",
-                  border: "1px solid #1f1f1f",
-                }}
-              >
-                <div className="flex items-baseline justify-between">
-                  <span
-                    className="font-sans tabular-nums leading-none"
-                    style={{
-                      fontSize: "32px",
-                      letterSpacing: "-0.02em",
-                      color: "#dc2626",
-                      fontWeight: 700,
-                    }}
-                  >
-                    {l.n}
-                  </span>
-                  <span
-                    className="font-mono uppercase"
-                    style={{
-                      fontSize: "10px",
-                      letterSpacing: "0.28em",
-                      color: "#737373",
-                    }}
-                  >
-                    {l.duration}
-                  </span>
-                </div>
-                <h3
-                  className="font-sans"
-                  style={{
-                    fontSize: "22px",
-                    letterSpacing: "-0.02em",
-                    color: "#fafafa",
-                    fontWeight: 700,
-                  }}
-                >
-                  {l.title}
-                </h3>
-                <p
-                  className="leading-relaxed"
-                  style={{ fontSize: "14px", color: "#a3a3a3" }}
-                >
-                  {l.text}
-                </p>
-              </div>
-            ))}
-          </div>
+          {courses.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+              {courses.map((c, i) => (
+                <CourseCard key={c.id} course={c} index={i + 1} />
+              ))}
+            </div>
+          ) : (
+            <p style={{ fontSize: "15px", color: "#737373" }}>
+              Calendario in aggiornamento. Apri una richiesta info per le
+              prossime date in partenza →
+            </p>
+          )}
         </div>
       </section>
 
       {/* STRUMENTAZIONE (bianco) */}
-      <section
-        aria-label="Strumentazione e laboratorio"
-        style={{ backgroundColor: "#ffffff" }}
-      >
+      <section aria-label="Strumentazione e laboratorio" style={{ backgroundColor: "#ffffff" }}>
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-28">
           <div className="grid lg:grid-cols-[1fr,1.1fr] gap-10 lg:gap-20 items-start">
             <div className="flex flex-col gap-5">
               <span
                 className="font-mono uppercase inline-flex items-center gap-3"
-                style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.32em",
-                  color: "#dc2626",
-                }}
+                style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}
               >
                 <span
                   aria-hidden
@@ -278,10 +206,7 @@ export default function CorsiPage() {
                 <li
                   key={t}
                   className="rounded-xl p-4 flex items-start gap-3"
-                  style={{
-                    backgroundColor: "#fafaf8",
-                    border: "1px solid #ececec",
-                  }}
+                  style={{ backgroundColor: "#fafaf8", border: "1px solid #ececec" }}
                 >
                   <span
                     aria-hidden
@@ -290,12 +215,7 @@ export default function CorsiPage() {
                   />
                   <span
                     className="font-sans"
-                    style={{
-                      fontSize: "14px",
-                      color: "#0a0a0a",
-                      fontWeight: 500,
-                      lineHeight: 1.45,
-                    }}
+                    style={{ fontSize: "14px", color: "#0a0a0a", fontWeight: 500, lineHeight: 1.45 }}
                   >
                     {t}
                   </span>
@@ -307,10 +227,7 @@ export default function CorsiPage() {
       </section>
 
       {/* CTA finale (nero) */}
-      <section
-        aria-label="Iscrizioni"
-        style={{ backgroundColor: "#0a0a0a" }}
-      >
+      <section aria-label="Iscrizioni" style={{ backgroundColor: "#0a0a0a" }}>
         <div className="max-w-[1100px] mx-auto px-6 lg:px-12 py-24 lg:py-28 text-center">
           <h2
             className="font-sans tracking-[-0.025em]"
@@ -326,11 +243,7 @@ export default function CorsiPage() {
           </h2>
           <p
             className="mx-auto mt-6 leading-relaxed"
-            style={{
-              fontSize: "17px",
-              color: "#a3a3a3",
-              maxWidth: "560px",
-            }}
+            style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "560px" }}
           >
             Calendario, prezzi tier (privati / centri assistenza / scuole) e
             agevolazioni: ti rispondiamo entro 24h con tutto quello che ti serve.
@@ -352,5 +265,92 @@ export default function CorsiPage() {
         </div>
       </section>
     </>
+  );
+}
+
+function CourseCard({ course, index }: { course: CoursePublic; index: number }) {
+  return (
+    <div
+      className="rounded-2xl p-7 lg:p-8 flex flex-col gap-4 transition-colors duration-300 hover:border-[#dc2626]"
+      style={{ backgroundColor: "#141414", border: "1px solid #1f1f1f" }}
+    >
+      <div className="flex items-baseline justify-between">
+        <span
+          className="font-sans tabular-nums leading-none"
+          style={{
+            fontSize: "32px",
+            letterSpacing: "-0.02em",
+            color: "#dc2626",
+            fontWeight: 700,
+          }}
+        >
+          {String(index).padStart(2, "0")}
+        </span>
+        {course.durationLabel && (
+          <span
+            className="font-mono uppercase"
+            style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#737373" }}
+          >
+            {course.durationLabel}
+          </span>
+        )}
+      </div>
+      <h3
+        className="font-sans"
+        style={{ fontSize: "22px", letterSpacing: "-0.02em", color: "#fafafa", fontWeight: 700 }}
+      >
+        {course.title}
+      </h3>
+      <span
+        className="font-mono uppercase self-start px-2 py-0.5 rounded-full"
+        style={{
+          fontSize: "10px",
+          letterSpacing: "0.18em",
+          backgroundColor: "rgba(220,38,38,0.12)",
+          color: "#f87171",
+        }}
+      >
+        {COURSE_LEVEL_LABELS[course.level]}
+      </span>
+      {course.description && (
+        <p className="leading-relaxed" style={{ fontSize: "14px", color: "#a3a3a3" }}>
+          {course.description}
+        </p>
+      )}
+      <div className="mt-auto flex items-end justify-between gap-3">
+        {course.priceCents != null ? (
+          <span className="tabular-nums" style={{ fontSize: "20px", color: "#fafafa", fontWeight: 700 }}>
+            {eur(course.priceCents)}
+          </span>
+        ) : (
+          <span style={{ fontSize: "13px", color: "#737373" }}>Prezzo su richiesta</span>
+        )}
+        {course.paymentLink ? (
+          <a
+            href={course.paymentLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full px-4 py-2"
+            style={{ backgroundColor: "#dc2626", color: "#fff", fontSize: "13px", fontWeight: 600 }}
+          >
+            Iscriviti ↗
+          </a>
+        ) : (
+          <RequestTrigger
+            kind="info"
+            product={{
+              id: course.id,
+              slug: course.slug ?? null,
+              name: `Cellcom Academy — ${course.title}`,
+              variantId: null,
+              variantLabel: null,
+            }}
+            label="Iscriviti →"
+            variant="outline"
+            className="text-xs"
+          />
+        )}
+      </div>
+    </div>
   );
 }

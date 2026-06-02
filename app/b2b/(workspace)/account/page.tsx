@@ -1,5 +1,7 @@
 import { requireB2bSession } from "@/lib/auth/guards";
 import { B2bNavbar } from "@/components/b2b/b2b-navbar";
+import { ProfileForm } from "./profile-form";
+import { PasswordChangeForm } from "./password-change-form";
 
 export const dynamic = "force-dynamic";
 
@@ -11,65 +13,88 @@ export default async function B2bAccountPage() {
     <>
       <B2bNavbar customer={customer} />
 
-      <main className="pt-24 pb-16 px-6 lg:px-16 max-w-[800px] mx-auto">
-        <div className="flex flex-col gap-2 mb-8">
+      <main className="pt-24 pb-16 px-6 lg:px-16 max-w-[800px] mx-auto flex flex-col gap-10">
+        <div className="flex flex-col gap-2">
           <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-brand-500">
             Account aziendale
           </span>
-          <h1 className="font-serif italic text-4xl sm:text-5xl text-foreground">
-            Dati del tuo account
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Per modifiche contatta l'ufficio commerciale Cellcom.
-          </p>
-        </div>
-
-        <div className="grid sm:grid-cols-2 gap-4">
-          <AccountField label="Ragione sociale" value={customer.company} />
-          <AccountField label="Partita IVA" value={customer.vatNumber} />
-          <AccountField label="Referente" value={customer.name} />
-          <AccountField label="Email" value={customer.email} />
-          <AccountField
-            label="Listino assegnato"
-            value={customer.pricingTier?.name ?? "Standard B2B"}
-          />
-          <AccountField
-            label="Codice listino"
-            value={customer.pricingTier?.code ?? "—"}
-          />
-        </div>
-
-        <div className="mt-12 p-6 rounded-2xl border border-border bg-card flex flex-col gap-3">
-          <h2 className="font-serif italic text-lg">Hai bisogno di assistenza?</h2>
-          <p className="text-sm text-muted-foreground">
-            Il nostro ufficio commerciale è disponibile per ordini speciali,
-            cambio listino, condizioni dedicate e gestione resi.
-          </p>
-          <a
-            href="mailto:b2b@cellcom.it"
-            className="self-start px-5 py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold"
+          <h1
+            className="font-sans tracking-[-0.02em]"
+            style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 700, color: "#0a0a0a", lineHeight: 1.05 }}
           >
-            Scrivi a b2b@cellcom.it
-          </a>
+            Il tuo account
+          </h1>
+          <p style={{ fontSize: "14px", color: "#525252" }}>
+            Modifica i dati di contatto e cambia password.
+            Per modificare ragione sociale, P.IVA o listino contatta{" "}
+            <a href="mailto:b2b@cellcom.it" className="underline">
+              b2b@cellcom.it
+            </a>
+            .
+          </p>
         </div>
+
+        {/* Dati aziendali — read-only */}
+        <section className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "#ffffff", border: "1px solid #ececec" }}>
+          <h2
+            className="font-mono uppercase"
+            style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#737373" }}
+          >
+            Dati aziendali
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <ReadField label="Ragione sociale" value={customer.company} />
+            <ReadField label="Partita IVA" value={customer.vatNumber} />
+            <ReadField label="Listino assegnato" value={customer.pricingTier?.name ?? "Standard B2B"} />
+            <ReadField label="Codice listino" value={customer.pricingTier?.code ?? "—"} />
+          </div>
+        </section>
+
+        {/* Dati referente — editable */}
+        <section className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "#ffffff", border: "1px solid #ececec" }}>
+          <h2
+            className="font-mono uppercase"
+            style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#737373" }}
+          >
+            Dati referente
+          </h2>
+          <ProfileForm
+            initial={{
+              name: customer.name,
+              email: customer.email,
+              phone: customer.phone ?? "",
+            }}
+          />
+        </section>
+
+        {/* Cambio password */}
+        <section className="rounded-2xl p-6 flex flex-col gap-4" style={{ backgroundColor: "#ffffff", border: "1px solid #ececec" }}>
+          <h2
+            className="font-mono uppercase"
+            style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#737373" }}
+          >
+            Cambio password
+          </h2>
+          <PasswordChangeForm />
+        </section>
       </main>
     </>
   );
 }
 
-function AccountField({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | null;
-}) {
+function ReadField({ label, value }: { label: string; value: string | null }) {
   return (
-    <div className="flex flex-col gap-1 p-4 rounded-xl border border-border bg-card">
-      <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground">
+    <div className="flex flex-col gap-1">
+      <span
+        className="font-mono uppercase"
+        style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#a3a3a3" }}
+      >
         {label}
       </span>
-      <span className="font-mono text-sm text-foreground tabular-nums truncate">
+      <span
+        className="font-sans"
+        style={{ fontSize: "14px", color: "#0a0a0a", fontWeight: 500 }}
+      >
         {value ?? "—"}
       </span>
     </div>

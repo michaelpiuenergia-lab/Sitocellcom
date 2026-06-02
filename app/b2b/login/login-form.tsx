@@ -92,6 +92,13 @@ export function LoginForm({ next }: { next?: string }) {
             color: "#0a0a0a",
           }}
         />
+        <a
+          href="/b2b/password-dimenticata"
+          className="font-mono uppercase self-end transition-colors hover:text-[#dc2626]"
+          style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#737373" }}
+        >
+          Password dimenticata?
+        </a>
       </div>
 
       {error && (

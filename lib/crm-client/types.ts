@@ -106,6 +106,8 @@ export type B2bCustomer = {
   company: string | null;
   vatNumber: string | null;
   email: string;
+  /** Telefono — esposto dal CRM dopo il giro password reset (Brief §10). */
+  phone?: string | null;
   pricingTier: B2bPricingTier | null;
 };
 
@@ -118,6 +120,24 @@ export type B2bLoginResponse = {
   sessionToken: string;
   expiresAt: string;
   customer: B2bCustomer;
+};
+
+export type B2bPasswordRequestInput = {
+  email: string;
+};
+
+export type B2bPasswordResetInput = {
+  token: string;
+  password: string;
+};
+
+export type B2bProfileUpdateInput = {
+  name?: string;
+  email?: string;
+  phone?: string;
+  /** Cambio password: richiede currentPassword + newPassword */
+  currentPassword?: string;
+  newPassword?: string;
 };
 
 export type B2bPriceSource =
@@ -347,6 +367,77 @@ export type RepairQuoteResponseInput = {
   phoneSuffix: string;
   action: RepairQuoteAction;
   reason?: string | null;
+};
+
+// ============================================================================
+// Corsi (Cellcom Academy) — list pubblica + corsi del cliente autenticato
+//
+// Allineato a docs/SITE-INTEGRATION-BRIEF.md §10 del CRM.
+// Public list: titolo, livello, descrizione, prezzo, paymentLink, coverUrl.
+// Customer list: stessi campi + enrollment{ approvalStatus, progressPct }.
+// ============================================================================
+
+export type CourseLevel = "base" | "intermedio" | "avanzato";
+
+export const COURSE_LEVEL_LABELS: Record<CourseLevel, string> = {
+  base: "Base",
+  intermedio: "Intermedio",
+  avanzato: "Avanzato",
+};
+
+export type CoursePublic = {
+  id: string;
+  slug?: string | null;
+  title: string;
+  level: CourseLevel;
+  description: string | null;
+  durationLabel?: string | null;
+  priceCents: number | null;
+  paymentLink: string | null;
+  coverUrl: string | null;
+};
+
+export type CoursesPublicResponse = {
+  items: CoursePublic[];
+  total: number;
+};
+
+export type CourseEnrollmentStatus = "pending" | "approved" | "rejected";
+
+export const COURSE_ENROLLMENT_LABELS: Record<CourseEnrollmentStatus, string> = {
+  pending: "In attesa di approvazione",
+  approved: "Approvato",
+  rejected: "Non approvato",
+};
+
+export type CourseEnrollment = {
+  approvalStatus: CourseEnrollmentStatus;
+  progressPct: number; // 0-100
+  enrolledAt: string;
+  approvedAt: string | null;
+  rejectedReason: string | null;
+};
+
+export type CustomerCourse = CoursePublic & {
+  enrollment: CourseEnrollment;
+};
+
+export type CustomerCoursesResponse = {
+  items: CustomerCourse[];
+};
+
+export type CourseVideo = {
+  id: string;
+  title: string;
+  description: string | null;
+  durationSec: number;
+  videoUrl: string;
+  watchedSec: number;
+  order: number;
+};
+
+export type CourseVideosResponse = {
+  items: CourseVideo[];
 };
 
 // ============================================================================

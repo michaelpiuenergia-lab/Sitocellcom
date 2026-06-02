@@ -3,6 +3,7 @@ import { getB2bProducts } from "@/lib/crm-client";
 import { B2bNavbar } from "@/components/b2b/b2b-navbar";
 import { ProductGridB2b } from "@/components/b2b/product-grid-b2b";
 import { ListinoExport } from "@/components/b2b/listino-export";
+import { RegenerateListinoButton } from "@/components/b2b/regenerate-listino-button";
 import type {
   B2bProductListItem,
   PublicKind,
@@ -104,7 +105,10 @@ export default async function B2bProductsPage() {
               <em>Richiedi disponibilità</em> sul prodotto.
             </p>
           </div>
-          <ListinoExport disabled={allItems.length === 0} />
+          <div className="flex flex-wrap items-start gap-6">
+            <ListinoExport disabled={allItems.length === 0} />
+            <RegenerateListinoButton />
+          </div>
         </div>
 
         <ProductGridB2b

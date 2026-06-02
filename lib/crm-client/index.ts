@@ -14,6 +14,8 @@ import * as realRepairs from "./repairs";
 import * as mockRepairs from "./repairs-mock";
 import * as realB2bPortal from "./b2b-portal";
 import * as mockB2bPortal from "./b2b-portal-mock";
+import * as realCourses from "./courses";
+import * as mockCourses from "./courses-mock";
 
 /**
  * Flag mock granulari.
@@ -53,6 +55,18 @@ export const getHealth = USE_MOCK_PUBLIC
 export const b2bLogin = USE_MOCK_B2B ? mockB2bAuth.b2bLogin : realB2bAuth.b2bLogin;
 export const b2bLogout = USE_MOCK_B2B ? mockB2bAuth.b2bLogout : realB2bAuth.b2bLogout;
 export const b2bMe = USE_MOCK_B2B ? mockB2bAuth.b2bMe : realB2bAuth.b2bMe;
+export const b2bRequestPasswordReset = USE_MOCK_B2B
+  ? mockB2bAuth.b2bRequestPasswordReset
+  : realB2bAuth.b2bRequestPasswordReset;
+export const b2bResetPassword = USE_MOCK_B2B
+  ? mockB2bAuth.b2bResetPassword
+  : realB2bAuth.b2bResetPassword;
+export const b2bUpdateCustomer = USE_MOCK_B2B
+  ? mockB2bAuth.b2bUpdateCustomer
+  : realB2bAuth.b2bUpdateCustomer;
+export const b2bRegenerateListino = USE_MOCK_B2B
+  ? mockB2bAuth.b2bRegenerateListino
+  : realB2bAuth.b2bRegenerateListino;
 
 // B2B products
 export const getB2bProducts = USE_MOCK_B2B
@@ -112,3 +126,12 @@ export const listB2bShipments = USE_MOCK_B2B ? mockB2bPortal.listB2bShipments : 
 export const getB2bShipment = USE_MOCK_B2B ? mockB2bPortal.getB2bShipment : realB2bPortal.getB2bShipment;
 export const listB2bDocuments = USE_MOCK_B2B ? mockB2bPortal.listB2bDocuments : realB2bPortal.listB2bDocuments;
 export { b2bDownloadCrmPath } from "./b2b-portal";
+
+// Corsi Cellcom Academy
+export const getCourses = USE_MOCK_PUBLIC ? mockCourses.getCourses : realCourses.getCourses;
+export const getCustomerCourses = USE_MOCK_B2B
+  ? mockCourses.getCustomerCourses
+  : realCourses.getCustomerCourses;
+export const getCustomerCourseVideos = USE_MOCK_B2B
+  ? mockCourses.getCustomerCourseVideos
+  : realCourses.getCustomerCourseVideos;
