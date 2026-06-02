@@ -53,6 +53,7 @@ export const getHealth = USE_MOCK_PUBLIC
 
 // B2B auth
 export const b2bLogin = USE_MOCK_B2B ? mockB2bAuth.b2bLogin : realB2bAuth.b2bLogin;
+export const b2bRegister = USE_MOCK_B2B ? mockB2bAuth.b2bRegister : realB2bAuth.b2bRegister;
 export const b2bLogout = USE_MOCK_B2B ? mockB2bAuth.b2bLogout : realB2bAuth.b2bLogout;
 export const b2bMe = USE_MOCK_B2B ? mockB2bAuth.b2bMe : realB2bAuth.b2bMe;
 export const b2bRequestPasswordReset = USE_MOCK_B2B

@@ -7,6 +7,7 @@ import type {
   B2bPasswordRequestInput,
   B2bPasswordResetInput,
   B2bProfileUpdateInput,
+  B2bRegisterInput,
 } from "./types";
 import { MOCK_B2B_ACCOUNTS } from "./mocks/b2b-auth";
 
@@ -81,6 +82,16 @@ export async function b2bMe(sessionToken: string): Promise<B2bCustomer> {
     throw err;
   }
   return account.customer;
+}
+
+/**
+ * Mock registrazione B2B (sempre ok). In dev non simuliamo il workflow
+ * pending/approved — usa direttamente l'account demo già approvato.
+ */
+export async function b2bRegister(
+  _body: B2bRegisterInput,
+): Promise<{ ok: true }> {
+  return { ok: true };
 }
 
 /**

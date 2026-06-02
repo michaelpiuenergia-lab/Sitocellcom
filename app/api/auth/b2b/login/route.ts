@@ -71,6 +71,28 @@ export async function POST(req: NextRequest) {
         { status: 403 },
       );
     }
+    if (err.code === "B2B_PENDING") {
+      return NextResponse.json(
+        {
+          error: {
+            code: "B2B_PENDING",
+            message: "Account in attesa di approvazione",
+          },
+        },
+        { status: 403 },
+      );
+    }
+    if (err.code === "B2B_REJECTED") {
+      return NextResponse.json(
+        {
+          error: {
+            code: "B2B_REJECTED",
+            message: "Richiesta B2B non approvata",
+          },
+        },
+        { status: 403 },
+      );
+    }
     if (err.code === "RATE_LIMITED") {
       const retryAfter =
         e instanceof CrmApiError && e.retryAfter ? e.retryAfter : 60;

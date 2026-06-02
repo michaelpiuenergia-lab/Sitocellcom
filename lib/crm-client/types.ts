@@ -122,6 +122,14 @@ export type B2bLoginResponse = {
   customer: B2bCustomer;
 };
 
+export type B2bRegisterInput = {
+  name: string;
+  email: string;
+  companyName: string;
+  vatNumber?: string | null;
+  phone?: string | null;
+};
+
 export type B2bPasswordRequestInput = {
   email: string;
 };

@@ -8,6 +8,7 @@ import type {
   B2bPasswordRequestInput,
   B2bPasswordResetInput,
   B2bProfileUpdateInput,
+  B2bRegisterInput,
 } from "./types";
 
 /**
@@ -25,6 +26,22 @@ export async function b2bLogin(
   body: B2bLoginRequest,
 ): Promise<B2bLoginResponse> {
   return crmFetch<B2bLoginResponse>("/api/v1/b2b/login", {
+    method: "POST",
+    body,
+  });
+}
+
+/**
+ * Registrazione rivenditore (Brief §10 + ship CRM B2B approval workflow).
+ * Crea un customer in stato PENDING, lo staff lo approva manualmente.
+ * Risposta sempre `{ ok: true }` — anche se l'email è già registrata (no
+ * user-enumeration). L'utente che prova a fare login prima dell'approvazione
+ * riceve `403 B2B_PENDING`.
+ */
+export async function b2bRegister(
+  body: B2bRegisterInput,
+): Promise<{ ok: true }> {
+  return crmFetch<{ ok: true }>("/api/v1/public/b2b/register", {
     method: "POST",
     body,
   });

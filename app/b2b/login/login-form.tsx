@@ -22,8 +22,25 @@ export function LoginForm({ next }: { next?: string }) {
       });
       if (!res.ok) {
         const data = (await res.json().catch(() => ({}))) as {
-          error?: { message?: string };
+          error?: { code?: string; message?: string };
         };
+        const code = data?.error?.code;
+        // Casi del workflow di approvazione (CRM 403)
+        if (code === "B2B_PENDING") {
+          throw new Error(
+            "Il tuo account è in attesa di approvazione dal nostro staff. Riceverai una mail appena sarà attivo.",
+          );
+        }
+        if (code === "B2B_REJECTED") {
+          throw new Error(
+            "La richiesta di account B2B è stata rifiutata. Contattaci per maggiori informazioni.",
+          );
+        }
+        if (code === "NOT_B2B") {
+          throw new Error(
+            "Questo account non è abilitato all'area B2B. Registra un'azienda per accedere.",
+          );
+        }
         throw new Error(data?.error?.message ?? "Credenziali non valide");
       }
       router.push(next ?? "/b2b/prodotti");
@@ -129,6 +146,28 @@ export function LoginForm({ next }: { next?: string }) {
       >
         {busy ? "Accesso in corso…" : "Accedi all'area B2B →"}
       </button>
+
+      <div
+        className="flex items-center justify-center gap-2 mt-2 pt-4"
+        style={{ borderTop: "1px solid #f1f5f9" }}
+      >
+        <span style={{ fontSize: "13px", color: "#737373" }}>
+          Sono nuovo rivenditore —
+        </span>
+        <a
+          href="/b2b/registrati"
+          className="transition-colors hover:text-[#dc2626]"
+          style={{
+            fontSize: "13px",
+            color: "#0a0a0a",
+            fontWeight: 600,
+            textDecoration: "underline",
+            textUnderlineOffset: "3px",
+          }}
+        >
+          registrami →
+        </a>
+      </div>
     </form>
   );
 }
