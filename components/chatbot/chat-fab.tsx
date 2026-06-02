@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useChatState, useChatActions } from "./chat-context";
+import { useLang } from "@/lib/i18n/lang-context";
 
 /**
  * Bottone fluttuante 56x56 in basso a destra. Rosso brand-600, icona che
@@ -11,12 +12,13 @@ import { useChatState, useChatActions } from "./chat-context";
 export function ChatFab() {
   const { isOpen } = useChatState();
   const { toggle } = useChatActions();
+  const { t } = useLang();
 
   return (
     <button
       type="button"
       onClick={toggle}
-      aria-label={isOpen ? "Chiudi chat assistenza" : "Apri chat assistenza"}
+      aria-label={isOpen ? t("chat.fab.closeAria") : t("chat.fab.openAria")}
       className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 rounded-full shadow-[0_8px_28px_-8px_rgba(220,38,38,0.55)] transition-shadow duration-300 hover:shadow-[0_14px_36px_-10px_rgba(220,38,38,0.7)]"
       style={{
         width: 56,

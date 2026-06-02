@@ -4,6 +4,8 @@ import { Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { GrainOverlay } from "@/components/ui/grain-overlay";
 import { Chatbot } from "@/components/chatbot";
+import { LangProvider } from "@/lib/i18n/lang-context";
+import { getLang } from "@/lib/i18n/lang";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,18 +39,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const lang = await getLang();
   return (
-    <html lang="it">
+    <html lang={lang}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
-        {children}
-        <Chatbot />
+        <LangProvider initialLang={lang}>
+          {children}
+          <Chatbot />
+        </LangProvider>
         <GrainOverlay />
       </body>
     </html>

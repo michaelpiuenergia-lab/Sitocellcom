@@ -1,4 +1,5 @@
 import { LogoC } from "@/components/marketing/logo-c";
+import { LangSwitcher } from "@/components/i18n/lang-switcher";
 
 const links = [
   { label: "Prodotti", href: "/prodotti" },
@@ -69,6 +70,7 @@ export function Footer() {
           >
             © {new Date().getFullYear()} Cellcom Group
           </span>
+          <LangSwitcher variant="footer" />
         </div>
       </div>
       <div

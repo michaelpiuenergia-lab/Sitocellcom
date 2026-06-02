@@ -2,6 +2,7 @@
 
 import { useCallback, useId, useRef, useState } from "react";
 import { useChatState, useChatActions } from "./chat-context";
+import { useLang } from "@/lib/i18n/lang-context";
 
 const MAX_CHARS = 1500;
 const COUNTER_THRESHOLD = MAX_CHARS - 200;
@@ -20,6 +21,7 @@ const COUNTER_THRESHOLD = MAX_CHARS - 200;
 export function ChatInput() {
   const { status } = useChatState();
   const { send, cancel } = useChatActions();
+  const { t } = useLang();
   const [value, setValue] = useState("");
   const taRef = useRef<HTMLTextAreaElement>(null);
   const statusId = useId();
@@ -69,7 +71,11 @@ export function ChatInput() {
           value={value}
           onChange={onChange}
           onKeyDown={onKeyDown}
-          placeholder={streaming ? "Attendi la risposta…" : "Scrivi un messaggio…"}
+          placeholder={
+            streaming
+              ? t("chat.input.placeholderStreaming")
+              : t("chat.input.placeholder")
+          }
           rows={1}
           // #20: readOnly invece di disabled — l'elemento resta in tab order
           // e gli AT lo vedono. La logica di handleSend ignora invii con
@@ -89,13 +95,13 @@ export function ChatInput() {
             maxHeight: 120,
             minHeight: 40,
           }}
-          aria-label="Messaggio"
+          aria-label={t("chat.input.placeholder")}
         />
         {streaming ? (
           <button
             type="button"
             onClick={cancel}
-            aria-label="Ferma la risposta"
+            aria-label={t("chat.input.stopAria")}
             className="shrink-0 rounded-full flex items-center justify-center transition-opacity hover:opacity-80"
             style={{
               width: 40,
@@ -113,7 +119,7 @@ export function ChatInput() {
             type="button"
             onClick={handleSend}
             disabled={!value.trim()}
-            aria-label="Invia messaggio"
+            aria-label={t("chat.input.sendAria")}
             className="shrink-0 rounded-full flex items-center justify-center transition-all duration-200 disabled:opacity-40 hover:shadow-[0_8px_22px_-6px_rgba(220,38,38,0.55)]"
             style={{
               width: 40,
@@ -152,7 +158,7 @@ export function ChatInput() {
           border: 0,
         }}
       >
-        {streaming ? "L'assistente sta rispondendo, attendi prima di scrivere" : ""}
+        {streaming ? t("chat.bubble.streamingPolite") : ""}
       </span>
 
       {/* #24: char counter — visivo + aria-live solo sotto soglia */}
@@ -163,7 +169,7 @@ export function ChatInput() {
           style={{ fontSize: "10px", color: remaining < 50 ? "#b91c1c" : "#737373" }}
           aria-live="polite"
         >
-          {remaining} caratteri rimasti
+          {t("chat.input.charsLeft", remaining)}
         </span>
       )}
     </div>

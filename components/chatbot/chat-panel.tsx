@@ -6,6 +6,7 @@ import { useChatState, useChatActions } from "./chat-context";
 import { ChatHeader } from "./chat-header";
 import { ChatMessages } from "./chat-messages";
 import { ChatInput } from "./chat-input";
+import { useLang } from "@/lib/i18n/lang-context";
 
 /**
  * Pannello chat — desktop: 380x600 ancorato bottom-right.
@@ -24,6 +25,7 @@ import { ChatInput } from "./chat-input";
 export function ChatPanel() {
   const { isOpen } = useChatState();
   const { close } = useChatActions();
+  const { t } = useLang();
   const headerRef = useRef<HTMLDivElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
 
@@ -83,14 +85,14 @@ export function ChatPanel() {
               border: 0,
             }}
           >
-            Chat assistenza aperta
+            {t("chat.openAnnounce")}
           </span>
 
           <motion.div
             ref={headerRef}
             tabIndex={-1}
             role="region"
-            aria-label="Chat assistenza Cellcom"
+            aria-label={t("chat.regionAria")}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}

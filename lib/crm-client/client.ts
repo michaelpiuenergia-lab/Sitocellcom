@@ -1,6 +1,7 @@
 import "server-only";
 
 import type { PublicApiError } from "./types";
+import { getLang } from "@/lib/i18n/lang";
 
 const CRM_BASE = process.env.CRM_API_URL;
 const CRM_KEY = process.env.CRM_API_KEY;
@@ -34,7 +35,18 @@ export async function crmFetch<T>(
   path: string,
   opts: FetchOpts = {},
 ): Promise<T> {
-  const url = `${CRM_BASE}${path}`;
+  // i18n: appende ?lang=en quando il cookie utente è "en" (default it = niente).
+  // Il CRM traduce automaticamente label derivate (conditionLabel, status
+  // labels) ed email. Gli enum grezzi (status code) restano IT e l'HUB li
+  // mappa coi suoi dict.
+  const lang = await getLang().catch(() => "it" as const);
+  const langSuffix =
+    lang === "en"
+      ? path.includes("?")
+        ? "&lang=en"
+        : "?lang=en"
+      : "";
+  const url = `${CRM_BASE}${path}${langSuffix}`;
   const method = opts.method ?? "GET";
   const isMutation = method !== "GET";
 

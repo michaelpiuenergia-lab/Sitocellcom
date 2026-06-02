@@ -2,6 +2,7 @@
 
 import { LogoC } from "@/components/marketing/logo-c";
 import { useChatState, useChatActions } from "./chat-context";
+import { useLang } from "@/lib/i18n/lang-context";
 
 /**
  * Header del pannello chat: logo + wordmark + mono trust line + close.
@@ -10,6 +11,7 @@ import { useChatState, useChatActions } from "./chat-context";
 export function ChatHeader() {
   const { status } = useChatState();
   const { close } = useChatActions();
+  const { t } = useLang();
 
   return (
     <header
@@ -22,21 +24,22 @@ export function ChatHeader() {
           className="font-sans"
           style={{ fontSize: "14px", fontWeight: 700, color: "#0a0a0a", letterSpacing: "-0.01em" }}
         >
-          Assistenza Cellcom
+          {t("chat.header.title")}
         </span>
-        {/* Fix #20: aria-live polite annuncia lo status all'utente SR */}
         <span
           className="font-mono uppercase"
           style={{ fontSize: "9.5px", letterSpacing: "0.24em", color: "#737373" }}
           aria-live="polite"
         >
-          {status === "streaming" ? "Sta scrivendo…" : "Risposta in pochi minuti"}
+          {status === "streaming"
+            ? t("chat.header.statusStreaming")
+            : t("chat.header.statusOnline")}
         </span>
       </div>
       <button
         type="button"
         onClick={close}
-        aria-label="Chiudi chat"
+        aria-label={t("chat.header.closeAria")}
         className="ml-auto flex items-center justify-center rounded-full transition-colors hover:bg-[#f4f3ee]"
         style={{ width: 32, height: 32, color: "#525252" }}
       >

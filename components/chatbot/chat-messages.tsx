@@ -4,9 +4,7 @@ import { useEffect, useRef } from "react";
 import { useChatState } from "./chat-context";
 import { ChatBubble } from "./chat-bubble";
 import { ChatQuickReplies } from "./chat-quick-replies";
-
-const WELCOME_TEXT =
-  "Ciao — sono l'assistente Cellcom. Cerco prodotti, traccio riparazioni, indico negozi e ti apro la richiesta giusta. Da dove vuoi partire?";
+import { useLang } from "@/lib/i18n/lang-context";
 
 /**
  * Scroll container.
@@ -27,6 +25,7 @@ function prefersReducedMotion(): boolean {
 
 export function ChatMessages() {
   const { messages } = useChatState();
+  const { t } = useLang();
   const containerRef = useRef<HTMLDivElement>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const wasNearBottomRef = useRef(true);
@@ -66,7 +65,7 @@ export function ChatMessages() {
           lineHeight: 1.5,
         }}
       >
-        {WELCOME_TEXT}
+        {t("chat.welcome")}
       </div>
 
       {messages.length === 0 && <ChatQuickReplies />}
@@ -74,7 +73,7 @@ export function ChatMessages() {
       {/* #18: log con aria-live polite, ma aria-busy=true per il bubble
           in streaming sospende l'annuncio fino al complete (vedi
           ChatBubble) — evita spam token-per-token. */}
-      <div role="log" aria-label="Conversazione chat" className="flex flex-col gap-3">
+      <div role="log" aria-label={t("chat.regionAria")} className="flex flex-col gap-3">
         {messages.map((m) => (
           <ChatBubble key={m.id} msg={m} />
         ))}

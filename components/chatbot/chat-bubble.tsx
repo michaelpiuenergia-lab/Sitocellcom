@@ -2,6 +2,7 @@
 
 import { Fragment } from "react";
 import type { ChatMessage, ChatToolEvent } from "@/lib/chatbot/types";
+import { useLang } from "@/lib/i18n/lang-context";
 
 /**
  * Render markdown minimo dei bubble bot: link `[testo](url)` cliccabili,
@@ -85,6 +86,7 @@ function renderMarkdown(content: string, baseKey: string): React.ReactNode {
  *     inquinare il content del messaggio.
  */
 export function ChatBubble({ msg }: { msg: ChatMessage }) {
+  const { t } = useLang();
   const isUser = msg.role === "user";
   const isStreaming = msg.status === "streaming";
   const isComplete = msg.status === "complete";
@@ -134,7 +136,7 @@ export function ChatBubble({ msg }: { msg: ChatMessage }) {
           className="mt-1 font-mono uppercase"
           style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#92400e" }}
         >
-          Risposta troncata — riformula per continuare
+          {t("chat.bubble.truncatedBadge")}
         </span>
       )}
       {msg.status === "error" && (
@@ -142,7 +144,7 @@ export function ChatBubble({ msg }: { msg: ChatMessage }) {
           className="mt-1 font-mono"
           style={{ fontSize: "10px", letterSpacing: "0.12em", color: "#b91c1c" }}
         >
-          Errore — riprova
+          {t("chat.bubble.errorBadge")}
         </span>
       )}
       {msg.status === "aborted" && (
@@ -150,7 +152,7 @@ export function ChatBubble({ msg }: { msg: ChatMessage }) {
           className="mt-1 font-mono uppercase"
           style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#737373" }}
         >
-          Risposta interrotta
+          {t("chat.bubble.abortedBadge")}
         </span>
       )}
     </div>
@@ -158,8 +160,28 @@ export function ChatBubble({ msg }: { msg: ChatMessage }) {
 }
 
 function ToolStatusBubble({ tool }: { tool: ChatToolEvent }) {
+  const { t } = useLang();
   const color =
     tool.status === "error" ? "#b91c1c" : tool.status === "ok" ? "#737373" : "#dc2626";
+  // Server manda tool.label in IT (TOOL_LABELS in tools.ts); il client lo
+  // sostituisce col label tradotto via dict (chiave chat.toolLabel.<name>).
+  // Se la chiave non esiste nel dict, fallback al label server.
+  type ToolKey =
+    | "chat.toolLabel.searchProducts"
+    | "chat.toolLabel.getProductBySlug"
+    | "chat.toolLabel.searchUsedDevices"
+    | "chat.toolLabel.lookupRepair"
+    | "chat.toolLabel.listStores"
+    | "chat.toolLabel.openRequestForm"
+    | "chat.toolLabel.getHealth";
+  const key = `chat.toolLabel.${tool.name}` as ToolKey;
+  let label = tool.label;
+  try {
+    const translated = t(key);
+    if (translated && translated !== key) label = translated;
+  } catch {
+    // chiave fuori dict: usa fallback server
+  }
   return (
     <div
       className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full"
@@ -173,7 +195,7 @@ function ToolStatusBubble({ tool }: { tool: ChatToolEvent }) {
       aria-hidden="true"
     >
       {tool.status === "running" ? <Spinner /> : tool.status === "ok" ? <Check /> : <Bang />}
-      <span style={{ color: "#525252" }}>{tool.label}</span>
+      <span style={{ color: "#525252" }}>{label}</span>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import type {
   OpenRequestEventDetail,
 } from "./types";
 import { OPEN_REQUEST_EVENT } from "./types";
+import { useLang } from "@/lib/i18n/lang-context";
 
 /**
  * Hook lato browser: gestisce history messaggi, streaming SSE, abort,
@@ -36,6 +37,7 @@ function uid(): string {
 }
 
 export function useChat() {
+  const { t } = useLang();
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [status, setStatus] = useState<ChatStatus>("idle");
   const [error, setError] = useState<string | null>(null);
@@ -136,8 +138,8 @@ export function useChat() {
           const msg =
             errBody?.error?.message ??
             (res.status === 429
-              ? "Troppe richieste, riprova fra qualche minuto"
-              : "Errore di rete");
+              ? t("chat.error.tooManyRequests")
+              : t("chat.error.networkFallback"));
           throw new Error(msg);
         }
 
@@ -227,8 +229,7 @@ export function useChat() {
               ? {
                   ...m,
                   status: "error",
-                  content:
-                    m.content || "Connessione persa. Riprova o apri una richiesta diretta →",
+                  content: m.content || t("chat.error.networkFallback"),
                 }
               : m,
           ),
