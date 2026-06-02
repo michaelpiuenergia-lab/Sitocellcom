@@ -28,35 +28,11 @@ import { OPEN_REQUEST_EVENT } from "./types";
  *     content (prima si appendeva un text-delta sintetico).
  */
 
-const STORAGE_KEY = "cellcom:chat:v1";
-const MAX_HISTORY = 30;
-const SAVE_DEBOUNCE_MS = 300;
 
 export type ChatStatus = "idle" | "streaming" | "error";
 
 function uid(): string {
   return Math.random().toString(36).slice(2) + Date.now().toString(36);
-}
-
-function loadHistory(): ChatMessage[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = sessionStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw) as ChatMessage[];
-    return Array.isArray(parsed) ? parsed.slice(-MAX_HISTORY) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveHistory(messages: ChatMessage[]) {
-  if (typeof window === "undefined") return;
-  try {
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(messages.slice(-MAX_HISTORY)));
-  } catch {
-    // quota piena o SSR: ignora
-  }
 }
 
 export function useChat() {
@@ -67,70 +43,20 @@ export function useChat() {
   const abortRef = useRef<AbortController | null>(null);
   const sendingRef = useRef(false);              // #10
   const currentTurnRef = useRef<{ id: string; cancelled: boolean } | null>(null); // #9
-  const hydratedRef = useRef(false);
-  const initialSaveSkipRef = useRef(true);       // #11
-  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null); // #14
-  const pendingSaveRef = useRef<ChatMessage[] | null>(null); // #14
   // Mirror sincrono dello stato messages — usato in send() per costruire
   // il body senza dipendere dalla closure (che con useCallback deps=[] è
   // stale) né dal setState callback (che in React 19 Strict Mode può
   // generare un body vuoto).
   const messagesRef = useRef<ChatMessage[]>([]);
 
-  // Hydrate da sessionStorage al mount
-  useEffect(() => {
-    if (hydratedRef.current) return;
-    hydratedRef.current = true;
-    const history = loadHistory();
-    if (history.length > 0) setMessages(history);
-  }, []);
-
   // Mirror messages → messagesRef per accesso sincrono in send()
   useEffect(() => {
     messagesRef.current = messages;
   }, [messages]);
 
-  // Persisti — debounce 300ms (fix #14: evita setItem sync per ogni delta)
-  useEffect(() => {
-    if (!hydratedRef.current) return;
-    // Fix #11: il primo run post-hydration vede messages=[] (closure del
-    // render iniziale) e sovrascriverebbe la history caricata
-    if (initialSaveSkipRef.current) {
-      initialSaveSkipRef.current = false;
-      return;
-    }
-    pendingSaveRef.current = messages;
-    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-    saveTimerRef.current = setTimeout(() => {
-      if (pendingSaveRef.current) {
-        saveHistory(pendingSaveRef.current);
-        pendingSaveRef.current = null;
-      }
-    }, SAVE_DEBOUNCE_MS);
-    return () => {
-      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-    };
-  }, [messages]);
-
-  // Flush sincrono su pagehide (Safari iOS) + beforeunload
-  useEffect(() => {
-    function flush() {
-      if (saveTimerRef.current) {
-        clearTimeout(saveTimerRef.current);
-        saveTimerRef.current = null;
-      }
-      if (pendingSaveRef.current) {
-        saveHistory(pendingSaveRef.current);
-        pendingSaveRef.current = null;
-      }
-    }
-    window.addEventListener("pagehide", flush);
-    window.addEventListener("beforeunload", flush);
-    return () => {
-      window.removeEventListener("pagehide", flush);
-      window.removeEventListener("beforeunload", flush);
-    };
-  }, []);
+  // NESSUNA persistenza: ogni reload pagina = chat resettata. Lo stato
+  // sopravvive solo alle navigazioni SPA (perché <Chatbot/> è nel root
+  // layout e non viene rimontato).
 
   const cancel = useCallback(() => {
     // #9: marca il turno corrente come cancellato — gli eventi SSE già
@@ -152,13 +78,6 @@ export function useChat() {
     cancel();
     setMessages([]);
     setError(null);
-    if (typeof window !== "undefined") {
-      try {
-        sessionStorage.removeItem(STORAGE_KEY);
-      } catch {
-        // ignore
-      }
-    }
   }, [cancel]);
 
   const send = useCallback(
