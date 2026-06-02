@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { b2bRegenerateListino } from "@/lib/crm-client";
 import { requireB2bSession } from "@/lib/auth/guards";
 import { revalidatePath } from "next/cache";
+import { log } from "@/lib/log";
 
 export async function POST() {
   const ctx = await requireB2bSession();
@@ -17,7 +18,7 @@ export async function POST() {
     return NextResponse.json(result, { status: 200 });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Errore";
-    console.error("[b2b/regenerate-listino]", msg);
+    log.error("b2b regenerate listino failed", { msg });
     return NextResponse.json(
       {
         error: {

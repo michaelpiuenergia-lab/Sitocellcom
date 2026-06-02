@@ -7,6 +7,7 @@ import { Chatbot } from "@/components/chatbot";
 import { LangProvider } from "@/lib/i18n/lang-context";
 import { getLang } from "@/lib/i18n/server";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/structured-data";
+import { QueryProvider } from "@/lib/providers/query-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -106,8 +107,10 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
         <LangProvider initialLang={lang}>
-          {children}
-          <Chatbot />
+          <QueryProvider>
+            {children}
+            <Chatbot />
+          </QueryProvider>
         </LangProvider>
         <GrainOverlay />
         {/* JSON-LD globali: rich snippet Google */}

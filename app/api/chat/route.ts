@@ -13,6 +13,7 @@ import {
   type ToolResult,
 } from "@/lib/chatbot/tools";
 import { consumeRateLimit, extractIp } from "@/lib/chatbot/rate-limit";
+import { log } from "@/lib/log";
 
 /**
  * /api/chat — endpoint streaming SSE per il chatbot pubblico Cellcom.
@@ -385,7 +386,7 @@ export async function POST(req: NextRequest) {
           userMessage = "Chat non disponibile (configurazione)";
         else if (status && status >= 500)
           userMessage = "Servizio temporaneamente non disponibile";
-        console.error("[chat]", { status, message: err.message });
+        log.error("chat upstream error", { status, message: err.message });
         sseError(controller, userMessage);
       } finally {
         try {

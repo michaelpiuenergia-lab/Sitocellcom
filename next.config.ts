@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import path from "node:path";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
 const nextConfig: NextConfig = {
   // Vercel region + runtime
@@ -76,4 +77,11 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+/**
+ * Bundle analyzer attivabile con `ANALYZE=true npm run build`.
+ * Genera due report HTML (.next/analyze) — utili per individuare chunk
+ * grossi (Three.js, framer-motion, react-three/drei).
+ */
+const analyzer = withBundleAnalyzer({ enabled: process.env.ANALYZE === "true" });
+
+export default analyzer(nextConfig);
