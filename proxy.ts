@@ -1,6 +1,45 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+// ─── Rate-limit best-effort su /api/auth/* (audit recommendation) ──────────
+// In-memory LRU per-istanza. Per produzione robusta migrare a Vercel KV.
+
+const AUTH_LIMIT_WINDOW_MS = 5 * 60 * 1000;
+const AUTH_LIMIT_MAX = 20; // 20 tentativi auth / 5 min per IP
+const authBuckets = new Map<string, { count: number; resetAt: number }>();
+const MAX_AUTH_BUCKETS = 2_000;
+
+function consumeAuthLimit(ip: string): { allowed: boolean; resetInSec: number } {
+  const now = Date.now();
+  const cur = authBuckets.get(ip);
+  if (!cur || cur.resetAt <= now) {
+    authBuckets.delete(ip);
+    authBuckets.set(ip, { count: 1, resetAt: now + AUTH_LIMIT_WINDOW_MS });
+    if (authBuckets.size > MAX_AUTH_BUCKETS) {
+      const it = authBuckets.keys();
+      for (let i = 0; i < 100; i++) {
+        const k = it.next().value;
+        if (k === undefined) break;
+        authBuckets.delete(k);
+      }
+    }
+    return { allowed: true, resetInSec: AUTH_LIMIT_WINDOW_MS / 1000 };
+  }
+  if (cur.count >= AUTH_LIMIT_MAX) {
+    return { allowed: false, resetInSec: Math.ceil((cur.resetAt - now) / 1000) };
+  }
+  cur.count += 1;
+  authBuckets.delete(ip);
+  authBuckets.set(ip, cur);
+  return { allowed: true, resetInSec: Math.ceil((cur.resetAt - now) / 1000) };
+}
+
+function getClientIp(req: NextRequest): string {
+  const fwd = req.headers.get("x-forwarded-for");
+  if (fwd) return fwd.split(",")[0]!.trim();
+  return req.headers.get("x-real-ip") ?? "anon";
+}
+
 const SECURITY_HEADERS: Array<[string, string]> = [
   ["X-Content-Type-Options", "nosniff"],
   ["X-Frame-Options", "DENY"],
@@ -74,6 +113,30 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/api/")) {
+    // Rate-limit auth endpoints (anti brute-force)
+    if (pathname.startsWith("/api/auth/")) {
+      const ip = getClientIp(request);
+      const rl = consumeAuthLimit(ip);
+      if (!rl.allowed) {
+        return applySecurityHeaders(
+          new NextResponse(
+            JSON.stringify({
+              error: {
+                code: "RATE_LIMITED",
+                message: "Troppi tentativi. Riprova fra qualche minuto.",
+              },
+            }),
+            {
+              status: 429,
+              headers: {
+                "Content-Type": "application/json",
+                "Retry-After": String(rl.resetInSec),
+              },
+            },
+          ),
+        );
+      }
+    }
     return applySecurityHeaders(NextResponse.next());
   }
 
