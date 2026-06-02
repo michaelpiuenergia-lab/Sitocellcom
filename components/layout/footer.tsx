@@ -1,5 +1,5 @@
 import { LogoC } from "@/components/marketing/logo-c";
-import { LangSwitcher } from "@/components/i18n/lang-switcher";
+import { WowspaceCredit } from "@/components/credits/wowspace-credit";
 
 const links = [
   { label: "Prodotti", href: "/prodotti" },
@@ -70,7 +70,6 @@ export function Footer() {
           >
             © {new Date().getFullYear()} Cellcom Group
           </span>
-          <LangSwitcher variant="footer" />
         </div>
       </div>
       <div
@@ -94,6 +93,9 @@ export function Footer() {
           <a href="tel:0735501637" className="hover:text-brand-500">0735 501637</a> · WhatsApp{" "}
           <a href="tel:+393208574006" className="hover:text-brand-500">320 857 4006</a>
         </p>
+        <div className="flex justify-center mt-5">
+          <WowspaceCredit variant="footer" />
+        </div>
       </div>
     </footer>
   );

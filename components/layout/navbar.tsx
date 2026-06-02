@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { LogoC } from "@/components/marketing/logo-c";
 import { cn } from "@/lib/utils/cn";
+import { LangSwitcher } from "@/components/i18n/lang-switcher";
 
 const navLinks = [
   { label: "Prodotti", href: "/prodotti" },
@@ -86,6 +87,7 @@ export function Navbar() {
 
         {/* CTA destra */}
         <div className="hidden lg:flex items-center gap-3 shrink-0">
+          <LangSwitcher variant="navbar" />
           <a
             href="/clienti"
             className="px-3 py-2 transition-colors duration-200 hover:text-brand-600"

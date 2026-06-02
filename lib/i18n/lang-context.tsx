@@ -1,8 +1,9 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { ReactNode } from "react";
-import { type Lang, LANG_COOKIE, DEFAULT_LANG } from "./lang";
+import { type Lang, DEFAULT_LANG } from "./lang";
 import { getDict, type Dict } from "./dict";
 
 /**
@@ -28,8 +29,6 @@ type LangContextValue = {
 
 const Ctx = createContext<LangContextValue | null>(null);
 
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 anno
-
 export function LangProvider({
   initialLang,
   children,
@@ -38,17 +37,40 @@ export function LangProvider({
   children: ReactNode;
 }) {
   const [lang, setLangState] = useState<Lang>(initialLang);
+  const router = useRouter();
   const dict = useMemo(() => getDict(lang), [lang]);
 
-  const setLang = useCallback((next: Lang) => {
-    if (next === lang) return;
-    if (typeof document !== "undefined") {
-      document.cookie = `${LANG_COOKIE}=${next}; path=/; max-age=${COOKIE_MAX_AGE}; SameSite=Lax`;
-    }
-    setLangState(next);
-    // Reload per re-fetchare i Server Components con la nuova lingua dal CRM
-    if (typeof window !== "undefined") window.location.reload();
-  }, [lang]);
+  const setLang = useCallback(
+    (next: Lang) => {
+      if (next === lang) return;
+      // Set cookie server-side (più affidabile di document.cookie con
+      // SameSite/HttpOnly). Poi router.refresh() per re-rendere i Server
+      // Components con la nuova lingua dal CRM (+ getLang() → ?lang=en).
+      setLangState(next);
+      fetch("/api/i18n/set-lang", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lang: next }),
+      })
+        .then(() => {
+          router.refresh();
+          // Fallback hard-reload per assicurarsi che TUTTI gli alberi
+          // (anche componenti client lontani che non si re-rendono col
+          // refresh) prendano la nuova lingua dal cookie.
+          if (typeof window !== "undefined") {
+            setTimeout(() => window.location.reload(), 50);
+          }
+        })
+        .catch(() => {
+          // Best-effort fallback: scrive cookie client + reload
+          if (typeof document !== "undefined") {
+            document.cookie = `cellcom_lang=${next}; path=/; max-age=31536000; SameSite=Lax`;
+          }
+          if (typeof window !== "undefined") window.location.reload();
+        });
+    },
+    [lang, router],
+  );
 
   const t = useCallback(
     <K extends keyof Dict>(
