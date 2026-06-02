@@ -5,7 +5,7 @@ import "./globals.css";
 import { GrainOverlay } from "@/components/ui/grain-overlay";
 import { Chatbot } from "@/components/chatbot";
 import { LangProvider } from "@/lib/i18n/lang-context";
-import { getLang } from "@/lib/i18n/lang";
+import { getLang } from "@/lib/i18n/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

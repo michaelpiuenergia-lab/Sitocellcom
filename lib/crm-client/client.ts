@@ -1,7 +1,7 @@
 import "server-only";
 
 import type { PublicApiError } from "./types";
-import { getLang } from "@/lib/i18n/lang";
+import { getLang } from "@/lib/i18n/server";
 
 const CRM_BASE = process.env.CRM_API_URL;
 const CRM_KEY = process.env.CRM_API_KEY;
