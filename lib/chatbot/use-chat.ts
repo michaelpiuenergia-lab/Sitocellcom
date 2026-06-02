@@ -71,6 +71,11 @@ export function useChat() {
   const initialSaveSkipRef = useRef(true);       // #11
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null); // #14
   const pendingSaveRef = useRef<ChatMessage[] | null>(null); // #14
+  // Mirror sincrono dello stato messages — usato in send() per costruire
+  // il body senza dipendere dalla closure (che con useCallback deps=[] è
+  // stale) né dal setState callback (che in React 19 Strict Mode può
+  // generare un body vuoto).
+  const messagesRef = useRef<ChatMessage[]>([]);
 
   // Hydrate da sessionStorage al mount
   useEffect(() => {
@@ -79,6 +84,11 @@ export function useChat() {
     const history = loadHistory();
     if (history.length > 0) setMessages(history);
   }, []);
+
+  // Mirror messages → messagesRef per accesso sincrono in send()
+  useEffect(() => {
+    messagesRef.current = messages;
+  }, [messages]);
 
   // Persisti — debounce 300ms (fix #14: evita setItem sync per ogni delta)
   useEffect(() => {
@@ -174,13 +184,14 @@ export function useChat() {
         toolEvents: [],
       };
 
-      // Setter funzionale per evitare closure stale su messages
-      let snapshotForFetch: ChatMessage[] = [];
-      setMessages((prev) => {
-        const next = [...prev, userMsg, assistantMsg];
-        snapshotForFetch = next;
-        return next;
-      });
+      // Snapshot sincrono via ref (no closure stale, no Strict Mode race)
+      const snapshotForFetch: ChatMessage[] = [
+        ...messagesRef.current,
+        userMsg,
+        assistantMsg,
+      ];
+      messagesRef.current = snapshotForFetch;
+      setMessages(snapshotForFetch);
       setStatus("streaming");
 
       const ctl = new AbortController();
