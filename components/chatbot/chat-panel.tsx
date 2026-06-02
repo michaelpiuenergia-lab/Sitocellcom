@@ -88,16 +88,14 @@ export function ChatPanel() {
 
           <motion.div
             ref={headerRef}
-            // #16: tabIndex=-1 rende il pannello focusabile programmaticamente
             tabIndex={-1}
-            // #17: region è semanticamente onesto per widget non-modale
             role="region"
             aria-label="Chat assistenza Cellcom"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 12 }}
             transition={{ duration: 0.25, ease: [0.65, 0, 0.35, 1] }}
-            className="fixed z-40 flex flex-col overflow-hidden chat-panel-anchor focus:outline-none"
+            className="fixed z-50 flex flex-col overflow-hidden focus:outline-none chat-panel-anchor"
             style={{
               backgroundColor: "#ffffff",
               border: "1px solid #ececec",
@@ -111,7 +109,10 @@ export function ChatPanel() {
               <ChatInput />
             </div>
 
-            <style jsx>{`
+            {/* Inline CSS globale (no styled-jsx scoped) — garantisce che le
+                dimensioni si applichino al primo render, indipendentemente
+                dal timing di styled-jsx in AnimatePresence. */}
+            <style jsx global>{`
               .chat-panel-anchor {
                 right: 12px;
                 bottom: 88px;
