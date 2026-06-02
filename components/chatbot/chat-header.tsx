@@ -1,14 +1,15 @@
 "use client";
 
 import { LogoC } from "@/components/marketing/logo-c";
-import { useChatContext } from "./chat-context";
+import { useChatState, useChatActions } from "./chat-context";
 
 /**
  * Header del pannello chat: logo + wordmark + mono trust line + close.
  * Stile FastFix: linea rossa accent + label monospace.
  */
 export function ChatHeader() {
-  const { close, status } = useChatContext();
+  const { status } = useChatState();
+  const { close } = useChatActions();
 
   return (
     <header
@@ -23,9 +24,11 @@ export function ChatHeader() {
         >
           Assistenza Cellcom
         </span>
+        {/* Fix #20: aria-live polite annuncia lo status all'utente SR */}
         <span
           className="font-mono uppercase"
           style={{ fontSize: "9.5px", letterSpacing: "0.24em", color: "#737373" }}
+          aria-live="polite"
         >
           {status === "streaming" ? "Sta scrivendo…" : "Risposta in pochi minuti"}
         </span>

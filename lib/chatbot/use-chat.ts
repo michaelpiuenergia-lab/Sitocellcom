@@ -13,10 +13,24 @@ import { OPEN_REQUEST_EVENT } from "./types";
  * Hook lato browser: gestisce history messaggi, streaming SSE, abort,
  * persistenza sessione (sessionStorage) e dispatch dell'evento
  * window "cellcom:open-request" verso il <RequestFormBridge/>.
+ *
+ * Fix dal review:
+ * #9  Turn-guard ref: dopo cancel() gli eventi SSE già bufferizzati non
+ *     mutano più lo stato del messaggio aborted.
+ * #10 sendingRef sincrono: evita doppio fetch per click ravvicinati prima
+ *     che il setState di "streaming" propaghi al rerender.
+ * #11 initialRunRef: il primo run del save-effect dopo l'hydration non
+ *     scrive "[]" in sessionStorage.
+ * #12 try/finally + reader.cancel(): rilascia il reader e chiude il body
+ *     su throw/error/cancel.
+ * #14 Save debounce 300ms durante streaming, flush sincrono su pagehide.
+ * #1  Done event con truncated=true segna il messaggio senza inquinare
+ *     content (prima si appendeva un text-delta sintetico).
  */
 
 const STORAGE_KEY = "cellcom:chat:v1";
 const MAX_HISTORY = 30;
+const SAVE_DEBOUNCE_MS = 300;
 
 export type ChatStatus = "idle" | "streaming" | "error";
 
@@ -49,8 +63,14 @@ export function useChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [status, setStatus] = useState<ChatStatus>("idle");
   const [error, setError] = useState<string | null>(null);
+
   const abortRef = useRef<AbortController | null>(null);
+  const sendingRef = useRef(false);              // #10
+  const currentTurnRef = useRef<{ id: string; cancelled: boolean } | null>(null); // #9
   const hydratedRef = useRef(false);
+  const initialSaveSkipRef = useRef(true);       // #11
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null); // #14
+  const pendingSaveRef = useRef<ChatMessage[] | null>(null); // #14
 
   // Hydrate da sessionStorage al mount
   useEffect(() => {
@@ -60,13 +80,52 @@ export function useChat() {
     if (history.length > 0) setMessages(history);
   }, []);
 
-  // Persisti ad ogni update
+  // Persisti — debounce 300ms (fix #14: evita setItem sync per ogni delta)
   useEffect(() => {
     if (!hydratedRef.current) return;
-    saveHistory(messages);
+    // Fix #11: il primo run post-hydration vede messages=[] (closure del
+    // render iniziale) e sovrascriverebbe la history caricata
+    if (initialSaveSkipRef.current) {
+      initialSaveSkipRef.current = false;
+      return;
+    }
+    pendingSaveRef.current = messages;
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = setTimeout(() => {
+      if (pendingSaveRef.current) {
+        saveHistory(pendingSaveRef.current);
+        pendingSaveRef.current = null;
+      }
+    }, SAVE_DEBOUNCE_MS);
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
   }, [messages]);
 
+  // Flush sincrono su pagehide (Safari iOS) + beforeunload
+  useEffect(() => {
+    function flush() {
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+        saveTimerRef.current = null;
+      }
+      if (pendingSaveRef.current) {
+        saveHistory(pendingSaveRef.current);
+        pendingSaveRef.current = null;
+      }
+    }
+    window.addEventListener("pagehide", flush);
+    window.addEventListener("beforeunload", flush);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+      window.removeEventListener("beforeunload", flush);
+    };
+  }, []);
+
   const cancel = useCallback(() => {
+    // #9: marca il turno corrente come cancellato — gli eventi SSE già
+    // bufferizzati nel parser non muteranno più lo stato.
+    if (currentTurnRef.current) currentTurnRef.current.cancelled = true;
     abortRef.current?.abort();
     abortRef.current = null;
     setStatus("idle");
@@ -95,7 +154,9 @@ export function useChat() {
   const send = useCallback(
     async (text: string) => {
       const trimmed = text.trim();
-      if (!trimmed || status === "streaming") return;
+      // #10: guard sincrono via ref. Non dipendere da `status` (closure stale)
+      if (!trimmed || sendingRef.current) return;
+      sendingRef.current = true;
 
       setError(null);
       const userMsg: ChatMessage = {
@@ -113,12 +174,18 @@ export function useChat() {
         toolEvents: [],
       };
 
-      const newMessages = [...messages, userMsg, assistantMsg];
-      setMessages(newMessages);
+      // Setter funzionale per evitare closure stale su messages
+      let snapshotForFetch: ChatMessage[] = [];
+      setMessages((prev) => {
+        const next = [...prev, userMsg, assistantMsg];
+        snapshotForFetch = next;
+        return next;
+      });
       setStatus("streaming");
 
       const ctl = new AbortController();
       abortRef.current = ctl;
+      currentTurnRef.current = { id: assistantId, cancelled: false };
 
       try {
         const res = await fetch("/api/chat", {
@@ -126,7 +193,7 @@ export function useChat() {
           credentials: "same-origin",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            messages: newMessages
+            messages: snapshotForFetch
               .filter((m) => m.role === "user" || m.role === "assistant")
               .filter((m) => m.content.length > 0)
               .map((m) => ({ role: m.role, content: m.content })),
@@ -145,12 +212,14 @@ export function useChat() {
         }
 
         await consumeSse(res.body, (event) => {
+          // #9: gate su turn-guard. Ignora eventi se cancellato/turno cambiato.
+          const turn = currentTurnRef.current;
+          if (!turn || turn.id !== assistantId || turn.cancelled) return;
+
           if (event.type === "text-delta") {
             setMessages((prev) =>
               prev.map((m) =>
-                m.id === assistantId
-                  ? { ...m, content: m.content + event.text }
-                  : m,
+                m.id === assistantId ? { ...m, content: m.content + event.text } : m,
               ),
             );
           } else if (event.type === "tool-use-start") {
@@ -183,7 +252,6 @@ export function useChat() {
               ),
             );
           } else if (event.type === "open-request") {
-            // Hand-off a <RequestFormBridge/>
             if (typeof window !== "undefined") {
               const detail: OpenRequestEventDetail = {
                 kind: event.kind,
@@ -191,14 +259,19 @@ export function useChat() {
                 defaultCustomer: event.defaultCustomer ?? {},
                 hideCompany: event.kind !== "b2b-quote",
               };
-              window.dispatchEvent(
-                new CustomEvent(OPEN_REQUEST_EVENT, { detail }),
-              );
+              window.dispatchEvent(new CustomEvent(OPEN_REQUEST_EVENT, { detail }));
             }
           } else if (event.type === "done") {
+            // #1: truncated=true → flag su messaggio, NO append al content
             setMessages((prev) =>
               prev.map((m) =>
-                m.id === assistantId ? { ...m, status: "complete" } : m,
+                m.id === assistantId
+                  ? {
+                      ...m,
+                      status: "complete",
+                      truncated: event.truncated === true ? true : m.truncated,
+                    }
+                  : m,
               ),
             );
           } else if (event.type === "error") {
@@ -208,8 +281,13 @@ export function useChat() {
 
         setStatus("idle");
         abortRef.current = null;
+        currentTurnRef.current = null;
       } catch (e) {
-        if (ctl.signal.aborted) return; // gestito in cancel()
+        if (ctl.signal.aborted) {
+          abortRef.current = null;
+          currentTurnRef.current = null;
+          return;
+        }
         const msg = e instanceof Error ? e.message : "Errore";
         setError(msg);
         setStatus("error");
@@ -220,16 +298,18 @@ export function useChat() {
                   ...m,
                   status: "error",
                   content:
-                    m.content ||
-                    "Connessione persa. Riprova o apri una richiesta diretta →",
+                    m.content || "Connessione persa. Riprova o apri una richiesta diretta →",
                 }
               : m,
           ),
         );
         abortRef.current = null;
+        currentTurnRef.current = null;
+      } finally {
+        sendingRef.current = false;
       }
     },
-    [messages, status],
+    [],
   );
 
   return { messages, status, error, send, cancel, reset };
@@ -237,6 +317,11 @@ export function useChat() {
 
 // ─── SSE parser ────────────────────────────────────────────────────────────
 
+/**
+ * Legge una ReadableStream SSE (event: name\ndata: json\n\n) e chiama
+ * onEvent per ciascun blocco completo. Rilascia il reader in finally per
+ * non lasciare la connessione locked su throw (fix #12).
+ */
 async function consumeSse(
   body: ReadableStream<Uint8Array>,
   onEvent: (event: ChatStreamEvent) => void,
@@ -245,31 +330,43 @@ async function consumeSse(
   const decoder = new TextDecoder();
   let buffer = "";
 
-  while (true) {
-    const { value, done } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
 
-    // Spezza per blocchi di evento (separati da \n\n)
-    let idx: number;
-    while ((idx = buffer.indexOf("\n\n")) >= 0) {
-      const block = buffer.slice(0, idx);
-      buffer = buffer.slice(idx + 2);
-      if (!block.trim()) continue;
+      let idx: number;
+      while ((idx = buffer.indexOf("\n\n")) >= 0) {
+        const block = buffer.slice(0, idx);
+        buffer = buffer.slice(idx + 2);
+        if (!block.trim()) continue;
 
-      let eventName = "message";
-      let data = "";
-      for (const line of block.split("\n")) {
-        if (line.startsWith("event:")) eventName = line.slice(6).trim();
-        else if (line.startsWith("data:")) data += line.slice(5).trim();
+        let eventName = "message";
+        let data = "";
+        for (const line of block.split("\n")) {
+          if (line.startsWith("event:")) eventName = line.slice(6).trim();
+          else if (line.startsWith("data:")) data += line.slice(5).trim();
+        }
+        if (!data) continue;
+        try {
+          const parsed = JSON.parse(data) as Record<string, unknown>;
+          onEvent({ type: eventName, ...parsed } as unknown as ChatStreamEvent);
+        } catch {
+          // chunk non valido: ignora
+        }
       }
-      if (!data) continue;
-      try {
-        const parsed = JSON.parse(data) as Record<string, unknown>;
-        onEvent({ type: eventName, ...parsed } as unknown as ChatStreamEvent);
-      } catch {
-        // chunk non valido: ignora
-      }
+    }
+  } finally {
+    try {
+      await reader.cancel().catch(() => {});
+    } catch {
+      // ignore
+    }
+    try {
+      reader.releaseLock();
+    } catch {
+      // già rilasciato
     }
   }
 }

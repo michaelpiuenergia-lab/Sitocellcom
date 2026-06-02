@@ -18,13 +18,16 @@ import { consumeRateLimit, extractIp } from "@/lib/chatbot/rate-limit";
  * /api/chat — endpoint streaming SSE per il chatbot pubblico Cellcom.
  *
  * Flusso:
- * 1. Valida body (max 50 messaggi, body <32KB)
- * 2. Rate-limit per IP (best-effort)
- * 3. Stream Claude → emette text-delta in tempo reale
- * 4. Quando stop_reason='tool_use', esegue i tool in parallelo e ricomincia
- *    fino a MAX_ITERATIONS=5
- * 5. Forwarda eventi tool-use-start / tool-result / open-request / done
- * 6. AbortSignal del client interrompe lo stream upstream
+ * 1. Same-origin guard (host stretto, no endsWith)
+ * 2. Rate-limit per IP — PRIMA di leggere il body, così payload abusivi
+ *    non costano CPU/banda
+ * 3. Valida body (max 50 messaggi, body <32KB UTF-8 byte, non char)
+ * 4. Stream Claude → text-delta in tempo reale
+ * 5. Loop tool-use (max 5 giri): esecuzione tool in parallelo, signal
+ *    propagato, open-request emesso DOPO i tool-result
+ * 6. AbortSignal del client interrompe lo stream upstream + tool in volo
+ * 7. Se MAX_ITERATIONS raggiunto: emette `done { truncated: true }`,
+ *    non inquina il content del messaggio
  */
 
 export const runtime = "nodejs";
@@ -86,12 +89,50 @@ function envMaxIterations(): number {
   return Number.isFinite(n) && n > 0 && n <= 10 ? Math.floor(n) : DEFAULT_MAX_ITERATIONS;
 }
 
-// ─── Tool execution ────────────────────────────────────────────────────────
+// ─── Same-origin guard (fix bug review #5 + #6) ────────────────────────────
 
-async function runTool(name: string, input: unknown): Promise<ToolResult> {
+/**
+ * Confronta l'host parsato dell'Origin con il valore Host (uguaglianza
+ * stretta). Niente endsWith (passerebbe `evilcellcom.it`). Origin assente
+ * → fallback al Referer; nessuno dei due → 403.
+ */
+function isAllowedOrigin(req: NextRequest): boolean {
+  const host = req.headers.get("host");
+  if (!host) return false;
+  const origin = req.headers.get("origin");
+  if (origin) {
+    try {
+      const originHost = new URL(origin).host;
+      return originHost === host;
+    } catch {
+      return false;
+    }
+  }
+  const referer = req.headers.get("referer");
+  if (referer) {
+    try {
+      return new URL(referer).host === host;
+    } catch {
+      return false;
+    }
+  }
+  // Né Origin né Referer: rifiuta (anti-script server-to-server)
+  return false;
+}
+
+// ─── Tool execution con AbortSignal propagation (fix bug review #3) ────────
+
+async function runTool(
+  name: string,
+  input: unknown,
+  signal: AbortSignal,
+): Promise<ToolResult> {
   const handler = TOOL_HANDLERS[name];
   if (!handler) {
     return { ok: false, code: "UNKNOWN_TOOL", message: `Tool sconosciuto: ${name}` };
+  }
+  if (signal.aborted) {
+    return { ok: false, code: "ABORTED", message: "Annullato dal client" };
   }
   try {
     return await handler(input);
@@ -126,19 +167,33 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Same-origin guard
-  const origin = req.headers.get("origin");
-  const host = req.headers.get("host");
-  if (origin && host && !origin.endsWith(host)) {
+  // Fix #5 + #6: same-origin stretto, no endsWith, Origin obbligatorio (o Referer)
+  if (!isAllowedOrigin(req)) {
     return NextResponse.json(
       { error: { code: "FORBIDDEN_ORIGIN", message: "Origin non consentita" } },
       { status: 403 },
     );
   }
 
-  // Body size guard (best-effort, Next.js già limita ~1MB di default)
+  // Fix #7: rate-limit BEFORE leggere il body
+  const ip = extractIp(req.headers);
+  const rl = consumeRateLimit(ip);
+  if (!rl.allowed) {
+    return NextResponse.json(
+      {
+        error: {
+          code: "RATE_LIMITED",
+          message: "Troppe richieste, riprova fra qualche minuto",
+        },
+      },
+      { status: 429, headers: { "Retry-After": String(rl.resetInSec) } },
+    );
+  }
+
+  // Fix #8: byte-length UTF-8, non char-length (multi-byte chars passavano)
   const text = await req.text();
-  if (text.length > 32_000) {
+  const bytes = Buffer.byteLength(text, "utf8");
+  if (bytes > 32_000) {
     return NextResponse.json(
       { error: { code: "PAYLOAD_TOO_LARGE", message: "Messaggio troppo lungo" } },
       { status: 413 },
@@ -167,21 +222,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Rate-limit
-  const ip = extractIp(req.headers);
-  const rl = consumeRateLimit(ip);
-  if (!rl.allowed) {
-    return NextResponse.json(
-      {
-        error: {
-          code: "RATE_LIMITED",
-          message: "Troppe richieste, riprova fra qualche minuto",
-        },
-      },
-      { status: 429, headers: { "Retry-After": String(rl.resetInSec) } },
-    );
-  }
-
   // Verifica chiave (fail-fast prima di aprire lo stream)
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(
@@ -199,11 +239,16 @@ export async function POST(req: NextRequest) {
   const maxIterations = envMaxIterations();
   const messages: AnthropicMessage[] = toAnthropicMessages(parsed.data.messages);
   const client = getClient();
+
+  // Fix #2: AbortController + check pre-listener (req.signal potrebbe essere
+  // già abortito tra validazione e qui) + once:true per cleanup automatico
   const abortCtl = new AbortController();
   const upstreamSignal = abortCtl.signal;
-
-  // Propaga AbortSignal del client → upstream
-  req.signal.addEventListener("abort", () => abortCtl.abort());
+  if (req.signal.aborted) {
+    abortCtl.abort();
+  } else {
+    req.signal.addEventListener("abort", () => abortCtl.abort(), { once: true });
+  }
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -223,10 +268,7 @@ export async function POST(req: NextRequest) {
         );
 
         for (let iter = 0; iter < maxIterations; iter++) {
-          if (upstreamSignal.aborted) {
-            sseEvent(controller, "error", { message: "Interrotto dal client" });
-            return;
-          }
+          if (upstreamSignal.aborted) return;
 
           const upstream = client.messages.stream(
             {
@@ -249,7 +291,6 @@ export async function POST(req: NextRequest) {
           const blocks = final.content as AnthropicContentBlock[];
 
           if (stopReason !== "tool_use") {
-            // Fine turno: emetti done con usage
             sseEvent(controller, "done", {
               usage: {
                 inputTokens: final.usage.input_tokens,
@@ -266,13 +307,17 @@ export async function POST(req: NextRequest) {
             (b): b is Extract<AnthropicContentBlock, { type: "tool_use" }> =>
               b.type === "tool_use",
           );
-
           if (toolUses.length === 0) {
-            sseEvent(controller, "done", { usage: { inputTokens: final.usage.input_tokens, outputTokens: final.usage.output_tokens } });
+            sseEvent(controller, "done", {
+              usage: {
+                inputTokens: final.usage.input_tokens,
+                outputTokens: final.usage.output_tokens,
+              },
+            });
             return;
           }
 
-          // Notifica al client + esegui in parallelo
+          // Notifica al client
           for (const tu of toolUses) {
             sseEvent(controller, "tool-use-start", {
               id: tu.id,
@@ -281,26 +326,32 @@ export async function POST(req: NextRequest) {
             });
           }
 
+          // Fix #3: check abort prima di eseguire i tool (client disconnesso
+          // dopo finalMessage ma prima di Promise.all)
+          if (upstreamSignal.aborted) return;
+
+          // Esegui i tool con signal propagato
           const results = await Promise.all(
-            toolUses.map(async (tu) => {
-              const result = await runTool(tu.name, tu.input);
-              // Tool virtuale openRequestForm: emetti evento dedicato al client
-              if (tu.name === "openRequestForm" && result.ok) {
-                const payload = parseOpenRequestPayload(tu.input);
-                if (payload) {
-                  sseEvent(controller, "open-request", payload);
-                }
-              }
-              return { tu, result };
-            }),
+            toolUses.map((tu) =>
+              runTool(tu.name, tu.input, upstreamSignal).then((result) => ({ tu, result })),
+            ),
           );
 
+          // Fix #4: emetti TUTTI i tool-result PRIMA dell'open-request, così
+          // il client non apre il modal mentre altre bubble di stato sono
+          // ancora "Cerco il modello…"
           for (const { tu, result } of results) {
             sseEvent(controller, "tool-result", {
               id: tu.id,
               name: tu.name,
               ok: result.ok,
             });
+          }
+          for (const { tu, result } of results) {
+            if (tu.name === "openRequestForm" && result.ok) {
+              const payload = parseOpenRequestPayload(tu.input);
+              if (payload) sseEvent(controller, "open-request", payload);
+            }
           }
 
           // Aggiungi alla history: assistant con tool_use + user con tool_result
@@ -319,16 +370,13 @@ export async function POST(req: NextRequest) {
           });
         }
 
-        // Loop limit raggiunto
-        sseEvent(controller, "text-delta", {
-          text: "\n\nNon riesco a chiudere la risposta in questo turno. Prova a riformulare oppure apri una richiesta diretta →",
-        });
-        sseEvent(controller, "done", {});
+        // Fix #1: limit raggiunto → done con truncated=true.
+        // Il client mostra un avviso UI dedicato SENZA appendere al content
+        // (prima si emetteva un text-delta sintetico che finiva in
+        // sessionStorage e tornava al modello al turno successivo).
+        sseEvent(controller, "done", { truncated: true });
       } catch (e) {
-        if (upstreamSignal.aborted) {
-          // Cliente disconnesso: chiudi pulito
-          return;
-        }
+        if (upstreamSignal.aborted) return; // disconnesso: chiudi pulito
         const err = e as { status?: number; message?: string };
         const status = err.status;
         let userMessage = "Il servizio chat non è disponibile, scrivici a info@cellcom.it";
@@ -337,7 +385,6 @@ export async function POST(req: NextRequest) {
           userMessage = "Chat non disponibile (configurazione)";
         else if (status && status >= 500)
           userMessage = "Servizio temporaneamente non disponibile";
-        // Log server-side senza esporre dettagli upstream
         console.error("[chat]", { status, message: err.message });
         sseError(controller, userMessage);
       } finally {

@@ -29,6 +29,8 @@ export type ChatMessage = {
   status?: "streaming" | "complete" | "aborted" | "error";
   /** Solo client: bubble di stato strumenti durante questo turno. */
   toolEvents?: ChatToolEvent[];
+  /** Solo client: true quando la risposta è stata tagliata per MAX_ITERATIONS. */
+  truncated?: boolean;
 };
 
 export type ChatToolEvent = {
@@ -55,6 +57,14 @@ export type ChatStreamEvent =
     }
   | {
       type: "done";
+      /**
+       * True quando la route è uscita per MAX_ITERATIONS senza che il modello
+       * avesse chiuso il turno: il client mostra un avviso senza appenderlo al
+       * content del messaggio (fix bug review #1: prima si emetteva un text-delta
+       * sintetico che finiva nella history persistita e tornava al modello al
+       * turno successivo come se fosse stato detto da lui).
+       */
+      truncated?: boolean;
       usage?: {
         inputTokens?: number;
         outputTokens?: number;

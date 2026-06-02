@@ -275,19 +275,22 @@ export const TOOL_HANDLERS: Record<string, ToolHandler> = {
     const { limit = 6, ...filters } = p.data;
     try {
       const res = await getProducts({ ...filters, limit });
-      const items = res.items.slice(0, limit).map((i) => ({
-        slug: i.slug,
-        name: i.name,
-        brand: i.brand,
-        kind: i.kind,
-        channel: i.channel,
-        category: i.category,
-        condition: i.condition,
-        stock: i.stock.capped ? `${i.stock.count}+` : i.stock.count,
-        priceEur: i.priceHidden ? null : formatEur(i.priceCents ?? 0),
-        priceLabel: i.priceHidden ? "Su richiesta" : null,
-        url: `/prodotti/${KIND_TO_SEGMENT[i.kind] ?? "telefoni"}#${i.slug}`,
-      }));
+      const items = res.items.slice(0, limit).map((i) => {
+        const hidden = i.priceHidden || i.priceCents == null;
+        return {
+          slug: i.slug,
+          name: i.name,
+          brand: i.brand,
+          kind: i.kind,
+          channel: i.channel,
+          category: i.category,
+          condition: i.condition,
+          stock: i.stock.capped ? `${i.stock.count}+` : i.stock.count,
+          priceEur: hidden ? null : formatEur(i.priceCents as number),
+          priceLabel: hidden ? "Su richiesta" : null,
+          url: `/prodotti/${KIND_TO_SEGMENT[i.kind] ?? "telefoni"}#${i.slug}`,
+        };
+      });
       return {
         ok: true,
         data: {
@@ -306,6 +309,7 @@ export const TOOL_HANDLERS: Record<string, ToolHandler> = {
     if (!p.success) return badInput(p.error);
     try {
       const d = await getProductBySlug(p.data.slug, p.data.channel);
+      const hidden = d.priceHidden || d.priceCents == null;
       return {
         ok: true,
         data: {
@@ -318,27 +322,30 @@ export const TOOL_HANDLERS: Record<string, ToolHandler> = {
           condition: d.condition,
           description: d.description,
           stock: d.stock.capped ? `${d.stock.count}+` : d.stock.count,
-          priceEur: d.priceHidden ? null : formatEur(d.priceCents ?? 0),
-          priceLabel: d.priceHidden ? "Su richiesta" : null,
-          variants: d.variants.slice(0, 6).map((v) => ({
-            id: v.id,
-            label: v.label,
-            color: v.color,
-            storage: v.storage,
-            size: v.size,
-            stock: v.stock.capped ? `${v.stock.count}+` : v.stock.count,
-            priceEur:
-              v.priceHidden || v.priceCents == null
-                ? null
-                : formatEur(v.priceCents),
-            priceLabel: v.priceHidden ? "Su richiesta" : null,
-          })),
+          priceEur: hidden ? null : formatEur(d.priceCents as number),
+          priceLabel: hidden ? "Su richiesta" : null,
+          variants: d.variants.slice(0, 6).map((v) => {
+            const vh = v.priceHidden || v.priceCents == null;
+            return {
+              id: v.id,
+              label: v.label,
+              color: v.color,
+              storage: v.storage,
+              size: v.size,
+              stock: v.stock.capped ? `${v.stock.count}+` : v.stock.count,
+              priceEur: vh ? null : formatEur(v.priceCents as number),
+              priceLabel: vh ? "Su richiesta" : null,
+            };
+          }),
           url: `/prodotti/${KIND_TO_SEGMENT[d.kind] ?? "telefoni"}#${d.slug}`,
         },
       };
     } catch (e) {
+      // Bug fix #25: CrmApiError espone `code` come property (non come Error.message).
+      // Il mock invece lancia `new Error("SLUG_AMBIGUOUS")` quindi facciamo entrambi.
+      const code = (e as { code?: string }).code;
       const msg = e instanceof Error ? e.message : "";
-      if (/SLUG_AMBIGUOUS/i.test(msg)) {
+      if (code === "SLUG_AMBIGUOUS" || /SLUG_AMBIGUOUS/i.test(msg)) {
         return {
           ok: false,
           code: "SLUG_AMBIGUOUS",
@@ -346,7 +353,7 @@ export const TOOL_HANDLERS: Record<string, ToolHandler> = {
             "Slug presente su più canali — chiedi all'utente quale canale.",
         };
       }
-      if (/NOT_FOUND/i.test(msg)) {
+      if (code === "NOT_FOUND" || /NOT_FOUND/i.test(msg)) {
         return { ok: false, code: "NOT_FOUND", message: "Prodotto non trovato" };
       }
       return upstream(e);

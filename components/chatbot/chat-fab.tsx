@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useChatContext } from "./chat-context";
+import { useChatState, useChatActions } from "./chat-context";
 
 /**
  * Bottone fluttuante 56x56 in basso a destra. Rosso brand-600, icona che
@@ -9,7 +9,8 @@ import { useChatContext } from "./chat-context";
  * il modal RequestForm.
  */
 export function ChatFab() {
-  const { isOpen, toggle } = useChatContext();
+  const { isOpen } = useChatState();
+  const { toggle } = useChatActions();
 
   return (
     <button

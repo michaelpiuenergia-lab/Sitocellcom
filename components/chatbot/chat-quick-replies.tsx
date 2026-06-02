@@ -1,6 +1,6 @@
 "use client";
 
-import { useChatContext } from "./chat-context";
+import { useChatState, useChatActions } from "./chat-context";
 
 const QUICK_REPLIES = [
   { label: "Compra un telefono", text: "Voglio comprare un telefono" },
@@ -10,28 +10,38 @@ const QUICK_REPLIES = [
 ];
 
 /**
- * 4 pill iniziali mostrate solo quando non c'è ancora history.
- * Click → invia il testo associato.
+ * 4 pill iniziali mostrate solo quando non c'è history.
+ *
+ * Fix bug review #21:
+ * - role="group" + aria-label sul container per chiarire scopo agli AT.
+ * - Tap target ingrandito (gap-2.5, padding più ampio) per evitare mis-tap
+ *   tra "Vendo il mio usato" e "Sono un rivenditore" su mobile.
  */
 export function ChatQuickReplies() {
-  const { send, status } = useChatContext();
+  const { status } = useChatState();
+  const { send } = useChatActions();
   const disabled = status === "streaming";
 
   return (
-    <div className="flex flex-wrap gap-2 mt-1">
+    <div
+      role="group"
+      aria-label="Suggerimenti di partenza"
+      className="flex flex-wrap gap-2.5 mt-1"
+    >
       {QUICK_REPLIES.map((q) => (
         <button
           key={q.label}
           type="button"
           onClick={() => send(q.text)}
           disabled={disabled}
-          className="rounded-full px-3 py-1.5 transition-colors disabled:opacity-60"
+          className="rounded-full px-3.5 py-2 transition-colors disabled:opacity-60 hover:border-[#dc2626] hover:text-[#dc2626]"
           style={{
             border: "1px solid #e5e5e5",
             backgroundColor: "#ffffff",
             color: "#0a0a0a",
-            fontSize: "12px",
+            fontSize: "12.5px",
             fontWeight: 500,
+            minHeight: 36,
           }}
         >
           {q.label}

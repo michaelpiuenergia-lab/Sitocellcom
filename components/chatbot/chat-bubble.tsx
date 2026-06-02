@@ -3,11 +3,20 @@
 import type { ChatMessage, ChatToolEvent } from "@/lib/chatbot/types";
 
 /**
- * Bubble singolo: variante user (nero) o bot (off-white).
- * Le tool-status si rendono come mini-bubble inline (sotto al bubble del bot).
+ * Bubble singolo: variante user (nero) o bot (off-white con bordo).
+ *
+ * Fix bug review:
+ * #18 aria-busy=true durante streaming → screen-reader sospende l'annuncio
+ *     fino al complete (no spam token-per-token); aria-live=polite SOLO sui
+ *     bubble completati (assistant).
+ * #22 Border #ececec sul bubble bot (era invisibile su sfondo #fafaf8).
+ * #1  Badge "Risposta troncata" se msg.truncated=true: avviso UI senza
+ *     inquinare il content del messaggio.
  */
 export function ChatBubble({ msg }: { msg: ChatMessage }) {
   const isUser = msg.role === "user";
+  const isStreaming = msg.status === "streaming";
+  const isComplete = msg.status === "complete";
 
   return (
     <div className={`flex flex-col ${isUser ? "items-end" : "items-start"}`}>
@@ -16,6 +25,7 @@ export function ChatBubble({ msg }: { msg: ChatMessage }) {
         style={{
           backgroundColor: isUser ? "#0a0a0a" : "#f4f3ee",
           color: isUser ? "#fafafa" : "#0a0a0a",
+          border: isUser ? "none" : "1px solid #ececec",
           borderBottomLeftRadius: isUser ? 16 : 4,
           borderBottomRightRadius: isUser ? 4 : 16,
           fontSize: "14px",
@@ -23,16 +33,29 @@ export function ChatBubble({ msg }: { msg: ChatMessage }) {
           whiteSpace: "pre-wrap",
           wordBreak: "break-word",
         }}
+        // #18: l'AT annuncia solo quando finito.
+        aria-busy={isStreaming ? "true" : "false"}
+        aria-live={!isUser && isComplete ? "polite" : undefined}
       >
-        {msg.content || (msg.status === "streaming" ? <Caret /> : null)}
-        {msg.status === "streaming" && msg.content ? <Caret /> : null}
+        {msg.content || (isStreaming ? <Caret /> : null)}
+        {isStreaming && msg.content ? <Caret /> : null}
       </div>
+
       {!isUser && msg.toolEvents && msg.toolEvents.length > 0 && (
         <div className="mt-1.5 flex flex-col gap-1 max-w-[85%]">
           {msg.toolEvents.map((t) => (
             <ToolStatusBubble key={t.id} tool={t} />
           ))}
         </div>
+      )}
+
+      {msg.truncated && (
+        <span
+          className="mt-1 font-mono uppercase"
+          style={{ fontSize: "10px", letterSpacing: "0.14em", color: "#92400e" }}
+        >
+          Risposta troncata — riformula per continuare
+        </span>
       )}
       {msg.status === "error" && (
         <span
@@ -67,6 +90,7 @@ function ToolStatusBubble({ tool }: { tool: ChatToolEvent }) {
         color,
         alignSelf: "flex-start",
       }}
+      aria-hidden="true"
     >
       {tool.status === "running" ? <Spinner /> : tool.status === "ok" ? <Check /> : <Bang />}
       <span style={{ color: "#525252" }}>{tool.label}</span>

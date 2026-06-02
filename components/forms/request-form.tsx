@@ -83,10 +83,21 @@ export function RequestForm({
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key !== "Escape") return;
+      if (e.defaultPrevented) return;
+      // Composizione IME (cinese/giapponese/coreano, autocorrect mobile)
+      if ((e as KeyboardEvent & { isComposing?: boolean }).isComposing) return;
+      if (e.keyCode === 229) return;
+      // Stop propagation: il pannello chat ascolta anche lui ESC su window e
+      // chiuderebbe la chat sottostante (fix bug review #19). Usiamo
+      // stopImmediatePropagation perché entrambi i listener sono su window.
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      onClose();
     }
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    // Capture phase: arriviamo prima del listener del pannello chat
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
   }, [onClose]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -148,6 +159,9 @@ export function RequestForm({
           exit={{ opacity: 0, y: 16, scale: 0.98 }}
           transition={{ duration: DURATION.normal, ease: EASE.smooth }}
           onClick={(e) => e.stopPropagation()}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Richiesta contatto"
           className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-[0_24px_64px_-16px_rgba(0,0,0,0.6)]"
         >
           <button
