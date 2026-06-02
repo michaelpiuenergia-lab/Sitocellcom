@@ -4,6 +4,7 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { RequestTrigger } from "@/components/forms/request-trigger";
 import { getCourses } from "@/lib/crm-client";
 import { COURSE_LEVEL_LABELS, type CoursePublic } from "@/lib/crm-client/types";
+import { BreadcrumbJsonLd, CourseJsonLd } from "@/components/seo/structured-data";
 
 export const metadata: Metadata = {
   title: "Corsi — Cellcom Group",
@@ -33,6 +34,29 @@ export default async function CorsiPage() {
   return (
     <>
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Corsi" }]} />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Corsi", url: "/corsi" },
+        ]}
+      />
+      {courses.map((c) => (
+        <CourseJsonLd
+          key={c.id}
+          id={c.id}
+          name={c.title}
+          description={c.description}
+          durationLabel={c.durationLabel}
+          priceEur={
+            c.priceCents != null
+              ? new Intl.NumberFormat("it-IT", {
+                  style: "currency",
+                  currency: "EUR",
+                }).format(c.priceCents / 100)
+              : null
+          }
+        />
+      ))}
 
       {/* HERO bianco */}
       <section style={{ backgroundColor: "#ffffff" }}>

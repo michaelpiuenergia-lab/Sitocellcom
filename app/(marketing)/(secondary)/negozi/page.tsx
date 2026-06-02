@@ -1,5 +1,6 @@
 import { StoreMap } from "@/components/stores/store-map";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { LocalBusinessJsonLd, BreadcrumbJsonLd } from "@/components/seo/structured-data";
 
 export const metadata = {
   title: "Negozi — Cellcom Group",
@@ -25,6 +26,13 @@ export default function StoresPage() {
   return (
     <>
       <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Negozi" }]} />
+      <LocalBusinessJsonLd />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Negozi", url: "/negozi" },
+        ]}
+      />
 
       {/* HERO bianco */}
       <section style={{ backgroundColor: "#ffffff" }}>
