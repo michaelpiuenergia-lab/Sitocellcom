@@ -1,6 +1,77 @@
 "use client";
 
+import { Fragment } from "react";
 import type { ChatMessage, ChatToolEvent } from "@/lib/chatbot/types";
+
+/**
+ * Render markdown minimo dei bubble bot: link `[testo](url)` cliccabili,
+ * bold `**testo**`, line break. No HTML raw, no XSS — gli href accettati
+ * sono solo path relativi (`/...`) o https/http espliciti.
+ */
+function renderMarkdownLine(text: string, baseKey: string): React.ReactNode[] {
+  const out: React.ReactNode[] = [];
+  const pattern = /\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|`([^`]+)`/g;
+  let last = 0;
+  let i = 0;
+  let m: RegExpExecArray | null;
+  while ((m = pattern.exec(text))) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    if (m[1] && m[2]) {
+      const safeHref =
+        m[2].startsWith("/") ||
+        /^https?:\/\//i.test(m[2]) ||
+        m[2].startsWith("mailto:") ||
+        m[2].startsWith("tel:");
+      if (safeHref) {
+        const external = /^https?:/i.test(m[2]);
+        out.push(
+          <a
+            key={`${baseKey}-l-${i}`}
+            href={m[2]}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener noreferrer" : undefined}
+            style={{ color: "#dc2626", fontWeight: 600, textDecoration: "underline" }}
+          >
+            {m[1]}
+          </a>,
+        );
+      } else {
+        out.push(`[${m[1]}](${m[2]})`);
+      }
+    } else if (m[3]) {
+      out.push(<strong key={`${baseKey}-b-${i}`}>{m[3]}</strong>);
+    } else if (m[4]) {
+      out.push(
+        <code
+          key={`${baseKey}-c-${i}`}
+          style={{
+            fontFamily: "var(--font-geist-mono), monospace",
+            fontSize: "12.5px",
+            backgroundColor: "rgba(0,0,0,0.06)",
+            padding: "1px 4px",
+            borderRadius: 4,
+          }}
+        >
+          {m[4]}
+        </code>,
+      );
+    }
+    last = pattern.lastIndex;
+    i++;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
+function renderMarkdown(content: string, baseKey: string): React.ReactNode {
+  const lines = content.split("\n");
+  return lines.map((line, idx) => (
+    <Fragment key={`${baseKey}-${idx}`}>
+      {renderMarkdownLine(line, `${baseKey}-${idx}`)}
+      {idx < lines.length - 1 ? <br /> : null}
+    </Fragment>
+  ));
+}
 
 /**
  * Bubble singolo: variante user (nero) o bot (off-white con bordo).
@@ -37,7 +108,16 @@ export function ChatBubble({ msg }: { msg: ChatMessage }) {
         aria-busy={isStreaming ? "true" : "false"}
         aria-live={!isUser && isComplete ? "polite" : undefined}
       >
-        {msg.content || (isStreaming ? <Caret /> : null)}
+        {msg.content ? (
+          isUser ? (
+            // User bubble: testo plain (l'utente non scrive markdown)
+            msg.content
+          ) : (
+            renderMarkdown(msg.content, msg.id)
+          )
+        ) : isStreaming ? (
+          <Caret />
+        ) : null}
         {isStreaming && msg.content ? <Caret /> : null}
       </div>
 
