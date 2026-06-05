@@ -1,11 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  listModelsByBrand,
-  findModel,
-} from "@/lib/trade-in/models";
 import {
   REPAIR_TYPES,
   SERVICE_MODES,
@@ -17,9 +14,18 @@ import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
 import {
   CATEGORIES,
+  CATEGORY_TO_DB,
   getCategory,
+  brandsForCategoryId,
   type DeviceCategoryId,
 } from "@/lib/repairs/devices";
+import {
+  modelsForCategoryBrand,
+  findModelById,
+  searchModels,
+  modelImageUrl,
+  type RepairModel,
+} from "@/lib/repairs/models-db";
 import { BrandLogo } from "./brand-logo";
 import { useLang } from "@/lib/i18n/lang-context";
 
@@ -132,57 +138,49 @@ export function RepairWizard() {
   const isOtherBrand = form.brand === OTHER_BRAND;
   const isSmartphone = form.category === "smartphone";
 
-  // Brand mostrati: filtrati per categoria. Solo per smartphone aggiungiamo
-  // "Altro / non in lista" come escape hatch (per le altre categorie c'è già
-  // il form free-text dopo).
+  // Brand mostrati per categoria, ordinati per popolarità. Per smartphone
+  // aggiungiamo "Altro / non in lista" come escape hatch.
   const brands = useMemo(() => {
-    if (!category) return [] as string[];
-    const list = [...category.brands];
+    if (!form.category) return [] as string[];
+    const list = brandsForCategoryId(form.category).map((b) => b.name);
     if (isSmartphone) list.push(OTHER_BRAND);
     return list;
-  }, [category, isSmartphone]);
+  }, [form.category, isSmartphone]);
 
-  const models = useMemo(
+  const models = useMemo<RepairModel[]>(
     () =>
-      isSmartphone && form.brand && !isOtherBrand
-        ? listModelsByBrand(form.brand)
+      form.category && form.brand && !isOtherBrand
+        ? modelsForCategoryBrand(CATEGORY_TO_DB[form.category], form.brand)
         : [],
-    [isSmartphone, form.brand, isOtherBrand],
+    [form.category, form.brand, isOtherBrand],
   );
 
-  // Search globale modelli smartphone — solo se la categoria è smartphone.
+  // Search globale modelli — filtra solo per la categoria corrente.
   const [modelQuery, setModelQuery] = useState("");
-  const searchResults = useMemo(() => {
-    if (!isSmartphone) return [];
-    const q = modelQuery.trim().toLowerCase();
+  const searchResults = useMemo<RepairModel[]>(() => {
+    if (!form.category) return [];
+    const q = modelQuery.trim();
     if (q.length < 2) return [];
-    const all = category!.brands.flatMap((b) => listModelsByBrand(b));
-    return all
-      .filter(
-        (m) =>
-          m.name.toLowerCase().includes(q) ||
-          m.brand.toLowerCase().includes(q) ||
-          `${m.brand} ${m.name}`.toLowerCase().includes(q),
-      )
+    const dbCat = CATEGORY_TO_DB[form.category];
+    return searchModels(q, 24)
+      .filter((m) => m.category === dbCat)
       .slice(0, 8);
-  }, [isSmartphone, category, modelQuery]);
-  const model = useMemo(
-    () => (form.modelId ? findModel(form.modelId) : null),
+  }, [form.category, modelQuery]);
+
+  const model = useMemo<RepairModel | null>(
+    () => (form.modelId ? findModelById(parseInt(form.modelId, 10)) ?? null : null),
     [form.modelId],
   );
   const stores = useMemo(() => listRepairStores(), []);
 
   // deviceReady:
-  //  - smartphone + altro brand → serve customModelName
-  //  - smartphone + brand noto → serve model + storage
-  //  - non-smartphone → serve brand + customModelName
+  //  - "Altro brand" (solo smartphone) → serve customModelName
+  //  - brand noto → serve model (per smartphone serve anche storage)
   const deviceReady = !form.category
     ? false
-    : isSmartphone
-      ? isOtherBrand
-        ? Boolean(form.customModelName.trim())
-        : Boolean(model && form.storage)
-      : Boolean(form.brand && form.customModelName.trim());
+    : isOtherBrand
+      ? Boolean(form.customModelName.trim())
+      : Boolean(model && (isSmartphone ? form.storage : true));
 
   const repairsReady = form.repairTypes.size > 0;
 
@@ -212,19 +210,18 @@ export function RepairWizard() {
   }
 
   function deviceLabel(): string {
-    if (!isSmartphone) {
-      // Non-smartphone: usa "Brand + Modello scritto a mano"
-      const m = form.customModelName.trim();
-      if (form.brand && m) return `${form.brand} ${m}`;
-      return "—";
-    }
     if (isOtherBrand) {
       return (
         form.customModelName.trim() +
         (form.customStorage ? ` ${form.customStorage}` : "")
       );
     }
-    if (model && form.storage) return `${model.name} ${form.storage}GB`;
+    if (model) {
+      if (isSmartphone && form.storage) {
+        return `${model.brand} ${model.name} ${form.storage}GB`;
+      }
+      return `${model.brand} ${model.name}`;
+    }
     return "—";
   }
 
@@ -542,8 +539,8 @@ export function RepairWizard() {
                               setForm({
                                 ...form,
                                 brand: m.brand,
-                                modelId: m.id,
-                                storage: m.storage[0],
+                                modelId: String(m.id),
+                                storage: null,
                                 customModelName: "",
                                 customStorage: "",
                               });
@@ -567,9 +564,11 @@ export function RepairWizard() {
                                 </span>
                               </div>
                             </div>
-                            <span className="text-xs font-mono text-muted-foreground tabular-nums shrink-0">
-                              {m.year}
-                            </span>
+                            {m.codes.length > 0 && (
+                              <span className="text-xs font-mono text-muted-foreground tabular-nums shrink-0">
+                                {m.codes[0]}
+                              </span>
+                            )}
                           </button>
                         ))}
                       </div>
@@ -585,17 +584,16 @@ export function RepairWizard() {
                         </span>
                         <div className="flex-1 h-px bg-border" />
                       </div>
-                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-[420px] overflow-y-auto pr-1">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-[520px] overflow-y-auto pr-1">
                         {models.map((m) => (
                           <ModelCard
                             key={m.id}
-                            name={m.name}
-                            year={m.year}
-                            active={form.modelId === m.id}
+                            model={m}
+                            active={form.modelId === String(m.id)}
                             onClick={() =>
                               setForm({
                                 ...form,
-                                modelId: m.id,
+                                modelId: String(m.id),
                                 storage: null,
                               })
                             }
@@ -605,10 +603,10 @@ export function RepairWizard() {
                     </div>
                   )}
 
-                  {model && (
+                  {model && isSmartphone && (
                     <Field label="Memoria">
                       <div className="flex flex-wrap gap-2">
-                        {model.storage.map((gb) => (
+                        {[64, 128, 256, 512, 1024].map((gb) => (
                           <Pill
                             key={gb}
                             active={form.storage === gb}
@@ -1312,38 +1310,61 @@ function BrandCard({
 }
 
 function ModelCard({
-  name,
-  year,
+  model,
   active,
   onClick,
 }: {
-  name: string;
-  year: number;
+  model: RepairModel;
   active: boolean;
   onClick: () => void;
 }) {
+  const img = modelImageUrl(model);
+  // Mostra primi 2 codici parte (es. "A3520, A3258") + count rimanenti
+  const visibleCodes = model.codes.slice(0, 2).join(", ");
+  const remainingCodes = model.codes.length > 2 ? model.codes.length - 2 : 0;
+
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        "text-left p-3 rounded-xl border transition-all duration-200 flex flex-col gap-1 min-h-[68px]",
+        "text-left p-3 rounded-xl border transition-all duration-200 flex flex-col gap-2 min-h-[160px]",
         active
           ? "bg-brand-600/10 border-brand-600 shadow-[0_0_24px_-8px_rgba(220,38,38,0.4)]"
           : "bg-card border-border hover:border-brand-600/40 hover:bg-card-hover",
       )}
     >
+      <div className="aspect-square w-full flex items-center justify-center bg-card-hover rounded-lg overflow-hidden">
+        {img ? (
+          <Image
+            src={img}
+            alt={model.name}
+            width={120}
+            height={120}
+            unoptimized
+            className="w-full h-full object-contain p-2"
+          />
+        ) : (
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-muted-foreground/60">
+            <rect x="6" y="3" width="12" height="18" rx="2" />
+            <path d="M9 18h6" />
+          </svg>
+        )}
+      </div>
       <span
         className={cn(
-          "font-serif text-sm leading-tight",
-          active ? "text-foreground italic" : "text-foreground/90",
+          "font-sans text-sm leading-tight line-clamp-2",
+          active ? "text-foreground font-medium" : "text-foreground/90",
         )}
       >
-        {name}
+        {model.name}
       </span>
-      <span className="text-[10px] font-mono tabular-nums text-muted-foreground">
-        {year}
-      </span>
+      {visibleCodes && (
+        <span className="text-[10px] font-mono tabular-nums text-brand-500/80 line-clamp-1">
+          {visibleCodes}
+          {remainingCodes > 0 && `, +${remainingCodes}`}
+        </span>
+      )}
     </button>
   );
 }
@@ -1701,8 +1722,7 @@ function AppointmentPicker({
 
 /**
  * Condizioni di spedizione + indirizzo destinazione fisso (sede tecnica
- * Fast-Fix di San Benedetto del Tronto). Testo allineato con quello del
- * fornitore plugin Repairplugin Pro per coerenza con smartphonefix.it.
+ * Fast-Fix di San Benedetto del Tronto).
  */
 function ShippingBlock() {
   return (

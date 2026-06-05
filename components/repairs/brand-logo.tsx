@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getBrand } from "@/lib/repairs/devices";
+import { brandSlug } from "@/lib/repairs/devices";
 
 /**
  * Logo brand via cdn.simpleicons.org. Si carica come <img> con fallback al
@@ -26,8 +26,7 @@ export function BrandLogo({
   className?: string;
 }) {
   const [errored, setErrored] = useState(false);
-  const brand = getBrand(name);
-  const slug = brand?.slug ?? name.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const slug = brandSlug(name) || name.toLowerCase().replace(/[^a-z0-9]/g, "");
 
   if (errored || !slug) {
     return (

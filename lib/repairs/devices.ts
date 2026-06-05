@@ -2,14 +2,14 @@
  * Categorie di dispositivo supportate dal wizard riparazione + brand
  * elegibili per ciascuna categoria.
  *
- * Approccio: smartphone copre tutto il DB modelli locale (`lib/trade-in/models`).
- * Le altre categorie partono come "Diagnosi su richiesta" — il cliente sceglie
- * brand + scrive modello a mano, un tecnico richiama entro 24h.
+ * I brand vengono derivati dal DB modelli (lib/repairs/models-db): 2886
+ * modelli su 6 categorie (Smartphone, Tablet, Watch, Laptop, Desktop, Console).
  *
  * Brand logos vengono da cdn.simpleicons.org (slug standard simple-icons),
- * con fallback testuale se la richiesta fallisce. Niente install npm di
- * 3000 icone.
+ * con fallback testuale se la richiesta fallisce.
  */
+
+import { brandsForCategory, type RepairModel } from "./models-db";
 
 export type DeviceCategoryId =
   | "smartphone"
@@ -18,6 +18,16 @@ export type DeviceCategoryId =
   | "laptop"
   | "desktop"
   | "console";
+
+/** Mapping DeviceCategoryId (lowercase, URL-friendly) → RepairModel.category (capitalized). */
+export const CATEGORY_TO_DB: Record<DeviceCategoryId, RepairModel["category"]> = {
+  smartphone: "Smartphone",
+  tablet: "Tablet",
+  watch: "Watch",
+  laptop: "Laptop",
+  desktop: "Desktop",
+  console: "Console",
+};
 
 export type DeviceCategory = {
   id: DeviceCategoryId;
@@ -29,100 +39,79 @@ export type DeviceCategory = {
     | "rw.cat.laptop"
     | "rw.cat.desktop"
     | "rw.cat.console";
-  /** Brand cards mostrate per questa categoria */
-  brands: string[];
-  /** True se il DB modelli locale copre questa categoria (smartphone unico per ora) */
-  hasModelDb: boolean;
+  /** True se il DB ha modelli per questa categoria. */
+  hasModels: boolean;
+  /** Conteggio modelli totali. */
+  modelCount: number;
 };
 
 /**
- * Brand smartphone — combinazione del DB locale (lib/trade-in/models)
- * + brand del marquee, ordinati per riconoscibilità.
- * Slug = simple-icons slug per cdn.simpleicons.org/<slug>.
+ * Slug simple-icons per i brand più comuni (caso-insensitive match sul nome).
+ * I brand non in lista cadono nel fallback testuale di <BrandLogo>.
  */
-export type Brand = {
-  name: string;
-  slug: string;
-  /** Categorie in cui appare */
-  categories: DeviceCategoryId[];
+const BRAND_SLUG: Record<string, string> = {
+  apple: "apple",
+  samsung: "samsung",
+  google: "google",
+  xiaomi: "xiaomi",
+  huawei: "huawei",
+  honor: "honor",
+  oneplus: "oneplus",
+  oppo: "oppo",
+  realme: "realme",
+  motorola: "motorola",
+  nothing: "nothing",
+  asus: "asus",
+  sony: "sony",
+  nokia: "nokia",
+  alcatel: "alcatel",
+  blackberry: "blackberry",
+  cat: "caterpillar",
+  fairphone: "fairphone",
+  htc: "htc",
+  lg: "lg",
+  lenovo: "lenovo",
+  microsoft: "microsoft",
+  nintendo: "nintendo",
+  dell: "dell",
+  hp: "hp",
+  acer: "acer",
+  msi: "msi",
+  razer: "razer",
+  garmin: "garmin",
+  fitbit: "fitbit",
 };
 
-export const BRANDS: Brand[] = [
-  { name: "Apple", slug: "apple", categories: ["smartphone", "tablet", "watch", "laptop", "desktop"] },
-  { name: "Samsung", slug: "samsung", categories: ["smartphone", "tablet", "watch", "laptop"] },
-  { name: "Google", slug: "google", categories: ["smartphone", "tablet", "watch", "laptop"] },
-  { name: "Xiaomi", slug: "xiaomi", categories: ["smartphone", "tablet", "watch"] },
-  { name: "Huawei", slug: "huawei", categories: ["smartphone", "tablet", "watch", "laptop"] },
-  { name: "Honor", slug: "honor", categories: ["smartphone", "tablet", "watch"] },
-  { name: "OnePlus", slug: "oneplus", categories: ["smartphone", "tablet", "watch"] },
-  { name: "OPPO", slug: "oppo", categories: ["smartphone", "tablet", "watch"] },
-  { name: "Realme", slug: "realme", categories: ["smartphone", "tablet"] },
-  { name: "Motorola", slug: "motorola", categories: ["smartphone", "tablet"] },
-  { name: "Nothing", slug: "nothing", categories: ["smartphone"] },
-  { name: "Asus", slug: "asus", categories: ["smartphone", "tablet", "laptop", "desktop"] },
-  { name: "Sony", slug: "sony", categories: ["smartphone", "tablet", "console", "laptop"] },
-  { name: "Nokia", slug: "nokia", categories: ["smartphone", "tablet"] },
-  { name: "alcatel", slug: "alcatel", categories: ["smartphone", "tablet"] },
-  { name: "BlackBerry", slug: "blackberry", categories: ["smartphone"] },
-  { name: "CAT", slug: "caterpillar", categories: ["smartphone"] },
-  { name: "Fairphone", slug: "fairphone", categories: ["smartphone"] },
-  { name: "HTC", slug: "htc", categories: ["smartphone"] },
-  { name: "LG", slug: "lg", categories: ["smartphone", "tablet", "laptop", "desktop"] },
-  { name: "Lenovo", slug: "lenovo", categories: ["smartphone", "tablet", "laptop", "desktop"] },
-  { name: "Microsoft", slug: "microsoft", categories: ["smartphone", "tablet", "laptop", "desktop", "console"] },
-  { name: "Nintendo", slug: "nintendo", categories: ["console"] },
-  { name: "Dell", slug: "dell", categories: ["laptop", "desktop"] },
-  { name: "HP", slug: "hp", categories: ["laptop", "desktop"] },
-  { name: "Acer", slug: "acer", categories: ["laptop", "desktop"] },
-  { name: "MSI", slug: "msi", categories: ["laptop", "desktop"] },
-  { name: "Razer", slug: "razer", categories: ["laptop", "desktop"] },
-  { name: "Garmin", slug: "garmin", categories: ["watch"] },
-  { name: "Fitbit", slug: "fitbit", categories: ["watch"] },
-];
-
-export const CATEGORIES: DeviceCategory[] = [
-  {
-    id: "smartphone",
-    labelKey: "rw.cat.smartphone",
-    brands: BRANDS.filter((b) => b.categories.includes("smartphone")).map((b) => b.name),
-    hasModelDb: true,
-  },
-  {
-    id: "tablet",
-    labelKey: "rw.cat.tablet",
-    brands: BRANDS.filter((b) => b.categories.includes("tablet")).map((b) => b.name),
-    hasModelDb: false,
-  },
-  {
-    id: "watch",
-    labelKey: "rw.cat.watch",
-    brands: BRANDS.filter((b) => b.categories.includes("watch")).map((b) => b.name),
-    hasModelDb: false,
-  },
-  {
-    id: "laptop",
-    labelKey: "rw.cat.laptop",
-    brands: BRANDS.filter((b) => b.categories.includes("laptop")).map((b) => b.name),
-    hasModelDb: false,
-  },
-  {
-    id: "desktop",
-    labelKey: "rw.cat.desktop",
-    brands: BRANDS.filter((b) => b.categories.includes("desktop")).map((b) => b.name),
-    hasModelDb: false,
-  },
-  {
-    id: "console",
-    labelKey: "rw.cat.console",
-    brands: BRANDS.filter((b) => b.categories.includes("console")).map((b) => b.name),
-    hasModelDb: false,
-  },
-];
-
-export function getBrand(name: string): Brand | undefined {
-  return BRANDS.find((b) => b.name === name);
+/** Slug simple-icons per il brand (per cdn.simpleicons.org), o stringa vuota se sconosciuto. */
+export function brandSlug(brand: string): string {
+  const key = brand.toLowerCase().replace(/[^a-z0-9]/g, "");
+  return BRAND_SLUG[key] ?? "";
 }
 
+/**
+ * Categorie disponibili. `modelCount` zero = la categoria è mostrata nel wizard
+ * con un sotto-form "Diagnosi su richiesta" (no catalogo).
+ */
+export const CATEGORIES: DeviceCategory[] = (
+  ["smartphone", "tablet", "watch", "laptop", "desktop", "console"] as DeviceCategoryId[]
+).map((id) => {
+  const dbCat = CATEGORY_TO_DB[id];
+  const brands = brandsForCategory(dbCat);
+  const count = brands.reduce((a, b) => a + b.count, 0);
+  return {
+    id,
+    labelKey: `rw.cat.${id}` as DeviceCategory["labelKey"],
+    hasModels: count > 0,
+    modelCount: count,
+  };
+});
+
+/** Brand per categoria, già ordinati per popolarità (# modelli desc). */
+export function brandsForCategoryId(id: DeviceCategoryId): { name: string; count: number }[] {
+  return brandsForCategory(CATEGORY_TO_DB[id]);
+}
+
+/** Trova categoria. */
 export function getCategory(id: DeviceCategoryId): DeviceCategory | undefined {
   return CATEGORIES.find((c) => c.id === id);
 }
