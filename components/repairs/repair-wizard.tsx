@@ -22,7 +22,6 @@ import {
 import {
   modelsForCategoryBrand,
   findModelById,
-  searchModels,
   modelImageUrl,
   realCodes,
   type RepairModel,
@@ -156,17 +155,18 @@ export function RepairWizard() {
     [form.category, form.brand, isOtherBrand],
   );
 
-  // Search globale modelli — filtra solo per la categoria corrente.
+  // Search dentro la lista del brand corrente. La query filtra direttamente
+  // la grid sotto (no dropdown autocomplete).
   const [modelQuery, setModelQuery] = useState("");
-  const searchResults = useMemo<RepairModel[]>(() => {
-    if (!form.category) return [];
-    const q = modelQuery.trim();
-    if (q.length < 2) return [];
-    const dbCat = CATEGORY_TO_DB[form.category];
-    return searchModels(q, 24)
-      .filter((m) => m.category === dbCat)
-      .slice(0, 8);
-  }, [form.category, modelQuery]);
+  const visibleModels = useMemo<RepairModel[]>(() => {
+    if (!models.length) return [];
+    const q = modelQuery.trim().toLowerCase();
+    if (q.length < 2) return models;
+    return models.filter((m) => {
+      const blob = `${m.brand} ${m.name} ${m.codes.join(" ")}`.toLowerCase();
+      return blob.includes(q);
+    });
+  }, [models, modelQuery]);
 
   const model = useMemo<RepairModel | null>(
     () => (form.modelId ? findModelById(parseInt(form.modelId, 10)) ?? null : null),
@@ -530,63 +530,29 @@ export function RepairWizard() {
                       </button>
                     )}
 
-                    {searchResults.length > 0 && (
-                      <div className="absolute z-20 left-0 right-0 mt-2 rounded-2xl bg-card border border-border shadow-[0_24px_64px_-16px_rgba(0,0,0,0.6)] overflow-hidden">
-                        {searchResults.map((m) => (
-                          <button
-                            key={m.id}
-                            type="button"
-                            onClick={() => {
-                              setForm({
-                                ...form,
-                                brand: m.brand,
-                                modelId: String(m.id),
-                                storage: null,
-                                customModelName: "",
-                                customStorage: "",
-                              });
-                              setModelQuery("");
-                            }}
-                            className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-card-hover transition-colors duration-150 border-b border-border last:border-b-0"
-                          >
-                            <div className="w-10 h-10 rounded-lg bg-card-hover flex items-center justify-center shrink-0">
-                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                                <rect x="6" y="3" width="12" height="18" rx="2" />
-                                <path d="M9 18h6" />
-                              </svg>
-                            </div>
-                            <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                              <div className="flex items-baseline gap-2">
-                                <span className="text-brand-500 text-sm font-medium">
-                                  {m.brand}
-                                </span>
-                                <span className="font-serif text-foreground truncate">
-                                  {m.name}
-                                </span>
-                              </div>
-                            </div>
-                            {m.codes.length > 0 && (
-                              <span className="text-xs font-mono text-muted-foreground tabular-nums shrink-0">
-                                {m.codes[0]}
-                              </span>
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                    )}
                   </div>
 
                   {!isOtherBrand && models.length > 0 && (
                     <div className="flex flex-col gap-3">
-                      <div className="flex items-center gap-3">
-                        <div className="flex-1 h-px bg-border" />
-                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
-                          {t("rw.model.orChoose")}
-                        </span>
-                        <div className="flex-1 h-px bg-border" />
-                      </div>
+                      {!modelQuery && (
+                        <div className="flex items-center gap-3">
+                          <div className="flex-1 h-px bg-border" />
+                          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                            {t("rw.model.orChoose")}
+                          </span>
+                          <div className="flex-1 h-px bg-border" />
+                        </div>
+                      )}
+                      {modelQuery && visibleModels.length === 0 && (
+                        <div
+                          className="rounded-xl border border-dashed border-border bg-card px-4 py-6 text-center"
+                          style={{ fontSize: "14px", color: "#737373" }}
+                        >
+                          Nessun modello {form.brand} per &ldquo;{modelQuery}&rdquo;.
+                        </div>
+                      )}
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-[520px] overflow-y-auto pr-1">
-                        {models.map((m) => (
+                        {visibleModels.map((m) => (
                           <ModelCard
                             key={m.id}
                             model={m}
