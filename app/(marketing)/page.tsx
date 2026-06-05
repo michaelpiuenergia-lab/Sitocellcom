@@ -11,6 +11,7 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { getProducts } from "@/lib/crm-client";
 import { canSeePrices } from "@/lib/auth/pricing-access";
+import { getT } from "@/lib/i18n/server";
 
 export const revalidate = 60;
 
@@ -36,11 +37,12 @@ async function getKindTotal(
 
 export default async function MarketingPage() {
   // CRM fetches intatti — non regredire mai qui.
-  const [devicesRes, partsTotal, accessoriesTotal, showPrices] = await Promise.all([
+  const [devicesRes, partsTotal, accessoriesTotal, showPrices, t] = await Promise.all([
     getProducts({ kind: "device", limit: 6 }).catch(() => null),
     getKindTotal("part"),
     getKindTotal("accessory"),
     canSeePrices(),
+    getT(),
   ]);
 
   const devices = devicesRes?.items ?? [];
@@ -66,78 +68,64 @@ export default async function MarketingPage() {
         {/* Numeri (bianco) */}
         <MarketingPanel
           tone="light"
-          eyebrow="I numeri del gruppo"
+          eyebrow={t("home.numbers.eyebrow")}
           title={
             <>
-              Tre brand. Un solo <Accent>magazzino.</Accent>
+              {t("home.numbers.titleA")} <Accent>{t("home.numbers.titleB")}</Accent>
             </>
           }
-          intro={
-            <>
-              Cellcom (e-commerce + B2B), Fast-Fix (negozi e riparazioni),
-              ItalianParts (ricambi). Specializzati ognuno nel suo, stesso
-              stock dietro le quinte. I numeri qui sotto arrivano live dal
-              CRM — niente vetrine vuote.
-            </>
-          }
+          intro={<>{t("home.numbers.intro")}</>}
           extra={
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 lg:gap-4">
-              <PanelStat tone="light" value="5" label="Brand del gruppo" />
+              <PanelStat tone="light" value="5" label={t("home.numbers.stat.brands")} />
               <PanelStat
                 tone="light"
                 value={formatCount(partsTotal)}
-                label="Ricambi a stock"
+                label={t("home.numbers.stat.parts")}
               />
               <PanelStat
                 tone="light"
                 value={formatCount(devicesTotal)}
-                label="Telefoni in catalogo"
+                label={t("home.numbers.stat.phones")}
               />
               <PanelStat
                 tone="light"
                 value={formatCount(accessoriesTotal)}
-                label="Accessori disponibili"
+                label={t("home.numbers.stat.accessories")}
               />
             </div>
           }
-          primaryCta={{ label: "Vai al catalogo", href: "/prodotti" }}
-          secondaryCta={{ label: "Chi siamo", href: "/chi-siamo" }}
+          primaryCta={{ label: t("home.numbers.cta.catalog"), href: "/prodotti" }}
+          secondaryCta={{ label: t("home.numbers.cta.about"), href: "/chi-siamo" }}
         />
 
         {/* B2B (nero, fanale rosso intenso) */}
         <MarketingPanel
           tone="dark"
-          eyebrow="Per rivenditori, operatori, aziende"
+          eyebrow={t("home.b2b.eyebrow")}
           title={
             <>
-              Vendi telefoni per mestiere?{" "}
-              <Accent>Il listino giusto cambia tutto.</Accent>
+              {t("home.b2b.titleA")} <Accent>{t("home.b2b.titleB")}</Accent>
             </>
           }
-          intro={
-            <>
-              Stesso stock del pubblico, prezzi a volumi, account manager
-              dedicato, pagamento a 30/60 giorni. Serve solo P.IVA: chiamiamo
-              noi in giornata, credenziali entro 24 ore.
-            </>
-          }
+          intro={<>{t("home.b2b.intro")}</>}
           features={[
             {
-              title: "Listino a tier",
-              body: "Rivenditore, Operatore, VIP — il prezzo scende automatico al volume. Niente da chiedere ogni volta.",
+              title: t("home.b2b.feature1.title"),
+              body: t("home.b2b.feature1.body"),
             },
             {
-              title: "Stock prioritario",
-              body: "Ricambi scarsi riservati prima a chi ha contratto attivo, poi al pubblico.",
+              title: t("home.b2b.feature2.title"),
+              body: t("home.b2b.feature2.body"),
             },
             {
-              title: "Una persona vera",
-              body: "Account manager dedicato. Email diretta, WhatsApp business. Sa chi sei.",
+              title: t("home.b2b.feature3.title"),
+              body: t("home.b2b.feature3.body"),
             },
           ]}
-          primaryCta={{ label: "Accedi all'area B2B", href: "/b2b/login" }}
+          primaryCta={{ label: t("home.b2b.cta.login"), href: "/b2b/login" }}
           secondaryCta={{
-            label: "Richiedi attivazione",
+            label: t("home.b2b.cta.contact"),
             href: "mailto:b2b@cellcom.it?subject=Richiesta%20attivazione%20account%20B2B",
           }}
         />

@@ -52,6 +52,74 @@ export type Dict = {
   "lang.en": string;
   "lang.switchAria": string;
 
+  // ─── Navbar ─────────────────────────────────────────────────────────
+  "nav.products": string;
+  "nav.used": string;
+  "nav.repairs": string;
+  "nav.resell": string;
+  "nav.courses": string;
+  "nav.stores": string;
+  "nav.about": string;
+  "nav.login": string;
+  "nav.b2b": string;
+  "nav.repairCta": string;
+  "nav.customerArea": string;
+  "nav.openMenu": string;
+  "nav.closeMenu": string;
+
+  // ─── Footer ─────────────────────────────────────────────────────────
+  "footer.copyrightGroup": string;
+  "footer.legal.privacy": string;
+  "footer.legal.cookie": string;
+  "footer.legal.terms": string;
+
+  // ─── Hero (homepage) ────────────────────────────────────────────────
+  "hero.pillar.buy": string;
+  "hero.pillar.repair": string;
+  "hero.pillar.resell": string;
+  "hero.pillar.learn": string;
+  "hero.catalogCta.eyebrow": string;
+  "hero.catalogCta.title": string;
+  "hero.catalogCta.explore": string;
+  "hero.pricesReservedHint": string;
+  "hero.newDevicesEyebrow": string;
+  "hero.priceOnRequest": string;
+  "hero.claim.preItalic": string;
+  "hero.claim.italicA": string;
+  "hero.claim.between": string;
+  "hero.claim.italicB": string;
+  "hero.intro.lead": string;
+  "hero.intro.boldA": string;
+  "hero.intro.bodyA": string;
+  "hero.intro.boldB": string;
+  "hero.intro.bodyB": string;
+  "hero.intro.boldC": string;
+  "hero.intro.bodyC": string;
+
+  // ─── Home / Marketing panels ────────────────────────────────────────
+  "home.numbers.eyebrow": string;
+  "home.numbers.titleA": string;
+  "home.numbers.titleB": string;
+  "home.numbers.intro": string;
+  "home.numbers.stat.brands": string;
+  "home.numbers.stat.parts": string;
+  "home.numbers.stat.phones": string;
+  "home.numbers.stat.accessories": string;
+  "home.numbers.cta.catalog": string;
+  "home.numbers.cta.about": string;
+  "home.b2b.eyebrow": string;
+  "home.b2b.titleA": string;
+  "home.b2b.titleB": string;
+  "home.b2b.intro": string;
+  "home.b2b.feature1.title": string;
+  "home.b2b.feature1.body": string;
+  "home.b2b.feature2.title": string;
+  "home.b2b.feature2.body": string;
+  "home.b2b.feature3.title": string;
+  "home.b2b.feature3.body": string;
+  "home.b2b.cta.login": string;
+  "home.b2b.cta.contact": string;
+
   // ─── Enum labels riusati ovunque ────────────────────────────────────
   "enum.condition.new": string;
   "enum.condition.used": string;
@@ -114,6 +182,75 @@ const IT: Dict = {
   "lang.en": "English",
   "lang.switchAria": "Cambia lingua",
 
+  "nav.products": "Prodotti",
+  "nav.used": "Usato",
+  "nav.repairs": "Riparazioni",
+  "nav.resell": "Rivendi",
+  "nav.courses": "Corsi",
+  "nav.stores": "Negozi",
+  "nav.about": "Chi siamo",
+  "nav.login": "Accedi",
+  "nav.b2b": "Area B2B",
+  "nav.repairCta": "Ripara ora",
+  "nav.customerArea": "Area clienti",
+  "nav.openMenu": "Apri menu",
+  "nav.closeMenu": "Chiudi menu",
+
+  "footer.copyrightGroup": "Cellcom Group",
+  "footer.legal.privacy": "Privacy",
+  "footer.legal.cookie": "Cookie",
+  "footer.legal.terms": "Termini",
+
+  "hero.pillar.buy": "Compra",
+  "hero.pillar.repair": "Ripara",
+  "hero.pillar.resell": "Rivendi",
+  "hero.pillar.learn": "Impara",
+  "hero.catalogCta.eyebrow": "Catalogo completo",
+  "hero.catalogCta.title": "Tutti gli smartphone, ricambi, accessori",
+  "hero.catalogCta.explore": "Esplora",
+  "hero.pricesReservedHint": "Prezzo riservato → accedi",
+  "hero.newDevicesEyebrow": "Nuovi in catalogo",
+  "hero.priceOnRequest": "Su richiesta",
+  "hero.claim.preItalic": "Vendiamo,",
+  "hero.claim.italicA": "ripariamo",
+  "hero.claim.between": ", riforniamo",
+  "hero.claim.italicB": "chi li vende",
+  "hero.intro.lead": "Tre attività, un solo magazzino.",
+  "hero.intro.boldA": "Vendita al pubblico",
+  "hero.intro.bodyA": " di smartphone, accessori e ricambi.",
+  "hero.intro.boldB": "Centro assistenza",
+  "hero.intro.bodyB": " con laboratorio interno e garanzia 12 mesi.",
+  "hero.intro.boldC": "Ingrosso B2B",
+  "hero.intro.bodyC": " per rivenditori, centri assistenza e aziende.",
+
+  "home.numbers.eyebrow": "I numeri del gruppo",
+  "home.numbers.titleA": "Tre brand. Un solo",
+  "home.numbers.titleB": "magazzino.",
+  "home.numbers.intro":
+    "Cellcom (e-commerce + B2B), Fast-Fix (negozi e riparazioni), ItalianParts (ricambi). Specializzati ognuno nel suo, stesso stock dietro le quinte. I numeri qui sotto arrivano live dal CRM — niente vetrine vuote.",
+  "home.numbers.stat.brands": "Brand del gruppo",
+  "home.numbers.stat.parts": "Ricambi a stock",
+  "home.numbers.stat.phones": "Telefoni in catalogo",
+  "home.numbers.stat.accessories": "Accessori disponibili",
+  "home.numbers.cta.catalog": "Vai al catalogo",
+  "home.numbers.cta.about": "Chi siamo",
+  "home.b2b.eyebrow": "Per rivenditori, operatori, aziende",
+  "home.b2b.titleA": "Vendi telefoni per mestiere?",
+  "home.b2b.titleB": "Il listino giusto cambia tutto.",
+  "home.b2b.intro":
+    "Stesso stock del pubblico, prezzi a volumi, account manager dedicato, pagamento a 30/60 giorni. Serve solo P.IVA: chiamiamo noi in giornata, credenziali entro 24 ore.",
+  "home.b2b.feature1.title": "Listino a tier",
+  "home.b2b.feature1.body":
+    "Rivenditore, Operatore, VIP — il prezzo scende automatico al volume. Niente da chiedere ogni volta.",
+  "home.b2b.feature2.title": "Stock prioritario",
+  "home.b2b.feature2.body":
+    "Ricambi scarsi riservati prima a chi ha contratto attivo, poi al pubblico.",
+  "home.b2b.feature3.title": "Una persona vera",
+  "home.b2b.feature3.body":
+    "Account manager dedicato. Email diretta, WhatsApp business. Sa chi sei.",
+  "home.b2b.cta.login": "Accedi all'area B2B",
+  "home.b2b.cta.contact": "Richiedi attivazione",
+
   "enum.condition.new": "Nuovo",
   "enum.condition.used": "Usato",
   "enum.condition.refurbished": "Ricondizionato",
@@ -175,6 +312,75 @@ const EN: Dict = {
   "lang.it": "Italiano",
   "lang.en": "English",
   "lang.switchAria": "Switch language",
+
+  "nav.products": "Products",
+  "nav.used": "Used",
+  "nav.repairs": "Repairs",
+  "nav.resell": "Resell",
+  "nav.courses": "Courses",
+  "nav.stores": "Stores",
+  "nav.about": "About",
+  "nav.login": "Sign in",
+  "nav.b2b": "B2B area",
+  "nav.repairCta": "Repair now",
+  "nav.customerArea": "Customer area",
+  "nav.openMenu": "Open menu",
+  "nav.closeMenu": "Close menu",
+
+  "footer.copyrightGroup": "Cellcom Group",
+  "footer.legal.privacy": "Privacy",
+  "footer.legal.cookie": "Cookies",
+  "footer.legal.terms": "Terms",
+
+  "hero.pillar.buy": "Buy",
+  "hero.pillar.repair": "Repair",
+  "hero.pillar.resell": "Resell",
+  "hero.pillar.learn": "Learn",
+  "hero.catalogCta.eyebrow": "Full catalogue",
+  "hero.catalogCta.title": "All smartphones, parts and accessories",
+  "hero.catalogCta.explore": "Browse",
+  "hero.pricesReservedHint": "Price reserved → sign in",
+  "hero.newDevicesEyebrow": "New in catalogue",
+  "hero.priceOnRequest": "On request",
+  "hero.claim.preItalic": "We sell,",
+  "hero.claim.italicA": "we repair",
+  "hero.claim.between": ", we supply",
+  "hero.claim.italicB": "those who sell them",
+  "hero.intro.lead": "Three businesses, one warehouse.",
+  "hero.intro.boldA": "Retail sales",
+  "hero.intro.bodyA": " of smartphones, accessories and parts.",
+  "hero.intro.boldB": "Service centre",
+  "hero.intro.bodyB": " with in-house lab and 12-month warranty.",
+  "hero.intro.boldC": "B2B wholesale",
+  "hero.intro.bodyC": " for resellers, repair shops and businesses.",
+
+  "home.numbers.eyebrow": "The group in numbers",
+  "home.numbers.titleA": "Three brands. One",
+  "home.numbers.titleB": "warehouse.",
+  "home.numbers.intro":
+    "Cellcom (e-commerce + B2B), Fast-Fix (stores and repairs), ItalianParts (spare parts). Each one focused on its own thing, same stock behind the scenes. The numbers below come live from the CRM — no empty windows.",
+  "home.numbers.stat.brands": "Group brands",
+  "home.numbers.stat.parts": "Parts in stock",
+  "home.numbers.stat.phones": "Phones in catalogue",
+  "home.numbers.stat.accessories": "Accessories available",
+  "home.numbers.cta.catalog": "Browse the catalogue",
+  "home.numbers.cta.about": "About us",
+  "home.b2b.eyebrow": "For resellers, operators, businesses",
+  "home.b2b.titleA": "Sell phones for a living?",
+  "home.b2b.titleB": "The right price list changes everything.",
+  "home.b2b.intro":
+    "Same stock as retail, volume pricing, dedicated account manager, net 30/60 payment. We just need your VAT number: we call you the same day, credentials within 24 hours.",
+  "home.b2b.feature1.title": "Tiered pricing",
+  "home.b2b.feature1.body":
+    "Reseller, Operator, VIP — the price drops automatically with volume. Nothing to ask every time.",
+  "home.b2b.feature2.title": "Priority stock",
+  "home.b2b.feature2.body":
+    "Scarce parts go first to active contracts, then to retail.",
+  "home.b2b.feature3.title": "A real person",
+  "home.b2b.feature3.body":
+    "Dedicated account manager. Direct email, business WhatsApp. They know who you are.",
+  "home.b2b.cta.login": "Sign into B2B area",
+  "home.b2b.cta.contact": "Request activation",
 
   "enum.condition.new": "New",
   "enum.condition.used": "Used",

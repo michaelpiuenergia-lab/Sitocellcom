@@ -7,19 +7,21 @@ import { motion, useReducedMotion } from "framer-motion";
 import { EASE } from "@/lib/constants";
 import { formatPrice } from "@/lib/crm-client/mocks/products";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
+import { useLang } from "@/lib/i18n/lang-context";
+import type { Dict } from "@/lib/i18n/dict";
 
 const VIDEO_SRC = "/videos/hero-evolution.mp4";
 const FLASH_DURATION_MS = 1400;
 const ELLCOM_LETTERS = ["E", "L", "L", "C", "O", "M"] as const;
 
 const PILLAR_BUTTONS: Array<{
-  label: string;
+  key: keyof Dict;
   href: string;
 }> = [
-  { label: "Compra", href: "/prodotti" },
-  { label: "Ripara", href: "/riparazioni" },
-  { label: "Rivendi", href: "/rivendi" },
-  { label: "Impara", href: "/corsi" },
+  { key: "hero.pillar.buy", href: "/prodotti" },
+  { key: "hero.pillar.repair", href: "/riparazioni" },
+  { key: "hero.pillar.resell", href: "/rivendi" },
+  { key: "hero.pillar.learn", href: "/corsi" },
 ];
 
 type Phase = "video" | "flash" | "content";
@@ -31,6 +33,7 @@ export function Hero({
   devices?: PublicProductListItem[];
   canSeePrices?: boolean;
 }) {
+  const { t } = useLang();
   const shouldReduce = useReducedMotion();
   const [phase, setPhase] = useState<Phase>(shouldReduce ? "content" : "video");
   const [isVideoNearEnd, setIsVideoNearEnd] = useState(false);
@@ -261,10 +264,10 @@ export function Hero({
                 lineHeight: 1.05,
               }}
             >
-              Vendiamo,{" "}
-              <em className="italic text-brand-600 not-italic" style={{ fontStyle: "italic" }}>ripariamo</em>,{" "}
-              riforniamo{" "}
-              <em className="italic text-brand-600" style={{ fontStyle: "italic" }}>chi li vende</em>.
+              {t("hero.claim.preItalic")}{" "}
+              <em className="italic text-brand-600 not-italic" style={{ fontStyle: "italic" }}>{t("hero.claim.italicA")}</em>
+              {t("hero.claim.between")}{" "}
+              <em className="italic text-brand-600" style={{ fontStyle: "italic" }}>{t("hero.claim.italicB")}</em>.
             </motion.h2>
 
             <div className="flex flex-wrap gap-3 md:gap-4 mt-1">
@@ -306,7 +309,7 @@ export function Hero({
                         letterSpacing: "-0.015em",
                       }}
                     >
-                      {btn.label}
+                      {t(btn.key)}
                     </span>
                     <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-base sm:text-lg">
                       →
@@ -327,19 +330,19 @@ export function Hero({
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ duration: 0.9, ease: EASE.smooth, delay: 0.4 }}
               >
-                Tre attività, un solo magazzino.{" "}
+                {t("hero.intro.lead")}{" "}
                 <strong className="font-semibold" style={{ color: "#0a0a0a" }}>
-                  Vendita al pubblico
-                </strong>{" "}
-                di smartphone, accessori e ricambi.{" "}
+                  {t("hero.intro.boldA")}
+                </strong>
+                {t("hero.intro.bodyA")}{" "}
                 <strong className="font-semibold" style={{ color: "#0a0a0a" }}>
-                  Centro assistenza
-                </strong>{" "}
-                con laboratorio interno e garanzia 12 mesi.{" "}
+                  {t("hero.intro.boldB")}
+                </strong>
+                {t("hero.intro.bodyB")}{" "}
                 <strong className="font-semibold" style={{ color: "#0a0a0a" }}>
-                  Ingrosso B2B
-                </strong>{" "}
-                per rivenditori, centri assistenza e aziende.
+                  {t("hero.intro.boldC")}
+                </strong>
+                {t("hero.intro.bodyC")}
               </motion.p>
             )}
           </div>
@@ -367,7 +370,7 @@ export function Hero({
                   }}
                 >
                   <span className="h-px w-10" style={{ backgroundColor: "#dc2626" }} />
-                  Nuovi in catalogo
+                  {t("hero.newDevicesEyebrow")}
                 </div>
 
                 <div className="flex flex-col gap-3">
@@ -435,7 +438,7 @@ export function Hero({
                               }}
                             >
                               {d.priceHidden
-                                ? "Su richiesta"
+                                ? t("hero.priceOnRequest")
                                 : formatPrice(d.priceCents)}
                             </div>
                           ) : (
@@ -447,7 +450,7 @@ export function Hero({
                                 letterSpacing: "0.22em",
                               }}
                             >
-                              Prezzo riservato → accedi
+                              {t("hero.pricesReservedHint")}
                             </div>
                           )}
                         </div>
@@ -475,7 +478,7 @@ export function Hero({
                         opacity: 0.85,
                       }}
                     >
-                      Catalogo completo
+                      {t("hero.catalogCta.eyebrow")}
                     </span>
                     <span
                       className="font-semibold"
@@ -484,7 +487,7 @@ export function Hero({
                         letterSpacing: "-0.015em",
                       }}
                     >
-                      Tutti gli smartphone, ricambi, accessori
+                      {t("hero.catalogCta.title")}
                     </span>
                   </span>
                   <span
@@ -494,7 +497,7 @@ export function Hero({
                       letterSpacing: "0.28em",
                     }}
                   >
-                    <span className="hidden sm:inline">Esplora</span>
+                    <span className="hidden sm:inline">{t("hero.catalogCta.explore")}</span>
                     <span
                       aria-hidden
                       className="transition-transform duration-300 group-hover:translate-x-1 text-base"

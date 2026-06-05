@@ -5,15 +5,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { LogoC } from "@/components/marketing/logo-c";
 import { cn } from "@/lib/utils/cn";
 import { LangSwitcher } from "@/components/i18n/lang-switcher";
+import { useLang } from "@/lib/i18n/lang-context";
+import type { Dict } from "@/lib/i18n/dict";
 
-const navLinks = [
-  { label: "Prodotti", href: "/prodotti" },
-  { label: "Usato", href: "/usato" },
-  { label: "Riparazioni", href: "/riparazioni" },
-  { label: "Rivendi", href: "/rivendi" },
-  { label: "Corsi", href: "/corsi" },
-  { label: "Negozi", href: "/negozi" },
-  { label: "Chi siamo", href: "/chi-siamo" },
+const NAV_LINKS: { key: keyof Dict; href: string }[] = [
+  { key: "nav.products", href: "/prodotti" },
+  { key: "nav.used", href: "/usato" },
+  { key: "nav.repairs", href: "/riparazioni" },
+  { key: "nav.resell", href: "/rivendi" },
+  { key: "nav.courses", href: "/corsi" },
+  { key: "nav.stores", href: "/negozi" },
+  { key: "nav.about", href: "/chi-siamo" },
 ];
 
 /**
@@ -25,6 +27,7 @@ const navLinks = [
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { t } = useLang();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -65,7 +68,7 @@ export function Navbar() {
 
         {/* Nav desktop */}
         <nav className="hidden lg:flex items-center gap-1">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <a
               key={link.href}
               href={link.href}
@@ -76,7 +79,7 @@ export function Navbar() {
                 color: "#404040",
               }}
             >
-              {link.label}
+              {t(link.key)}
               <span
                 className="absolute left-3.5 right-3.5 bottom-1 h-px origin-left scale-x-0 transition-transform duration-300 ease-out group-hover:scale-x-100"
                 style={{ backgroundColor: "#dc2626" }}
@@ -98,7 +101,7 @@ export function Navbar() {
               letterSpacing: "0.02em",
             }}
           >
-            Accedi
+            {t("nav.login")}
           </a>
           <a
             href="/b2b"
@@ -110,7 +113,7 @@ export function Navbar() {
               letterSpacing: "0.02em",
             }}
           >
-            Area B2B
+            {t("nav.b2b")}
           </a>
           <a
             href="/riparazioni"
@@ -123,7 +126,7 @@ export function Navbar() {
               letterSpacing: "-0.01em",
             }}
           >
-            Ripara ora
+            {t("nav.repairCta")}
             <span
               aria-hidden
               className="transition-transform duration-300 group-hover:translate-x-0.5"
@@ -137,7 +140,7 @@ export function Navbar() {
         <button
           className="lg:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label={isOpen ? "Chiudi menu" : "Apri menu"}
+          aria-label={isOpen ? t("nav.closeMenu") : t("nav.openMenu")}
           aria-expanded={isOpen}
         >
           <span
@@ -169,7 +172,7 @@ export function Navbar() {
             style={{ backgroundColor: "#ffffff", borderTop: "1px solid #ececec" }}
           >
             <nav className="flex flex-col px-6 py-5 gap-1">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
@@ -181,7 +184,7 @@ export function Navbar() {
                     color: "#0a0a0a",
                   }}
                 >
-                  {link.label}
+                  {t(link.key)}
                 </a>
               ))}
               <a
@@ -190,8 +193,11 @@ export function Navbar() {
                 className="py-2.5"
                 style={{ fontSize: "16px", fontWeight: 500, color: "#0a0a0a" }}
               >
-                Area clienti
+                {t("nav.customerArea")}
               </a>
+              <div className="px-1 pt-3">
+                <LangSwitcher variant="navbar" />
+              </div>
               <div className="flex items-center gap-3 mt-3 pt-4 border-t border-[#ececec]">
                 <a
                   href="/b2b"
@@ -204,7 +210,7 @@ export function Navbar() {
                     color: "#0a0a0a",
                   }}
                 >
-                  Area B2B
+                  {t("nav.b2b")}
                 </a>
                 <a
                   href="/riparazioni"
@@ -217,7 +223,7 @@ export function Navbar() {
                     fontWeight: 600,
                   }}
                 >
-                  Ripara ora →
+                  {t("nav.repairCta")} →
                 </a>
               </div>
             </nav>

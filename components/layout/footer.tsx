@@ -1,19 +1,21 @@
 import { LogoC } from "@/components/marketing/logo-c";
 import { WowspaceCredit } from "@/components/credits/wowspace-credit";
+import { getT } from "@/lib/i18n/server";
+import type { Dict } from "@/lib/i18n/dict";
 
-const links = [
-  { label: "Prodotti", href: "/prodotti" },
-  { label: "Riparazioni", href: "/riparazioni" },
-  { label: "Rivendi", href: "/rivendi" },
-  { label: "Corsi", href: "/corsi" },
-  { label: "Negozi", href: "/negozi" },
-  { label: "B2B", href: "/b2b" },
+const LINKS: { key: keyof Dict; href: string }[] = [
+  { key: "nav.products", href: "/prodotti" },
+  { key: "nav.repairs", href: "/riparazioni" },
+  { key: "nav.resell", href: "/rivendi" },
+  { key: "nav.courses", href: "/corsi" },
+  { key: "nav.stores", href: "/negozi" },
+  { key: "nav.b2b", href: "/b2b" },
 ];
 
-const legalLinks = [
-  { label: "Privacy", href: "#" },
-  { label: "Cookie", href: "#" },
-  { label: "Termini", href: "#" },
+const LEGAL_LINKS: { key: keyof Dict; href: string }[] = [
+  { key: "footer.legal.privacy", href: "#" },
+  { key: "footer.legal.cookie", href: "#" },
+  { key: "footer.legal.terms", href: "#" },
 ];
 
 /**
@@ -21,7 +23,8 @@ const legalLinks = [
  * Nero pieno, logo a sinistra, link inline, copyright a destra. Niente
  * colonne, niente 4 sezioni, niente padding gigante.
  */
-export function Footer() {
+export async function Footer() {
+  const t = await getT();
   return (
     <footer
       aria-label="Footer"
@@ -33,22 +36,22 @@ export function Footer() {
         </a>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          {links.map((l) => (
+          {LINKS.map((l) => (
             <a
               key={l.href}
               href={l.href}
               className="transition-colors hover:text-brand-500"
               style={{ fontSize: "13px", color: "#a3a3a3" }}
             >
-              {l.label}
+              {t(l.key)}
             </a>
           ))}
         </nav>
 
         <div className="md:ml-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-          {legalLinks.map((l) => (
+          {LEGAL_LINKS.map((l) => (
             <a
-              key={l.label}
+              key={l.key}
               href={l.href}
               className="font-mono uppercase transition-colors hover:text-brand-500"
               style={{
@@ -57,7 +60,7 @@ export function Footer() {
                 color: "#737373",
               }}
             >
-              {l.label}
+              {t(l.key)}
             </a>
           ))}
           <span
@@ -68,7 +71,7 @@ export function Footer() {
               color: "#525252",
             }}
           >
-            © {new Date().getFullYear()} Cellcom Group
+            © {new Date().getFullYear()} {t("footer.copyrightGroup")}
           </span>
         </div>
       </div>
