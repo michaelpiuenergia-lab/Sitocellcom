@@ -93,7 +93,7 @@ export default async function B2bLoginPage({
           <p style={{ fontSize: "14px", color: "#525252" }}>
             {t("auth.b2b.login.noCredentials")}{" "}
             <a
-              href="mailto:b2b@cellcom.it?subject=Richiesta%20attivazione%20account%20B2B"
+              href="/b2b/registrati"
               className="hover:underline"
               style={{ color: "#dc2626", fontWeight: 500 }}
             >

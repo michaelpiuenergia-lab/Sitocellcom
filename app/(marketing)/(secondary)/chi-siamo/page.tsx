@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { getT } from "@/lib/i18n/server";
+import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
   title: "Chi siamo — Cellcom Group",
@@ -7,69 +9,36 @@ export const metadata: Metadata = {
     "Il Gruppo Cellcom è il punto di riferimento italiano per il ciclo di vita completo dello smartphone: vendita, riparazione, formazione e ricambistica.",
 };
 
-const stats = [
-  { value: "20K+", label: "Prodotti a catalogo" },
-  { value: "5", label: "Brand verticali" },
-  { value: "24-48h", label: "Consegna in Italia" },
-  { value: "12 mesi", label: "Garanzia ricambi" },
+const STATS: { value: string; labelKey: keyof Dict }[] = [
+  { value: "20K+", labelKey: "about.stat.products" },
+  { value: "5", labelKey: "about.stat.brands" },
+  { value: "24-48h", labelKey: "about.stat.delivery" },
+  { value: "12 mesi", labelKey: "about.stat.warranty" },
 ];
 
-const brands = [
-  {
-    name: "Cellcom.it",
-    role: "Magazzino B2B",
-    description:
-      "L'ingrosso del gruppo. Vendiamo a rivenditori, centri assistenza e aziende con listini a volumi.",
-    url: "https://cellcom.it",
-  },
-  {
-    name: "Fast-Fix.it",
-    role: "Negozi e riparazioni",
-    description:
-      "I punti vendita fisici dove porti il telefono a riparare o vieni a comprarne uno nuovo.",
-    url: "https://fast-fix.it",
-  },
-  {
-    name: "ItalianParts.it",
-    role: "Ricambi",
-    description:
-      "Display, batterie, scocche, schede madri. Per chi ripara smartphone di mestiere.",
-    url: "https://www.italianparts.it",
-  },
-  {
-    name: "Cellcom Academy",
-    role: "Academy",
-    description:
-      "La scuola interna dove formiamo i nostri tecnici. Aperta anche a chi vuole imparare il mestiere.",
-    url: "/corsi",
-  },
+const BRANDS: {
+  name: string;
+  roleKey: keyof Dict;
+  descKey: keyof Dict;
+  url: string;
+}[] = [
+  { name: "Cellcom.it", roleKey: "about.b1.role", descKey: "about.b1.description", url: "https://cellcom.it" },
+  { name: "Fast-Fix.it", roleKey: "about.b2.role", descKey: "about.b2.description", url: "https://fast-fix.it" },
+  { name: "ItalianParts.it", roleKey: "about.b3.role", descKey: "about.b3.description", url: "https://www.italianparts.it" },
+  { name: "Cellcom Academy", roleKey: "about.b4.role", descKey: "about.b4.description", url: "/corsi" },
 ];
 
-const statements = [
-  {
-    num: "01",
-    title: "Prezzi onesti",
-    description:
-      "Stessi listini su tutti i nostri canali. Quello che vedi al pubblico è quello che paga il pubblico — il B2B paga meno, ma solo se compra a volumi.",
-  },
-  {
-    num: "02",
-    title: "Ogni intervento tracciato",
-    description:
-      "Sei riparazioni o ordini entrano nel gestionale, lo vedi anche tu in tempo reale. Foto del device, ricambi usati, tecnico responsabile — tutto registrato.",
-  },
-  {
-    num: "03",
-    title: "Una specializzazione per brand",
-    description:
-      "I brand del Gruppo fanno ognuno una cosa sola e la fanno seriamente. Mettendoli insieme copriamo tutto il ciclo di vita del telefono.",
-  },
+const STATEMENTS: { num: string; titleKey: keyof Dict; descKey: keyof Dict }[] = [
+  { num: "01", titleKey: "about.s1.title", descKey: "about.s1.description" },
+  { num: "02", titleKey: "about.s2.title", descKey: "about.s2.description" },
+  { num: "03", titleKey: "about.s3.title", descKey: "about.s3.description" },
 ];
 
-export default function ChiSiamoPage() {
+export default async function ChiSiamoPage() {
+  const t = await getT();
   return (
     <>
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Chi siamo" }]} />
+      <Breadcrumb items={[{ label: t("bc.home"), href: "/" }, { label: t("bc.aboutUs") }]} />
 
       {/* HERO bianco */}
       <section style={{ backgroundColor: "#ffffff" }}>
@@ -88,7 +57,7 @@ export default function ChiSiamoPage() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Il gruppo
+              {t("about.hero.eyebrow")}
             </span>
             <h1
               className="font-sans tracking-[-0.025em]"
@@ -99,8 +68,8 @@ export default function ChiSiamoPage() {
                 fontWeight: 700,
               }}
             >
-              Cinque brand. Una sola{" "}
-              <span style={{ color: "#dc2626" }}>fiducia.</span>
+              {t("about.hero.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("about.hero.accent")}</span>
             </h1>
             <p
               className="leading-relaxed"
@@ -110,9 +79,7 @@ export default function ChiSiamoPage() {
                 maxWidth: "640px",
               }}
             >
-              Vendiamo, ripariamo e riforniamo telefoni. Siamo di San Benedetto
-              del Tronto, ma lavoriamo in tutta Italia. Tre brand specializzati,
-              un magazzino solo, le stesse persone dietro a tutto.
+              {t("about.hero.description")}
             </p>
           </div>
         </div>
@@ -125,8 +92,8 @@ export default function ChiSiamoPage() {
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-20 lg:py-24">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-y-10 gap-x-8 lg:gap-x-12">
-            {stats.map((stat) => (
-              <div key={stat.label} className="flex flex-col gap-2">
+            {STATS.map((stat) => (
+              <div key={stat.labelKey} className="flex flex-col gap-2">
                 <span
                   className="font-sans tabular-nums leading-none"
                   style={{
@@ -144,7 +111,7 @@ export default function ChiSiamoPage() {
                     color: "#a3a3a3",
                   }}
                 >
-                  {stat.label}
+                  {t(stat.labelKey)}
                 </span>
               </div>
             ))}
@@ -173,7 +140,7 @@ export default function ChiSiamoPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                I 5 brand
+                {t("about.brands.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -184,23 +151,20 @@ export default function ChiSiamoPage() {
                   fontWeight: 700,
                 }}
               >
-                Un gruppo,{" "}
-                <span style={{ color: "#dc2626" }}>cinque specializzazioni.</span>
+                {t("about.brands.titleA")}{" "}
+                <span style={{ color: "#dc2626" }}>{t("about.brands.accent")}</span>
               </h2>
             </div>
             <p
               className="leading-relaxed"
               style={{ fontSize: "17px", color: "#525252", maxWidth: "520px" }}
             >
-              Ogni marchio fa una cosa sola e la fa bene. Insieme coprono
-              l'intero ciclo di vita del telefono: vendita, riparazione,
-              ricambi, formazione, software. Stesso magazzino, stessi
-              standard.
+              {t("about.brands.intro")}
             </p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-            {brands.map((brand) => (
+            {BRANDS.map((brand) => (
               <a
                 key={brand.name}
                 href={brand.url}
@@ -240,13 +204,13 @@ export default function ChiSiamoPage() {
                     color: "#dc2626",
                   }}
                 >
-                  {brand.role}
+                  {t(brand.roleKey)}
                 </span>
                 <p
                   className="leading-relaxed mt-1"
                   style={{ fontSize: "14px", color: "#525252" }}
                 >
-                  {brand.description}
+                  {t(brand.descKey)}
                 </p>
               </a>
             ))}
@@ -274,7 +238,7 @@ export default function ChiSiamoPage() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Cosa ci distingue
+              {t("about.manifesto.eyebrow")}
             </span>
             <h2
               className="font-sans tracking-[-0.025em]"
@@ -285,13 +249,13 @@ export default function ChiSiamoPage() {
                 fontWeight: 700,
               }}
             >
-              Tre principi,{" "}
-              <span style={{ color: "#dc2626" }}>non negoziabili.</span>
+              {t("about.manifesto.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("about.manifesto.accent")}</span>
             </h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
-            {statements.map((s) => (
+            {STATEMENTS.map((s) => (
               <div
                 key={s.num}
                 className="flex flex-col gap-4 pt-7"
@@ -316,13 +280,13 @@ export default function ChiSiamoPage() {
                     fontWeight: 700,
                   }}
                 >
-                  {s.title}
+                  {t(s.titleKey)}
                 </h3>
                 <p
                   className="leading-relaxed"
                   style={{ fontSize: "15px", color: "#a3a3a3" }}
                 >
-                  {s.description}
+                  {t(s.descKey)}
                 </p>
               </div>
             ))}

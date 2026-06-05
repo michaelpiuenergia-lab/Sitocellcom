@@ -389,6 +389,53 @@ export type Dict = {
   "auth.customer.noCredentials": string;
   "auth.customer.noCredentialsHint": string;
 
+  // ─── /negozi ────────────────────────────────────────────────────────
+  "stores.hero.eyebrow": string;
+  "stores.hero.titleA": string;
+  "stores.hero.accent": string;
+  "stores.hero.description": string;
+  "stores.features.eyebrow": string;
+  "stores.features.titleA": string;
+  "stores.features.accent": string;
+  "stores.features.intro": string;
+  "stores.f1.title": string;
+  "stores.f1.text": string;
+  "stores.f2.title": string;
+  "stores.f2.text": string;
+  "stores.f3.title": string;
+  "stores.f3.text": string;
+
+  // ─── /chi-siamo ─────────────────────────────────────────────────────
+  "about.hero.eyebrow": string;
+  "about.hero.titleA": string;
+  "about.hero.accent": string;
+  "about.hero.description": string;
+  "about.stat.products": string;
+  "about.stat.brands": string;
+  "about.stat.delivery": string;
+  "about.stat.warranty": string;
+  "about.brands.eyebrow": string;
+  "about.brands.titleA": string;
+  "about.brands.accent": string;
+  "about.brands.intro": string;
+  "about.b1.role": string;
+  "about.b1.description": string;
+  "about.b2.role": string;
+  "about.b2.description": string;
+  "about.b3.role": string;
+  "about.b3.description": string;
+  "about.b4.role": string;
+  "about.b4.description": string;
+  "about.manifesto.eyebrow": string;
+  "about.manifesto.titleA": string;
+  "about.manifesto.accent": string;
+  "about.s1.title": string;
+  "about.s1.description": string;
+  "about.s2.title": string;
+  "about.s2.description": string;
+  "about.s3.title": string;
+  "about.s3.description": string;
+
   // ─── Enum labels riusati ovunque ────────────────────────────────────
   "enum.condition.new": string;
   "enum.condition.used": string;
@@ -826,6 +873,65 @@ const IT: Dict = {
   "auth.customer.noCredentialsHint":
     "Porta un dispositivo in riparazione: ti arriverà via email un link per impostare la password.",
 
+  "stores.hero.eyebrow": "I punti vendita",
+  "stores.hero.titleA": "I nostri",
+  "stores.hero.accent": "negozi.",
+  "stores.hero.description":
+    "Trova il punto vendita più vicino tra i brand del Gruppo Cellcom. Centri assistenza, magazzino ricambi, vendita al pubblico — tutti gli orari, gli indirizzi e i contatti in tempo reale.",
+  "stores.features.eyebrow": "Cosa puoi fare in negozio",
+  "stores.features.titleA": "Non solo vendita —",
+  "stores.features.accent": "servizi completi.",
+  "stores.features.intro":
+    "Ogni punto vendita del Gruppo offre molto più dello scaffale: riparazioni, valutazione usato, consulenza commerciale per rivenditori che hanno bisogno di assistenza fisica.",
+  "stores.f1.title": "Diagnosi sul momento",
+  "stores.f1.text":
+    "Porti il device in negozio, se c'è un tecnico disponibile lo vede in 10 minuti e ti dice cosa serve.",
+  "stores.f2.title": "Ritiro ordini gratuito",
+  "stores.f2.text":
+    "Ordini online e ritiri in qualsiasi punto vendita del Gruppo senza spese di spedizione.",
+  "stores.f3.title": "Trade-in al banco",
+  "stores.f3.text":
+    "Porti il tuo vecchio telefono, lo valutiamo davanti a te, esci con bonifico o credito Cellcom.",
+
+  "about.hero.eyebrow": "Il gruppo",
+  "about.hero.titleA": "Cinque brand. Una sola",
+  "about.hero.accent": "fiducia.",
+  "about.hero.description":
+    "Vendiamo, ripariamo e riforniamo telefoni. Siamo di San Benedetto del Tronto, ma lavoriamo in tutta Italia. Tre brand specializzati, un magazzino solo, le stesse persone dietro a tutto.",
+  "about.stat.products": "Prodotti a catalogo",
+  "about.stat.brands": "Brand verticali",
+  "about.stat.delivery": "Consegna in Italia",
+  "about.stat.warranty": "Garanzia ricambi",
+  "about.brands.eyebrow": "I 5 brand",
+  "about.brands.titleA": "Un gruppo,",
+  "about.brands.accent": "cinque specializzazioni.",
+  "about.brands.intro":
+    "Ogni marchio fa una cosa sola e la fa bene. Insieme coprono l'intero ciclo di vita del telefono: vendita, riparazione, ricambi, formazione, software. Stesso magazzino, stessi standard.",
+  "about.b1.role": "Magazzino B2B",
+  "about.b1.description":
+    "L'ingrosso del gruppo. Vendiamo a rivenditori, centri assistenza e aziende con listini a volumi.",
+  "about.b2.role": "Negozi e riparazioni",
+  "about.b2.description":
+    "I punti vendita fisici dove porti il telefono a riparare o vieni a comprarne uno nuovo.",
+  "about.b3.role": "Ricambi",
+  "about.b3.description":
+    "Display, batterie, scocche, schede madri. Per chi ripara smartphone di mestiere.",
+  "about.b4.role": "Academy",
+  "about.b4.description":
+    "La scuola interna dove formiamo i nostri tecnici. Aperta anche a chi vuole imparare il mestiere.",
+  "about.manifesto.eyebrow": "Cosa ci distingue",
+  "about.manifesto.titleA": "Tre principi,",
+  "about.manifesto.accent": "non negoziabili.",
+  "about.s1.title": "Prezzi onesti",
+  "about.s1.description":
+    "Stessi listini su tutti i nostri canali. Quello che vedi al pubblico è quello che paga il pubblico — il B2B paga meno, ma solo se compra a volumi.",
+  "about.s2.title": "Ogni intervento tracciato",
+  "about.s2.description":
+    "Sei riparazioni o ordini entrano nel gestionale, lo vedi anche tu in tempo reale. Foto del device, ricambi usati, tecnico responsabile — tutto registrato.",
+  "about.s3.title": "Una specializzazione per brand",
+  "about.s3.description":
+    "I brand del Gruppo fanno ognuno una cosa sola e la fanno seriamente. Mettendoli insieme copriamo tutto il ciclo di vita del telefono.",
+
   "enum.condition.new": "Nuovo",
   "enum.condition.used": "Usato",
   "enum.condition.refurbished": "Ricondizionato",
@@ -1262,6 +1368,65 @@ const EN: Dict = {
   "auth.customer.noCredentials": "Don't have credentials yet?",
   "auth.customer.noCredentialsHint":
     "Bring a device in for repair: you'll get an email with a link to set the password.",
+
+  "stores.hero.eyebrow": "The stores",
+  "stores.hero.titleA": "Our",
+  "stores.hero.accent": "stores.",
+  "stores.hero.description":
+    "Find the nearest store across the Cellcom Group brands. Service centres, parts warehouse, retail — all opening hours, addresses and contacts in real time.",
+  "stores.features.eyebrow": "What you can do in store",
+  "stores.features.titleA": "More than retail —",
+  "stores.features.accent": "full services.",
+  "stores.features.intro":
+    "Every Group store offers way more than the shelves: repairs, used-phone valuation, commercial support for resellers who need in-person help.",
+  "stores.f1.title": "On-the-spot diagnosis",
+  "stores.f1.text":
+    "Bring your device in, if a technician is free they look at it in 10 minutes and tell you what's needed.",
+  "stores.f2.title": "Free order pickup",
+  "stores.f2.text":
+    "Order online and pick up at any Group store with no shipping fees.",
+  "stores.f3.title": "Trade-in at the counter",
+  "stores.f3.text":
+    "Bring your old phone, we value it in front of you, you leave with bank transfer or Cellcom credit.",
+
+  "about.hero.eyebrow": "The Group",
+  "about.hero.titleA": "Five brands. One single",
+  "about.hero.accent": "trust.",
+  "about.hero.description":
+    "We sell, we repair and we supply phones. We're based in San Benedetto del Tronto, but we work across Italy. Three specialised brands, one warehouse, the same people behind everything.",
+  "about.stat.products": "Products in catalogue",
+  "about.stat.brands": "Vertical brands",
+  "about.stat.delivery": "Delivery in Italy",
+  "about.stat.warranty": "Parts warranty",
+  "about.brands.eyebrow": "The 5 brands",
+  "about.brands.titleA": "One group,",
+  "about.brands.accent": "five specialisations.",
+  "about.brands.intro":
+    "Each brand does one thing and does it well. Together they cover the entire phone lifecycle: sales, repair, parts, training, software. Same warehouse, same standards.",
+  "about.b1.role": "B2B warehouse",
+  "about.b1.description":
+    "The Group's wholesale. We sell to resellers, repair shops and businesses on volume pricing.",
+  "about.b2.role": "Stores & repairs",
+  "about.b2.description":
+    "The physical stores where you bring a phone to repair or come to buy a new one.",
+  "about.b3.role": "Spare parts",
+  "about.b3.description":
+    "Displays, batteries, housings, motherboards. For people who fix phones for a living.",
+  "about.b4.role": "Academy",
+  "about.b4.description":
+    "The in-house school where we train our technicians. Also open to anyone who wants to learn the trade.",
+  "about.manifesto.eyebrow": "What sets us apart",
+  "about.manifesto.titleA": "Three principles,",
+  "about.manifesto.accent": "non-negotiable.",
+  "about.s1.title": "Honest pricing",
+  "about.s1.description":
+    "Same price lists across all our channels. What the public sees is what the public pays — B2B pays less, but only if buying in volume.",
+  "about.s2.title": "Every job tracked",
+  "about.s2.description":
+    "Your repairs or orders go into the system, you see them live too. Photo of the device, parts used, responsible technician — all logged.",
+  "about.s3.title": "One specialisation per brand",
+  "about.s3.description":
+    "Each Group brand does one thing and takes it seriously. Put them together and we cover the entire phone lifecycle.",
 
   "enum.condition.new": "New",
   "enum.condition.used": "Used",

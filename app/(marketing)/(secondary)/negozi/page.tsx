@@ -1,31 +1,25 @@
 import { StoreMap } from "@/components/stores/store-map";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { LocalBusinessJsonLd, BreadcrumbJsonLd } from "@/components/seo/structured-data";
+import { getT } from "@/lib/i18n/server";
+import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata = {
   title: "Negozi — Cellcom Group",
   description: "Trova il punto vendita Cellcom / Fast-Fix più vicino a te.",
 };
 
-const FEATURES = [
-  {
-    title: "Diagnosi sul momento",
-    text: "Porti il device in negozio, se c'è un tecnico disponibile lo vede in 10 minuti e ti dice cosa serve.",
-  },
-  {
-    title: "Ritiro ordini gratuito",
-    text: "Ordini online e ritiri in qualsiasi punto vendita del Gruppo senza spese di spedizione.",
-  },
-  {
-    title: "Trade-in al banco",
-    text: "Porti il tuo vecchio telefono, lo valutiamo davanti a te, esci con bonifico o credito Cellcom.",
-  },
+const FEATURES: { titleKey: keyof Dict; textKey: keyof Dict }[] = [
+  { titleKey: "stores.f1.title", textKey: "stores.f1.text" },
+  { titleKey: "stores.f2.title", textKey: "stores.f2.text" },
+  { titleKey: "stores.f3.title", textKey: "stores.f3.text" },
 ];
 
-export default function StoresPage() {
+export default async function StoresPage() {
+  const t = await getT();
   return (
     <>
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Negozi" }]} />
+      <Breadcrumb items={[{ label: t("bc.home"), href: "/" }, { label: t("bc.stores") }]} />
       <LocalBusinessJsonLd />
       <BreadcrumbJsonLd
         items={[
@@ -51,7 +45,7 @@ export default function StoresPage() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              I punti vendita
+              {t("stores.hero.eyebrow")}
             </span>
             <h1
               className="font-sans tracking-[-0.025em]"
@@ -62,8 +56,8 @@ export default function StoresPage() {
                 fontWeight: 700,
               }}
             >
-              I nostri{" "}
-              <span style={{ color: "#dc2626" }}>negozi.</span>
+              {t("stores.hero.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("stores.hero.accent")}</span>
             </h1>
             <p
               className="leading-relaxed"
@@ -73,9 +67,7 @@ export default function StoresPage() {
                 maxWidth: "640px",
               }}
             >
-              Trova il punto vendita più vicino tra i brand del Gruppo Cellcom.
-              Centri assistenza, magazzino ricambi, vendita al pubblico — tutti
-              gli orari, gli indirizzi e i contatti in tempo reale.
+              {t("stores.hero.description")}
             </p>
           </div>
         </div>
@@ -109,7 +101,7 @@ export default function StoresPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                Cosa puoi fare in negozio
+                {t("stores.features.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -120,8 +112,8 @@ export default function StoresPage() {
                   fontWeight: 700,
                 }}
               >
-                Non solo vendita —{" "}
-                <span style={{ color: "#dc2626" }}>servizi completi.</span>
+                {t("stores.features.titleA")}{" "}
+                <span style={{ color: "#dc2626" }}>{t("stores.features.accent")}</span>
               </h2>
             </div>
             <p
@@ -132,16 +124,14 @@ export default function StoresPage() {
                 maxWidth: "520px",
               }}
             >
-              Ogni punto vendita del Gruppo offre molto più dello scaffale:
-              riparazioni, valutazione usato, consulenza commerciale per
-              rivenditori che hanno bisogno di assistenza fisica.
+              {t("stores.features.intro")}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
             {FEATURES.map((f, i) => (
               <div
-                key={f.title}
+                key={String(f.titleKey)}
                 className="rounded-2xl p-7 lg:p-8 flex flex-col gap-3 transition-colors duration-300 hover:border-[#dc2626]"
                 style={{
                   backgroundColor: "#141414",
@@ -168,13 +158,13 @@ export default function StoresPage() {
                     fontWeight: 600,
                   }}
                 >
-                  {f.title}
+                  {t(f.titleKey)}
                 </h3>
                 <p
                   className="leading-relaxed"
                   style={{ fontSize: "14px", color: "#a3a3a3" }}
                 >
-                  {f.text}
+                  {t(f.textKey)}
                 </p>
               </div>
             ))}
