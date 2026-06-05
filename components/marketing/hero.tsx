@@ -24,7 +24,13 @@ const PILLAR_BUTTONS: Array<{
 
 type Phase = "video" | "flash" | "content";
 
-export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
+export function Hero({
+  devices = [],
+  canSeePrices = false,
+}: {
+  devices?: PublicProductListItem[];
+  canSeePrices?: boolean;
+}) {
   const shouldReduce = useReducedMotion();
   const [phase, setPhase] = useState<Phase>(shouldReduce ? "content" : "video");
   const [isVideoNearEnd, setIsVideoNearEnd] = useState(false);
@@ -419,16 +425,31 @@ export function Hero({ devices = [] }: { devices?: PublicProductListItem[] }) {
                           >
                             {d.name}
                           </div>
-                          <div
-                            className="font-semibold tabular-nums"
-                            style={{
-                              color: "#dc2626",
-                              fontSize: "18px",
-                              letterSpacing: "-0.015em",
-                            }}
-                          >
-                            {d.priceHidden ? "Su richiesta" : formatPrice(d.priceCents)}
-                          </div>
+                          {canSeePrices ? (
+                            <div
+                              className="font-semibold tabular-nums"
+                              style={{
+                                color: "#dc2626",
+                                fontSize: "18px",
+                                letterSpacing: "-0.015em",
+                              }}
+                            >
+                              {d.priceHidden
+                                ? "Su richiesta"
+                                : formatPrice(d.priceCents)}
+                            </div>
+                          ) : (
+                            <div
+                              className="font-mono uppercase"
+                              style={{
+                                color: "#a3a3a3",
+                                fontSize: "10px",
+                                letterSpacing: "0.22em",
+                              }}
+                            >
+                              Prezzo riservato → accedi
+                            </div>
+                          )}
                         </div>
                       </Link>
                     </motion.div>

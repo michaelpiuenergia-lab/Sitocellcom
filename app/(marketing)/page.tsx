@@ -10,6 +10,7 @@ import { PillarsGrid } from "@/components/marketing/pillars-grid";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { getProducts } from "@/lib/crm-client";
+import { canSeePrices } from "@/lib/auth/pricing-access";
 
 export const revalidate = 60;
 
@@ -35,10 +36,11 @@ async function getKindTotal(
 
 export default async function MarketingPage() {
   // CRM fetches intatti — non regredire mai qui.
-  const [devicesRes, partsTotal, accessoriesTotal] = await Promise.all([
+  const [devicesRes, partsTotal, accessoriesTotal, showPrices] = await Promise.all([
     getProducts({ kind: "device", limit: 6 }).catch(() => null),
     getKindTotal("part"),
     getKindTotal("accessory"),
+    canSeePrices(),
   ]);
 
   const devices = devicesRes?.items ?? [];
@@ -50,7 +52,7 @@ export default async function MarketingPage() {
       {/* offset navbar fissa 72px */}
       <main className="pt-[72px]">
         {/* Hero video + wordmark (intoccabile) */}
-        <Hero devices={devices} />
+        <Hero devices={devices} canSeePrices={showPrices} />
 
         {/* Banner ROSSO Cellcom — tra Hero e 3D */}
         <BrandMarquee />

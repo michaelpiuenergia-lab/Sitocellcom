@@ -1,6 +1,5 @@
 import { requireCustomerSession } from "@/lib/auth/customer-guards";
 import { customerRepairs } from "@/lib/crm-client";
-import { ClientiNavbar } from "@/components/clienti/clienti-navbar";
 import { RepairStatusBadge } from "@/components/repairs/repair-status-badge";
 import type { RepairPublic } from "@/lib/crm-client/types";
 
@@ -98,8 +97,7 @@ export default async function ClientiDashboardPage() {
 
   return (
     <>
-      <ClientiNavbar customer={customer} />
-      <main className="pt-24 pb-16 px-6 lg:px-10 max-w-[900px] mx-auto flex flex-col gap-10">
+      <main className="pt-12 pb-16 px-6 lg:px-10 max-w-[900px] mx-auto flex flex-col gap-10">
         <div className="flex flex-col gap-2">
           <span className="font-mono uppercase" style={{ fontSize: "11px", letterSpacing: "0.28em", color: "#dc2626" }}>
             Ciao {customer.name.split(" ")[0]}
