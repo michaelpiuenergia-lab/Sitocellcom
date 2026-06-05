@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  listBrands,
   listModelsByBrand,
   findModel,
 } from "@/lib/trade-in/models";
@@ -16,6 +15,13 @@ import {
 import { listRepairStores, type Store } from "@/lib/stores";
 import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
+import {
+  CATEGORIES,
+  getCategory,
+  type DeviceCategoryId,
+} from "@/lib/repairs/devices";
+import { BrandLogo } from "./brand-logo";
+import { useLang } from "@/lib/i18n/lang-context";
 
 type Step = "device" | "repairs" | "service" | "done";
 
@@ -23,6 +29,7 @@ const OTHER_BRAND = "Altro / non in lista";
 
 type FormState = {
   // Step 1
+  category: DeviceCategoryId | null;
   brand: string | null;
   modelId: string | null;
   customModelName: string;
@@ -51,6 +58,7 @@ type FormState = {
 };
 
 const EMPTY: FormState = {
+  category: null,
   brand: null,
   modelId: null,
   customModelName: "",
@@ -112,6 +120,7 @@ function needsAppointment(mode: ServiceMode | null): boolean {
 }
 
 export function RepairWizard() {
+  const { t } = useLang();
   const [step, setStep] = useState<Step>("device");
   const [form, setForm] = useState<FormState>(EMPTY);
   const [submitState, setSubmitState] = useState<{
@@ -119,19 +128,35 @@ export function RepairWizard() {
     error: string | null;
   }>({ status: "idle", error: null });
 
-  const brands = useMemo(() => [...listBrands(), OTHER_BRAND], []);
+  const category = form.category ? getCategory(form.category) : null;
   const isOtherBrand = form.brand === OTHER_BRAND;
+  const isSmartphone = form.category === "smartphone";
+
+  // Brand mostrati: filtrati per categoria. Solo per smartphone aggiungiamo
+  // "Altro / non in lista" come escape hatch (per le altre categorie c'è già
+  // il form free-text dopo).
+  const brands = useMemo(() => {
+    if (!category) return [] as string[];
+    const list = [...category.brands];
+    if (isSmartphone) list.push(OTHER_BRAND);
+    return list;
+  }, [category, isSmartphone]);
+
   const models = useMemo(
-    () => (form.brand && !isOtherBrand ? listModelsByBrand(form.brand) : []),
-    [form.brand, isOtherBrand],
+    () =>
+      isSmartphone && form.brand && !isOtherBrand
+        ? listModelsByBrand(form.brand)
+        : [],
+    [isSmartphone, form.brand, isOtherBrand],
   );
 
-  // Search globale: filtra TUTTI i modelli (across brand) — pattern FastFix.
+  // Search globale modelli smartphone — solo se la categoria è smartphone.
   const [modelQuery, setModelQuery] = useState("");
   const searchResults = useMemo(() => {
+    if (!isSmartphone) return [];
     const q = modelQuery.trim().toLowerCase();
     if (q.length < 2) return [];
-    const all = listBrands().flatMap((b) => listModelsByBrand(b));
+    const all = category!.brands.flatMap((b) => listModelsByBrand(b));
     return all
       .filter(
         (m) =>
@@ -140,16 +165,24 @@ export function RepairWizard() {
           `${m.brand} ${m.name}`.toLowerCase().includes(q),
       )
       .slice(0, 8);
-  }, [modelQuery]);
+  }, [isSmartphone, category, modelQuery]);
   const model = useMemo(
     () => (form.modelId ? findModel(form.modelId) : null),
     [form.modelId],
   );
   const stores = useMemo(() => listRepairStores(), []);
 
-  const deviceReady = isOtherBrand
-    ? Boolean(form.customModelName.trim())
-    : Boolean(model && form.storage);
+  // deviceReady:
+  //  - smartphone + altro brand → serve customModelName
+  //  - smartphone + brand noto → serve model + storage
+  //  - non-smartphone → serve brand + customModelName
+  const deviceReady = !form.category
+    ? false
+    : isSmartphone
+      ? isOtherBrand
+        ? Boolean(form.customModelName.trim())
+        : Boolean(model && form.storage)
+      : Boolean(form.brand && form.customModelName.trim());
 
   const repairsReady = form.repairTypes.size > 0;
 
@@ -179,6 +212,12 @@ export function RepairWizard() {
   }
 
   function deviceLabel(): string {
+    if (!isSmartphone) {
+      // Non-smartphone: usa "Brand + Modello scritto a mano"
+      const m = form.customModelName.trim();
+      if (form.brand && m) return `${form.brand} ${m}`;
+      return "—";
+    }
     if (isOtherBrand) {
       return (
         form.customModelName.trim() +
@@ -357,114 +396,59 @@ export function RepairWizard() {
               transition={{ duration: DURATION.normal, ease: EASE.smooth }}
               className="flex flex-col gap-6"
             >
-              <div className="flex flex-col gap-2 text-center sm:text-left">
-                <h2 className="font-serif text-3xl sm:text-4xl text-foreground">
-                  Quale <span className="italic text-brand-500">modello</span> hai?
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  Inserisci marca, modello o codice modello — oppure seleziona il marchio.
-                </p>
-              </div>
-
-              {/* SEARCH bar globale con autocomplete */}
-              <div className="relative">
-                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-500 pointer-events-none">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="7" />
-                    <path d="M21 21l-4.3-4.3" />
-                  </svg>
-                </div>
-                <input
-                  type="text"
-                  placeholder="iPhone 12 Pro Max"
-                  value={modelQuery}
-                  onChange={(e) => setModelQuery(e.target.value)}
-                  className={cn(
-                    "w-full pl-12 pr-12 py-4 rounded-2xl bg-popover border-2 border-brand-600/30",
-                    "text-base text-foreground placeholder:text-muted-foreground/60",
-                    "focus:outline-none focus:border-brand-600 transition-colors duration-200",
-                  )}
-                />
-                {modelQuery && (
-                  <button
-                    type="button"
-                    onClick={() => setModelQuery("")}
-                    aria-label="Pulisci ricerca"
-                    className="absolute right-4 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full bg-card-hover text-muted-foreground hover:text-foreground"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <path d="M6 6l12 12M6 18L18 6" />
-                    </svg>
-                  </button>
-                )}
-
-                {/* Risultati autocomplete */}
-                {searchResults.length > 0 && (
-                  <div className="absolute z-20 left-0 right-0 mt-2 rounded-2xl bg-card border border-border shadow-[0_24px_64px_-16px_rgba(0,0,0,0.6)] overflow-hidden">
-                    {searchResults.map((m) => (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => {
+              {/* ── STEP 1.1: Categoria dispositivo ─────────────────────── */}
+              {!form.category && (
+                <>
+                  <div className="flex flex-col gap-2 text-center sm:text-left">
+                    <h2 className="font-serif text-3xl sm:text-4xl text-foreground">
+                      {t("rw.cat.heading")}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {t("rw.cat.subheading")}
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3">
+                    {CATEGORIES.map((c) => (
+                      <CategoryCard
+                        key={c.id}
+                        id={c.id}
+                        label={t(c.labelKey)}
+                        onClick={() =>
                           setForm({
-                            ...form,
-                            brand: m.brand,
-                            modelId: m.id,
-                            storage: m.storage[0],
-                            customModelName: "",
-                            customStorage: "",
-                          });
-                          setModelQuery("");
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-card-hover transition-colors duration-150 border-b border-border last:border-b-0"
-                      >
-                        <div className="w-10 h-10 rounded-lg bg-card-hover flex items-center justify-center shrink-0">
-                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
-                            <rect x="6" y="3" width="12" height="18" rx="2" />
-                            <path d="M9 18h6" />
-                          </svg>
-                        </div>
-                        <div className="flex flex-col gap-0.5 min-w-0 flex-1">
-                          <div className="flex items-baseline gap-2">
-                            <span className="text-brand-500 text-sm font-medium">
-                              {m.brand}
-                            </span>
-                            <span className="font-serif text-foreground truncate">
-                              {m.name}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            {["Schermo", "Batteria", "Porta ricarica"].map((chip) => (
-                              <span
-                                key={chip}
-                                className="text-[10px] font-mono uppercase tracking-wider px-1.5 py-0.5 rounded bg-card-hover text-muted-foreground"
-                              >
-                                {chip}
-                              </span>
-                            ))}
-                            <span className="text-[10px] font-mono tabular-nums text-brand-500/70 ml-1">
-                              +{REPAIR_TYPES.length - 3}
-                            </span>
-                          </div>
-                        </div>
-                        <span className="text-xs font-mono text-muted-foreground tabular-nums shrink-0">
-                          {m.year}
-                        </span>
-                      </button>
+                            ...EMPTY,
+                            category: c.id,
+                          })
+                        }
+                      />
                     ))}
                   </div>
-                )}
-              </div>
+                </>
+              )}
 
-              {/* Quando NON c'è ancora brand → mostro griglia brand */}
-              {!form.brand && (
+              {/* ── STEP 1.2: Brand ──────────────────────────────────────── */}
+              {form.category && !form.brand && (
                 <>
-                  <div className="flex items-center gap-3">
-                    <div className="flex-1 h-px bg-border" />
-                    <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
-                      oppure scegli marca
+                  <div className="flex items-center gap-2 mb-1">
+                    <button
+                      type="button"
+                      onClick={() => setForm(EMPTY)}
+                      className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      {t("rw.brand.back")}
+                    </button>
+                    <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-600/10 border border-brand-600/30 text-brand-500 text-sm">
+                      <strong className="font-serif italic">
+                        {category ? t(category.labelKey) : ""}
+                      </strong>
                     </span>
-                    <div className="flex-1 h-px bg-border" />
+                  </div>
+                  <div className="flex flex-col gap-2 text-center sm:text-left">
+                    <h2 className="font-serif text-3xl sm:text-4xl text-foreground">
+                      {t("rw.brand.heading")}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {t("rw.brand.subheading")}
+                    </p>
                   </div>
                   <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
                     {brands.map((b) => (
@@ -488,116 +472,243 @@ export function RepairWizard() {
                 </>
               )}
 
-              {/* Brand scelto → mostro chip "torna indietro" + griglia modelli */}
-              {form.brand && (
-                <div className="flex items-center gap-3 flex-wrap">
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setForm({
-                        ...form,
-                        brand: null,
-                        modelId: null,
-                        storage: null,
-                        customModelName: "",
-                        customStorage: "",
-                      })
-                    }
-                    className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    <span aria-hidden>←</span> Cambia marca
-                  </button>
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-600/10 border border-brand-600/30 text-brand-500 text-sm">
-                    <strong className="font-serif italic">{form.brand}</strong>
-                  </span>
-                </div>
-              )}
-
-              {form.brand && !isOtherBrand && models.length > 0 && (
-                <div className="flex flex-col gap-3">
-                  <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground">
-                    Scegli il modello {form.brand}
-                  </span>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-[420px] overflow-y-auto pr-1">
-                    {models.map((m) => (
-                      <ModelCard
-                        key={m.id}
-                        name={m.name}
-                        year={m.year}
-                        active={form.modelId === m.id}
-                        onClick={() =>
-                          setForm({
-                            ...form,
-                            modelId: m.id,
-                            storage: null,
-                          })
-                        }
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {model && (
-                <Field label="Memoria">
-                  <div className="flex flex-wrap gap-2">
-                    {model.storage.map((gb) => (
-                      <Pill
-                        key={gb}
-                        active={form.storage === gb}
-                        onClick={() => setForm({ ...form, storage: gb })}
-                      >
-                        {gb < 1024 ? `${gb} GB` : `${gb / 1024} TB`}
-                      </Pill>
-                    ))}
-                  </div>
-                </Field>
-              )}
-
-              {isOtherBrand && (
+              {/* ── STEP 1.3a: Modello smartphone ─────────────────────────── */}
+              {form.category && form.brand && isSmartphone && (
                 <>
-                  <Field label="Marca e modello del telefono">
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          brand: null,
+                          modelId: null,
+                          storage: null,
+                          customModelName: "",
+                          customStorage: "",
+                        })
+                      }
+                      className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <span aria-hidden>←</span> {form.brand}
+                    </button>
+                  </div>
+
+                  <div className="flex flex-col gap-2 text-center sm:text-left">
+                    <h2 className="font-serif text-3xl sm:text-4xl text-foreground">
+                      {t("rw.model.heading")}
+                    </h2>
+                  </div>
+
+                  {/* SEARCH bar globale modelli smartphone */}
+                  <div className="relative">
+                    <div className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-500 pointer-events-none">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="M21 21l-4.3-4.3" />
+                      </svg>
+                    </div>
                     <input
                       type="text"
-                      placeholder="Es. Vivo X100 Pro / Doogee S100 / Cubot…"
+                      placeholder={t("rw.model.searchPh")}
+                      value={modelQuery}
+                      onChange={(e) => setModelQuery(e.target.value)}
+                      className={cn(
+                        "w-full pl-12 pr-12 py-4 rounded-2xl bg-popover border-2 border-brand-600/30",
+                        "text-base text-foreground placeholder:text-muted-foreground/60",
+                        "focus:outline-none focus:border-brand-600 transition-colors duration-200",
+                      )}
+                    />
+                    {modelQuery && (
+                      <button
+                        type="button"
+                        onClick={() => setModelQuery("")}
+                        aria-label="Clear search"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 w-7 h-7 flex items-center justify-center rounded-full bg-card-hover text-muted-foreground hover:text-foreground"
+                      >
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                          <path d="M6 6l12 12M6 18L18 6" />
+                        </svg>
+                      </button>
+                    )}
+
+                    {searchResults.length > 0 && (
+                      <div className="absolute z-20 left-0 right-0 mt-2 rounded-2xl bg-card border border-border shadow-[0_24px_64px_-16px_rgba(0,0,0,0.6)] overflow-hidden">
+                        {searchResults.map((m) => (
+                          <button
+                            key={m.id}
+                            type="button"
+                            onClick={() => {
+                              setForm({
+                                ...form,
+                                brand: m.brand,
+                                modelId: m.id,
+                                storage: m.storage[0],
+                                customModelName: "",
+                                customStorage: "",
+                              });
+                              setModelQuery("");
+                            }}
+                            className="w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-card-hover transition-colors duration-150 border-b border-border last:border-b-0"
+                          >
+                            <div className="w-10 h-10 rounded-lg bg-card-hover flex items-center justify-center shrink-0">
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="text-muted-foreground">
+                                <rect x="6" y="3" width="12" height="18" rx="2" />
+                                <path d="M9 18h6" />
+                              </svg>
+                            </div>
+                            <div className="flex flex-col gap-0.5 min-w-0 flex-1">
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-brand-500 text-sm font-medium">
+                                  {m.brand}
+                                </span>
+                                <span className="font-serif text-foreground truncate">
+                                  {m.name}
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-xs font-mono text-muted-foreground tabular-nums shrink-0">
+                              {m.year}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {!isOtherBrand && models.length > 0 && (
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="flex-1 h-px bg-border" />
+                        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                          {t("rw.model.orChoose")}
+                        </span>
+                        <div className="flex-1 h-px bg-border" />
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5 max-h-[420px] overflow-y-auto pr-1">
+                        {models.map((m) => (
+                          <ModelCard
+                            key={m.id}
+                            name={m.name}
+                            year={m.year}
+                            active={form.modelId === m.id}
+                            onClick={() =>
+                              setForm({
+                                ...form,
+                                modelId: m.id,
+                                storage: null,
+                              })
+                            }
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {model && (
+                    <Field label="Memoria">
+                      <div className="flex flex-wrap gap-2">
+                        {model.storage.map((gb) => (
+                          <Pill
+                            key={gb}
+                            active={form.storage === gb}
+                            onClick={() => setForm({ ...form, storage: gb })}
+                          >
+                            {gb < 1024 ? `${gb} GB` : `${gb / 1024} TB`}
+                          </Pill>
+                        ))}
+                      </div>
+                    </Field>
+                  )}
+
+                  {isOtherBrand && (
+                    <>
+                      <Field label="Marca e modello del telefono">
+                        <input
+                          type="text"
+                          placeholder="Es. Vivo X100 Pro / Doogee S100 / Cubot…"
+                          value={form.customModelName}
+                          onChange={(e) =>
+                            setForm({ ...form, customModelName: e.target.value })
+                          }
+                          maxLength={120}
+                          className={fieldClass}
+                        />
+                      </Field>
+                      <Field label="Memoria (opzionale)">
+                        <input
+                          type="text"
+                          placeholder="Es. 128GB / 8+256GB"
+                          value={form.customStorage}
+                          onChange={(e) =>
+                            setForm({ ...form, customStorage: e.target.value })
+                          }
+                          maxLength={40}
+                          className={fieldClass}
+                        />
+                      </Field>
+                    </>
+                  )}
+                </>
+              )}
+
+              {/* ── STEP 1.3b: non-smartphone — modello free text ──────────── */}
+              {form.category && form.brand && !isSmartphone && (
+                <>
+                  <div className="flex items-center gap-2 flex-wrap mb-1">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setForm({
+                          ...form,
+                          brand: null,
+                          customModelName: "",
+                        })
+                      }
+                      className="inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <span aria-hidden>←</span> {form.brand}
+                    </button>
+                  </div>
+
+                  <div className="flex flex-col gap-2 text-center sm:text-left">
+                    <h2 className="font-serif text-3xl sm:text-4xl text-foreground">
+                      {t("rw.nonSmartphone.heading")}
+                    </h2>
+                    <p className="text-sm text-muted-foreground">
+                      {t("rw.nonSmartphone.intro")}
+                    </p>
+                  </div>
+
+                  <Field label={t("rw.nonSmartphone.modelLabel")}>
+                    <input
+                      type="text"
+                      placeholder={t("rw.nonSmartphone.modelPh")}
                       value={form.customModelName}
                       onChange={(e) =>
                         setForm({ ...form, customModelName: e.target.value })
                       }
                       maxLength={120}
                       className={fieldClass}
-                    />
-                    <p className="text-xs text-muted-foreground/80 mt-1.5">
-                      Modello non in lista? Scrivilo qui — il tecnico ti
-                      contatta lo stesso per capire come procedere.
-                    </p>
-                  </Field>
-                  <Field label="Memoria (opzionale)">
-                    <input
-                      type="text"
-                      placeholder="Es. 128GB / 8+256GB"
-                      value={form.customStorage}
-                      onChange={(e) =>
-                        setForm({ ...form, customStorage: e.target.value })
-                      }
-                      maxLength={40}
-                      className={fieldClass}
+                      autoFocus
                     />
                   </Field>
                 </>
               )}
 
-              <div className="flex justify-end gap-3 pt-4">
-                <button
-                  type="button"
-                  disabled={!deviceReady}
-                  onClick={() => setStep("repairs")}
-                  className={primaryBtnClass}
-                >
-                  Continua
-                  <span aria-hidden>→</span>
-                </button>
-              </div>
+              {form.category && (
+                <div className="flex justify-end gap-3 pt-4">
+                  <button
+                    type="button"
+                    disabled={!deviceReady}
+                    onClick={() => setStep("repairs")}
+                    className={primaryBtnClass}
+                  >
+                    Continua
+                    <span aria-hidden>→</span>
+                  </button>
+                </div>
+              )}
             </motion.div>
           )}
 
@@ -964,10 +1075,11 @@ function Stepper({
   repairsReady: boolean;
   onStepClick: (s: Step) => void;
 }) {
+  const { t } = useLang();
   const steps: { id: Step; label: string }[] = [
-    { id: "device", label: "Seleziona dispositivo" },
-    { id: "repairs", label: "Seleziona riparazione" },
-    { id: "service", label: "Conferma ordine" },
+    { id: "device", label: t("rw.step.device") },
+    { id: "repairs", label: t("rw.step.repairs") },
+    { id: "service", label: t("rw.step.service") },
   ];
   const currentIdx = steps.findIndex((s) => s.id === current);
 
@@ -1066,6 +1178,103 @@ function Stepper({
   );
 }
 
+function CategoryCard({
+  id,
+  label,
+  onClick,
+}: {
+  id: DeviceCategoryId;
+  label: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "aspect-[5/4] rounded-2xl border-2 flex flex-col items-center justify-center gap-3 p-4 transition-all duration-200",
+        "bg-card border-border hover:border-brand-600 hover:bg-card-hover hover:shadow-[0_0_28px_-10px_rgba(220,38,38,0.45)]",
+      )}
+    >
+      <CategoryIcon id={id} />
+      <span
+        className="font-mono uppercase text-[11px] sm:text-xs tracking-[0.18em] text-foreground"
+      >
+        {label}
+      </span>
+    </button>
+  );
+}
+
+function CategoryIcon({ id }: { id: DeviceCategoryId }) {
+  const common = {
+    width: 44,
+    height: 44,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.4,
+    strokeLinecap: "round" as const,
+    strokeLinejoin: "round" as const,
+    className: "text-foreground/85",
+  };
+  switch (id) {
+    case "smartphone":
+      return (
+        <svg {...common}>
+          <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />
+          <path d="M11 5h2" />
+          <path d="M10 19h4" />
+        </svg>
+      );
+    case "tablet":
+      return (
+        <svg {...common}>
+          <rect x="3.5" y="3" width="17" height="18" rx="2" />
+          <path d="M9 20h6" />
+        </svg>
+      );
+    case "watch":
+      return (
+        <svg {...common}>
+          <rect x="6" y="6" width="12" height="12" rx="2.5" />
+          <path d="M9 6V3h6v3" />
+          <path d="M9 18v3h6v-3" />
+          <circle cx="12" cy="12" r="2.4" />
+        </svg>
+      );
+    case "laptop":
+      return (
+        <svg {...common}>
+          <rect x="4" y="4" width="16" height="11" rx="1.5" />
+          <path d="M2 18h20l-1.5 2H3.5z" />
+          <path d="M10 18h4" />
+        </svg>
+      );
+    case "desktop":
+      return (
+        <svg {...common}>
+          <rect x="3" y="3" width="18" height="13" rx="1.5" />
+          <path d="M9 20h6" />
+          <path d="M12 16v4" />
+          <path d="M5.5 5.5h.01" />
+        </svg>
+      );
+    case "console":
+      return (
+        <svg {...common}>
+          <path d="M4 10h7v6a3 3 0 0 1-6 0V10z" />
+          <rect x="13" y="3" width="6" height="18" rx="1.5" />
+          <path d="M15 7h2" />
+          <path d="M15 11h2" />
+          <circle cx="16" cy="16" r="1.2" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+}
+
 function BrandCard({
   name,
   active,
@@ -1086,14 +1295,18 @@ function BrandCard({
           : "bg-card border-border hover:border-brand-600/40 hover:bg-card-hover",
       )}
     >
-      <span
-        className={cn(
-          "font-serif text-base sm:text-lg italic tracking-tight transition-colors",
-          active ? "text-brand-500" : "text-foreground/80 group-hover:text-foreground",
-        )}
-      >
-        {name}
-      </span>
+      {name === OTHER_BRAND ? (
+        <span
+          className={cn(
+            "font-serif text-sm italic tracking-tight",
+            active ? "text-brand-500" : "text-foreground/80",
+          )}
+        >
+          {name}
+        </span>
+      ) : (
+        <BrandLogo name={name} size={40} color={active ? "dc2626" : "404040"} />
+      )}
     </button>
   );
 }

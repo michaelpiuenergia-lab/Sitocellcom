@@ -580,6 +580,31 @@ export type Dict = {
   "bp.cta.cta": string;
   "bp.cta.reqName": string;
 
+  // ─── Repair Wizard ──────────────────────────────────────────────────
+  "rw.step.device": string;
+  "rw.step.repairs": string;
+  "rw.step.service": string;
+  "rw.cat.heading": string;
+  "rw.cat.subheading": string;
+  "rw.cat.smartphone": string;
+  "rw.cat.tablet": string;
+  "rw.cat.watch": string;
+  "rw.cat.laptop": string;
+  "rw.cat.desktop": string;
+  "rw.cat.console": string;
+  "rw.brand.heading": string;
+  "rw.brand.subheading": string;
+  "rw.brand.other": string;
+  "rw.brand.back": string;
+  "rw.model.heading": string;
+  "rw.model.searchPh": string;
+  "rw.model.orChoose": string;
+  "rw.model.findMine": string;
+  "rw.nonSmartphone.heading": string;
+  "rw.nonSmartphone.intro": string;
+  "rw.nonSmartphone.modelLabel": string;
+  "rw.nonSmartphone.modelPh": string;
+
   // ─── Enum labels riusati ovunque ────────────────────────────────────
   "enum.condition.new": string;
   "enum.condition.used": string;
@@ -1253,6 +1278,31 @@ const IT: Dict = {
   "bp.cta.cta": "Invia candidatura →",
   "bp.cta.reqName": "Diventa partner Fast-Fix — candidatura",
 
+  "rw.step.device": "Seleziona dispositivo",
+  "rw.step.repairs": "Seleziona riparazione",
+  "rw.step.service": "Conferma ordine",
+  "rw.cat.heading": "Che dispositivo hai?",
+  "rw.cat.subheading": "Scegli la categoria per cominciare.",
+  "rw.cat.smartphone": "Smartphone",
+  "rw.cat.tablet": "Tablet",
+  "rw.cat.watch": "Watch",
+  "rw.cat.laptop": "Laptop",
+  "rw.cat.desktop": "Desktop",
+  "rw.cat.console": "Console",
+  "rw.brand.heading": "Seleziona il tuo marchio",
+  "rw.brand.subheading": "Scegli il brand del tuo dispositivo.",
+  "rw.brand.other": "Altro brand",
+  "rw.brand.back": "← Cambia categoria",
+  "rw.model.heading": "Quale modello hai?",
+  "rw.model.searchPh": "Cerca modello…",
+  "rw.model.orChoose": "oppure scegli dalla lista",
+  "rw.model.findMine": "Trova il mio modello",
+  "rw.nonSmartphone.heading": "Diagnosi su richiesta",
+  "rw.nonSmartphone.intro":
+    "Per questa categoria non abbiamo ancora un catalogo modelli online — scrivici marca + modello del tuo dispositivo, un nostro tecnico ti contatta entro 24h con diagnosi e preventivo.",
+  "rw.nonSmartphone.modelLabel": "Marca e modello",
+  "rw.nonSmartphone.modelPh": "Es. iPad Pro 11\" 2022 / Galaxy Watch 6 / MacBook Air M2",
+
   "enum.condition.new": "Nuovo",
   "enum.condition.used": "Usato",
   "enum.condition.refurbished": "Ricondizionato",
@@ -1925,6 +1975,31 @@ const EN: Dict = {
     "VAT number, area of operation, experience, indicative volumes. A sales rep will call you back within 24 hours to define the agreement.",
   "bp.cta.cta": "Submit application →",
   "bp.cta.reqName": "Become a Fast-Fix partner — application",
+
+  "rw.step.device": "Select device",
+  "rw.step.repairs": "Select repair",
+  "rw.step.service": "Confirm order",
+  "rw.cat.heading": "What device do you have?",
+  "rw.cat.subheading": "Pick a category to get started.",
+  "rw.cat.smartphone": "Smartphone",
+  "rw.cat.tablet": "Tablet",
+  "rw.cat.watch": "Watch",
+  "rw.cat.laptop": "Laptop",
+  "rw.cat.desktop": "Desktop",
+  "rw.cat.console": "Console",
+  "rw.brand.heading": "Pick your brand",
+  "rw.brand.subheading": "Select your device's brand.",
+  "rw.brand.other": "Other brand",
+  "rw.brand.back": "← Change category",
+  "rw.model.heading": "Which model do you have?",
+  "rw.model.searchPh": "Search model…",
+  "rw.model.orChoose": "or pick from the list",
+  "rw.model.findMine": "Find my model",
+  "rw.nonSmartphone.heading": "Diagnosis on request",
+  "rw.nonSmartphone.intro":
+    "We don't have an online model catalogue for this category yet — tell us the brand + model of your device, a technician will get in touch within 24h with a diagnosis and quote.",
+  "rw.nonSmartphone.modelLabel": "Brand and model",
+  "rw.nonSmartphone.modelPh": "e.g. iPad Pro 11\" 2022 / Galaxy Watch 6 / MacBook Air M2",
 
   "enum.condition.new": "New",
   "enum.condition.used": "Used",
