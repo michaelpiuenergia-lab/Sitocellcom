@@ -436,6 +436,150 @@ export type Dict = {
   "about.s3.title": string;
   "about.s3.description": string;
 
+  // ─── /rivendi ───────────────────────────────────────────────────────
+  "ti.hero.eyebrow": string;
+  "ti.hero.titleA": string;
+  "ti.hero.accent": string;
+  "ti.hero.descA": string;
+  "ti.hero.descBoldBonus": string;
+  "ti.hero.descB": string;
+  "ti.how.eyebrow": string;
+  "ti.how.titleA": string;
+  "ti.how.accent": string;
+  "ti.how.intro": string;
+  "ti.s1.title": string;
+  "ti.s1.text": string;
+  "ti.s2.title": string;
+  "ti.s2.text": string;
+  "ti.s3.title": string;
+  "ti.s3.text": string;
+  "ti.s4.title": string;
+  "ti.s4.text": string;
+  "ti.faq.eyebrow": string;
+  "ti.faq.titleA": string;
+  "ti.faq.accent": string;
+  "ti.faq.titleB": string;
+  "ti.faq.q1.q": string;
+  "ti.faq.q1.a": string;
+  "ti.faq.q2.q": string;
+  "ti.faq.q2.a": string;
+  "ti.faq.q3.q": string;
+  "ti.faq.q3.a": string;
+  "ti.faq.q4.q": string;
+  "ti.faq.q4.a": string;
+  "ti.faq.q5.q": string;
+  "ti.faq.q5.a": string;
+  "ti.faq.q6.q": string;
+  "ti.faq.q6.a": string;
+  "ti.faq.q7.q": string;
+  "ti.faq.q7.a": string;
+  "ti.faq.q8.q": string;
+  "ti.faq.q8.a": string;
+
+  // ─── /corsi ─────────────────────────────────────────────────────────
+  "cou.hero.eyebrow": string;
+  "cou.hero.titleA": string;
+  "cou.hero.accent": string;
+  "cou.hero.description": string;
+  "cou.hero.cta1": string;
+  "cou.hero.cta2": string;
+  "cou.hero.subtitle": string;
+  "cou.hero.reqName": string;
+  "cou.levels.eyebrow": string;
+  "cou.levels.titleA": string;
+  "cou.levels.accent": string;
+  "cou.levels.intro": string;
+  "cou.levels.empty": string;
+  "cou.tools.eyebrow": string;
+  "cou.tools.titleA": string;
+  "cou.tools.accent": string;
+  "cou.tools.intro": string;
+  "cou.tools.t1": string;
+  "cou.tools.t2": string;
+  "cou.tools.t3": string;
+  "cou.tools.t4": string;
+  "cou.tools.t5": string;
+  "cou.tools.t6": string;
+  "cou.cta.titleA": string;
+  "cou.cta.accent": string;
+  "cou.cta.intro": string;
+  "cou.cta.cta": string;
+  "cou.cta.reqName": string;
+  "cou.card.priceOnReq": string;
+  "cou.card.enroll": string;
+
+  // ─── /apri-negozio ──────────────────────────────────────────────────
+  "os.hero.eyebrow": string;
+  "os.hero.titleA": string;
+  "os.hero.accent": string;
+  "os.hero.description": string;
+  "os.hero.cta1": string;
+  "os.hero.cta2": string;
+  "os.hero.subtitle": string;
+  "os.hero.reqName": string;
+  "os.steps.eyebrow": string;
+  "os.steps.titleA": string;
+  "os.steps.accent": string;
+  "os.steps.intro": string;
+  "os.s1.title": string;
+  "os.s1.text": string;
+  "os.s2.title": string;
+  "os.s2.text": string;
+  "os.s3.title": string;
+  "os.s3.text": string;
+  "os.s4.title": string;
+  "os.s4.text": string;
+  "os.s5.title": string;
+  "os.s5.text": string;
+  "os.included.eyebrow": string;
+  "os.included.titleA": string;
+  "os.included.accent": string;
+  "os.included.intro": string;
+  "os.i1": string;
+  "os.i2": string;
+  "os.i3": string;
+  "os.i4": string;
+  "os.i5": string;
+  "os.i6": string;
+  "os.cta.titleA": string;
+  "os.cta.accent": string;
+  "os.cta.intro": string;
+  "os.cta.cta": string;
+  "os.cta.reqName": string;
+
+  // ─── /diventa-partner ───────────────────────────────────────────────
+  "bp.hero.eyebrow": string;
+  "bp.hero.titleA": string;
+  "bp.hero.accent": string;
+  "bp.hero.description": string;
+  "bp.hero.cta1": string;
+  "bp.hero.cta2": string;
+  "bp.hero.subtitle": string;
+  "bp.hero.reqName": string;
+  "bp.benefits.eyebrow": string;
+  "bp.benefits.titleA": string;
+  "bp.benefits.accent": string;
+  "bp.benefits.intro": string;
+  "bp.b1.title": string;
+  "bp.b1.text": string;
+  "bp.b2.title": string;
+  "bp.b2.text": string;
+  "bp.b3.title": string;
+  "bp.b3.text": string;
+  "bp.req.eyebrow": string;
+  "bp.req.titleA": string;
+  "bp.req.accent": string;
+  "bp.req.intro": string;
+  "bp.r1": string;
+  "bp.r2": string;
+  "bp.r3": string;
+  "bp.r4": string;
+  "bp.cta.titleA": string;
+  "bp.cta.accent": string;
+  "bp.cta.intro": string;
+  "bp.cta.cta": string;
+  "bp.cta.reqName": string;
+
   // ─── Enum labels riusati ovunque ────────────────────────────────────
   "enum.condition.new": string;
   "enum.condition.used": string;
@@ -932,6 +1076,183 @@ const IT: Dict = {
   "about.s3.description":
     "I brand del Gruppo fanno ognuno una cosa sola e la fanno seriamente. Mettendoli insieme copriamo tutto il ciclo di vita del telefono.",
 
+  "ti.hero.eyebrow": "Trade-in Cellcom",
+  "ti.hero.titleA": "Il tuo vecchio telefono",
+  "ti.hero.accent": "vale ancora.",
+  "ti.hero.descA":
+    "Dicci che telefono hai e in che condizioni è. I tecnici lo valutano gratuitamente dopo aver ricevuto le foto e ti rispondono via email entro poche ore. Spedizione gratuita o ritiro nei negozi. Bonus ",
+  "ti.hero.descBoldBonus": "+10%",
+  "ti.hero.descB": " se scegli credito spendibile sul Gruppo Cellcom.",
+  "ti.how.eyebrow": "Come funziona",
+  "ti.how.titleA": "Quattro passi,",
+  "ti.how.accent": "zero sorprese.",
+  "ti.how.intro":
+    "Dalla compilazione al pagamento, tutto tracciato. Niente algoritmi opachi, niente offerte gonfiate che poi scendono al ricevimento — la persona che ti scrive il prezzo è la stessa che controlla il telefono in laboratorio.",
+  "ti.s1.title": "Compila il form",
+  "ti.s1.text":
+    "Scegli marca, modello, memoria e condizione del tuo telefono. Bastano 30 secondi, niente account.",
+  "ti.s2.title": "Foto via email",
+  "ti.s2.text":
+    "Ti scriviamo entro poche ore chiedendoti 4-6 foto guidate (fronte, retro, IMEI, schermo acceso).",
+  "ti.s3.title": "Valutazione personalizzata",
+  "ti.s3.text":
+    "Un tecnico verifica le foto e ti manda la valutazione dedicata via email — niente algoritmi, una persona vera.",
+  "ti.s4.title": "Spedizione + pagamento",
+  "ti.s4.text":
+    "Accetti, spedizione gratis o ritiro in negozio. Controllo finale e pagamento entro 48h.",
+  "ti.faq.eyebrow": "FAQ",
+  "ti.faq.titleA": "Le",
+  "ti.faq.accent": "domande",
+  "ti.faq.titleB": "che ci fanno tutti.",
+  "ti.faq.q1.q": "Perché non vedo subito un prezzo?",
+  "ti.faq.q1.a":
+    "Perché vogliamo darti una valutazione onesta, non un range generico tirato a caso. I nostri tecnici controllano le foto vere del tuo telefono — vetro, schermo, segni d'uso reali — e ti scrivono il prezzo esatto che ti pagheremmo. Niente sorprese al ricevimento.",
+  "ti.faq.q2.q": "Quanto ci mette davvero ad arrivare l'offerta?",
+  "ti.faq.q2.a":
+    "Entro 24 ore lavorative dall'invio delle foto. Spesso anche più velocemente — i nostri tecnici lavorano dal lunedì al sabato.",
+  "ti.faq.q3.q": "Quando ricevo la valutazione finale?",
+  "ti.faq.q3.a":
+    "Subito dopo che ci hai inviato le foto. Se la spedizione corrisponde alle foto, paghiamo esattamente la cifra dell'email. Se trovassimo qualcosa che non avevamo visto nelle foto, ti contattiamo prima di chiudere la pratica — sei libero di accettare o ritirare gratis.",
+  "ti.faq.q4.q": "Come funziona la spedizione gratuita?",
+  "ti.faq.q4.a":
+    "Dopo che accetti l'offerta ti mandiamo un'etichetta prepagata via email. Spedisci da qualsiasi ufficio postale con il telefono ben imballato (idealmente in scatola originale). In alternativa fissi un appuntamento e te lo ritiriamo a casa.",
+  "ti.faq.q5.q": "Cos'è il bonus +10% per il credito Cellcom?",
+  "ti.faq.q5.a":
+    "Se invece del bonifico scegli credito spendibile sui siti del Gruppo Cellcom, maggioriamo l'offerta del 10%. Esempio: offerta €500 → credito €550. Valido 24 mesi.",
+  "ti.faq.q6.q": "Comprate solo telefoni o anche tablet, smartwatch?",
+  "ti.faq.q6.a":
+    "Adesso solo smartphone. Tablet, smartwatch, AirPods, console: scrivici a hello@cellcom.it e ti diciamo cosa possiamo fare caso per caso.",
+  "ti.faq.q7.q": "Il mio telefono è rotto, posso venderlo lo stesso?",
+  "ti.faq.q7.a":
+    "Sì ma cambia il flusso. Per schermi rotti, batterie guaste, telefoni che non accendono: meglio passare prima dal nostro centro riparazioni. Spesso ripariamo a costo basso e poi il valore di rivendita sale del 3-5x.",
+  "ti.faq.q8.q": "Il mio modello non è nella lista, cosa faccio?",
+  "ti.faq.q8.a":
+    "Seleziona 'Altro / non in lista' e scrivi marca e modello a mano. Il nostro tecnico farà la valutazione esattamente come per i modelli in lista.",
+
+  "cou.hero.eyebrow": "Cellcom Academy",
+  "cou.hero.titleA": "Impara a riparare,",
+  "cou.hero.accent": "come un tecnico vero.",
+  "cou.hero.description":
+    "Tre livelli — base, intermedio, avanzato BGA. Postazioni ESD, strumentazione professionale, gli stessi formatori che addestrano i tecnici del Gruppo prima di mandarli in laboratorio. Attestato di frequenza e corsia preferenziale per assunzioni interne.",
+  "cou.hero.cta1": "Richiedi info iscrizioni →",
+  "cou.hero.cta2": "Confronta i livelli",
+  "cou.hero.subtitle":
+    "Iscrizione su approvazione · Pagamento online · Materiale incluso",
+  "cou.hero.reqName": "Cellcom Academy — Richiesta iscrizione",
+  "cou.levels.eyebrow": "I livelli",
+  "cou.levels.titleA": "Dal primo screen",
+  "cou.levels.accent": "alla microsaldatura BGA.",
+  "cou.levels.intro":
+    "Il percorso completo è pensato per crescere: ogni livello apre il successivo. Puoi anche entrare direttamente dal Base o dall'Intermedio se hai già esperienza — chiediamo solo una breve chiamata di valutazione.",
+  "cou.levels.empty":
+    "Calendario in aggiornamento. Apri una richiesta info per le prossime date in partenza →",
+  "cou.tools.eyebrow": "Strumentazione",
+  "cou.tools.titleA": "Tutto quello che usano i",
+  "cou.tools.accent": "nostri tecnici.",
+  "cou.tools.intro":
+    "Niente lezione frontale: dal primo giorno hai sotto le mani la stessa strumentazione professionale che usiamo in laboratorio, con un istruttore in postazione. Le aule sono limitate a 6 allievi per garantire seguito reale.",
+  "cou.tools.t1": "Microscopio Mantis triangolare",
+  "cou.tools.t2": "Stazione ad aria calda + preheater",
+  "cou.tools.t3": "Postazioni ESD a norma",
+  "cou.tools.t4": "Multimetro da banco + oscilloscopio",
+  "cou.tools.t5": "Programmatori NAND multi-modello",
+  "cou.tools.t6": "Stencil BGA per i chip più diffusi",
+  "cou.cta.titleA": "Iscriviti al prossimo",
+  "cou.cta.accent": "corso in partenza.",
+  "cou.cta.intro":
+    "Calendario, prezzi tier (privati / centri assistenza / scuole) e agevolazioni: ti rispondiamo entro 24h con tutto quello che ti serve.",
+  "cou.cta.cta": "Richiedi calendario e iscrizione →",
+  "cou.cta.reqName": "Cellcom Academy — Iscrizione corso",
+  "cou.card.priceOnReq": "Prezzo su richiesta",
+  "cou.card.enroll": "Iscriviti →",
+
+  "os.hero.eyebrow": "Apri il tuo negozio",
+  "os.hero.titleA": "Da zero al tuo",
+  "os.hero.accent": "negozio aperto.",
+  "os.hero.description":
+    "Ti accompagniamo passo per passo: consulenza, formazione, fornitura, setup negozio, accesso al CRM e supporto continuo. Niente franchising, niente royalty — solo i nostri prezzi B2B + il know-how del gruppo.",
+  "os.hero.cta1": "Parla con un consulente →",
+  "os.hero.cta2": "Vedi il percorso",
+  "os.hero.subtitle": "Risposta entro 24h · Consulenza iniziale gratuita",
+  "os.hero.reqName": "Apri un negozio Cellcom — richiesta consulenza",
+  "os.steps.eyebrow": "Il percorso, 5 step",
+  "os.steps.titleA": "Dalla prima chiamata",
+  "os.steps.accent": "al primo cliente.",
+  "os.steps.intro":
+    "Niente promesse vaghe — ogni step ha un esito misurabile e tempi chiari. Quando arrivi all'apertura sai già come stai, cosa hai in magazzino e a chi rivolgerti se serve.",
+  "os.s1.title": "Consulenza iniziale",
+  "os.s1.text":
+    "Analizziamo zona, target e investimento. Definiamo insieme format del punto vendita, mix prodotti, listino e margini realistici.",
+  "os.s2.title": "Formazione e Academy",
+  "os.s2.text":
+    "Mandiamo te o il tuo tecnico in Cellcom Academy: base, intermedio o avanzato BGA. Esci con un attestato e operatività vera dal primo giorno.",
+  "os.s3.title": "Fornitura e magazzino",
+  "os.s3.text":
+    "Listino B2B Cellcom riservato: telefoni nuovi, ricondizionati, ricambi originali, accessori. Ordini rapidi dal portale, spedizione 24-48h.",
+  "os.s4.title": "Setup negozio + CRM",
+  "os.s4.text":
+    "Layout, banco di lavoro, strumentazione consigliata, branding. Accesso al gestionale Cellcom per ticket riparazione, magazzino, fatture.",
+  "os.s5.title": "Supporto continuo",
+  "os.s5.text":
+    "Linea diretta con il laboratorio Fast-Fix per le riparazioni difficili. Aggiornamenti su nuovi modelli, prezzi, listini stagionali.",
+  "os.included.eyebrow": "Cosa è incluso",
+  "os.included.titleA": "Quello che ti serve davvero —",
+  "os.included.accent": "nient'altro.",
+  "os.included.intro":
+    "Non vendiamo franchising in scatola, vendiamo ricambi e telefoni e un metodo. Il negozio resta tuo, il listino resta nostro.",
+  "os.i1": "Consulenza pre-apertura (zona, format, mix prodotti)",
+  "os.i2": "Accesso al listino B2B Cellcom riservato",
+  "os.i3": "Formazione tecnica Academy (1-3 livelli)",
+  "os.i4": "Setup CRM e account B2B per ordini rapidi",
+  "os.i5": "Supporto laboratorio Fast-Fix sulle riparazioni complesse",
+  "os.i6": "Aggiornamenti su nuovi modelli e listini",
+  "os.cta.titleA": "Partiamo dalla",
+  "os.cta.accent": "chiacchierata.",
+  "os.cta.intro":
+    "Lasciaci 3 informazioni — chi sei, dove vuoi aprire, cosa hai già. Un nostro consulente ti richiama entro 24 ore.",
+  "os.cta.cta": "Richiedi consulenza gratuita →",
+  "os.cta.reqName": "Apri un negozio Cellcom — primo contatto",
+
+  "bp.hero.eyebrow": "Network Fast-Fix",
+  "bp.hero.titleA": "Diventa punto",
+  "bp.hero.accent": "riparazione partner.",
+  "bp.hero.description":
+    "Hai già un laboratorio o un negozio di riparazioni? Entri nel network Fast-Fix: ricambi originali a listino B2B, supporto sulle riparazioni complesse, accesso al CRM per ticket e tracking. Niente fee d'ingresso, niente esclusiva — solo il nostro magazzino + il nostro laboratorio.",
+  "bp.hero.cta1": "Candidati come partner →",
+  "bp.hero.cta2": "Cosa includi",
+  "bp.hero.subtitle":
+    "Approvazione P.IVA · Risposta entro 24h · Nessuna fee d'ingresso",
+  "bp.hero.reqName": "Diventa partner Fast-Fix — richiesta accordo",
+  "bp.benefits.eyebrow": "Tre cose, fatte bene",
+  "bp.benefits.titleA": "Ricambi, supporto,",
+  "bp.benefits.accent": "e un gestionale serio.",
+  "bp.benefits.intro":
+    "Niente sigle vuote — sai esattamente cosa ti diamo, cosa ci aspettiamo, e a chi telefonare quando arriva la riparazione difficile.",
+  "bp.b1.title": "Listino ricambi B2B",
+  "bp.b1.text":
+    "Display, batterie, scocche, schede madri originali Apple/Samsung/Google. Listino dedicato ai centri assistenza con sconti a volumi.",
+  "bp.b2.title": "Supporto laboratorio Fast-Fix",
+  "bp.b2.text":
+    "Le riparazioni che non vuoi fare in laboratorio le mandi a noi: microsaldatura, BGA, recupero dati. Costo trasparente, garanzia su lavoro e ricambi.",
+  "bp.b3.title": "Accesso al gestionale",
+  "bp.b3.text":
+    "Apri ticket di riparazione che ti rigiriamo gestiti dal CRM Cellcom. Il cliente del cliente vede stato e preventivo in tempo reale.",
+  "bp.req.eyebrow": "Requisiti",
+  "bp.req.titleA": "Per chi",
+  "bp.req.accent": "ripara di mestiere.",
+  "bp.req.intro":
+    "Il network è selezionato — non tutti entrano. Filtriamo per garantire qualità ai clienti finali e margini sani a chi è dentro.",
+  "bp.r1": "Partita IVA attiva — centro assistenza, telefonia o elettronica",
+  "bp.r2": "Esperienza pratica su riparazione smartphone",
+  "bp.r3": "Volume minimo ordini ricambi (per accedere al listino partner)",
+  "bp.r4": "Adesione ai nostri standard qualità (ricambi originali, garanzia 12 mesi)",
+  "bp.cta.titleA": "Mandaci la tua",
+  "bp.cta.accent": "candidatura.",
+  "bp.cta.intro":
+    "P.IVA, zona di operatività, esperienza, volumi indicativi. Un commerciale ti richiama entro 24 ore per definire l'accordo.",
+  "bp.cta.cta": "Invia candidatura →",
+  "bp.cta.reqName": "Diventa partner Fast-Fix — candidatura",
+
   "enum.condition.new": "Nuovo",
   "enum.condition.used": "Usato",
   "enum.condition.refurbished": "Ricondizionato",
@@ -1427,6 +1748,183 @@ const EN: Dict = {
   "about.s3.title": "One specialisation per brand",
   "about.s3.description":
     "Each Group brand does one thing and takes it seriously. Put them together and we cover the entire phone lifecycle.",
+
+  "ti.hero.eyebrow": "Cellcom trade-in",
+  "ti.hero.titleA": "Your old phone",
+  "ti.hero.accent": "is still worth something.",
+  "ti.hero.descA":
+    "Tell us what phone you have and what condition it's in. Our technicians value it for free after they receive the photos and reply by email within a few hours. Free shipping or store pickup. ",
+  "ti.hero.descBoldBonus": "+10%",
+  "ti.hero.descB": " bonus if you take Cellcom Group store credit.",
+  "ti.how.eyebrow": "How it works",
+  "ti.how.titleA": "Four steps,",
+  "ti.how.accent": "no surprises.",
+  "ti.how.intro":
+    "From the form to the payout, every step tracked. No opaque algorithms, no inflated offers that drop on arrival — the person who quotes you is the same one who inspects the phone in the lab.",
+  "ti.s1.title": "Fill in the form",
+  "ti.s1.text":
+    "Pick brand, model, storage and condition of your phone. Takes 30 seconds, no account needed.",
+  "ti.s2.title": "Photos by email",
+  "ti.s2.text":
+    "We email you within a few hours asking for 4-6 guided photos (front, back, IMEI, screen on).",
+  "ti.s3.title": "Personal valuation",
+  "ti.s3.text":
+    "A technician checks the photos and emails you a tailored quote — no algorithms, a real person.",
+  "ti.s4.title": "Shipping + payment",
+  "ti.s4.text":
+    "You accept, free shipping or store pickup. Final inspection and payment within 48h.",
+  "ti.faq.eyebrow": "FAQ",
+  "ti.faq.titleA": "The",
+  "ti.faq.accent": "questions",
+  "ti.faq.titleB": "we always get.",
+  "ti.faq.q1.q": "Why don't I see a price upfront?",
+  "ti.faq.q1.a":
+    "Because we want to give you an honest valuation, not a generic range pulled from thin air. Our technicians check the real photos of your phone — glass, screen, actual signs of wear — and write you the exact price we'd pay. No surprises on arrival.",
+  "ti.faq.q2.q": "How long until the offer arrives?",
+  "ti.faq.q2.a":
+    "Within 24 business hours of sending the photos. Often faster — our technicians work Monday to Saturday.",
+  "ti.faq.q3.q": "When do I get the final valuation?",
+  "ti.faq.q3.a":
+    "Right after you send us the photos. If the shipment matches the photos, we pay exactly the amount in the email. If we find something we hadn't seen in the photos, we get in touch before closing — you're free to accept or take it back for free.",
+  "ti.faq.q4.q": "How does free shipping work?",
+  "ti.faq.q4.a":
+    "Once you accept the offer we email you a prepaid label. Ship from any post office with the phone well packed (ideally in the original box). Or you book an appointment and we pick it up at home.",
+  "ti.faq.q5.q": "What's the +10% Cellcom credit bonus?",
+  "ti.faq.q5.a":
+    "If instead of a bank transfer you take store credit spendable on Cellcom Group sites, we top the offer up by 10%. Example: €500 offer → €550 credit. Valid for 24 months.",
+  "ti.faq.q6.q": "Do you buy only phones or also tablets, smartwatches?",
+  "ti.faq.q6.a":
+    "Right now phones only. Tablets, smartwatches, AirPods, consoles: drop us an email at hello@cellcom.it and we'll let you know case by case.",
+  "ti.faq.q7.q": "My phone is broken, can I still sell it?",
+  "ti.faq.q7.a":
+    "Yes but the flow changes. For broken screens, dead batteries, phones that won't turn on: better to go through our repair centre first. We often fix it cheaply and then the resale value jumps 3-5x.",
+  "ti.faq.q8.q": "My model isn't in the list, what do I do?",
+  "ti.faq.q8.a":
+    "Pick 'Other / not in list' and type brand and model by hand. Our technician will value it exactly like the listed models.",
+
+  "cou.hero.eyebrow": "Cellcom Academy",
+  "cou.hero.titleA": "Learn to repair,",
+  "cou.hero.accent": "like a real technician.",
+  "cou.hero.description":
+    "Three levels — foundation, intermediate, advanced BGA. ESD workstations, professional tools, the same instructors who train the Group's technicians before sending them into the lab. Certificate of attendance and priority track for in-house hiring.",
+  "cou.hero.cta1": "Request enrolment info →",
+  "cou.hero.cta2": "Compare the levels",
+  "cou.hero.subtitle":
+    "Enrolment subject to approval · Online payment · Materials included",
+  "cou.hero.reqName": "Cellcom Academy — Enrolment request",
+  "cou.levels.eyebrow": "The levels",
+  "cou.levels.titleA": "From your first screen",
+  "cou.levels.accent": "to BGA micro-soldering.",
+  "cou.levels.intro":
+    "The full path is designed to grow with you: each level unlocks the next. You can also jump in at Foundation or Intermediate if you already have experience — we just ask for a short evaluation call.",
+  "cou.levels.empty":
+    "Calendar being updated. Open an info request for the next start dates →",
+  "cou.tools.eyebrow": "Equipment",
+  "cou.tools.titleA": "Everything our",
+  "cou.tools.accent": "technicians use.",
+  "cou.tools.intro":
+    "No lecture-style classes: from day one you have the same professional equipment we use in the lab, with an instructor at your station. Class size is capped at 6 students for real one-on-one follow-up.",
+  "cou.tools.t1": "Mantis triangular microscope",
+  "cou.tools.t2": "Hot air station + preheater",
+  "cou.tools.t3": "Compliant ESD workstations",
+  "cou.tools.t4": "Bench multimeter + oscilloscope",
+  "cou.tools.t5": "Multi-model NAND programmers",
+  "cou.tools.t6": "BGA stencils for the most common chips",
+  "cou.cta.titleA": "Enrol in the next",
+  "cou.cta.accent": "course starting soon.",
+  "cou.cta.intro":
+    "Calendar, tiered pricing (private / repair shops / schools) and discounts: we reply within 24h with everything you need.",
+  "cou.cta.cta": "Request calendar and enrolment →",
+  "cou.cta.reqName": "Cellcom Academy — Course enrolment",
+  "cou.card.priceOnReq": "Price on request",
+  "cou.card.enroll": "Enrol →",
+
+  "os.hero.eyebrow": "Open your store",
+  "os.hero.titleA": "From zero to your",
+  "os.hero.accent": "store, open.",
+  "os.hero.description":
+    "We walk you through every step: consultation, training, supply, store setup, CRM access and ongoing support. No franchise fees, no royalties — just our B2B prices + the Group's know-how.",
+  "os.hero.cta1": "Talk to a consultant →",
+  "os.hero.cta2": "See the path",
+  "os.hero.subtitle": "Reply within 24h · Free initial consultation",
+  "os.hero.reqName": "Open a Cellcom store — consultation request",
+  "os.steps.eyebrow": "The path, 5 steps",
+  "os.steps.titleA": "From the first call",
+  "os.steps.accent": "to your first customer.",
+  "os.steps.intro":
+    "No vague promises — each step has a measurable outcome and clear timing. By the time you open, you already know where you stand, what's in stock, and who to call when needed.",
+  "os.s1.title": "Initial consultation",
+  "os.s1.text":
+    "We analyse area, target audience and investment. Together we define store format, product mix, price list and realistic margins.",
+  "os.s2.title": "Training and Academy",
+  "os.s2.text":
+    "We send you or your technician to Cellcom Academy: foundation, intermediate or advanced BGA. You leave with a certificate and real operational skills from day one.",
+  "os.s3.title": "Supply and warehouse",
+  "os.s3.text":
+    "Reserved Cellcom B2B price list: brand new and refurbished phones, original parts, accessories. Fast orders from the portal, 24-48h shipping.",
+  "os.s4.title": "Store setup + CRM",
+  "os.s4.text":
+    "Layout, workbench, recommended equipment, branding. Access to the Cellcom system for repair tickets, inventory, invoices.",
+  "os.s5.title": "Ongoing support",
+  "os.s5.text":
+    "Direct line to the Fast-Fix lab for tricky repairs. Updates on new models, prices, seasonal listings.",
+  "os.included.eyebrow": "What's included",
+  "os.included.titleA": "Only what you actually need —",
+  "os.included.accent": "nothing else.",
+  "os.included.intro":
+    "We don't sell franchise-in-a-box, we sell parts and phones and a method. The store stays yours, the price list stays ours.",
+  "os.i1": "Pre-opening consultation (area, format, product mix)",
+  "os.i2": "Access to the reserved Cellcom B2B price list",
+  "os.i3": "Academy technical training (1-3 levels)",
+  "os.i4": "CRM setup and B2B account for fast orders",
+  "os.i5": "Fast-Fix lab support on complex repairs",
+  "os.i6": "Updates on new models and pricing",
+  "os.cta.titleA": "Let's start with a",
+  "os.cta.accent": "chat.",
+  "os.cta.intro":
+    "Tell us 3 things — who you are, where you want to open, what you already have. One of our consultants will call you back within 24 hours.",
+  "os.cta.cta": "Request a free consultation →",
+  "os.cta.reqName": "Open a Cellcom store — first contact",
+
+  "bp.hero.eyebrow": "Fast-Fix Network",
+  "bp.hero.titleA": "Become a partner",
+  "bp.hero.accent": "repair shop.",
+  "bp.hero.description":
+    "You already have a workshop or a repair shop? Join the Fast-Fix network: original parts at B2B price, support on complex repairs, CRM access for tickets and tracking. No entry fee, no exclusivity — just our warehouse + our lab.",
+  "bp.hero.cta1": "Apply as a partner →",
+  "bp.hero.cta2": "What's included",
+  "bp.hero.subtitle":
+    "VAT-approved · Reply within 24h · No entry fee",
+  "bp.hero.reqName": "Become a Fast-Fix partner — agreement request",
+  "bp.benefits.eyebrow": "Three things, done well",
+  "bp.benefits.titleA": "Parts, support,",
+  "bp.benefits.accent": "and a proper system.",
+  "bp.benefits.intro":
+    "No empty acronyms — you know exactly what we give you, what we expect, and who to call when a tough repair lands.",
+  "bp.b1.title": "B2B parts price list",
+  "bp.b1.text":
+    "Displays, batteries, housings, original Apple/Samsung/Google motherboards. Dedicated price list for repair shops with volume discounts.",
+  "bp.b2.title": "Fast-Fix lab support",
+  "bp.b2.text":
+    "The repairs you don't want to do in-house, you send to us: micro-soldering, BGA, data recovery. Transparent cost, warranty on labour and parts.",
+  "bp.b3.title": "System access",
+  "bp.b3.text":
+    "Open repair tickets that we handle through the Cellcom CRM. The customer's customer sees status and quote in real time.",
+  "bp.req.eyebrow": "Requirements",
+  "bp.req.titleA": "For people who",
+  "bp.req.accent": "repair for a living.",
+  "bp.req.intro":
+    "The network is curated — not everyone gets in. We filter to guarantee quality to end customers and healthy margins to those who are in.",
+  "bp.r1": "Active VAT number — repair shop, telco or electronics",
+  "bp.r2": "Hands-on experience with smartphone repair",
+  "bp.r3": "Minimum order volume on parts (to access partner pricing)",
+  "bp.r4": "Adherence to our quality standards (original parts, 12-month warranty)",
+  "bp.cta.titleA": "Send us your",
+  "bp.cta.accent": "application.",
+  "bp.cta.intro":
+    "VAT number, area of operation, experience, indicative volumes. A sales rep will call you back within 24 hours to define the agreement.",
+  "bp.cta.cta": "Submit application →",
+  "bp.cta.reqName": "Become a Fast-Fix partner — application",
 
   "enum.condition.new": "New",
   "enum.condition.used": "Used",

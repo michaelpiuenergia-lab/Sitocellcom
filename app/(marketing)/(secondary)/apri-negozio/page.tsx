@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { RequestTrigger } from "@/components/forms/request-trigger";
+import { getT } from "@/lib/i18n/server";
+import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
   title: "Apri un negozio — Cellcom Group",
@@ -9,47 +11,28 @@ export const metadata: Metadata = {
     "Vuoi aprire il tuo negozio di telefonia? Cellcom ti accompagna passo per passo: consulenza, formazione tecnica, fornitura ricambi e accessori, setup negozio e accesso al CRM. Supporto continuo dopo l'apertura.",
 };
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Consulenza iniziale",
-    text: "Analizziamo zona, target e investimento. Definiamo insieme format del punto vendita, mix prodotti, listino e margini realistici.",
-  },
-  {
-    n: "02",
-    title: "Formazione e Academy",
-    text: "Mandiamo te o il tuo tecnico in Cellcom Academy: base, intermedio o avanzato BGA. Esci con un attestato e operatività vera dal primo giorno.",
-  },
-  {
-    n: "03",
-    title: "Fornitura e magazzino",
-    text: "Listino B2B Cellcom riservato: telefoni nuovi, ricondizionati, ricambi originali, accessori. Ordini rapidi dal portale, spedizione 24-48h.",
-  },
-  {
-    n: "04",
-    title: "Setup negozio + CRM",
-    text: "Layout, banco di lavoro, strumentazione consigliata, branding. Accesso al gestionale Cellcom per ticket riparazione, magazzino, fatture.",
-  },
-  {
-    n: "05",
-    title: "Supporto continuo",
-    text: "Linea diretta con il laboratorio Fast-Fix per le riparazioni difficili. Aggiornamenti su nuovi modelli, prezzi, listini stagionali.",
-  },
+const STEPS: { n: string; titleKey: keyof Dict; textKey: keyof Dict }[] = [
+  { n: "01", titleKey: "os.s1.title", textKey: "os.s1.text" },
+  { n: "02", titleKey: "os.s2.title", textKey: "os.s2.text" },
+  { n: "03", titleKey: "os.s3.title", textKey: "os.s3.text" },
+  { n: "04", titleKey: "os.s4.title", textKey: "os.s4.text" },
+  { n: "05", titleKey: "os.s5.title", textKey: "os.s5.text" },
 ];
 
-const INCLUDED = [
-  "Consulenza pre-apertura (zona, format, mix prodotti)",
-  "Accesso al listino B2B Cellcom riservato",
-  "Formazione tecnica Academy (1-3 livelli)",
-  "Setup CRM e account B2B per ordini rapidi",
-  "Supporto laboratorio Fast-Fix sulle riparazioni complesse",
-  "Aggiornamenti su nuovi modelli e listini",
+const INCLUDED_KEYS: (keyof Dict)[] = [
+  "os.i1",
+  "os.i2",
+  "os.i3",
+  "os.i4",
+  "os.i5",
+  "os.i6",
 ];
 
-export default function ApriNegozioPage() {
+export default async function ApriNegozioPage() {
+  const t = await getT();
   return (
     <>
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Apri un negozio" }]} />
+      <Breadcrumb items={[{ label: t("bc.home"), href: "/" }, { label: t("bc.openStore") }]} />
 
       {/* HERO bianco */}
       <section style={{ backgroundColor: "#ffffff" }}>
@@ -64,7 +47,7 @@ export default function ApriNegozioPage() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Apri il tuo negozio
+              {t("os.hero.eyebrow")}
             </span>
             <h1
               className="font-sans tracking-[-0.025em]"
@@ -75,16 +58,14 @@ export default function ApriNegozioPage() {
                 fontWeight: 700,
               }}
             >
-              Da zero al tuo{" "}
-              <span style={{ color: "#dc2626" }}>negozio aperto.</span>
+              {t("os.hero.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("os.hero.accent")}</span>
             </h1>
             <p
               className="leading-relaxed"
               style={{ fontSize: "19px", color: "#525252", maxWidth: "640px" }}
             >
-              Ti accompagniamo passo per passo: consulenza, formazione, fornitura,
-              setup negozio, accesso al CRM e supporto continuo. Niente franchising,
-              niente royalty — solo i nostri prezzi B2B + il know-how del gruppo.
+              {t("os.hero.description")}
             </p>
             <div className="flex flex-wrap gap-4 mt-3">
               <RequestTrigger
@@ -92,11 +73,11 @@ export default function ApriNegozioPage() {
                 product={{
                   id: null,
                   slug: null,
-                  name: "Apri un negozio Cellcom — richiesta consulenza",
+                  name: t("os.hero.reqName"),
                   variantId: null,
                   variantLabel: null,
                 }}
-                label="Parla con un consulente →"
+                label={t("os.hero.cta1")}
                 className="px-7 py-3.5 rounded-full"
               />
               <Link
@@ -110,14 +91,14 @@ export default function ApriNegozioPage() {
                   backgroundColor: "#ffffff",
                 }}
               >
-                Vedi il percorso
+                {t("os.hero.cta2")}
               </Link>
             </div>
             <p
               className="font-mono uppercase mt-2"
               style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#737373" }}
             >
-              Risposta entro 24h · Consulenza iniziale gratuita
+              {t("os.hero.subtitle")}
             </p>
           </div>
         </div>
@@ -141,7 +122,7 @@ export default function ApriNegozioPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                Il percorso, 5 step
+                {t("os.steps.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -152,17 +133,15 @@ export default function ApriNegozioPage() {
                   fontWeight: 700,
                 }}
               >
-                Dalla prima chiamata{" "}
-                <span style={{ color: "#dc2626" }}>al primo cliente.</span>
+                {t("os.steps.titleA")}{" "}
+                <span style={{ color: "#dc2626" }}>{t("os.steps.accent")}</span>
               </h2>
             </div>
             <p
               className="leading-relaxed"
               style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "520px" }}
             >
-              Niente promesse vaghe — ogni step ha un esito misurabile e tempi
-              chiari. Quando arrivi all'apertura sai già come stai, cosa hai in
-              magazzino e a chi rivolgerti se serve.
+              {t("os.steps.intro")}
             </p>
           </div>
 
@@ -188,10 +167,10 @@ export default function ApriNegozioPage() {
                   className="font-sans"
                   style={{ fontSize: "20px", color: "#fafafa", fontWeight: 700 }}
                 >
-                  {s.title}
+                  {t(s.titleKey)}
                 </h3>
                 <p className="leading-relaxed" style={{ fontSize: "14px", color: "#a3a3a3" }}>
-                  {s.text}
+                  {t(s.textKey)}
                 </p>
               </div>
             ))}
@@ -213,7 +192,7 @@ export default function ApriNegozioPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                Cosa è incluso
+                {t("os.included.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -224,21 +203,20 @@ export default function ApriNegozioPage() {
                   fontWeight: 700,
                 }}
               >
-                Quello che ti serve davvero —{" "}
-                <span style={{ color: "#dc2626" }}>nient'altro.</span>
+                {t("os.included.titleA")}{" "}
+                <span style={{ color: "#dc2626" }}>{t("os.included.accent")}</span>
               </h2>
               <p
                 className="leading-relaxed"
                 style={{ fontSize: "17px", color: "#525252", maxWidth: "520px" }}
               >
-                Non vendiamo franchising in scatola, vendiamo ricambi e telefoni
-                e un metodo. Il negozio resta tuo, il listino resta nostro.
+                {t("os.included.intro")}
               </p>
             </div>
             <ul className="grid sm:grid-cols-2 gap-3">
-              {INCLUDED.map((i) => (
+              {INCLUDED_KEYS.map((incKey) => (
                 <li
-                  key={i}
+                  key={incKey}
                   className="rounded-xl p-4 flex items-start gap-3"
                   style={{ backgroundColor: "#fafaf8", border: "1px solid #ececec" }}
                 >
@@ -251,7 +229,7 @@ export default function ApriNegozioPage() {
                     className="font-sans"
                     style={{ fontSize: "14px", color: "#0a0a0a", fontWeight: 500, lineHeight: 1.45 }}
                   >
-                    {i}
+                    {t(incKey)}
                   </span>
                 </li>
               ))}
@@ -272,15 +250,14 @@ export default function ApriNegozioPage() {
               fontWeight: 700,
             }}
           >
-            Partiamo dalla{" "}
-            <span style={{ color: "#dc2626" }}>chiacchierata.</span>
+            {t("os.cta.titleA")}{" "}
+            <span style={{ color: "#dc2626" }}>{t("os.cta.accent")}</span>
           </h2>
           <p
             className="mx-auto mt-6 leading-relaxed"
             style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "560px" }}
           >
-            Lasciaci 3 informazioni — chi sei, dove vuoi aprire, cosa hai già.
-            Un nostro consulente ti richiama entro 24 ore.
+            {t("os.cta.intro")}
           </p>
           <div className="flex justify-center mt-8">
             <RequestTrigger
@@ -288,11 +265,11 @@ export default function ApriNegozioPage() {
               product={{
                 id: null,
                 slug: null,
-                name: "Apri un negozio Cellcom — primo contatto",
+                name: t("os.cta.reqName"),
                 variantId: null,
                 variantLabel: null,
               }}
-              label="Richiedi consulenza gratuita →"
+              label={t("os.cta.cta")}
               className="px-7 py-3.5 rounded-full"
             />
           </div>

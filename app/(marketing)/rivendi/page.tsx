@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { TradeInCalculator } from "@/components/trade-in/calculator";
+import { getT } from "@/lib/i18n/server";
+import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
   title: "Rivendi il tuo telefono — Cellcom Group",
@@ -9,65 +11,26 @@ export const metadata: Metadata = {
     "Valutazione gratuita del tuo smartphone usato. Spedizione gratis, pagamento entro 48h. Bonus +10% se scegli credito Cellcom.",
 };
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Compila il form",
-    text: "Scegli marca, modello, memoria e condizione del tuo telefono. Bastano 30 secondi, niente account.",
-  },
-  {
-    n: "02",
-    title: "Foto via email",
-    text: "Ti scriviamo entro poche ore chiedendoti 4-6 foto guidate (fronte, retro, IMEI, schermo acceso).",
-  },
-  {
-    n: "03",
-    title: "Valutazione personalizzata",
-    text: "Un tecnico verifica le foto e ti manda la valutazione dedicata via email — niente algoritmi, una persona vera.",
-  },
-  {
-    n: "04",
-    title: "Spedizione + pagamento",
-    text: "Accetti, spedizione gratis o ritiro in negozio. Controllo finale e pagamento entro 48h.",
-  },
+const STEPS: { n: string; titleKey: keyof Dict; textKey: keyof Dict }[] = [
+  { n: "01", titleKey: "ti.s1.title", textKey: "ti.s1.text" },
+  { n: "02", titleKey: "ti.s2.title", textKey: "ti.s2.text" },
+  { n: "03", titleKey: "ti.s3.title", textKey: "ti.s3.text" },
+  { n: "04", titleKey: "ti.s4.title", textKey: "ti.s4.text" },
 ];
 
-const FAQS = [
-  {
-    q: "Perché non vedo subito un prezzo?",
-    a: "Perché vogliamo darti una valutazione onesta, non un range generico tirato a caso. I nostri tecnici controllano le foto vere del tuo telefono — vetro, schermo, segni d'uso reali — e ti scrivono il prezzo esatto che ti pagheremmo. Niente sorprese al ricevimento.",
-  },
-  {
-    q: "Quanto ci mette davvero ad arrivare l'offerta?",
-    a: "Entro 24 ore lavorative dall'invio delle foto. Spesso anche più velocemente — i nostri tecnici lavorano dal lunedì al sabato.",
-  },
-  {
-    q: "Quando ricevo la valutazione finale?",
-    a: "Subito dopo che ci hai inviato le foto. Se la spedizione corrisponde alle foto, paghiamo esattamente la cifra dell'email. Se trovassimo qualcosa che non avevamo visto nelle foto, ti contattiamo prima di chiudere la pratica — sei libero di accettare o ritirare gratis.",
-  },
-  {
-    q: "Come funziona la spedizione gratuita?",
-    a: "Dopo che accetti l'offerta ti mandiamo un'etichetta prepagata via email. Spedisci da qualsiasi ufficio postale con il telefono ben imballato (idealmente in scatola originale). In alternativa fissi un appuntamento e te lo ritiriamo a casa.",
-  },
-  {
-    q: "Cos'è il bonus +10% per il credito Cellcom?",
-    a: "Se invece del bonifico scegli credito spendibile sui siti del Gruppo Cellcom, maggioriamo l'offerta del 10%. Esempio: offerta €500 → credito €550. Valido 24 mesi.",
-  },
-  {
-    q: "Comprate solo telefoni o anche tablet, smartwatch?",
-    a: "Adesso solo smartphone. Tablet, smartwatch, AirPods, console: scrivici a hello@cellcom.it e ti diciamo cosa possiamo fare caso per caso.",
-  },
-  {
-    q: "Il mio telefono è rotto, posso venderlo lo stesso?",
-    a: "Sì ma cambia il flusso. Per schermi rotti, batterie guaste, telefoni che non accendono: meglio passare prima dal nostro centro riparazioni. Spesso ripariamo a costo basso e poi il valore di rivendita sale del 3-5x.",
-  },
-  {
-    q: "Il mio modello non è nella lista, cosa faccio?",
-    a: "Seleziona 'Altro / non in lista' e scrivi marca e modello a mano. Il nostro tecnico farà la valutazione esattamente come per i modelli in lista.",
-  },
+const FAQS: { qKey: keyof Dict; aKey: keyof Dict }[] = [
+  { qKey: "ti.faq.q1.q", aKey: "ti.faq.q1.a" },
+  { qKey: "ti.faq.q2.q", aKey: "ti.faq.q2.a" },
+  { qKey: "ti.faq.q3.q", aKey: "ti.faq.q3.a" },
+  { qKey: "ti.faq.q4.q", aKey: "ti.faq.q4.a" },
+  { qKey: "ti.faq.q5.q", aKey: "ti.faq.q5.a" },
+  { qKey: "ti.faq.q6.q", aKey: "ti.faq.q6.a" },
+  { qKey: "ti.faq.q7.q", aKey: "ti.faq.q7.a" },
+  { qKey: "ti.faq.q8.q", aKey: "ti.faq.q8.a" },
 ];
 
-export default function RivendiPage() {
+export default async function RivendiPage() {
+  const t = await getT();
   return (
     <>
       <Navbar />
@@ -89,7 +52,7 @@ export default function RivendiPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                Trade-in Cellcom
+                {t("ti.hero.eyebrow")}
               </span>
               <h1
                 className="font-sans tracking-[-0.025em]"
@@ -100,8 +63,8 @@ export default function RivendiPage() {
                   fontWeight: 700,
                 }}
               >
-                Il tuo vecchio telefono{" "}
-                <span style={{ color: "#dc2626" }}>vale ancora.</span>
+                {t("ti.hero.titleA")}{" "}
+                <span style={{ color: "#dc2626" }}>{t("ti.hero.accent")}</span>
               </h1>
               <p
                 className="leading-relaxed"
@@ -111,12 +74,9 @@ export default function RivendiPage() {
                   maxWidth: "640px",
                 }}
               >
-                Dicci che telefono hai e in che condizioni è. I tecnici lo
-                valutano gratuitamente dopo aver ricevuto le foto e ti rispondono
-                via email entro poche ore. Spedizione gratuita o ritiro nei
-                negozi. Bonus{" "}
-                <strong style={{ color: "#0a0a0a" }}>+10%</strong> se scegli
-                credito spendibile sul Gruppo Cellcom.
+                {t("ti.hero.descA")}
+                <strong style={{ color: "#0a0a0a" }}>{t("ti.hero.descBoldBonus")}</strong>
+                {t("ti.hero.descB")}
               </p>
             </div>
           </div>
@@ -150,7 +110,7 @@ export default function RivendiPage() {
                     className="inline-block h-px w-9"
                     style={{ backgroundColor: "#dc2626" }}
                   />
-                  Come funziona
+                  {t("ti.how.eyebrow")}
                 </span>
                 <h2
                   className="font-sans tracking-[-0.025em]"
@@ -161,8 +121,8 @@ export default function RivendiPage() {
                     fontWeight: 700,
                   }}
                 >
-                  Quattro passi,{" "}
-                  <span style={{ color: "#dc2626" }}>zero sorprese.</span>
+                  {t("ti.how.titleA")}{" "}
+                  <span style={{ color: "#dc2626" }}>{t("ti.how.accent")}</span>
                 </h2>
               </div>
               <p
@@ -173,10 +133,7 @@ export default function RivendiPage() {
                   maxWidth: "520px",
                 }}
               >
-                Dalla compilazione al pagamento, tutto tracciato. Niente
-                algoritmi opachi, niente offerte gonfiate che poi scendono al
-                ricevimento — la persona che ti scrive il prezzo è la stessa che
-                controlla il telefono in laboratorio.
+                {t("ti.how.intro")}
               </p>
             </div>
 
@@ -210,13 +167,13 @@ export default function RivendiPage() {
                       fontWeight: 600,
                     }}
                   >
-                    {step.title}
+                    {t(step.titleKey)}
                   </h3>
                   <p
                     className="leading-relaxed"
                     style={{ fontSize: "14px", color: "#a3a3a3" }}
                   >
-                    {step.text}
+                    {t(step.textKey)}
                   </p>
                 </div>
               ))}
@@ -244,7 +201,7 @@ export default function RivendiPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                FAQ
+                {t("ti.faq.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -255,15 +212,14 @@ export default function RivendiPage() {
                   fontWeight: 700,
                 }}
               >
-                Le <span style={{ color: "#dc2626" }}>domande</span> che ci
-                fanno tutti.
+                {t("ti.faq.titleA")} <span style={{ color: "#dc2626" }}>{t("ti.faq.accent")}</span> {t("ti.faq.titleB")}
               </h2>
             </div>
 
             <div className="flex flex-col">
               {FAQS.map((f) => (
                 <details
-                  key={f.q}
+                  key={String(f.qKey)}
                   className="group py-5"
                   style={{ borderBottom: "1px solid #ececec" }}
                 >
@@ -277,7 +233,7 @@ export default function RivendiPage() {
                         letterSpacing: "-0.01em",
                       }}
                     >
-                      {f.q}
+                      {t(f.qKey)}
                     </h3>
                     <span
                       aria-hidden
@@ -291,7 +247,7 @@ export default function RivendiPage() {
                     className="mt-4 leading-relaxed"
                     style={{ fontSize: "15px", color: "#525252" }}
                   >
-                    {f.a}
+                    {t(f.aKey)}
                   </p>
                 </details>
               ))}

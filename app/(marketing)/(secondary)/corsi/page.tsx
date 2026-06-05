@@ -5,6 +5,8 @@ import { RequestTrigger } from "@/components/forms/request-trigger";
 import { getCourses } from "@/lib/crm-client";
 import { COURSE_LEVEL_LABELS, type CoursePublic } from "@/lib/crm-client/types";
 import { BreadcrumbJsonLd, CourseJsonLd } from "@/components/seo/structured-data";
+import { getT } from "@/lib/i18n/server";
+import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
   title: "Corsi — Cellcom Group",
@@ -14,13 +16,13 @@ export const metadata: Metadata = {
 
 export const revalidate = 300;
 
-const TOOLS = [
-  "Microscopio Mantis triangolare",
-  "Stazione ad aria calda + preheater",
-  "Postazioni ESD a norma",
-  "Multimetro da banco + oscilloscopio",
-  "Programmatori NAND multi-modello",
-  "Stencil BGA per i chip più diffusi",
+const TOOL_KEYS: (keyof Dict)[] = [
+  "cou.tools.t1",
+  "cou.tools.t2",
+  "cou.tools.t3",
+  "cou.tools.t4",
+  "cou.tools.t5",
+  "cou.tools.t6",
 ];
 
 const eur = (cents: number) =>
@@ -28,12 +30,15 @@ const eur = (cents: number) =>
 
 export default async function CorsiPage() {
   // Source-of-truth: CRM Cellcom Academy. Fallback su lista vuota se CRM giù.
-  const data = await getCourses().catch(() => ({ items: [] as CoursePublic[], total: 0 }));
+  const [data, t] = await Promise.all([
+    getCourses().catch(() => ({ items: [] as CoursePublic[], total: 0 })),
+    getT(),
+  ]);
   const courses = data.items;
 
   return (
     <>
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Corsi" }]} />
+      <Breadcrumb items={[{ label: t("bc.home"), href: "/" }, { label: t("bc.courses") }]} />
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: "/" },
@@ -71,7 +76,7 @@ export default async function CorsiPage() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Cellcom Academy
+              {t("cou.hero.eyebrow")}
             </span>
             <h1
               className="font-sans tracking-[-0.025em]"
@@ -82,17 +87,14 @@ export default async function CorsiPage() {
                 fontWeight: 700,
               }}
             >
-              Impara a riparare,{" "}
-              <span style={{ color: "#dc2626" }}>come un tecnico vero.</span>
+              {t("cou.hero.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("cou.hero.accent")}</span>
             </h1>
             <p
               className="leading-relaxed"
               style={{ fontSize: "19px", color: "#525252", maxWidth: "640px" }}
             >
-              Tre livelli — base, intermedio, avanzato BGA. Postazioni ESD,
-              strumentazione professionale, gli stessi formatori che addestrano
-              i tecnici del Gruppo prima di mandarli in laboratorio. Attestato
-              di frequenza e corsia preferenziale per assunzioni interne.
+              {t("cou.hero.description")}
             </p>
             <div className="flex flex-wrap gap-4 mt-3">
               <RequestTrigger
@@ -100,11 +102,11 @@ export default async function CorsiPage() {
                 product={{
                   id: null,
                   slug: null,
-                  name: "Cellcom Academy — Richiesta iscrizione",
+                  name: t("cou.hero.reqName"),
                   variantId: null,
                   variantLabel: null,
                 }}
-                label="Richiedi info iscrizioni →"
+                label={t("cou.hero.cta1")}
                 className="px-7 py-3.5 rounded-full"
               />
               <Link
@@ -118,14 +120,14 @@ export default async function CorsiPage() {
                   backgroundColor: "#ffffff",
                 }}
               >
-                Confronta i livelli
+                {t("cou.hero.cta2")}
               </Link>
             </div>
             <p
               className="font-mono uppercase mt-2"
               style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#737373" }}
             >
-              Iscrizione su approvazione · Pagamento online · Materiale incluso
+              {t("cou.hero.subtitle")}
             </p>
           </div>
         </div>
@@ -145,7 +147,7 @@ export default async function CorsiPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                I livelli
+                {t("cou.levels.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -156,31 +158,27 @@ export default async function CorsiPage() {
                   fontWeight: 700,
                 }}
               >
-                Dal primo screen{" "}
-                <span style={{ color: "#dc2626" }}>alla microsaldatura BGA.</span>
+                {t("cou.levels.titleA")}{" "}
+                <span style={{ color: "#dc2626" }}>{t("cou.levels.accent")}</span>
               </h2>
             </div>
             <p
               className="leading-relaxed"
               style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "520px" }}
             >
-              Il percorso completo è pensato per crescere: ogni livello apre il
-              successivo. Puoi anche entrare direttamente dal Base o
-              dall&apos;Intermedio se hai già esperienza — chiediamo solo una
-              breve chiamata di valutazione.
+              {t("cou.levels.intro")}
             </p>
           </div>
 
           {courses.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
               {courses.map((c, i) => (
-                <CourseCard key={c.id} course={c} index={i + 1} />
+                <CourseCard key={c.id} course={c} index={i + 1} t={t} />
               ))}
             </div>
           ) : (
             <p style={{ fontSize: "15px", color: "#737373" }}>
-              Calendario in aggiornamento. Apri una richiesta info per le
-              prossime date in partenza →
+              {t("cou.levels.empty")}
             </p>
           )}
         </div>
@@ -200,7 +198,7 @@ export default async function CorsiPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                Strumentazione
+                {t("cou.tools.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -211,24 +209,21 @@ export default async function CorsiPage() {
                   fontWeight: 700,
                 }}
               >
-                Tutto quello che usano i{" "}
-                <span style={{ color: "#dc2626" }}>nostri tecnici.</span>
+                {t("cou.tools.titleA")}{" "}
+                <span style={{ color: "#dc2626" }}>{t("cou.tools.accent")}</span>
               </h2>
               <p
                 className="leading-relaxed"
                 style={{ fontSize: "17px", color: "#525252", maxWidth: "520px" }}
               >
-                Niente lezione frontale: dal primo giorno hai sotto le mani la
-                stessa strumentazione professionale che usiamo in laboratorio,
-                con un istruttore in postazione. Le aule sono limitate a 6
-                allievi per garantire seguito reale.
+                {t("cou.tools.intro")}
               </p>
             </div>
 
             <ul className="grid sm:grid-cols-2 gap-3">
-              {TOOLS.map((t) => (
+              {TOOL_KEYS.map((toolKey) => (
                 <li
-                  key={t}
+                  key={toolKey}
                   className="rounded-xl p-4 flex items-start gap-3"
                   style={{ backgroundColor: "#fafaf8", border: "1px solid #ececec" }}
                 >
@@ -241,7 +236,7 @@ export default async function CorsiPage() {
                     className="font-sans"
                     style={{ fontSize: "14px", color: "#0a0a0a", fontWeight: 500, lineHeight: 1.45 }}
                   >
-                    {t}
+                    {t(toolKey)}
                   </span>
                 </li>
               ))}
@@ -262,15 +257,14 @@ export default async function CorsiPage() {
               fontWeight: 700,
             }}
           >
-            Iscriviti al prossimo{" "}
-            <span style={{ color: "#dc2626" }}>corso in partenza.</span>
+            {t("cou.cta.titleA")}{" "}
+            <span style={{ color: "#dc2626" }}>{t("cou.cta.accent")}</span>
           </h2>
           <p
             className="mx-auto mt-6 leading-relaxed"
             style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "560px" }}
           >
-            Calendario, prezzi tier (privati / centri assistenza / scuole) e
-            agevolazioni: ti rispondiamo entro 24h con tutto quello che ti serve.
+            {t("cou.cta.intro")}
           </p>
           <div className="flex justify-center mt-8">
             <RequestTrigger
@@ -278,11 +272,11 @@ export default async function CorsiPage() {
               product={{
                 id: null,
                 slug: null,
-                name: "Cellcom Academy — Iscrizione corso",
+                name: t("cou.cta.reqName"),
                 variantId: null,
                 variantLabel: null,
               }}
-              label="Richiedi calendario e iscrizione →"
+              label={t("cou.cta.cta")}
               className="px-7 py-3.5 rounded-full"
             />
           </div>
@@ -292,7 +286,12 @@ export default async function CorsiPage() {
   );
 }
 
-function CourseCard({ course, index }: { course: CoursePublic; index: number }) {
+type TFn = <K extends keyof Dict>(
+  key: K,
+  ...args: Dict[K] extends (...a: infer A) => string ? A : []
+) => string;
+
+function CourseCard({ course, index, t }: { course: CoursePublic; index: number; t: TFn }) {
   return (
     <div
       className="rounded-2xl p-7 lg:p-8 flex flex-col gap-4 transition-colors duration-300 hover:border-[#dc2626]"
@@ -347,7 +346,7 @@ function CourseCard({ course, index }: { course: CoursePublic; index: number }) 
             {eur(course.priceCents)}
           </span>
         ) : (
-          <span style={{ fontSize: "13px", color: "#737373" }}>Prezzo su richiesta</span>
+          <span style={{ fontSize: "13px", color: "#737373" }}>{t("cou.card.priceOnReq")}</span>
         )}
         {course.paymentLink ? (
           <a
@@ -357,7 +356,7 @@ function CourseCard({ course, index }: { course: CoursePublic; index: number }) 
             className="rounded-full px-4 py-2"
             style={{ backgroundColor: "#dc2626", color: "#fff", fontSize: "13px", fontWeight: 600 }}
           >
-            Iscriviti ↗
+            {t("cou.card.enroll")} ↗
           </a>
         ) : (
           <RequestTrigger
@@ -369,7 +368,7 @@ function CourseCard({ course, index }: { course: CoursePublic; index: number }) 
               variantId: null,
               variantLabel: null,
             }}
-            label="Iscriviti →"
+            label={t("cou.card.enroll")}
             variant="outline"
             className="text-xs"
           />

@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { RequestTrigger } from "@/components/forms/request-trigger";
+import { getT } from "@/lib/i18n/server";
+import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
   title: "Diventa partner — Cellcom Group",
@@ -9,35 +11,19 @@ export const metadata: Metadata = {
     "Punto riparazione partner Fast-Fix: ricambi originali a listino B2B, supporto laboratorio sulle riparazioni complesse, accesso al CRM per ticket. Per chi ripara di mestiere.",
 };
 
-const BENEFITS = [
-  {
-    n: "01",
-    title: "Listino ricambi B2B",
-    text: "Display, batterie, scocche, schede madri originali Apple/Samsung/Google. Listino dedicato ai centri assistenza con sconti a volumi.",
-  },
-  {
-    n: "02",
-    title: "Supporto laboratorio Fast-Fix",
-    text: "Le riparazioni che non vuoi fare in laboratorio le mandi a noi: microsaldatura, BGA, recupero dati. Costo trasparente, garanzia su lavoro e ricambi.",
-  },
-  {
-    n: "03",
-    title: "Accesso al gestionale",
-    text: "Apri ticket di riparazione che ti rigiriamo gestiti dal CRM Cellcom. Il cliente del cliente vede stato e preventivo in tempo reale.",
-  },
+const BENEFITS: { n: string; titleKey: keyof Dict; textKey: keyof Dict }[] = [
+  { n: "01", titleKey: "bp.b1.title", textKey: "bp.b1.text" },
+  { n: "02", titleKey: "bp.b2.title", textKey: "bp.b2.text" },
+  { n: "03", titleKey: "bp.b3.title", textKey: "bp.b3.text" },
 ];
 
-const REQUIREMENTS = [
-  "Partita IVA attiva — centro assistenza, telefonia o elettronica",
-  "Esperienza pratica su riparazione smartphone",
-  "Volume minimo ordini ricambi (per accedere al listino partner)",
-  "Adesione ai nostri standard qualità (ricambi originali, garanzia 12 mesi)",
-];
+const REQUIREMENT_KEYS: (keyof Dict)[] = ["bp.r1", "bp.r2", "bp.r3", "bp.r4"];
 
-export default function DiventaPartnerPage() {
+export default async function DiventaPartnerPage() {
+  const t = await getT();
   return (
     <>
-      <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Diventa partner" }]} />
+      <Breadcrumb items={[{ label: t("bc.home"), href: "/" }, { label: t("bc.becomePartner") }]} />
 
       {/* HERO bianco */}
       <section style={{ backgroundColor: "#ffffff" }}>
@@ -52,7 +38,7 @@ export default function DiventaPartnerPage() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Network Fast-Fix
+              {t("bp.hero.eyebrow")}
             </span>
             <h1
               className="font-sans tracking-[-0.025em]"
@@ -63,17 +49,14 @@ export default function DiventaPartnerPage() {
                 fontWeight: 700,
               }}
             >
-              Diventa punto{" "}
-              <span style={{ color: "#dc2626" }}>riparazione partner.</span>
+              {t("bp.hero.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("bp.hero.accent")}</span>
             </h1>
             <p
               className="leading-relaxed"
               style={{ fontSize: "19px", color: "#525252", maxWidth: "640px" }}
             >
-              Hai già un laboratorio o un negozio di riparazioni? Entri nel network
-              Fast-Fix: ricambi originali a listino B2B, supporto sulle riparazioni
-              complesse, accesso al CRM per ticket e tracking. Niente fee d'ingresso,
-              niente esclusiva — solo il nostro magazzino + il nostro laboratorio.
+              {t("bp.hero.description")}
             </p>
             <div className="flex flex-wrap gap-4 mt-3">
               <RequestTrigger
@@ -81,11 +64,11 @@ export default function DiventaPartnerPage() {
                 product={{
                   id: null,
                   slug: null,
-                  name: "Diventa partner Fast-Fix — richiesta accordo",
+                  name: t("bp.hero.reqName"),
                   variantId: null,
                   variantLabel: null,
                 }}
-                label="Candidati come partner →"
+                label={t("bp.hero.cta1")}
                 className="px-7 py-3.5 rounded-full"
               />
               <Link
@@ -99,14 +82,14 @@ export default function DiventaPartnerPage() {
                   backgroundColor: "#ffffff",
                 }}
               >
-                Cosa includi
+                {t("bp.hero.cta2")}
               </Link>
             </div>
             <p
               className="font-mono uppercase mt-2"
               style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#737373" }}
             >
-              Approvazione P.IVA · Risposta entro 24h · Nessuna fee d'ingresso
+              {t("bp.hero.subtitle")}
             </p>
           </div>
         </div>
@@ -130,7 +113,7 @@ export default function DiventaPartnerPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                Tre cose, fatte bene
+                {t("bp.benefits.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -141,16 +124,15 @@ export default function DiventaPartnerPage() {
                   fontWeight: 700,
                 }}
               >
-                Ricambi, supporto,{" "}
-                <span style={{ color: "#dc2626" }}>e un gestionale serio.</span>
+                {t("bp.benefits.titleA")}{" "}
+                <span style={{ color: "#dc2626" }}>{t("bp.benefits.accent")}</span>
               </h2>
             </div>
             <p
               className="leading-relaxed"
               style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "520px" }}
             >
-              Niente sigle vuote — sai esattamente cosa ti diamo, cosa ci aspettiamo,
-              e a chi telefonare quando arriva la riparazione difficile.
+              {t("bp.benefits.intro")}
             </p>
           </div>
 
@@ -176,10 +158,10 @@ export default function DiventaPartnerPage() {
                   className="font-sans"
                   style={{ fontSize: "20px", color: "#fafafa", fontWeight: 700 }}
                 >
-                  {b.title}
+                  {t(b.titleKey)}
                 </h3>
                 <p className="leading-relaxed" style={{ fontSize: "14px", color: "#a3a3a3" }}>
-                  {b.text}
+                  {t(b.textKey)}
                 </p>
               </div>
             ))}
@@ -201,7 +183,7 @@ export default function DiventaPartnerPage() {
                   className="inline-block h-px w-9"
                   style={{ backgroundColor: "#dc2626" }}
                 />
-                Requisiti
+                {t("bp.req.eyebrow")}
               </span>
               <h2
                 className="font-sans tracking-[-0.025em]"
@@ -212,20 +194,19 @@ export default function DiventaPartnerPage() {
                   fontWeight: 700,
                 }}
               >
-                Per chi <span style={{ color: "#dc2626" }}>ripara di mestiere.</span>
+                {t("bp.req.titleA")} <span style={{ color: "#dc2626" }}>{t("bp.req.accent")}</span>
               </h2>
               <p
                 className="leading-relaxed"
                 style={{ fontSize: "17px", color: "#525252", maxWidth: "520px" }}
               >
-                Il network è selezionato — non tutti entrano. Filtriamo per garantire
-                qualità ai clienti finali e margini sani a chi è dentro.
+                {t("bp.req.intro")}
               </p>
             </div>
             <ul className="grid sm:grid-cols-1 gap-3">
-              {REQUIREMENTS.map((r) => (
+              {REQUIREMENT_KEYS.map((rKey) => (
                 <li
-                  key={r}
+                  key={rKey}
                   className="rounded-xl p-4 flex items-start gap-3"
                   style={{ backgroundColor: "#fafaf8", border: "1px solid #ececec" }}
                 >
@@ -238,7 +219,7 @@ export default function DiventaPartnerPage() {
                     className="font-sans"
                     style={{ fontSize: "15px", color: "#0a0a0a", fontWeight: 500, lineHeight: 1.45 }}
                   >
-                    {r}
+                    {t(rKey)}
                   </span>
                 </li>
               ))}
@@ -259,15 +240,14 @@ export default function DiventaPartnerPage() {
               fontWeight: 700,
             }}
           >
-            Mandaci la tua{" "}
-            <span style={{ color: "#dc2626" }}>candidatura.</span>
+            {t("bp.cta.titleA")}{" "}
+            <span style={{ color: "#dc2626" }}>{t("bp.cta.accent")}</span>
           </h2>
           <p
             className="mx-auto mt-6 leading-relaxed"
             style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "560px" }}
           >
-            P.IVA, zona di operatività, esperienza, volumi indicativi. Un commerciale
-            ti richiama entro 24 ore per definire l'accordo.
+            {t("bp.cta.intro")}
           </p>
           <div className="flex justify-center mt-8">
             <RequestTrigger
@@ -275,11 +255,11 @@ export default function DiventaPartnerPage() {
               product={{
                 id: null,
                 slug: null,
-                name: "Diventa partner Fast-Fix — candidatura",
+                name: t("bp.cta.reqName"),
                 variantId: null,
                 variantLabel: null,
               }}
-              label="Invia candidatura →"
+              label={t("bp.cta.cta")}
               className="px-7 py-3.5 rounded-full"
             />
           </div>
