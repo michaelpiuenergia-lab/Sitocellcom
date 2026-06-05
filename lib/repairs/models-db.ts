@@ -148,14 +148,15 @@ export function searchModels(query: string, limit = 12): RepairModel[] {
 /**
  * URL pubblica della foto modello (servita dal CDN HUB).
  *
- * I file sono in `public/repair-models/<category>/<brand>/<id>-<filename>`.
- * Se la foto non c'è, ritorna null (la UI mostra placeholder).
+ * I file sono in `public/repair-models/<category>/<brand>/<filename>`,
+ * dove filename è `<id>.<ext>` (es. "1.webp"). Se la foto non c'è, ritorna
+ * null (la UI mostra placeholder).
  */
 export function modelImageUrl(model: RepairModel): string | null {
   if (!model.image) return null;
   const cat = model.category.toLowerCase();
   const brand = model.brand.replace(/[^a-zA-Z0-9]/g, "_");
-  return `/repair-models/${cat}/${brand}/${model.id}-${model.image.filename}`;
+  return `/repair-models/${cat}/${brand}/${model.image.filename}`;
 }
 
 /** Stat di runtime per debug. */
