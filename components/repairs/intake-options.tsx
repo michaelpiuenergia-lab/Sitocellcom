@@ -4,13 +4,23 @@ import { motion, useReducedMotion } from "framer-motion";
 import { EASE, DURATION } from "@/lib/constants";
 import Link from "next/link";
 import { RequestTrigger } from "@/components/forms/request-trigger";
+import { useLang } from "@/lib/i18n/lang-context";
+import type { Dict } from "@/lib/i18n/dict";
 
-const OPTIONS = [
+type Option = {
+  eyebrow: keyof Dict;
+  title: keyof Dict;
+  text: keyof Dict;
+  cta: { label: keyof Dict; href: string } | { label: keyof Dict; kind: "repair" };
+  icon: React.ReactNode;
+};
+
+const OPTIONS: Option[] = [
   {
-    eyebrow: "Opzione 1",
-    title: "Portacelo in negozio",
-    text: "Vieni in uno dei punti vendita del Gruppo. Diagnosi sul momento se è disponibile un tecnico, altrimenti ricevuta e chiamata entro 24h con preventivo.",
-    cta: { label: "Trova negozio più vicino", href: "/negozi" } as const,
+    eyebrow: "rep.intake.opt1.eyebrow",
+    title: "rep.intake.opt1.title",
+    text: "rep.intake.opt1.text",
+    cta: { label: "rep.intake.opt1.cta", href: "/negozi" },
     icon: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
@@ -19,10 +29,10 @@ const OPTIONS = [
     ),
   },
   {
-    eyebrow: "Opzione 2",
-    title: "Spediscilo a noi",
-    text: "Niente negozio vicino? Ti mandiamo il kit di spedizione assicurata: imbusti, lasci al corriere, te lo rispediamo gratis a riparazione conclusa.",
-    cta: { label: "Richiedi kit di spedizione", kind: "repair" as const } as const,
+    eyebrow: "rep.intake.opt2.eyebrow",
+    title: "rep.intake.opt2.title",
+    text: "rep.intake.opt2.text",
+    cta: { label: "rep.intake.opt2.cta", kind: "repair" },
     icon: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <rect x="1" y="3" width="15" height="13" />
@@ -33,10 +43,10 @@ const OPTIONS = [
     ),
   },
   {
-    eyebrow: "Opzione 3",
-    title: "Lo veniamo a prendere",
-    text: "Solo in alcune zone (San Benedetto del Tronto e provincia, principali città di Marche e Abruzzo su richiesta). Passiamo a ritirare, riportiamo riparato. Disponibile sopra una soglia minima.",
-    cta: { label: "Verifica la tua zona", kind: "repair" as const } as const,
+    eyebrow: "rep.intake.opt3.eyebrow",
+    title: "rep.intake.opt3.title",
+    text: "rep.intake.opt3.text",
+    cta: { label: "rep.intake.opt3.cta", kind: "repair" },
     icon: (
       <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
         <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -47,11 +57,12 @@ const OPTIONS = [
 ];
 
 export function IntakeOptions() {
+  const { t } = useLang();
   const shouldReduce = useReducedMotion();
 
   return (
     <section
-      aria-label="Modalità di intake"
+      aria-label={t("rep.intake.eyebrow")}
       style={{ backgroundColor: "#0a0a0a" }}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-28">
@@ -70,7 +81,7 @@ export function IntakeOptions() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Come ce lo fai arrivare
+              {t("rep.intake.eyebrow")}
             </span>
             <h2
               className="font-sans tracking-[-0.025em]"
@@ -81,23 +92,21 @@ export function IntakeOptions() {
                 fontWeight: 700,
               }}
             >
-              Tre modi per <span style={{ color: "#dc2626" }}>portarcelo</span> — scegli il più comodo.
+              {t("rep.intake.titleA")} <span style={{ color: "#dc2626" }}>{t("rep.intake.accent")}</span> {t("rep.intake.titleB")}
             </h2>
           </div>
           <p
             className="leading-relaxed"
             style={{ fontSize: "17px", color: "#a3a3a3", maxWidth: "520px" }}
           >
-            Non vendiamo solo nei negozi fisici: lavoriamo in tutta Italia.
-            Qualunque opzione scegli, il telefono entra nel nostro gestionale
-            e segui lo stato in tempo reale.
+            {t("rep.intake.intro")}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
           {OPTIONS.map((opt, i) => (
             <motion.div
-              key={opt.title}
+              key={String(opt.title)}
               initial={shouldReduce ? false : { opacity: 0, y: 24 }}
               whileInView={shouldReduce ? undefined : { opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
@@ -130,7 +139,7 @@ export function IntakeOptions() {
                     color: "#737373",
                   }}
                 >
-                  {opt.eyebrow}
+                  {t(opt.eyebrow)}
                 </span>
                 <h3
                   className="font-sans"
@@ -141,13 +150,13 @@ export function IntakeOptions() {
                     fontWeight: 600,
                   }}
                 >
-                  {opt.title}
+                  {t(opt.title)}
                 </h3>
                 <p
                   className="leading-relaxed"
                   style={{ fontSize: "14px", color: "#a3a3a3" }}
                 >
-                  {opt.text}
+                  {t(opt.text)}
                 </p>
               </div>
               <div className="mt-3">
@@ -161,7 +170,7 @@ export function IntakeOptions() {
                       fontWeight: 500,
                     }}
                   >
-                    {opt.cta.label}
+                    {t(opt.cta.label)}
                     <span
                       aria-hidden
                       className="transition-transform duration-300 group-hover:translate-x-1"
@@ -172,7 +181,7 @@ export function IntakeOptions() {
                 ) : (
                   <RequestTrigger
                     kind={opt.cta.kind}
-                    label={opt.cta.label}
+                    label={t(opt.cta.label)}
                     variant="outline"
                   />
                 )}

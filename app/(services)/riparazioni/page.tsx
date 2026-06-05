@@ -2,6 +2,7 @@ import { RepairTracker } from "@/components/repairs/repair-tracker";
 import { HowItWorks } from "@/components/repairs/how-it-works";
 import { IntakeOptions } from "@/components/repairs/intake-options";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { getT } from "@/lib/i18n/server";
 import Link from "next/link";
 
 export const metadata = {
@@ -10,11 +11,12 @@ export const metadata = {
     "Riparazione professionale di smartphone con garanzia 12 mesi. Diagnosi gratuita, ricambi originali, ritiro in negozio o spedizione. Traccia il tuo ticket in tempo reale.",
 };
 
-export default function RepairsPage() {
+export default async function RepairsPage() {
+  const t = await getT();
   return (
     <>
       <Breadcrumb
-        items={[{ label: "Home", href: "/" }, { label: "Riparazioni" }]}
+        items={[{ label: t("bc.home"), href: "/" }, { label: t("bc.repairs") }]}
       />
 
       {/* HERO — FastFix-style: titolo grande, step indicator, brand grid */}
@@ -34,7 +36,7 @@ export default function RepairsPage() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Centro riparazioni Cellcom
+              {t("rep.hero.eyebrow")}
             </span>
             <h1
               className="font-sans tracking-[-0.025em]"
@@ -45,16 +47,14 @@ export default function RepairsPage() {
                 fontWeight: 700,
               }}
             >
-              Quale dispositivo{" "}
-              <span style={{ color: "#dc2626" }}>vuoi riparare?</span>
+              {t("rep.hero.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("rep.hero.accent")}</span>
             </h1>
             <p
               className="leading-relaxed"
               style={{ fontSize: "19px", color: "#525252", maxWidth: "640px" }}
             >
-              Trova il modello, dicci cosa non va, scegli se portarcelo,
-              spedirlo o farti ritirare a casa. Diagnosi gratuita, preventivo
-              entro 24 ore, garanzia 12 mesi su lavoro e ricambi.
+              {t("rep.hero.description")}
             </p>
 
             <div className="flex flex-wrap gap-4 mt-3">
@@ -69,7 +69,7 @@ export default function RepairsPage() {
                   letterSpacing: "-0.01em",
                 }}
               >
-                Inizia la richiesta
+                {t("rep.hero.cta1")}
                 <span
                   aria-hidden
                   className="transition-transform duration-300 group-hover:translate-x-1"
@@ -88,7 +88,7 @@ export default function RepairsPage() {
                   backgroundColor: "#ffffff",
                 }}
               >
-                Ho già un ticket → traccialo
+                {t("rep.hero.cta2")}
               </Link>
             </div>
 
@@ -100,7 +100,7 @@ export default function RepairsPage() {
                 color: "#737373",
               }}
             >
-              Diagnosi gratuita · Preventivo entro 24h · Nessun costo se rifiuti
+              {t("rep.hero.subtitle")}
             </p>
           </div>
 

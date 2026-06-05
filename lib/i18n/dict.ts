@@ -261,6 +261,48 @@ export type Dict = {
   "immersive.m3.body": string;
   "immersive.m3.cta": string;
 
+  // ─── /riparazioni ───────────────────────────────────────────────────
+  "rep.hero.eyebrow": string;
+  "rep.hero.titleA": string;
+  "rep.hero.accent": string;
+  "rep.hero.description": string;
+  "rep.hero.cta1": string;
+  "rep.hero.cta2": string;
+  "rep.hero.subtitle": string;
+  "rep.how.eyebrow": string;
+  "rep.how.titleA": string;
+  "rep.how.accent": string;
+  "rep.how.intro": string;
+  "rep.how.s1.title": string;
+  "rep.how.s1.text": string;
+  "rep.how.s2.title": string;
+  "rep.how.s2.text": string;
+  "rep.how.s3.title": string;
+  "rep.how.s3.text": string;
+  "rep.how.s4.title": string;
+  "rep.how.s4.text": string;
+  "rep.intake.eyebrow": string;
+  "rep.intake.titleA": string;
+  "rep.intake.accent": string;
+  "rep.intake.titleB": string;
+  "rep.intake.intro": string;
+  "rep.intake.opt1.eyebrow": string;
+  "rep.intake.opt1.title": string;
+  "rep.intake.opt1.text": string;
+  "rep.intake.opt1.cta": string;
+  "rep.intake.opt2.eyebrow": string;
+  "rep.intake.opt2.title": string;
+  "rep.intake.opt2.text": string;
+  "rep.intake.opt2.cta": string;
+  "rep.intake.opt3.eyebrow": string;
+  "rep.intake.opt3.title": string;
+  "rep.intake.opt3.text": string;
+  "rep.intake.opt3.cta": string;
+  "rep.request.eyebrow": string;
+  "rep.request.titleA": string;
+  "rep.request.accent": string;
+  "rep.request.intro": string;
+
   // ─── Enum labels riusati ovunque ────────────────────────────────────
   "enum.condition.new": string;
   "enum.condition.used": string;
@@ -543,6 +585,59 @@ const IT: Dict = {
     "Valutazione gratis, spedizione gratis, pagamento entro 48h.",
   "immersive.m3.cta": "Scopri come",
 
+  "rep.hero.eyebrow": "Centro riparazioni Cellcom",
+  "rep.hero.titleA": "Quale dispositivo",
+  "rep.hero.accent": "vuoi riparare?",
+  "rep.hero.description":
+    "Trova il modello, dicci cosa non va, scegli se portarcelo, spedirlo o farti ritirare a casa. Diagnosi gratuita, preventivo entro 24 ore, garanzia 12 mesi su lavoro e ricambi.",
+  "rep.hero.cta1": "Inizia la richiesta",
+  "rep.hero.cta2": "Ho già un ticket → traccialo",
+  "rep.hero.subtitle":
+    "Diagnosi gratuita · Preventivo entro 24h · Nessun costo se rifiuti",
+  "rep.how.eyebrow": "Come funziona",
+  "rep.how.titleA": "Dal primo messaggio al telefono",
+  "rep.how.accent": "come nuovo.",
+  "rep.how.intro":
+    "Quattro passi tracciati dal nostro gestionale. Nessuna sorpresa sul prezzo, niente \"richiami giovedì\": appena cambia qualcosa ti scriviamo.",
+  "rep.how.s1.title": "Ci dici cos'è successo",
+  "rep.how.s1.text":
+    "Apri una richiesta qui sotto o chiama il negozio più vicino. Modello, problema (vetro rotto, batteria, non si accende…), una stima del danno. Niente di tecnico — basta spiegare cosa hai visto.",
+  "rep.how.s2.title": "Diagnosi gratuita",
+  "rep.how.s2.text":
+    "Un nostro tecnico verifica il telefono entro 24-48h dall'arrivo. Se serve smontarlo, lo smontiamo, fotografiamo i componenti e ti mandiamo un preventivo scritto. Decidi tu — nessun obbligo, nessun costo se rifiuti.",
+  "rep.how.s3.title": "Riparazione in laboratorio",
+  "rep.how.s3.text":
+    "Approvato il preventivo, lavoriamo nel laboratorio interno con ricambi originali o certificati. Microscopio per microsaldatura, calibrazione True Tone, sigillatura impermeabile rifatta. Tipici: 24h batteria/schermo, 3-5 giorni scheda madre.",
+  "rep.how.s4.title": "Ritiro o consegna",
+  "rep.how.s4.text":
+    "Quando è pronto ti avvisiamo via SMS/email. Vieni a ritirarlo in negozio oppure te lo rispediamo gratis. Garanzia 12 mesi sul ricambio E sulla manodopera — se torna il problema entro l'anno, intervento gratuito.",
+  "rep.intake.eyebrow": "Come ce lo fai arrivare",
+  "rep.intake.titleA": "Tre modi per",
+  "rep.intake.accent": "portarcelo",
+  "rep.intake.titleB": "— scegli il più comodo.",
+  "rep.intake.intro":
+    "Non vendiamo solo nei negozi fisici: lavoriamo in tutta Italia. Qualunque opzione scegli, il telefono entra nel nostro gestionale e segui lo stato in tempo reale.",
+  "rep.intake.opt1.eyebrow": "Opzione 1",
+  "rep.intake.opt1.title": "Portacelo in negozio",
+  "rep.intake.opt1.text":
+    "Vieni in uno dei punti vendita del Gruppo. Diagnosi sul momento se è disponibile un tecnico, altrimenti ricevuta e chiamata entro 24h con preventivo.",
+  "rep.intake.opt1.cta": "Trova negozio più vicino",
+  "rep.intake.opt2.eyebrow": "Opzione 2",
+  "rep.intake.opt2.title": "Spediscilo a noi",
+  "rep.intake.opt2.text":
+    "Niente negozio vicino? Ti mandiamo il kit di spedizione assicurata: imbusti, lasci al corriere, te lo rispediamo gratis a riparazione conclusa.",
+  "rep.intake.opt2.cta": "Richiedi kit di spedizione",
+  "rep.intake.opt3.eyebrow": "Opzione 3",
+  "rep.intake.opt3.title": "Lo veniamo a prendere",
+  "rep.intake.opt3.text":
+    "Solo in alcune zone (San Benedetto del Tronto e provincia, principali città di Marche e Abruzzo su richiesta). Passiamo a ritirare, riportiamo riparato. Disponibile sopra una soglia minima.",
+  "rep.intake.opt3.cta": "Verifica la tua zona",
+  "rep.request.eyebrow": "Wizard riparazione",
+  "rep.request.titleA": "Quale telefono",
+  "rep.request.accent": "vuoi riparare?",
+  "rep.request.intro":
+    "Tre passi rapidi: telefono → problema → come fartelo arrivare. Diagnosi gratuita, nessun impegno fino al preventivo.",
+
   "enum.condition.new": "Nuovo",
   "enum.condition.used": "Usato",
   "enum.condition.refurbished": "Ricondizionato",
@@ -824,6 +919,59 @@ const EN: Dict = {
   "immersive.m3.body":
     "Free valuation, free shipping, payment within 48 hours.",
   "immersive.m3.cta": "Find out how",
+
+  "rep.hero.eyebrow": "Cellcom repair centre",
+  "rep.hero.titleA": "Which device",
+  "rep.hero.accent": "do you want to fix?",
+  "rep.hero.description":
+    "Find the model, tell us what's wrong, choose whether to drop it off, ship it or have it picked up. Free diagnosis, quote within 24 hours, 12-month warranty on labour and parts.",
+  "rep.hero.cta1": "Start the request",
+  "rep.hero.cta2": "I already have a ticket → track it",
+  "rep.hero.subtitle":
+    "Free diagnosis · Quote within 24h · No charge if you decline",
+  "rep.how.eyebrow": "How it works",
+  "rep.how.titleA": "From the first message to a phone",
+  "rep.how.accent": "as good as new.",
+  "rep.how.intro":
+    "Four steps tracked in our system. No surprises on price, no \"call back Thursday\": as soon as anything changes we write to you.",
+  "rep.how.s1.title": "Tell us what happened",
+  "rep.how.s1.text":
+    "Open a request below or call the nearest store. Model, problem (cracked glass, battery, won't turn on…), a rough estimate of the damage. Nothing technical — just describe what you saw.",
+  "rep.how.s2.title": "Free diagnosis",
+  "rep.how.s2.text":
+    "One of our technicians checks the phone within 24-48h of arrival. If we need to open it, we open it, photograph the components and send you a written quote. You decide — no obligation, no charge if you decline.",
+  "rep.how.s3.title": "Repair in the lab",
+  "rep.how.s3.text":
+    "Once the quote is approved, we work in our in-house lab with original or certified parts. Microscope for micro-soldering, True Tone calibration, waterproof sealing redone. Typical turnaround: 24h for battery/screen, 3-5 days for motherboard.",
+  "rep.how.s4.title": "Pickup or delivery",
+  "rep.how.s4.text":
+    "When it's ready we let you know by SMS/email. Pick it up in store or we ship it back free. 12-month warranty on the part AND the labour — if the problem comes back within a year, the fix is free.",
+  "rep.intake.eyebrow": "How to get it to us",
+  "rep.intake.titleA": "Three ways to",
+  "rep.intake.accent": "bring it in",
+  "rep.intake.titleB": "— pick the easiest.",
+  "rep.intake.intro":
+    "We don't just work out of brick-and-mortar stores: we cover the whole country. Whichever option you pick, the phone enters our system and you follow its status live.",
+  "rep.intake.opt1.eyebrow": "Option 1",
+  "rep.intake.opt1.title": "Drop it off in store",
+  "rep.intake.opt1.text":
+    "Come to one of the Group's stores. On-the-spot diagnosis if a technician is available, otherwise a receipt and a call within 24h with the quote.",
+  "rep.intake.opt1.cta": "Find your nearest store",
+  "rep.intake.opt2.eyebrow": "Option 2",
+  "rep.intake.opt2.title": "Ship it to us",
+  "rep.intake.opt2.text":
+    "No store nearby? We send you an insured shipping kit: pack it, hand it to the courier, we ship it back for free once the repair is done.",
+  "rep.intake.opt2.cta": "Request a shipping kit",
+  "rep.intake.opt3.eyebrow": "Option 3",
+  "rep.intake.opt3.title": "We pick it up",
+  "rep.intake.opt3.text":
+    "Only in certain areas (San Benedetto del Tronto and surrounding province, main cities in Marche and Abruzzo on request). We swing by to collect, we bring it back fixed. Available above a minimum order value.",
+  "rep.intake.opt3.cta": "Check if your area is covered",
+  "rep.request.eyebrow": "Repair wizard",
+  "rep.request.titleA": "Which phone",
+  "rep.request.accent": "do you want to fix?",
+  "rep.request.intro":
+    "Three quick steps: phone → problem → how to get it to us. Free diagnosis, no commitment until the quote.",
 
   "enum.condition.new": "New",
   "enum.condition.used": "Used",

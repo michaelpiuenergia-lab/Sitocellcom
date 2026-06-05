@@ -1,5 +1,6 @@
 import { RepairTracker } from "@/components/repairs/repair-tracker";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "Traccia la riparazione — Cellcom Group",
@@ -18,14 +19,15 @@ export default async function TrackerPage({
 }) {
   const sp = (await searchParams) ?? {};
   const initialTicket = (sp.ticket ?? "").slice(0, 40);
+  const t = await getT();
 
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Riparazioni", href: "/riparazioni" },
-          { label: "Traccia" },
+          { label: t("bc.home"), href: "/" },
+          { label: t("bc.repairs"), href: "/riparazioni" },
+          { label: t("bc.tracker") },
         ]}
       />
       <section style={{ backgroundColor: "#ffffff" }}>

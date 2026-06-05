@@ -2,35 +2,22 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import { EASE, DURATION } from "@/lib/constants";
+import { useLang } from "@/lib/i18n/lang-context";
+import type { Dict } from "@/lib/i18n/dict";
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Ci dici cos'è successo",
-    text: "Apri una richiesta qui sotto o chiama il negozio più vicino. Modello, problema (vetro rotto, batteria, non si accende…), una stima del danno. Niente di tecnico — basta spiegare cosa hai visto.",
-  },
-  {
-    n: "02",
-    title: "Diagnosi gratuita",
-    text: "Un nostro tecnico verifica il telefono entro 24-48h dall'arrivo. Se serve smontarlo, lo smontiamo, fotografiamo i componenti e ti mandiamo un preventivo scritto. Decidi tu — nessun obbligo, nessun costo se rifiuti.",
-  },
-  {
-    n: "03",
-    title: "Riparazione in laboratorio",
-    text: "Approvato il preventivo, lavoriamo nel laboratorio interno con ricambi originali o certificati. Microscopio per microsaldatura, calibrazione True Tone, sigillatura impermeabile rifatta. Tipici: 24h batteria/schermo, 3-5 giorni scheda madre.",
-  },
-  {
-    n: "04",
-    title: "Ritiro o consegna",
-    text: "Quando è pronto ti avvisiamo via SMS/email. Vieni a ritirarlo in negozio oppure te lo rispediamo gratis. Garanzia 12 mesi sul ricambio E sulla manodopera — se torna il problema entro l'anno, intervento gratuito.",
-  },
+const STEPS: { n: string; titleKey: keyof Dict; textKey: keyof Dict }[] = [
+  { n: "01", titleKey: "rep.how.s1.title", textKey: "rep.how.s1.text" },
+  { n: "02", titleKey: "rep.how.s2.title", textKey: "rep.how.s2.text" },
+  { n: "03", titleKey: "rep.how.s3.title", textKey: "rep.how.s3.text" },
+  { n: "04", titleKey: "rep.how.s4.title", textKey: "rep.how.s4.text" },
 ];
 
 export function HowItWorks() {
+  const { t } = useLang();
   const shouldReduce = useReducedMotion();
   return (
     <section
-      aria-label="Come funziona la riparazione"
+      aria-label={t("rep.how.eyebrow")}
       style={{ backgroundColor: "#ffffff" }}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-28">
@@ -49,7 +36,7 @@ export function HowItWorks() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Come funziona
+              {t("rep.how.eyebrow")}
             </span>
             <h2
               className="font-sans tracking-[-0.025em]"
@@ -60,17 +47,15 @@ export function HowItWorks() {
                 fontWeight: 700,
               }}
             >
-              Dal primo messaggio al telefono{" "}
-              <span style={{ color: "#dc2626" }}>come nuovo.</span>
+              {t("rep.how.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("rep.how.accent")}</span>
             </h2>
           </div>
           <p
             className="leading-relaxed"
             style={{ fontSize: "17px", color: "#525252", maxWidth: "520px" }}
           >
-            Quattro passi tracciati dal nostro gestionale. Nessuna sorpresa sul
-            prezzo, niente &quot;richiami giovedì&quot;: appena cambia qualcosa
-            ti scriviamo.
+            {t("rep.how.intro")}
           </p>
         </div>
 
@@ -113,13 +98,13 @@ export function HowItWorks() {
                     fontWeight: 600,
                   }}
                 >
-                  {step.title}
+                  {t(step.titleKey)}
                 </h3>
                 <p
                   className="leading-relaxed"
                   style={{ fontSize: "14px", color: "#525252" }}
                 >
-                  {step.text}
+                  {t(step.textKey)}
                 </p>
               </div>
             </motion.div>
