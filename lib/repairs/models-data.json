@@ -1,9 +1,7 @@
 {
   "stats": {
-    "files": 41,
-    "files_parsed": 41,
-    "brand_files_failed": [],
-    "models_total": 2886,
+    "files": 113,
+    "models_total": 3025,
     "brand_breakdown": {
       "Console/Microsoft": 5,
       "Console/Nintendo": 4,
@@ -40,9 +38,26 @@
       "Tablet/Xiaomi": 27,
       "Watch/Apple": 69,
       "Watch/Huawei": 32,
-      "Watch/Samsung": 37
-    },
-    "unique_image_urls": 2883
+      "Watch/Samsung": 37,
+      "Laptop/Acer": 1,
+      "Laptop/Microsoft": 1,
+      "Laptop/MSI": 1,
+      "Laptop/Razer": 1,
+      "Laptop/Samsung": 1,
+      "Tablet/Google": 2,
+      "Tablet/Honor": 32,
+      "Tablet/Motorola": 5,
+      "Tablet/Nokia": 3,
+      "Tablet/OPPO": 9,
+      "Tablet/Realme": 6,
+      "Watch/Google": 4,
+      "Watch/Honor": 13,
+      "Watch/Motorola": 5,
+      "Watch/OnePlus": 8,
+      "Watch/OPPO": 13,
+      "Watch/Realme": 13,
+      "Watch/Xiaomi": 21
+    }
   },
   "models": [
     {
@@ -38028,6 +38043,1692 @@
       "brand": "Samsung",
       "image": {
         "filename": "3093-69eaa780630b4.webp"
+      }
+    },
+    {
+      "id": 3058,
+      "name": "Laptop (Acer)",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Laptop",
+      "brand": "Acer",
+      "image": {
+        "filename": "2024-03-10-22-22-38pm-69eaa73fa8b4d.jpg"
+      }
+    },
+    {
+      "id": 3063,
+      "name": "Laptop (Microsoft)",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Laptop",
+      "brand": "Microsoft",
+      "image": {
+        "filename": "2024-03-10-22-19-58pm-69eaa73fa801a.jpg"
+      }
+    },
+    {
+      "id": 3064,
+      "name": "Laptop (MSI)",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Laptop",
+      "brand": "MSI",
+      "image": {
+        "filename": "2024-03-10-22-19-37pm-69eaa73fa7dc3.jpg"
+      }
+    },
+    {
+      "id": 3057,
+      "name": "Laptop (Razer)",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Laptop",
+      "brand": "Razer",
+      "image": {
+        "filename": "2024-03-10-22-19-16pm-69eaa73fa7972.jpg"
+      }
+    },
+    {
+      "id": 3065,
+      "name": "Laptop (Samsung)",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Laptop",
+      "brand": "Samsung",
+      "image": {
+        "filename": "2024-03-10-22-18-54pm-69eaa73fa77ff.jpg"
+      }
+    },
+    {
+      "id": 2775,
+      "name": "Pixel Tablet",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Google",
+      "image": {
+        "filename": "2272-69eaa7513a8c4.jpeg"
+      }
+    },
+    {
+      "id": 2776,
+      "name": "Pixel C",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Google",
+      "image": {
+        "filename": "3262-69eaa78c261ef.webp"
+      }
+    },
+    {
+      "id": 2730,
+      "name": "MagicPad4",
+      "codes": [
+        "YLE-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "3367-69eaa7920d61e.webp"
+      }
+    },
+    {
+      "id": 2731,
+      "name": "Pad X8b",
+      "codes": [
+        "NDL2-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "3366-69eaa7920d45f.webp"
+      }
+    },
+    {
+      "id": 2732,
+      "name": "MagicPad 3 Pro",
+      "codes": [
+        "YLP-W00"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "3254-69eaa78c2581e.webp"
+      }
+    },
+    {
+      "id": 2733,
+      "name": "Pad X7",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "3051-69eaa7805dd5c.webp"
+      }
+    },
+    {
+      "id": 2734,
+      "name": "Pad GT2 Pro",
+      "codes": [
+        "CHG-W60"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "3049-69eaa7805d8fb.webp"
+      }
+    },
+    {
+      "id": 2735,
+      "name": "MagicPad 3",
+      "codes": [
+        "CGA-W00"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "3048-69eaa7805d781.webp"
+      }
+    },
+    {
+      "id": 2736,
+      "name": "Pad 10",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2967-69eaa77a80e33.webp"
+      }
+    },
+    {
+      "id": 2737,
+      "name": "Tablet GT",
+      "codes": [
+        "ROL-W60"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2964-69eaa77a80a4e.webp"
+      }
+    },
+    {
+      "id": 2738,
+      "name": "Pad X9a",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2959-69eaa77a80292.webp"
+      }
+    },
+    {
+      "id": 2739,
+      "name": "Pad V9",
+      "codes": [
+        "ROL-W00"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2827-69eaa76ec0448.jpeg"
+      }
+    },
+    {
+      "id": 2740,
+      "name": "Pad GT Pro",
+      "codes": [
+        "ROD2-W69"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2774-69eaa76eba53c.jpeg"
+      }
+    },
+    {
+      "id": 2741,
+      "name": "Pad X8a",
+      "codes": [
+        "‎NDL-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2771-69eaa76eb9fb5.jpeg"
+      }
+    },
+    {
+      "id": 2742,
+      "name": "Pad 9 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2715-69eaa768ee87b.jpeg"
+      }
+    },
+    {
+      "id": 2743,
+      "name": "MagicPad 2 12.3",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2716-69eaa768ee9f4.jpeg"
+      }
+    },
+    {
+      "id": 2744,
+      "name": "Pad 9",
+      "codes": [
+        "HEY2-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2486-69eaa75d22d1b.jpeg"
+      }
+    },
+    {
+      "id": 2745,
+      "name": "MagicPad 13",
+      "codes": [
+        "GDI-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2283-69eaa7513bbac.jpeg"
+      }
+    },
+    {
+      "id": 2746,
+      "name": "Pad X9",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2282-69eaa7513ba25.jpeg"
+      }
+    },
+    {
+      "id": 2747,
+      "name": "Pad X8 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2281-69eaa7513b888.jpeg"
+      }
+    },
+    {
+      "id": 2748,
+      "name": "Pad V8",
+      "codes": [
+        "BRT-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2274-69eaa7513ac36.jpeg"
+      }
+    },
+    {
+      "id": 2749,
+      "name": "Pad V8 Pro",
+      "codes": [
+        "ROD-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2103-69eaa74b4a3dc.jpeg"
+      }
+    },
+    {
+      "id": 2750,
+      "name": "Pad X8",
+      "codes": [
+        "AGM3-W09HN"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2076-69eaa74b4743f.jpeg"
+      }
+    },
+    {
+      "id": 2751,
+      "name": "Pad X8 Lite",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "2075-69eaa74b47243.jpeg"
+      }
+    },
+    {
+      "id": 2752,
+      "name": "Pad 8",
+      "codes": [
+        "HEY-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1958-69eaa739c9708.jpeg"
+      }
+    },
+    {
+      "id": 2753,
+      "name": "Tablet V7",
+      "codes": [
+        "KRJ2-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1615-69eaa727d95ce.jpeg"
+      }
+    },
+    {
+      "id": 2754,
+      "name": "Tablet V7 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1614-69eaa727d93d6.jpeg"
+      }
+    },
+    {
+      "id": 2755,
+      "name": "Tablet X7",
+      "codes": [
+        "KOB2-W09HN"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1603-69eaa727d7f17.jpeg"
+      }
+    },
+    {
+      "id": 2756,
+      "name": "Pad X6",
+      "codes": [
+        "AGR-W09",
+        "AGR-AL09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1592-69eaa727d7092.jpeg"
+      }
+    },
+    {
+      "id": 2757,
+      "name": "Pad 6",
+      "codes": [
+        "AGS3-W09",
+        "AGS3-AL09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1593-69eaa727d71dd.jpeg"
+      }
+    },
+    {
+      "id": 2758,
+      "name": "V6",
+      "codes": [
+        "KRJ-W09",
+        "KRJ-AN00"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1585-69eaa727d6730.jpeg"
+      }
+    },
+    {
+      "id": 2759,
+      "name": "Pad 5 8",
+      "codes": [
+        "JDN2-AL00HN"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1556-69eaa727d3f68.jpeg"
+      }
+    },
+    {
+      "id": 2760,
+      "name": "Pad 5 10.1",
+      "codes": [
+        "AGS2-AL00HN"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1557-69eaa727d40e8.jpeg"
+      }
+    },
+    {
+      "id": 2761,
+      "name": "Tab 5",
+      "codes": [
+        "JDN2-W09HN",
+        "JDN2-W09"
+      ],
+      "category": "Tablet",
+      "brand": "Honor",
+      "image": {
+        "filename": "1550-69eaa727d367f.jpeg"
+      }
+    },
+    {
+      "id": 2669,
+      "name": "Moto Pad 60 Neo",
+      "codes": [
+        "ZAGW0002IN"
+      ],
+      "category": "Tablet",
+      "brand": "Motorola",
+      "image": {
+        "filename": "3245-69eaa78c24b1f.webp"
+      }
+    },
+    {
+      "id": 2670,
+      "name": "Moto Pad 60 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Motorola",
+      "image": {
+        "filename": "2977-69eaa77a81c55.webp"
+      }
+    },
+    {
+      "id": 2671,
+      "name": "Moto Tab G62",
+      "codes": [
+        "G62"
+      ],
+      "category": "Tablet",
+      "brand": "Motorola",
+      "image": {
+        "filename": "1926-69eaa739c5cf0.jpeg"
+      }
+    },
+    {
+      "id": 2672,
+      "name": "Moto Tab G70",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Motorola",
+      "image": {
+        "filename": "1273-69eaa715d42a2.jpeg"
+      }
+    },
+    {
+      "id": 2673,
+      "name": "Tab G20",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Motorola",
+      "image": {
+        "filename": "1260-69eaa715d327f.jpeg"
+      }
+    },
+    {
+      "id": 2683,
+      "name": "T21",
+      "codes": [
+        "TA-1495"
+      ],
+      "category": "Tablet",
+      "brand": "Nokia",
+      "image": {
+        "filename": "1912-69eaa739c412e.jpeg"
+      }
+    },
+    {
+      "id": 2684,
+      "name": "T10",
+      "codes": [
+        "T10"
+      ],
+      "category": "Tablet",
+      "brand": "Nokia",
+      "image": {
+        "filename": "1905-69eaa739c3478.jpeg"
+      }
+    },
+    {
+      "id": 2685,
+      "name": "T20",
+      "codes": [
+        "TA-1397",
+        "TA-1394",
+        "TA-1392"
+      ],
+      "category": "Tablet",
+      "brand": "Nokia",
+      "image": {
+        "filename": "1407-69eaa71bb5008.jpeg"
+      }
+    },
+    {
+      "id": 2674,
+      "name": "Pad Air5",
+      "codes": [
+        "OPD2501"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "3246-69eaa78c24c9a.webp"
+      }
+    },
+    {
+      "id": 2675,
+      "name": "Pad 5",
+      "codes": [
+        "OPD2506"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "3247-69eaa78c24e04.webp"
+      }
+    },
+    {
+      "id": 2676,
+      "name": "Pad SE",
+      "codes": [
+        "OPD2417"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "3004-69eaa77a8435e.webp"
+      }
+    },
+    {
+      "id": 2677,
+      "name": "Pad 4 Pro",
+      "codes": [
+        "OPD2409"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2999-69eaa77a83be1.webp"
+      }
+    },
+    {
+      "id": 2678,
+      "name": "Pad 3 Pro",
+      "codes": [
+        "OPD2401"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2850-69eaa7749c905.jpeg"
+      }
+    },
+    {
+      "id": 2679,
+      "name": "Pad Neo",
+      "codes": [
+        "OPD2302",
+        "OPD2303"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2513-69eaa75d26207.jpeg"
+      }
+    },
+    {
+      "id": 2680,
+      "name": "Pad Air2",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2505-69eaa75d253e4.jpeg"
+      }
+    },
+    {
+      "id": 2681,
+      "name": "Pad Air",
+      "codes": [
+        "OPD2102",
+        "X21N2"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1369-69eaa71bb1b3d.jpeg"
+      }
+    },
+    {
+      "id": 2682,
+      "name": "Oppo Pad",
+      "codes": [
+        "OPD2101"
+      ],
+      "category": "Tablet",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1348-69eaa71bafcd0.jpeg"
+      }
+    },
+    {
+      "id": 2762,
+      "name": "Pad 3",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Realme",
+      "image": {
+        "filename": "3389-69eaa7920f9c7.webp"
+      }
+    },
+    {
+      "id": 2763,
+      "name": "Pad 2 Lite",
+      "codes": [
+        "MT6789"
+      ],
+      "category": "Tablet",
+      "brand": "Realme",
+      "image": {
+        "filename": "2785-69eaa76ebb995.jpeg"
+      }
+    },
+    {
+      "id": 2764,
+      "name": "Pad 2",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Realme",
+      "image": {
+        "filename": "2334-69eaa75142389.jpeg"
+      }
+    },
+    {
+      "id": 2765,
+      "name": "Realme Pad X",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Realme",
+      "image": {
+        "filename": "1545-69eaa727d2de1.jpeg"
+      }
+    },
+    {
+      "id": 2766,
+      "name": "Realme Pad Mini",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Tablet",
+      "brand": "Realme",
+      "image": {
+        "filename": "1536-69eaa721eb99d.jpeg"
+      }
+    },
+    {
+      "id": 2767,
+      "name": "Realme Pad",
+      "codes": [
+        "RMP2102"
+      ],
+      "category": "Tablet",
+      "brand": "Realme",
+      "image": {
+        "filename": "1509-69eaa721e93d0.jpeg"
+      }
+    },
+    {
+      "id": 2997,
+      "name": "Pixel Watch 4",
+      "codes": [
+        "GA10830"
+      ],
+      "category": "Watch",
+      "brand": "Google",
+      "image": {
+        "filename": "3261-69eaa78c26074.webp"
+      }
+    },
+    {
+      "id": 2998,
+      "name": "Pixel Watch 3",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Google",
+      "image": {
+        "filename": "2708-69eaa768edc9c.jpeg"
+      }
+    },
+    {
+      "id": 2999,
+      "name": "Pixel Watch 2",
+      "codes": [
+        "G4TSL",
+        "GC3G8",
+        "GD2WG"
+      ],
+      "category": "Watch",
+      "brand": "Google",
+      "image": {
+        "filename": "2399-69eaa7571f1a4.jpeg"
+      }
+    },
+    {
+      "id": 3000,
+      "name": "Pixel Watch",
+      "codes": [
+        "GQF4C",
+        "GBZ4S",
+        "GWT9R"
+      ],
+      "category": "Watch",
+      "brand": "Google",
+      "image": {
+        "filename": "2071-69eaa74584730.jpeg"
+      }
+    },
+    {
+      "id": 2971,
+      "name": "Watch GS 5",
+      "codes": [
+        "IVY-B39"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "3362-69eaa7920cce2.webp"
+      }
+    },
+    {
+      "id": 2972,
+      "name": "Watch X5",
+      "codes": [
+        "LWS-WB10"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "3255-69eaa78c25972.webp"
+      }
+    },
+    {
+      "id": 2973,
+      "name": "Watch 5 Pro",
+      "codes": [
+        "HAL-L19",
+        "HAL-B19"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "3256-69eaa78c25ad7.webp"
+      }
+    },
+    {
+      "id": 2974,
+      "name": "Watch 5 Ultra",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "2911-69eaa774a2cae.jpeg"
+      }
+    },
+    {
+      "id": 2975,
+      "name": "Watch 5",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "2772-69eaa76eba184.jpeg"
+      }
+    },
+    {
+      "id": 2976,
+      "name": "Watch GS4",
+      "codes": [
+        "MUS-B19"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "2593-69eaa7631d733.jpeg"
+      }
+    },
+    {
+      "id": 2977,
+      "name": "Choice Watch",
+      "codes": [
+        "-"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "2592-69eaa7631d5e3.jpeg"
+      }
+    },
+    {
+      "id": 2978,
+      "name": "Watch 4 Pro (2023)",
+      "codes": [
+        "TUM-L19"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "2405-69eaa7571fafa.jpeg"
+      }
+    },
+    {
+      "id": 2979,
+      "name": "Watch 4",
+      "codes": [
+        "TMA-L19"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "2284-69eaa7513bd7f.jpeg"
+      }
+    },
+    {
+      "id": 2980,
+      "name": "Watch GS 3",
+      "codes": [
+        "MUS-B19"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "1625-69eaa727dab08.jpeg"
+      }
+    },
+    {
+      "id": 2981,
+      "name": "Watch ES",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "1594-69eaa727d7338.jpeg"
+      }
+    },
+    {
+      "id": 2982,
+      "name": "Watch GS Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "1595-69eaa727d748e.jpeg"
+      }
+    },
+    {
+      "id": 2983,
+      "name": "MagicWatch 2",
+      "codes": [
+        "HEB-B19",
+        "MNS-B19"
+      ],
+      "category": "Watch",
+      "brand": "Honor",
+      "image": {
+        "filename": "1566-69eaa727d4db4.jpeg"
+      }
+    },
+    {
+      "id": 2913,
+      "name": "Moto Watch Fit",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Motorola",
+      "image": {
+        "filename": "2978-69eaa77a81da6.webp"
+      }
+    },
+    {
+      "id": 2914,
+      "name": "Moto Watch 40",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Motorola",
+      "image": {
+        "filename": "2499-69eaa75d245a7.jpeg"
+      }
+    },
+    {
+      "id": 2915,
+      "name": "Moto Watch 200",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Motorola",
+      "image": {
+        "filename": "2297-69eaa7513d6c7.jpeg"
+      }
+    },
+    {
+      "id": 2916,
+      "name": "Moto Watch 70",
+      "codes": [
+        "MOSWZ70",
+        "MOSWZ70-PB"
+      ],
+      "category": "Watch",
+      "brand": "Motorola",
+      "image": {
+        "filename": "2059-69eaa74583055.jpeg"
+      }
+    },
+    {
+      "id": 2917,
+      "name": "Moto Watch 100",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Motorola",
+      "image": {
+        "filename": "1264-69eaa715d377f.jpeg"
+      }
+    },
+    {
+      "id": 2889,
+      "name": "Watch 3 Lite",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OnePlus",
+      "image": {
+        "filename": "3234-69eaa78c2398a.webp"
+      }
+    },
+    {
+      "id": 2890,
+      "name": "Watch 3 43mm",
+      "codes": [
+        "6921815628989",
+        "6921815628996"
+      ],
+      "category": "Watch",
+      "brand": "OnePlus",
+      "image": {
+        "filename": "3233-69eaa78c23817.webp"
+      }
+    },
+    {
+      "id": 2891,
+      "name": "Watch 3",
+      "codes": [
+        "OPWWE251"
+      ],
+      "category": "Watch",
+      "brand": "OnePlus",
+      "image": {
+        "filename": "2918-69eaa774a31cd.jpeg"
+      }
+    },
+    {
+      "id": 2892,
+      "name": "Watch 2R",
+      "codes": [
+        "-"
+      ],
+      "category": "Watch",
+      "brand": "OnePlus",
+      "image": {
+        "filename": "2721-69eaa768ef330.jpeg"
+      }
+    },
+    {
+      "id": 2893,
+      "name": "Watch 2 (eSIM)",
+      "codes": [
+        "-"
+      ],
+      "category": "Watch",
+      "brand": "OnePlus",
+      "image": {
+        "filename": "2640-69eaa7632261a.jpeg"
+      }
+    },
+    {
+      "id": 2894,
+      "name": "Watch 2",
+      "codes": [
+        "-"
+      ],
+      "category": "Watch",
+      "brand": "OnePlus",
+      "image": {
+        "filename": "2636-69eaa763220fe.jpeg"
+      }
+    },
+    {
+      "id": 2895,
+      "name": "Nord Watch",
+      "codes": [
+        "OPBBE221"
+      ],
+      "category": "Watch",
+      "brand": "OnePlus",
+      "image": {
+        "filename": "2092-69eaa74b4944b.jpeg"
+      }
+    },
+    {
+      "id": 2896,
+      "name": "Watch",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OnePlus",
+      "image": {
+        "filename": "747-69eaa7a9df3c6.jpeg"
+      }
+    },
+    {
+      "id": 2900,
+      "name": "Watch S",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "3248-69eaa78c24f77.webp"
+      }
+    },
+    {
+      "id": 2901,
+      "name": "Watch X2 Mini",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2998-69eaa77a83aa1.webp"
+      }
+    },
+    {
+      "id": 2902,
+      "name": "Watch X2",
+      "codes": [
+        "OPWWE251"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2919-69eaa774a3309.jpeg"
+      }
+    },
+    {
+      "id": 2903,
+      "name": "Watch X",
+      "codes": [
+        "OWWE231"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2644-69eaa76322b60.jpeg"
+      }
+    },
+    {
+      "id": 2904,
+      "name": "Watch SE",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2327-69eaa7514184e.jpeg"
+      }
+    },
+    {
+      "id": 2905,
+      "name": "Watch4 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "2424-69eaa75721754.jpeg"
+      }
+    },
+    {
+      "id": 2906,
+      "name": "Oppo Watch 3",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1964-69eaa73f9f9d4.jpeg"
+      }
+    },
+    {
+      "id": 2907,
+      "name": "Oppo Watch 3 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1965-69eaa73f9fb68.jpeg"
+      }
+    },
+    {
+      "id": 2908,
+      "name": "Oppo Watch 2 46mm (Wifi + Cellular)",
+      "codes": [
+        "OW20W2"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1300-69eaa715d6581.jpeg"
+      }
+    },
+    {
+      "id": 2909,
+      "name": "Oppo Watch 2 42mm (Wifi + Cellular)",
+      "codes": [
+        "OW20W2"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1304-69eaa715d6aca.jpeg"
+      }
+    },
+    {
+      "id": 2910,
+      "name": "Oppo Watch 2 46mm (Wifi)",
+      "codes": [
+        "OW20W2"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1415-69eaa71bb5a09.jpeg"
+      }
+    },
+    {
+      "id": 2911,
+      "name": "Oppo Watch 46mm",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1104-69eaa70a26521.jpeg"
+      }
+    },
+    {
+      "id": 2912,
+      "name": "Oppo Watch 41mm",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "OPPO",
+      "image": {
+        "filename": "1106-69eaa70a26789.jpeg"
+      }
+    },
+    {
+      "id": 2984,
+      "name": "Watch 5",
+      "codes": [
+        "RMW2501"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "3257-69eaa78c25c37.webp"
+      }
+    },
+    {
+      "id": 2985,
+      "name": "Watch S2",
+      "codes": [
+        "-"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "2726-69eaa768efa6d.jpeg"
+      }
+    },
+    {
+      "id": 2986,
+      "name": "Watch 3 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "3259-69eaa78c25da4.webp"
+      }
+    },
+    {
+      "id": 2987,
+      "name": "Realme Watch 3 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1975-69eaa73fa0a52.jpeg"
+      }
+    },
+    {
+      "id": 2988,
+      "name": "Realme Watch 3",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1973-69eaa73fa0768.jpeg"
+      }
+    },
+    {
+      "id": 2989,
+      "name": "TechLife Watch R100",
+      "codes": [
+        "RMW2106",
+        "RMW2016"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1971-69eaa73fa0445.jpeg"
+      }
+    },
+    {
+      "id": 2990,
+      "name": "TechLife Watch S100",
+      "codes": [
+        "RMW2103"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1531-69eaa721eb299.jpeg"
+      }
+    },
+    {
+      "id": 2991,
+      "name": "Watch T1",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1517-69eaa721e9f55.jpeg"
+      }
+    },
+    {
+      "id": 2992,
+      "name": "Realme Watch 2 Pro",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1497-69eaa721e8308.jpeg"
+      }
+    },
+    {
+      "id": 2993,
+      "name": "Realme Watch 2",
+      "codes": [
+        "RMW2008"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1496-69eaa721e81af.jpeg"
+      }
+    },
+    {
+      "id": 2994,
+      "name": "Watch S Pro",
+      "codes": [
+        "RMA186"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1477-69eaa721e666f.jpeg"
+      }
+    },
+    {
+      "id": 2995,
+      "name": "Realme Watch S",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1474-69eaa721e61a6.jpeg"
+      }
+    },
+    {
+      "id": 2996,
+      "name": "Realme Watch",
+      "codes": [
+        "RMA161"
+      ],
+      "category": "Watch",
+      "brand": "Realme",
+      "image": {
+        "filename": "1447-69eaa721e3a90.jpeg"
+      }
+    },
+    {
+      "id": 2950,
+      "name": "Watch 5",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "3237-69eaa78c23dca.webp"
+      }
+    },
+    {
+      "id": 2951,
+      "name": "Black Shark GS3 Ultra",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "3211-69eaa78c21451.webp"
+      }
+    },
+    {
+      "id": 2952,
+      "name": "Redmi Watch 6",
+      "codes": [
+        "M2523W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "3208-69eaa7863ea0d.webp"
+      }
+    },
+    {
+      "id": 2953,
+      "name": "Watch S4 41mm",
+      "codes": [
+        "M2502W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "3185-69eaa7863c9c2.webp"
+      }
+    },
+    {
+      "id": 2954,
+      "name": "Redmi Watch Move",
+      "codes": [
+        "M2460W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "3033-69eaa7805c245.webp"
+      }
+    },
+    {
+      "id": 2955,
+      "name": "Redmi Watch 5 Lite",
+      "codes": [
+        "M2352W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "2759-69eaa76eb896d.jpeg"
+      }
+    },
+    {
+      "id": 2956,
+      "name": "Redmi Watch 5 Active",
+      "codes": [
+        "BHR8790GL"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "2756-69eaa76eb851c.jpeg"
+      }
+    },
+    {
+      "id": 2957,
+      "name": "Watch S4 Sport",
+      "codes": [
+        "M2312W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "2730-69eaa768f018e.jpeg"
+      }
+    },
+    {
+      "id": 2958,
+      "name": "Watch 2 (2024)",
+      "codes": [
+        "M2320W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "2684-69eaa768eb568.jpeg"
+      }
+    },
+    {
+      "id": 2959,
+      "name": "Redmi Watch 4",
+      "codes": [
+        "M2314W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "2525-69eaa75d277a9.jpeg"
+      }
+    },
+    {
+      "id": 2960,
+      "name": "Watch S3",
+      "codes": [
+        "M2313W1",
+        "M2311W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "2683-69eaa768eb3ee.jpeg"
+      }
+    },
+    {
+      "id": 2961,
+      "name": "Watch 2 Pro",
+      "codes": [
+        "M2233W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "2440-69eaa75d1e11b.jpeg"
+      }
+    },
+    {
+      "id": 2962,
+      "name": "Redmi Watch 3 Active",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "2356-69eaa7571ad3f.jpeg"
+      }
+    },
+    {
+      "id": 2963,
+      "name": "Watch S1 Pro",
+      "codes": [
+        "M2134W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "1949-69eaa739c8824.jpeg"
+      }
+    },
+    {
+      "id": 2964,
+      "name": "Poco Watch",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "1649-69eaa72e0b444.jpeg"
+      }
+    },
+    {
+      "id": 2965,
+      "name": "Watch S1 Active",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "1841-69eaa733dba5d.jpeg"
+      }
+    },
+    {
+      "id": 2966,
+      "name": "Watch S1",
+      "codes": [
+        "M2108W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "1825-69eaa733d9f99.jpeg"
+      }
+    },
+    {
+      "id": 2967,
+      "name": "Redmi Watch 2 Lite",
+      "codes": [
+        "N/A"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "1819-69eaa733d858e.jpeg"
+      }
+    },
+    {
+      "id": 2968,
+      "name": "Redmi Watch 2",
+      "codes": [
+        "M2102W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "1818-69eaa733d8428.jpeg"
+      }
+    },
+    {
+      "id": 2969,
+      "name": "Watch Color 2",
+      "codes": [
+        "M2106W1"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "1813-69eaa733d7d25.jpeg"
+      }
+    },
+    {
+      "id": 2970,
+      "name": "Mi Watch Revolve Active",
+      "codes": [
+        "XMWTCL02"
+      ],
+      "category": "Watch",
+      "brand": "Xiaomi",
+      "image": {
+        "filename": "1798-69eaa733d688e.jpeg"
       }
     }
   ]

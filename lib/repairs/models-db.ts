@@ -28,11 +28,10 @@ export type RepairModel = {
 
 type Db = {
   stats: {
-    files: number;
-    files_parsed: number;
+    files?: number;
     models_total: number;
-    unique_image_urls: number;
     brand_breakdown: Record<string, number>;
+    [k: string]: unknown;
   };
   models: RepairModel[];
 };
