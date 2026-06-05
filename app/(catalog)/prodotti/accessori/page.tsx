@@ -4,6 +4,7 @@ import { CatalogHero } from "@/components/catalog/catalog-hero";
 import { Container } from "@/components/ui/container";
 import { getProducts } from "@/lib/crm-client";
 import { canSeePrices } from "@/lib/auth/pricing-access";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "Accessori — Cellcom Group",
@@ -14,26 +15,27 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function AccessoriPage() {
-  const [{ items, total }, showPrices] = await Promise.all([
+  const [{ items, total }, showPrices, t] = await Promise.all([
     getProducts({ kind: "accessory", limit: 48 }),
     canSeePrices(),
+    getT(),
   ]);
 
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Prodotti", href: "/prodotti" },
-          { label: "Accessori" },
+          { label: t("bc.home"), href: "/" },
+          { label: t("bc.products"), href: "/prodotti" },
+          { label: t("bc.accessories") },
         ]}
       />
       <CatalogHero
-        eyebrow="Accessori"
-        title="I nostri"
-        accent="accessori"
-        description="Cover, vetri temprati, caricabatterie veloci, cavi USB-C e Lightning originali, cuffie wireless. Compatibilità verificata, garanzia inclusa."
-        metrics={[{ label: "A catalogo", value: String(total) }]}
+        eyebrow={t("ch.accessories.eyebrow")}
+        title={t("ch.accessories.title")}
+        accent={t("ch.accessories.accent")}
+        description={t("ch.accessories.description")}
+        metrics={[{ label: t("ch.accessories.metric.inCatalog"), value: String(total) }]}
       />
       <Container className="pb-24">
         <ProductGrid initialProducts={items} canSeePrices={showPrices} />

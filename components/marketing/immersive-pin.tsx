@@ -10,6 +10,7 @@ import dynamic from "next/dynamic";
 import { useRef } from "react";
 import { PhoneSilhouette } from "./phone-silhouette";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
+import { useLang } from "@/lib/i18n/lang-context";
 
 // Modello GLB Samsung Galaxy (1.5MB) + Three.js pesante (~300KB gz) →
 // dynamic import + SSR off per non bloccare il first paint.
@@ -45,6 +46,7 @@ export function ImmersivePin({
 }: {
   device?: PublicProductListItem;
 }) {
+  const { t } = useLang();
   const containerRef = useRef<HTMLElement>(null);
 
   // Scroll progress sull'intero contenitore (h=300vh) da 0 → 1
@@ -137,14 +139,14 @@ export function ImmersivePin({
               className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3"
             >
               <span className="font-mono text-xs uppercase tracking-[0.32em] text-brand-400">
-                Phone Lifecycle
+                {t("immersive.m1.eyebrow")}
               </span>
               <h2 className="font-serif text-[clamp(40px,7vw,96px)] leading-[0.95] tracking-[-0.02em] text-white max-w-[18ch]">
-                Tutto il telefono,{" "}
-                <span className="italic text-brand-400">una sola casa.</span>
+                {t("immersive.m1.titleA")}{" "}
+                <span className="italic text-brand-400">{t("immersive.m1.italic")}</span>
               </h2>
               <p className="text-base sm:text-lg text-white/60 max-w-xl mt-2">
-                Dal primo acquisto fino al riciclo — quattro servizi, un solo gruppo.
+                {t("immersive.m1.body")}
               </p>
             </motion.div>
 
@@ -154,13 +156,13 @@ export function ImmersivePin({
               className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3"
             >
               <span className="font-mono text-xs uppercase tracking-[0.32em] text-brand-400">
-                Lo riparo, lo ricondiziono
+                {t("immersive.m2.eyebrow")}
               </span>
               <h2 className="font-serif text-[clamp(40px,7vw,96px)] leading-[0.95] tracking-[-0.02em] text-white max-w-[18ch]">
-                Quasi tutto si <span className="italic text-brand-400">ripara</span>, e in 24 ore.
+                {t("immersive.m2.titleA")} <span className="italic text-brand-400">{t("immersive.m2.italic")}</span>{t("immersive.m2.titleB")}
               </h2>
               <p className="text-base sm:text-lg text-white/60 max-w-xl mt-2">
-                Microscopio, microsaldatura, ricambi originali. Garanzia 12 mesi.
+                {t("immersive.m2.body")}
               </p>
             </motion.div>
 
@@ -170,19 +172,19 @@ export function ImmersivePin({
               className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-4"
             >
               <span className="font-mono text-xs uppercase tracking-[0.32em] text-brand-400">
-                E quando hai finito
+                {t("immersive.m3.eyebrow")}
               </span>
               <h2 className="font-serif text-[clamp(40px,7vw,96px)] leading-[0.95] tracking-[-0.02em] text-white max-w-[18ch]">
-                <span className="italic text-brand-400">Vale ancora.</span> Lo ricompriamo noi.
+                <span className="italic text-brand-400">{t("immersive.m3.italic")}</span> {t("immersive.m3.titleA")}
               </h2>
               <p className="text-base sm:text-lg text-white/60 max-w-xl mt-2">
-                Valutazione gratis, spedizione gratis, pagamento entro 48h.
+                {t("immersive.m3.body")}
               </p>
               <a
                 href="/rivendi"
                 className="mt-4 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#0a0a0a] text-sm font-semibold hover:bg-brand-400 hover:text-white transition-colors duration-300 pointer-events-auto"
               >
-                Scopri come
+                {t("immersive.m3.cta")}
                 <span aria-hidden>→</span>
               </a>
             </motion.div>
@@ -197,7 +199,7 @@ export function ImmersivePin({
           className="absolute top-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
         >
           <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/40">
-            Scrolla
+            {t("immersive.scrollHint")}
           </span>
           <div className="w-px h-12 bg-linear-to-b from-white/40 to-transparent" />
         </motion.div>

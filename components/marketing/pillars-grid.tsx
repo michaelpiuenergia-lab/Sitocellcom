@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   motion,
   useMotionValue,
   useSpring,
   useTransform,
 } from "framer-motion";
-import Link from "next/link";
 import { EASE } from "@/lib/constants";
+import { useLang } from "@/lib/i18n/lang-context";
+import type { Dict } from "@/lib/i18n/dict";
 
 /** true se il device usa solo input touch (no mouse): allora niente spotlight. */
 function useIsTouch(): boolean {
@@ -26,94 +27,65 @@ function useIsTouch(): boolean {
 
 type Tone = "light" | "dark";
 
-type Pillar = {
+type PillarKeys = {
   tone: Tone;
-  eyebrow: string;
-  title: ReactNode;
-  body: string;
-  bullets: readonly string[];
-  cta: { label: string; href: string };
+  href: string;
+  eyebrow: keyof Dict;
+  titleA: keyof Dict;
+  accent: keyof Dict;
+  body: keyof Dict;
+  bullets: readonly (keyof Dict)[];
+  cta: keyof Dict;
 };
 
-const PILLARS: readonly Pillar[] = [
+const PILLARS: readonly PillarKeys[] = [
   {
     tone: "light",
-    eyebrow: "Compra",
-    title: (
-      <>
-        Il prossimo telefono.{" "}
-        <span style={{ color: "#dc2626" }}>Anche ricondizionato.</span>
-      </>
-    ),
-    body:
-      "Nuovi, ricondizionati e usati testati. Tutti i brand, un solo magazzino, garanzia 12 mesi su tutto.",
-    bullets: [
-      "Spedizione 24-48h in Italia",
-      "Ritiro gratis nei negozi",
-      "Rate Klarna/Scalapay disponibili",
-    ],
-    cta: { label: "Sfoglia il catalogo", href: "/prodotti" },
+    href: "/prodotti",
+    eyebrow: "pillars.buy.eyebrow",
+    titleA: "pillars.buy.titleA",
+    accent: "pillars.buy.accent",
+    body: "pillars.buy.body",
+    bullets: ["pillars.buy.b1", "pillars.buy.b2", "pillars.buy.b3"],
+    cta: "pillars.buy.cta",
   },
   {
     tone: "dark",
-    eyebrow: "Ripara",
-    title: (
-      <>
-        Quasi tutto si ripara,{" "}
-        <span style={{ color: "#dc2626" }}>e in 24 ore.</span>
-      </>
-    ),
-    body:
-      "Schermo, batteria, scheda madre, scocca. Diagnosi gratuita, preventivo prima di toccarlo, sigillo davanti a te.",
-    bullets: [
-      "Garanzia 12 mesi su lavoro e ricambi",
-      "Microsaldatura BGA in laboratorio",
-      "Ritiro, spedizione o negozio",
-    ],
-    cta: { label: "Richiedi riparazione", href: "/riparazioni" },
+    href: "/riparazioni",
+    eyebrow: "pillars.repair.eyebrow",
+    titleA: "pillars.repair.titleA",
+    accent: "pillars.repair.accent",
+    body: "pillars.repair.body",
+    bullets: ["pillars.repair.b1", "pillars.repair.b2", "pillars.repair.b3"],
+    cta: "pillars.repair.cta",
   },
   {
     tone: "dark",
-    eyebrow: "Rivendi",
-    title: (
-      <>
-        Il tuo vecchio telefono{" "}
-        <span style={{ color: "#dc2626" }}>vale ancora.</span>
-      </>
-    ),
-    body:
-      "Valutazione gratis dalle foto in 24 ore. Spedizione o ritiro gratis, pagamento entro 48 ore.",
-    bullets: [
-      "Bonus +10% in credito Cellcom",
-      "Quotazione scritta, niente trucchi",
-      "Ritiriamo anche telefoni rotti",
-    ],
-    cta: { label: "Valuta il tuo usato", href: "/rivendi" },
+    href: "/rivendi",
+    eyebrow: "pillars.resell.eyebrow",
+    titleA: "pillars.resell.titleA",
+    accent: "pillars.resell.accent",
+    body: "pillars.resell.body",
+    bullets: ["pillars.resell.b1", "pillars.resell.b2", "pillars.resell.b3"],
+    cta: "pillars.resell.cta",
   },
   {
     tone: "light",
-    eyebrow: "Impara",
-    title: (
-      <>
-        Diventa{" "}
-        <span style={{ color: "#dc2626" }}>tecnico riparatore.</span>
-      </>
-    ),
-    body:
-      "Tre livelli alla Cellcom Academy: base, intermedio, microsaldatura BGA. Gli stessi formatori dei nostri tecnici.",
-    bullets: [
-      "Postazioni ESD professionali",
-      "Aule limitate a 6 allievi",
-      "Attestato + sbocco interno",
-    ],
-    cta: { label: "Scopri i corsi", href: "/corsi" },
+    href: "/corsi",
+    eyebrow: "pillars.learn.eyebrow",
+    titleA: "pillars.learn.titleA",
+    accent: "pillars.learn.accent",
+    body: "pillars.learn.body",
+    bullets: ["pillars.learn.b1", "pillars.learn.b2", "pillars.learn.b3"],
+    cta: "pillars.learn.cta",
   },
 ];
 
 export function PillarsGrid() {
+  const { t } = useLang();
   return (
     <section
-      aria-label="Quattro modi di toccare un telefono"
+      aria-label={t("pillars.section.eyebrow")}
       style={{ backgroundColor: "#ffffff" }}
     >
       <div className="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-12 py-16 sm:py-24 lg:py-32">
@@ -138,7 +110,7 @@ export function PillarsGrid() {
                 className="inline-block h-px w-9"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              Phone lifecycle hub
+              {t("pillars.section.eyebrow")}
             </span>
             <h2
               className="font-sans tracking-[-0.025em]"
@@ -149,8 +121,8 @@ export function PillarsGrid() {
                 fontWeight: 700,
               }}
             >
-              Quattro cose,{" "}
-              <span style={{ color: "#dc2626" }}>un solo posto.</span>
+              {t("pillars.section.titleA")}{" "}
+              <span style={{ color: "#dc2626" }}>{t("pillars.section.accent")}</span>
             </h2>
           </motion.div>
           <motion.p
@@ -165,15 +137,14 @@ export function PillarsGrid() {
               maxWidth: "520px",
             }}
           >
-            Compri, ripari, rivendi, impari. Stesso magazzino, stesse persone,
-            stessa garanzia.
+            {t("pillars.section.intro")}
           </motion.p>
         </div>
 
         {/* Griglia 2×2: scacchiera tone */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-5">
           {PILLARS.map((p, i) => (
-            <PillarCard key={p.eyebrow} pillar={p} index={i} />
+            <PillarCard key={p.href} pillar={p} index={i} />
           ))}
         </div>
       </div>
@@ -181,7 +152,8 @@ export function PillarsGrid() {
   );
 }
 
-function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
+function PillarCard({ pillar, index }: { pillar: PillarKeys; index: number }) {
+  const { t } = useLang();
   const isDark = pillar.tone === "dark";
   const isTouch = useIsTouch();
   const spotlightActive = isDark && !isTouch;
@@ -217,7 +189,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
   return (
     <motion.a
       ref={ref}
-      href={pillar.cta.href}
+      href={pillar.href}
       onPointerMove={onPointerMove}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
@@ -253,7 +225,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
             color: "#dc2626",
           }}
         >
-          {pillar.eyebrow}
+          {t(pillar.eyebrow)}
         </span>
 
         <h3
@@ -265,7 +237,8 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
             fontWeight: 700,
           }}
         >
-          {pillar.title}
+          {t(pillar.titleA)}{" "}
+          <span style={{ color: "#dc2626" }}>{t(pillar.accent)}</span>
         </h3>
 
         <p
@@ -275,7 +248,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
             fontSize: "16px",
           }}
         >
-          {pillar.body}
+          {t(pillar.body)}
         </p>
 
         <ul className="flex flex-col gap-2.5 mt-1">
@@ -290,7 +263,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
                 className="mt-1.5 inline-block h-1.5 w-1.5 rounded-full shrink-0"
                 style={{ backgroundColor: "#dc2626" }}
               />
-              <span style={{ fontSize: "14px", lineHeight: 1.5 }}>{b}</span>
+              <span style={{ fontSize: "14px", lineHeight: 1.5 }}>{t(b)}</span>
             </li>
           ))}
         </ul>
@@ -302,7 +275,7 @@ function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
             fontSize: "15px",
           }}
         >
-          {pillar.cta.label}
+          {t(pillar.cta)}
           <span
             aria-hidden
             className="transition-transform duration-300 group-hover:translate-x-1"

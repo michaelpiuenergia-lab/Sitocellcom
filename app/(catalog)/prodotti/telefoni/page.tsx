@@ -4,6 +4,7 @@ import { CatalogHero } from "@/components/catalog/catalog-hero";
 import { Container } from "@/components/ui/container";
 import { getProducts } from "@/lib/crm-client";
 import { canSeePrices } from "@/lib/auth/pricing-access";
+import { getT } from "@/lib/i18n/server";
 import type { PublicCondition } from "@/lib/crm-client/types";
 
 export const metadata = {
@@ -24,33 +25,34 @@ export default async function TelefoniPage({
   const sp = (await searchParams) ?? {};
   const condition = sp.condition as PublicCondition | undefined;
 
-  const [allNew, allUsed, allRefurb, grid, showPrices] = await Promise.all([
+  const [allNew, allUsed, allRefurb, grid, showPrices, t] = await Promise.all([
     getProducts({ kind: "device", condition: "new", limit: 1 }),
     getProducts({ kind: "device", condition: "used", limit: 1 }),
     getProducts({ kind: "device", condition: "refurbished", limit: 1 }),
     getProducts({ kind: "device", condition, limit: 100 }),
     canSeePrices(),
+    getT(),
   ]);
 
   return (
     <>
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Prodotti", href: "/prodotti" },
-          { label: "Telefoni" },
+          { label: t("bc.home"), href: "/" },
+          { label: t("bc.products"), href: "/prodotti" },
+          { label: t("bc.phones") },
         ]}
       />
       <CatalogHero
-        eyebrow="Smartphone"
-        title="I nostri"
-        accent="telefoni"
-        description="Apple, Samsung, Google, Xiaomi e tutti i brand principali. IMEI verificato, batteria sopra l'80% per il ricondizionato, report tecnico per l'usato."
+        eyebrow={t("ch.phones.eyebrow")}
+        title={t("ch.phones.title")}
+        accent={t("ch.phones.accent")}
+        description={t("ch.phones.description")}
         metrics={[
-          { label: "Nuovi", value: String(allNew.total) },
-          { label: "Ricondizionati", value: String(allRefurb.total) },
-          { label: "Usati", value: String(allUsed.total) },
-          { label: "Totale", value: String(allNew.total + allUsed.total + allRefurb.total) },
+          { label: t("ch.phones.metric.new"), value: String(allNew.total) },
+          { label: t("ch.phones.metric.refurbished"), value: String(allRefurb.total) },
+          { label: t("ch.phones.metric.used"), value: String(allUsed.total) },
+          { label: t("ch.phones.metric.total"), value: String(allNew.total + allUsed.total + allRefurb.total) },
         ]}
       />
       <Container className="pb-24">

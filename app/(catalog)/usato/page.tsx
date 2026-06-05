@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { UsedDeviceGrid } from "@/components/catalog/used-device-grid";
 import { getUsedDevices } from "@/lib/crm-client";
 import { canSeePrices } from "@/lib/auth/pricing-access";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "Usato garantito — Cellcom Group",
@@ -14,9 +15,10 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function UsatoPage() {
-  const [grid, showPrices] = await Promise.all([
+  const [grid, showPrices, t] = await Promise.all([
     getUsedDevices({ channel: "cellcom", limit: 100 }),
     canSeePrices(),
+    getT(),
   ]);
 
   const ottimo = grid.items.filter((d) => d.condition === "ottimo").length;
@@ -25,18 +27,18 @@ export default async function UsatoPage() {
   return (
     <>
       <Breadcrumb
-        items={[{ label: "Home", href: "/" }, { label: "Usato" }]}
+        items={[{ label: t("bc.home"), href: "/" }, { label: t("bc.used") }]}
       />
       <CatalogHero
-        eyebrow="Usato garantito"
-        title="Usato"
-        accent="testato e garantito"
-        description="Ogni telefono passa dal nostro laboratorio: IMEI verificato, batteria controllata, report tecnico e garanzia inclusa. Quello che vedi è disponibile davvero — quando si vende, sparisce dal listino."
+        eyebrow={t("ch.used.eyebrow")}
+        title={t("ch.used.title")}
+        accent={t("ch.used.accent")}
+        description={t("ch.used.description")}
         metrics={[
-          { label: "In vendita", value: String(grid.total) },
-          { label: "Ottimo", value: String(ottimo) },
-          { label: "Buono", value: String(buono) },
-          { label: "Garanzia", value: "fino 12m" },
+          { label: t("ch.used.metric.forSale"), value: String(grid.total) },
+          { label: t("ch.used.metric.ottimo"), value: String(ottimo) },
+          { label: t("ch.used.metric.buono"), value: String(buono) },
+          { label: t("ch.used.metric.warranty"), value: t("ch.used.metric.warrantyValue") },
         ]}
       />
       <Container className="pb-24">

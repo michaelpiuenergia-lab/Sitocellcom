@@ -4,6 +4,7 @@ import { CatalogHero } from "@/components/catalog/catalog-hero";
 import { Container } from "@/components/ui/container";
 import { getProducts } from "@/lib/crm-client";
 import { canSeePrices } from "@/lib/auth/pricing-access";
+import { getT } from "@/lib/i18n/server";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 
 export const metadata = {
@@ -67,9 +68,10 @@ async function fetchAllPartsForModels(): Promise<{
 }
 
 export default async function RicambiPage() {
-  const [initial, showPrices] = await Promise.all([
+  const [initial, showPrices, t] = await Promise.all([
     getProducts({ kind: "part", limit: 100 }),
     canSeePrices(),
+    getT(),
   ]);
 
   let modelsData: { totalCount: number; models: string[]; brands: string[] };
@@ -106,19 +108,19 @@ export default async function RicambiPage() {
     <>
       <Breadcrumb
         items={[
-          { label: "Home", href: "/" },
-          { label: "Prodotti", href: "/prodotti" },
-          { label: "Ricambi" },
+          { label: t("bc.home"), href: "/" },
+          { label: t("bc.products"), href: "/prodotti" },
+          { label: t("bc.parts") },
         ]}
       />
       <CatalogHero
-        eyebrow="Ricambi"
-        title="I nostri"
-        accent="ricambi"
-        description="Display, batterie, scocche, schede madri e vetri posteriori. Originali e compatibili certificati. Filtra per brand e modello: il pezzo giusto al primo colpo."
+        eyebrow={t("ch.parts.eyebrow")}
+        title={t("ch.parts.title")}
+        accent={t("ch.parts.accent")}
+        description={t("ch.parts.description")}
         metrics={[
-          { label: "A catalogo", value: String(modelsData.totalCount) },
-          { label: "Modelli compatibili", value: String(modelsData.models.length) },
+          { label: t("ch.parts.metric.inCatalog"), value: String(modelsData.totalCount) },
+          { label: t("ch.parts.metric.models"), value: String(modelsData.models.length) },
         ]}
       />
       <Container className="pb-24">

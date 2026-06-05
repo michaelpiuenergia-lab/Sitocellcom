@@ -1,3 +1,8 @@
+"use client";
+
+import { useLang } from "@/lib/i18n/lang-context";
+import type { Dict } from "@/lib/i18n/dict";
+
 /**
  * BrandStrip — banner ROSSO Cellcom che cammina.
  *
@@ -6,7 +11,7 @@
  * orizzontale infinita. Sempre visibile nel primo fold.
  */
 
-const ITEMS = [
+const BRAND_NAMES = [
   "Apple",
   "Samsung",
   "Xiaomi",
@@ -19,23 +24,28 @@ const ITEMS = [
   "Motorola",
   "Nothing",
   "Asus",
-  "Spedizione 24-48h",
-  "Garanzia 12 mesi",
-  "Ritiro gratis in negozio",
-  "Stock verificato dal CRM",
 ] as const;
 
+const SERVICE_KEYS: readonly (keyof Dict)[] = [
+  "marquee.shipping",
+  "marquee.warranty",
+  "marquee.freePickup",
+  "marquee.stockVerified",
+];
+
 export function BrandMarquee() {
+  const { t } = useLang();
+  const items = [...BRAND_NAMES, ...SERVICE_KEYS.map((k) => t(k))];
   return (
     <section
-      aria-label="Brand e servizi"
+      aria-label="Brand"
       className="relative"
       style={{ backgroundColor: "#dc2626" }}
     >
       <div className="py-3 sm:py-3.5 lg:py-4">
         <div className="marquee">
           <div className="marquee-track">
-            {[...ITEMS, ...ITEMS].map((b, i) => (
+            {[...items, ...items].map((b, i) => (
               <span
                 key={`${b}-${i}`}
                 className="font-mono uppercase flex items-center gap-8 sm:gap-10 shrink-0"

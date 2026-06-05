@@ -120,6 +120,147 @@ export type Dict = {
   "home.b2b.cta.login": string;
   "home.b2b.cta.contact": string;
 
+  // ─── ProductGrid (catalog) ──────────────────────────────────────────
+  "pg.filter.all": string;
+  "pg.cat.smartphone": string;
+  "pg.cat.part": string;
+  "pg.stock.outOfStock": string;
+  "pg.stock.checkAvailable": string;
+  "pg.stock.lastN": (n: number) => string;
+  "pg.stock.available": string;
+  "pg.price.onRequest": string;
+  "pg.price.hiddenTooltip": string;
+  "pg.price.reserved": string;
+  "pg.cta.loginForPrice": string;
+  "pg.cta.notifyWhenBack": string;
+  "pg.cta.buyOn": (channel: string) => string;
+  "pg.empty": string;
+
+  // ─── Breadcrumb ─────────────────────────────────────────────────────
+  "bc.home": string;
+  "bc.products": string;
+  "bc.phones": string;
+  "bc.parts": string;
+  "bc.accessories": string;
+  "bc.used": string;
+  "bc.repairs": string;
+  "bc.aboutUs": string;
+  "bc.stores": string;
+  "bc.courses": string;
+  "bc.openStore": string;
+  "bc.becomePartner": string;
+  "bc.tradeIn": string;
+  "bc.tracker": string;
+
+  // ─── Catalog hero ───────────────────────────────────────────────────
+  "ch.products.eyebrow": string;
+  "ch.products.title": string;
+  "ch.products.accent": string;
+  "ch.products.description": string;
+  "ch.phones.eyebrow": string;
+  "ch.phones.title": string;
+  "ch.phones.accent": string;
+  "ch.phones.description": string;
+  "ch.phones.metric.new": string;
+  "ch.phones.metric.refurbished": string;
+  "ch.phones.metric.used": string;
+  "ch.phones.metric.total": string;
+  "ch.parts.eyebrow": string;
+  "ch.parts.title": string;
+  "ch.parts.accent": string;
+  "ch.parts.description": string;
+  "ch.parts.metric.inCatalog": string;
+  "ch.parts.metric.models": string;
+  "ch.accessories.eyebrow": string;
+  "ch.accessories.title": string;
+  "ch.accessories.accent": string;
+  "ch.accessories.description": string;
+  "ch.accessories.metric.inCatalog": string;
+  "ch.used.eyebrow": string;
+  "ch.used.title": string;
+  "ch.used.accent": string;
+  "ch.used.description": string;
+  "ch.used.metric.forSale": string;
+  "ch.used.metric.ottimo": string;
+  "ch.used.metric.buono": string;
+  "ch.used.metric.warranty": string;
+  "ch.used.metric.warrantyValue": string;
+
+  // ─── Catalog landing /prodotti ──────────────────────────────────────
+  "catalog.land.sec.phones.title": string;
+  "catalog.land.sec.phones.description": string;
+  "catalog.land.sec.parts.title": string;
+  "catalog.land.sec.parts.description": string;
+  "catalog.land.sec.accessories.title": string;
+  "catalog.land.sec.accessories.description": string;
+  "catalog.land.featured.eyebrow": string;
+  "catalog.land.featured.titleA": string;
+  "catalog.land.featured.accent": string;
+  "catalog.land.featured.titleB": string;
+  "catalog.land.featured.cta": string;
+
+  // ─── Pillars grid ───────────────────────────────────────────────────
+  "pillars.section.eyebrow": string;
+  "pillars.section.titleA": string;
+  "pillars.section.accent": string;
+  "pillars.section.intro": string;
+  "pillars.buy.eyebrow": string;
+  "pillars.buy.titleA": string;
+  "pillars.buy.accent": string;
+  "pillars.buy.body": string;
+  "pillars.buy.b1": string;
+  "pillars.buy.b2": string;
+  "pillars.buy.b3": string;
+  "pillars.buy.cta": string;
+  "pillars.repair.eyebrow": string;
+  "pillars.repair.titleA": string;
+  "pillars.repair.accent": string;
+  "pillars.repair.body": string;
+  "pillars.repair.b1": string;
+  "pillars.repair.b2": string;
+  "pillars.repair.b3": string;
+  "pillars.repair.cta": string;
+  "pillars.resell.eyebrow": string;
+  "pillars.resell.titleA": string;
+  "pillars.resell.accent": string;
+  "pillars.resell.body": string;
+  "pillars.resell.b1": string;
+  "pillars.resell.b2": string;
+  "pillars.resell.b3": string;
+  "pillars.resell.cta": string;
+  "pillars.learn.eyebrow": string;
+  "pillars.learn.titleA": string;
+  "pillars.learn.accent": string;
+  "pillars.learn.body": string;
+  "pillars.learn.b1": string;
+  "pillars.learn.b2": string;
+  "pillars.learn.b3": string;
+  "pillars.learn.cta": string;
+
+  // ─── Brand marquee ──────────────────────────────────────────────────
+  "marquee.shipping": string;
+  "marquee.warranty": string;
+  "marquee.freePickup": string;
+  "marquee.stockVerified": string;
+
+  // ─── Immersive pin (3D scroll) ──────────────────────────────────────
+  "immersive.loading3D": string;
+  "immersive.scrollHint": string;
+  "immersive.m1.eyebrow": string;
+  "immersive.m1.titleA": string;
+  "immersive.m1.italic": string;
+  "immersive.m1.body": string;
+  "immersive.m2.eyebrow": string;
+  "immersive.m2.titleA": string;
+  "immersive.m2.italic": string;
+  "immersive.m2.titleB": string;
+  "immersive.m2.body": string;
+  "immersive.m3.eyebrow": string;
+  "immersive.m3.italic": string;
+  "immersive.m3.titleA": string;
+  "immersive.m3.body": string;
+  "immersive.m3.cta": string;
+
   // ─── Enum labels riusati ovunque ────────────────────────────────────
   "enum.condition.new": string;
   "enum.condition.used": string;
@@ -251,6 +392,157 @@ const IT: Dict = {
   "home.b2b.cta.login": "Accedi all'area B2B",
   "home.b2b.cta.contact": "Richiedi attivazione",
 
+  "pg.filter.all": "Tutte",
+  "pg.cat.smartphone": "Smartphone",
+  "pg.cat.part": "Ricambio",
+  "pg.stock.outOfStock": "Esaurito",
+  "pg.stock.checkAvailable": "Verifica disponibilità",
+  "pg.stock.lastN": (n) => `Ultimi ${n} pezzi`,
+  "pg.stock.available": "Disponibile",
+  "pg.price.onRequest": "Su richiesta",
+  "pg.price.hiddenTooltip":
+    "Il prezzo pubblico non è esposto per questo articolo. Contattaci per il listino.",
+  "pg.price.reserved": "Prezzo riservato",
+  "pg.cta.loginForPrice": "Accedi per il prezzo",
+  "pg.cta.notifyWhenBack": "Avvisami quando torna",
+  "pg.cta.buyOn": (channel) => `Acquista su ${channel}`,
+  "pg.empty": "Nessun prodotto trovato.",
+
+  "bc.home": "Home",
+  "bc.products": "Prodotti",
+  "bc.phones": "Telefoni",
+  "bc.parts": "Ricambi",
+  "bc.accessories": "Accessori",
+  "bc.used": "Usato",
+  "bc.repairs": "Riparazioni",
+  "bc.aboutUs": "Chi siamo",
+  "bc.stores": "Negozi",
+  "bc.courses": "Corsi",
+  "bc.openStore": "Apri un negozio",
+  "bc.becomePartner": "Diventa partner",
+  "bc.tradeIn": "Rivendi",
+  "bc.tracker": "Traccia riparazione",
+
+  "ch.products.eyebrow": "Magazzino unificato del Gruppo",
+  "ch.products.title": "Il nostro",
+  "ch.products.accent": "catalogo",
+  "ch.products.description":
+    "Telefoni, ricambi, accessori. Disponibilità reale dai canali del Gruppo Cellcom: nuovo, ricondizionato e usato garantito.",
+  "ch.phones.eyebrow": "Smartphone",
+  "ch.phones.title": "I nostri",
+  "ch.phones.accent": "telefoni",
+  "ch.phones.description":
+    "Apple, Samsung, Google, Xiaomi e tutti i brand principali. IMEI verificato, batteria sopra l'80% per il ricondizionato, report tecnico per l'usato.",
+  "ch.phones.metric.new": "Nuovi",
+  "ch.phones.metric.refurbished": "Ricondizionati",
+  "ch.phones.metric.used": "Usati",
+  "ch.phones.metric.total": "Totale",
+  "ch.parts.eyebrow": "Ricambi",
+  "ch.parts.title": "I nostri",
+  "ch.parts.accent": "ricambi",
+  "ch.parts.description":
+    "Display, batterie, scocche, schede madri e vetri posteriori. Originali e compatibili certificati. Filtra per brand e modello: il pezzo giusto al primo colpo.",
+  "ch.parts.metric.inCatalog": "A catalogo",
+  "ch.parts.metric.models": "Modelli compatibili",
+  "ch.accessories.eyebrow": "Accessori",
+  "ch.accessories.title": "I nostri",
+  "ch.accessories.accent": "accessori",
+  "ch.accessories.description":
+    "Cover, vetri temprati, caricabatterie veloci, cavi USB-C e Lightning originali, cuffie wireless. Compatibilità verificata, garanzia inclusa.",
+  "ch.accessories.metric.inCatalog": "A catalogo",
+  "ch.used.eyebrow": "Usato garantito",
+  "ch.used.title": "Usato",
+  "ch.used.accent": "testato e garantito",
+  "ch.used.description":
+    "Ogni telefono passa dal nostro laboratorio: IMEI verificato, batteria controllata, report tecnico e garanzia inclusa. Quello che vedi è disponibile davvero — quando si vende, sparisce dal listino.",
+  "ch.used.metric.forSale": "In vendita",
+  "ch.used.metric.ottimo": "Ottimo",
+  "ch.used.metric.buono": "Buono",
+  "ch.used.metric.warranty": "Garanzia",
+  "ch.used.metric.warrantyValue": "fino 12m",
+
+  "catalog.land.sec.phones.title": "Telefoni",
+  "catalog.land.sec.phones.description":
+    "Nuovi sigillati, ricondizionati certificati, usati testati. Apple, Samsung, Xiaomi, Google Pixel e tutti i principali brand.",
+  "catalog.land.sec.parts.title": "Ricambi",
+  "catalog.land.sec.parts.description":
+    "Display, batterie, scocche, schede madri, vetri posteriori. Filtra per modello e ricevi il pezzo giusto al primo colpo.",
+  "catalog.land.sec.accessories.title": "Accessori",
+  "catalog.land.sec.accessories.description":
+    "Cover, vetri temprati, caricabatterie veloci, cavi MFi e USB-C, cuffie wireless. Tutto con garanzia inclusa.",
+  "catalog.land.featured.eyebrow": "In evidenza",
+  "catalog.land.featured.titleA": "I più",
+  "catalog.land.featured.accent": "richiesti",
+  "catalog.land.featured.titleB": "del momento",
+  "catalog.land.featured.cta": "Vedi tutti i telefoni",
+
+  "pillars.section.eyebrow": "Phone lifecycle hub",
+  "pillars.section.titleA": "Quattro cose,",
+  "pillars.section.accent": "un solo posto.",
+  "pillars.section.intro":
+    "Compri, ripari, rivendi, impari. Stesso magazzino, stesse persone, stessa garanzia.",
+  "pillars.buy.eyebrow": "Compra",
+  "pillars.buy.titleA": "Il prossimo telefono.",
+  "pillars.buy.accent": "Anche ricondizionato.",
+  "pillars.buy.body":
+    "Nuovi, ricondizionati e usati testati. Tutti i brand, un solo magazzino, garanzia 12 mesi su tutto.",
+  "pillars.buy.b1": "Spedizione 24-48h in Italia",
+  "pillars.buy.b2": "Ritiro gratis nei negozi",
+  "pillars.buy.b3": "Rate Klarna/Scalapay disponibili",
+  "pillars.buy.cta": "Sfoglia il catalogo",
+  "pillars.repair.eyebrow": "Ripara",
+  "pillars.repair.titleA": "Quasi tutto si ripara,",
+  "pillars.repair.accent": "e in 24 ore.",
+  "pillars.repair.body":
+    "Schermo, batteria, scheda madre, scocca. Diagnosi gratuita, preventivo prima di toccarlo, sigillo davanti a te.",
+  "pillars.repair.b1": "Garanzia 12 mesi su lavoro e ricambi",
+  "pillars.repair.b2": "Microsaldatura BGA in laboratorio",
+  "pillars.repair.b3": "Ritiro, spedizione o negozio",
+  "pillars.repair.cta": "Richiedi riparazione",
+  "pillars.resell.eyebrow": "Rivendi",
+  "pillars.resell.titleA": "Il tuo vecchio telefono",
+  "pillars.resell.accent": "vale ancora.",
+  "pillars.resell.body":
+    "Valutazione gratis dalle foto in 24 ore. Spedizione o ritiro gratis, pagamento entro 48 ore.",
+  "pillars.resell.b1": "Bonus +10% in credito Cellcom",
+  "pillars.resell.b2": "Quotazione scritta, niente trucchi",
+  "pillars.resell.b3": "Ritiriamo anche telefoni rotti",
+  "pillars.resell.cta": "Valuta il tuo usato",
+  "pillars.learn.eyebrow": "Impara",
+  "pillars.learn.titleA": "Diventa",
+  "pillars.learn.accent": "tecnico riparatore.",
+  "pillars.learn.body":
+    "Tre livelli alla Cellcom Academy: base, intermedio, microsaldatura BGA. Gli stessi formatori dei nostri tecnici.",
+  "pillars.learn.b1": "Postazioni ESD professionali",
+  "pillars.learn.b2": "Aule limitate a 6 allievi",
+  "pillars.learn.b3": "Attestato + sbocco interno",
+  "pillars.learn.cta": "Scopri i corsi",
+
+  "marquee.shipping": "Spedizione 24-48h",
+  "marquee.warranty": "Garanzia 12 mesi",
+  "marquee.freePickup": "Ritiro gratis in negozio",
+  "marquee.stockVerified": "Stock verificato dal CRM",
+
+  "immersive.loading3D": "Caricamento 3D…",
+  "immersive.scrollHint": "Scrolla",
+  "immersive.m1.eyebrow": "Phone Lifecycle",
+  "immersive.m1.titleA": "Tutto il telefono,",
+  "immersive.m1.italic": "una sola casa.",
+  "immersive.m1.body":
+    "Dal primo acquisto fino al riciclo — quattro servizi, un solo gruppo.",
+  "immersive.m2.eyebrow": "Lo riparo, lo ricondiziono",
+  "immersive.m2.titleA": "Quasi tutto si",
+  "immersive.m2.italic": "ripara",
+  "immersive.m2.titleB": ", e in 24 ore.",
+  "immersive.m2.body":
+    "Microscopio, microsaldatura, ricambi originali. Garanzia 12 mesi.",
+  "immersive.m3.eyebrow": "E quando hai finito",
+  "immersive.m3.italic": "Vale ancora.",
+  "immersive.m3.titleA": "Lo ricompriamo noi.",
+  "immersive.m3.body":
+    "Valutazione gratis, spedizione gratis, pagamento entro 48h.",
+  "immersive.m3.cta": "Scopri come",
+
   "enum.condition.new": "Nuovo",
   "enum.condition.used": "Usato",
   "enum.condition.refurbished": "Ricondizionato",
@@ -381,6 +673,157 @@ const EN: Dict = {
     "Dedicated account manager. Direct email, business WhatsApp. They know who you are.",
   "home.b2b.cta.login": "Sign into B2B area",
   "home.b2b.cta.contact": "Request activation",
+
+  "pg.filter.all": "All",
+  "pg.cat.smartphone": "Smartphone",
+  "pg.cat.part": "Spare part",
+  "pg.stock.outOfStock": "Out of stock",
+  "pg.stock.checkAvailable": "Check availability",
+  "pg.stock.lastN": (n) => `Last ${n} left`,
+  "pg.stock.available": "In stock",
+  "pg.price.onRequest": "On request",
+  "pg.price.hiddenTooltip":
+    "Retail price not published for this item. Contact us for pricing.",
+  "pg.price.reserved": "Price reserved",
+  "pg.cta.loginForPrice": "Sign in for the price",
+  "pg.cta.notifyWhenBack": "Notify me when back",
+  "pg.cta.buyOn": (channel) => `Buy on ${channel}`,
+  "pg.empty": "No products found.",
+
+  "bc.home": "Home",
+  "bc.products": "Products",
+  "bc.phones": "Phones",
+  "bc.parts": "Spare parts",
+  "bc.accessories": "Accessories",
+  "bc.used": "Used",
+  "bc.repairs": "Repairs",
+  "bc.aboutUs": "About us",
+  "bc.stores": "Stores",
+  "bc.courses": "Courses",
+  "bc.openStore": "Open a store",
+  "bc.becomePartner": "Become a partner",
+  "bc.tradeIn": "Trade-in",
+  "bc.tracker": "Track repair",
+
+  "ch.products.eyebrow": "The Group's unified warehouse",
+  "ch.products.title": "Our",
+  "ch.products.accent": "catalogue",
+  "ch.products.description":
+    "Phones, spare parts, accessories. Real availability from Cellcom Group channels: brand new, refurbished and warranty-backed used.",
+  "ch.phones.eyebrow": "Smartphones",
+  "ch.phones.title": "Our",
+  "ch.phones.accent": "phones",
+  "ch.phones.description":
+    "Apple, Samsung, Google, Xiaomi and all the major brands. IMEI verified, battery above 80% on refurbished, technical report on used.",
+  "ch.phones.metric.new": "New",
+  "ch.phones.metric.refurbished": "Refurbished",
+  "ch.phones.metric.used": "Used",
+  "ch.phones.metric.total": "Total",
+  "ch.parts.eyebrow": "Spare parts",
+  "ch.parts.title": "Our",
+  "ch.parts.accent": "spare parts",
+  "ch.parts.description":
+    "Displays, batteries, housings, motherboards and back glass. Certified original and compatible. Filter by brand and model: the right part first time.",
+  "ch.parts.metric.inCatalog": "In catalogue",
+  "ch.parts.metric.models": "Compatible models",
+  "ch.accessories.eyebrow": "Accessories",
+  "ch.accessories.title": "Our",
+  "ch.accessories.accent": "accessories",
+  "ch.accessories.description":
+    "Cases, tempered glass, fast chargers, original USB-C and Lightning cables, wireless headphones. Verified compatibility, warranty included.",
+  "ch.accessories.metric.inCatalog": "In catalogue",
+  "ch.used.eyebrow": "Warranty-backed used",
+  "ch.used.title": "Used,",
+  "ch.used.accent": "tested and warranted",
+  "ch.used.description":
+    "Every phone goes through our lab: IMEI verified, battery checked, technical report and warranty included. What you see is actually in stock — once it sells, it's gone from the listing.",
+  "ch.used.metric.forSale": "For sale",
+  "ch.used.metric.ottimo": "Excellent",
+  "ch.used.metric.buono": "Good",
+  "ch.used.metric.warranty": "Warranty",
+  "ch.used.metric.warrantyValue": "up to 12m",
+
+  "catalog.land.sec.phones.title": "Phones",
+  "catalog.land.sec.phones.description":
+    "Brand new sealed, certified refurbished, tested used. Apple, Samsung, Xiaomi, Google Pixel and every major brand.",
+  "catalog.land.sec.parts.title": "Spare parts",
+  "catalog.land.sec.parts.description":
+    "Displays, batteries, housings, motherboards, back glass. Filter by model and get the right part first time.",
+  "catalog.land.sec.accessories.title": "Accessories",
+  "catalog.land.sec.accessories.description":
+    "Cases, tempered glass, fast chargers, MFi and USB-C cables, wireless headphones. All with warranty included.",
+  "catalog.land.featured.eyebrow": "Featured",
+  "catalog.land.featured.titleA": "The most",
+  "catalog.land.featured.accent": "wanted",
+  "catalog.land.featured.titleB": "right now",
+  "catalog.land.featured.cta": "See all phones",
+
+  "pillars.section.eyebrow": "Phone lifecycle hub",
+  "pillars.section.titleA": "Four things,",
+  "pillars.section.accent": "one place.",
+  "pillars.section.intro":
+    "Buy, repair, trade in, learn. Same warehouse, same people, same warranty.",
+  "pillars.buy.eyebrow": "Buy",
+  "pillars.buy.titleA": "Your next phone.",
+  "pillars.buy.accent": "Refurbished works too.",
+  "pillars.buy.body":
+    "Brand new, refurbished and tested used. Every brand, one warehouse, 12-month warranty across the board.",
+  "pillars.buy.b1": "24-48h shipping in Italy",
+  "pillars.buy.b2": "Free pickup in our stores",
+  "pillars.buy.b3": "Klarna/Scalapay instalments available",
+  "pillars.buy.cta": "Browse the catalogue",
+  "pillars.repair.eyebrow": "Repair",
+  "pillars.repair.titleA": "Almost anything can be fixed,",
+  "pillars.repair.accent": "and in 24 hours.",
+  "pillars.repair.body":
+    "Screen, battery, motherboard, housing. Free diagnosis, quote before we touch it, sealed in front of you.",
+  "pillars.repair.b1": "12-month warranty on labour and parts",
+  "pillars.repair.b2": "BGA micro-soldering in-house",
+  "pillars.repair.b3": "Pickup, shipping or store",
+  "pillars.repair.cta": "Request a repair",
+  "pillars.resell.eyebrow": "Trade in",
+  "pillars.resell.titleA": "Your old phone",
+  "pillars.resell.accent": "is still worth something.",
+  "pillars.resell.body":
+    "Free valuation from photos within 24 hours. Free shipping or pickup, payment within 48 hours.",
+  "pillars.resell.b1": "+10% bonus in Cellcom credit",
+  "pillars.resell.b2": "Written quote, no tricks",
+  "pillars.resell.b3": "We take broken phones too",
+  "pillars.resell.cta": "Value your used phone",
+  "pillars.learn.eyebrow": "Learn",
+  "pillars.learn.titleA": "Become",
+  "pillars.learn.accent": "a repair technician.",
+  "pillars.learn.body":
+    "Three levels at Cellcom Academy: foundation, intermediate, BGA micro-soldering. The same instructors who train our technicians.",
+  "pillars.learn.b1": "Professional ESD workstations",
+  "pillars.learn.b2": "Class size capped at 6 students",
+  "pillars.learn.b3": "Certificate + in-house job pipeline",
+  "pillars.learn.cta": "Discover the courses",
+
+  "marquee.shipping": "24-48h shipping",
+  "marquee.warranty": "12-month warranty",
+  "marquee.freePickup": "Free pickup in store",
+  "marquee.stockVerified": "Stock verified from the CRM",
+
+  "immersive.loading3D": "Loading 3D…",
+  "immersive.scrollHint": "Scroll",
+  "immersive.m1.eyebrow": "Phone Lifecycle",
+  "immersive.m1.titleA": "The whole phone,",
+  "immersive.m1.italic": "one home.",
+  "immersive.m1.body":
+    "From the first purchase to recycling — four services, one group.",
+  "immersive.m2.eyebrow": "I repair, I refurbish",
+  "immersive.m2.titleA": "Almost anything can be",
+  "immersive.m2.italic": "fixed",
+  "immersive.m2.titleB": ", and in 24 hours.",
+  "immersive.m2.body":
+    "Microscope, micro-soldering, original parts. 12-month warranty.",
+  "immersive.m3.eyebrow": "And when you're done",
+  "immersive.m3.italic": "Still valuable.",
+  "immersive.m3.titleA": "We buy it back.",
+  "immersive.m3.body":
+    "Free valuation, free shipping, payment within 48 hours.",
+  "immersive.m3.cta": "Find out how",
 
   "enum.condition.new": "New",
   "enum.condition.used": "Used",

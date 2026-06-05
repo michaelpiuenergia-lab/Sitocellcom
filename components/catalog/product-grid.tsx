@@ -5,7 +5,6 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   formatPrice,
-  CONDITION_LABELS,
   CHANNEL_URLS,
 } from "@/lib/crm-client/mocks/products";
 import type {
@@ -17,6 +16,8 @@ import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/card";
+import { useLang } from "@/lib/i18n/lang-context";
+import type { Dict } from "@/lib/i18n/dict";
 
 function buildBuyUrl(product: PublicProductListItem): string {
   const base = CHANNEL_URLS[product.channel];
@@ -99,14 +100,18 @@ function AccessoryIcon() {
   );
 }
 
-const conditions: { value: PublicCondition | "all"; label: string }[] = [
-  { value: "all", label: "Tutte" },
-  { value: "new", label: "Nuovo" },
-  { value: "refurbished", label: "Ricondizionato" },
-  { value: "used", label: "Usato" },
+const CONDITION_OPTIONS: { value: PublicCondition | "all"; key: keyof Dict }[] = [
+  { value: "all", key: "pg.filter.all" },
+  { value: "new", key: "enum.condition.new" },
+  { value: "refurbished", key: "enum.condition.refurbished" },
+  { value: "used", key: "enum.condition.used" },
 ];
 
-const categories = ["Tutte", "Smartphone", "Ricambio"];
+const CATEGORY_OPTIONS: { value: string; key: keyof Dict }[] = [
+  { value: "Tutte", key: "pg.filter.all" },
+  { value: "Smartphone", key: "pg.cat.smartphone" },
+  { value: "Ricambio", key: "pg.cat.part" },
+];
 
 function ProductCard({
   product,
@@ -115,18 +120,19 @@ function ProductCard({
   product: PublicProductListItem;
   canSeePrices: boolean;
 }) {
+  const { t } = useLang();
   const { stock, variantCount } = product;
 
   const treatAsOutOfStock = stock.count === 0 && variantCount === 0;
   const treatAsCheckRequired = stock.count === 0 && variantCount > 0;
 
   const stockLabel = treatAsOutOfStock
-    ? "Esaurito"
+    ? t("pg.stock.outOfStock")
     : treatAsCheckRequired
-      ? "Verifica disponibilità"
+      ? t("pg.stock.checkAvailable")
       : !stock.capped && stock.count <= 3
-        ? `Ultimi ${stock.count} pezzi`
-        : "Disponibile";
+        ? t("pg.stock.lastN", stock.count)
+        : t("pg.stock.available");
 
   const stockToneClass = treatAsOutOfStock
     ? "text-brand-600"
@@ -177,7 +183,7 @@ function ProductCard({
           )}
           {product.condition && (
             <Chip tone="outline" size="sm">
-              {CONDITION_LABELS[product.condition]}
+              {t(`enum.condition.${product.condition}` as `enum.condition.${PublicCondition}`)}
             </Chip>
           )}
         </div>
@@ -203,17 +209,13 @@ function ProductCard({
                   ? "text-brand-600 italic font-serif text-base"
                   : "text-foreground text-xl",
               )}
-              title={
-                product.priceHidden
-                  ? "Il prezzo pubblico non è esposto per questo articolo. Contattaci per il listino."
-                  : undefined
-              }
+              title={product.priceHidden ? t("pg.price.hiddenTooltip") : undefined}
             >
-              {product.priceHidden ? "Su richiesta" : formatPrice(product.priceCents)}
+              {product.priceHidden ? t("pg.price.onRequest") : formatPrice(product.priceCents)}
             </span>
           ) : (
             <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
-              Prezzo riservato
+              {t("pg.price.reserved")}
             </span>
           )}
           <span
@@ -228,11 +230,11 @@ function ProductCard({
 
         {!canSeePrices ? (
           <Button href="/clienti/login" variant="primary" size="sm" iconEnd="→" className="w-full">
-            Accedi per il prezzo
+            {t("pg.cta.loginForPrice")}
           </Button>
         ) : treatAsOutOfStock ? (
           <Button variant="secondary" size="sm" disabled className="w-full">
-            Avvisami quando torna
+            {t("pg.cta.notifyWhenBack")}
           </Button>
         ) : (
           <Button
@@ -245,7 +247,7 @@ function ProductCard({
             iconEnd="↗"
             className="w-full"
           >
-            Acquista su {getChannelName(product.channel)}
+            {t("pg.cta.buyOn", getChannelName(product.channel))}
           </Button>
         )}
       </div>
@@ -264,6 +266,7 @@ export function ProductGrid({
   showConditionFilter?: boolean;
   showCategoryFilter?: boolean;
 }) {
+  const { t } = useLang();
   const [activeCondition, setActiveCondition] = useState<PublicCondition | "all">("all");
   const [activeCategory, setActiveCategory] = useState("Tutte");
 
@@ -283,14 +286,14 @@ export function ProductGrid({
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
           {showConditionFilter ? (
             <div className="flex flex-wrap gap-2">
-              {conditions.map((c) => (
+              {CONDITION_OPTIONS.map((c) => (
                 <Chip
                   key={c.value}
                   size="md"
                   active={activeCondition === c.value}
                   onClick={() => setActiveCondition(c.value)}
                 >
-                  {c.label}
+                  {t(c.key)}
                 </Chip>
               ))}
             </div>
@@ -299,14 +302,14 @@ export function ProductGrid({
           )}
           {showCategoryFilter && (
             <div className="flex flex-wrap gap-2">
-              {categories.map((cat) => (
+              {CATEGORY_OPTIONS.map((cat) => (
                 <Chip
-                  key={cat}
+                  key={cat.value}
                   size="md"
-                  active={activeCategory === cat}
-                  onClick={() => setActiveCategory(cat)}
+                  active={activeCategory === cat.value}
+                  onClick={() => setActiveCategory(cat.value)}
                 >
-                  {cat}
+                  {t(cat.key)}
                 </Chip>
               ))}
             </div>
@@ -324,7 +327,7 @@ export function ProductGrid({
 
       {filtered.length === 0 && (
         <p className="text-center text-muted-foreground py-12">
-          Nessun prodotto trovato.
+          {t("pg.empty")}
         </p>
       )}
     </div>
