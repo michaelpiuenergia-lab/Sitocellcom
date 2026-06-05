@@ -24,6 +24,7 @@ import {
   findModelById,
   searchModels,
   modelImageUrl,
+  realCodes,
   type RepairModel,
 } from "@/lib/repairs/models-db";
 import { BrandLogo } from "./brand-logo";
@@ -1319,16 +1320,17 @@ function ModelCard({
   onClick: () => void;
 }) {
   const img = modelImageUrl(model);
-  // Mostra primi 2 codici parte (es. "A3520, A3258") + count rimanenti
-  const visibleCodes = model.codes.slice(0, 2).join(", ");
-  const remainingCodes = model.codes.length > 2 ? model.codes.length - 2 : 0;
+  // Codici "veri" (filtra placeholder N/A del plugin sorgente)
+  const codes = realCodes(model);
+  const visibleCodes = codes.slice(0, 2).join(", ");
+  const remainingCodes = codes.length > 2 ? codes.length - 2 : 0;
 
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        "text-left p-3 rounded-xl border transition-all duration-200 flex flex-col gap-2 min-h-[160px]",
+        "text-left p-3 rounded-xl border transition-all duration-200 flex flex-col gap-2",
         active
           ? "bg-brand-600/10 border-brand-600 shadow-[0_0_24px_-8px_rgba(220,38,38,0.4)]"
           : "bg-card border-border hover:border-brand-600/40 hover:bg-card-hover",
@@ -1338,9 +1340,9 @@ function ModelCard({
         {img ? (
           <Image
             src={img}
-            alt={model.name}
-            width={120}
-            height={120}
+            alt={`${model.brand} ${model.name}`}
+            width={140}
+            height={140}
             unoptimized
             className="w-full h-full object-contain p-2"
           />
@@ -1352,17 +1354,25 @@ function ModelCard({
         )}
       </div>
       <span
+        className="font-mono text-[9px] uppercase tracking-[0.18em] text-brand-500/90 leading-none"
+      >
+        {model.brand}
+      </span>
+      <span
         className={cn(
-          "font-sans text-sm leading-tight line-clamp-2",
-          active ? "text-foreground font-medium" : "text-foreground/90",
+          "font-sans text-[13px] leading-snug",
+          active ? "text-foreground font-semibold" : "text-foreground/90 font-medium",
         )}
+        title={model.name}
       >
         {model.name}
       </span>
       {visibleCodes && (
-        <span className="text-[10px] font-mono tabular-nums text-brand-500/80 line-clamp-1">
+        <span className="text-[10px] font-mono tabular-nums text-muted-foreground line-clamp-1">
           {visibleCodes}
-          {remainingCodes > 0 && `, +${remainingCodes}`}
+          {remainingCodes > 0 && (
+            <span className="text-brand-500/70"> · +{remainingCodes}</span>
+          )}
         </span>
       )}
     </button>

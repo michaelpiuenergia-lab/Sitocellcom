@@ -39,23 +39,55 @@ type Db = {
 
 const DB = raw as Db;
 
-/** Tutti i modelli, immutabile. */
-export const ALL_MODELS: ReadonlyArray<RepairModel> = DB.models;
+/**
+ * Modelli "placeholder" del plugin sorgente — il nome coincide con la
+ * categoria (es. "Laptop (Asus)", "Tablet (OPPO)") o con il brand stesso.
+ * Sono entry generiche senza dati utili. Le escludiamo dalla UI.
+ */
+function isPlaceholderModel(m: RepairModel): boolean {
+  const name = m.name.trim();
+  if (!name) return true;
+  // "Laptop (Asus)" / "Tablet (X)" / "Watch (X)" / ecc.
+  if (/^(Smartphone|Tablet|Watch|Laptop|Desktop|Console)\s*\(/i.test(name)) return true;
+  // Nome = brand puro (es. "Apple" come unico modello)
+  if (name.toLowerCase() === m.brand.toLowerCase()) return true;
+  return false;
+}
 
-/** Numero totale modelli nel DB. */
-export const TOTAL_MODELS = DB.models.length;
+/** Codici "N/A" / vuoti / placeholder vanno trattati come "nessun codice". */
+export function hasRealCodes(model: RepairModel): boolean {
+  return model.codes.some((c) => {
+    const t = c.trim();
+    return t && !/^n\/?a$/i.test(t) && !/^-+$/.test(t);
+  });
+}
+
+/** Codici reali (filtra N/A, vuoti, trattini). */
+export function realCodes(model: RepairModel): string[] {
+  return model.codes
+    .map((c) => c.trim())
+    .filter((c) => c && !/^n\/?a$/i.test(c) && !/^-+$/.test(c));
+}
+
+/** Tutti i modelli "veri" (esclusi i placeholder), immutabile. */
+export const ALL_MODELS: ReadonlyArray<RepairModel> = DB.models.filter(
+  (m) => !isPlaceholderModel(m),
+);
+
+/** Numero totale modelli nel DB (esclusi placeholder). */
+export const TOTAL_MODELS = ALL_MODELS.length;
 
 /** Lista categorie effettivamente presenti, ordinate. */
 export const CATEGORIES_AVAILABLE = (() => {
   const set = new Set<RepairModel["category"]>();
-  for (const m of DB.models) set.add(m.category);
+  for (const m of ALL_MODELS) set.add(m.category);
   return Array.from(set).sort();
 })();
 
 /** Brand per categoria, ordinati per # modelli desc. */
 const BRANDS_BY_CAT = (() => {
   const map = new Map<string, Map<string, number>>();
-  for (const m of DB.models) {
+  for (const m of ALL_MODELS) {
     if (!map.has(m.category)) map.set(m.category, new Map());
     const b = map.get(m.category)!;
     b.set(m.brand, (b.get(m.brand) ?? 0) + 1);
@@ -94,7 +126,7 @@ export function modelsForCategoryBrand(
 }
 
 /** Trova un modello per id. */
-const BY_ID = new Map<number, RepairModel>(DB.models.map((m) => [m.id, m]));
+const BY_ID = new Map<number, RepairModel>(ALL_MODELS.map((m) => [m.id, m]));
 export function findModelById(id: number): RepairModel | undefined {
   return BY_ID.get(id);
 }
@@ -104,7 +136,7 @@ export function searchModels(query: string, limit = 12): RepairModel[] {
   const q = query.trim().toLowerCase();
   if (q.length < 2) return [];
   const out: RepairModel[] = [];
-  for (const m of DB.models) {
+  for (const m of ALL_MODELS) {
     const blob = `${m.brand} ${m.name} ${m.codes.join(" ")}`.toLowerCase();
     if (blob.includes(q)) {
       out.push(m);
