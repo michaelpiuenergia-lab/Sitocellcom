@@ -1,5 +1,6 @@
 import { RegisterForm } from "./register-form";
 import { LogoC } from "@/components/marketing/logo-c";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "Registrati come rivenditore — Cellcom B2B",
@@ -9,7 +10,8 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default function B2bRegistratiPage() {
+export default async function B2bRegistratiPage() {
+  const t = await getT();
   return (
     <main
       className="relative min-h-screen flex items-center justify-center px-6 py-16"
@@ -26,7 +28,7 @@ export default function B2bRegistratiPage() {
               color: "#dc2626",
             }}
           >
-            Diventa rivenditore
+            {t("auth.b2b.register.eyebrow")}
           </span>
         </a>
 
@@ -48,12 +50,10 @@ export default function B2bRegistratiPage() {
                 lineHeight: 1.1,
               }}
             >
-              Registrati come rivenditore
+              {t("auth.b2b.register.title")}
             </h1>
             <p style={{ fontSize: "14px", color: "#525252" }}>
-              Lasciaci i dati della tua attività. Lo staff Cellcom verifica la
-              richiesta entro 24h lavorative e ti manda una mail per impostare
-              la password.
+              {t("auth.b2b.register.subtitle")}
             </p>
           </div>
           <RegisterForm />
@@ -68,7 +68,7 @@ export default function B2bRegistratiPage() {
             color: "#737373",
           }}
         >
-          ← Torna al login
+          {t("auth.common.backToLogin")}
         </a>
       </div>
     </main>

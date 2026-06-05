@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLang } from "@/lib/i18n/lang-context";
 
 export function LoginForm({ next }: { next?: string }) {
   const router = useRouter();
+  const { t } = useLang();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -25,28 +27,15 @@ export function LoginForm({ next }: { next?: string }) {
           error?: { code?: string; message?: string };
         };
         const code = data?.error?.code;
-        // Casi del workflow di approvazione (CRM 403)
-        if (code === "B2B_PENDING") {
-          throw new Error(
-            "Il tuo account è in attesa di approvazione dal nostro staff. Riceverai una mail appena sarà attivo.",
-          );
-        }
-        if (code === "B2B_REJECTED") {
-          throw new Error(
-            "La richiesta di account B2B è stata rifiutata. Contattaci per maggiori informazioni.",
-          );
-        }
-        if (code === "NOT_B2B") {
-          throw new Error(
-            "Questo account non è abilitato all'area B2B. Registra un'azienda per accedere.",
-          );
-        }
-        throw new Error(data?.error?.message ?? "Credenziali non valide");
+        if (code === "B2B_PENDING") throw new Error(t("auth.b2b.login.errPending"));
+        if (code === "B2B_REJECTED") throw new Error(t("auth.b2b.login.errRejected"));
+        if (code === "NOT_B2B") throw new Error(t("auth.b2b.login.errNotB2B"));
+        throw new Error(data?.error?.message ?? t("auth.b2b.login.errInvalidCreds"));
       }
       router.push(next ?? "/b2b/prodotti");
       router.refresh();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Errore di accesso");
+      setError(e instanceof Error ? e.message : t("auth.b2b.login.errGeneric"));
     } finally {
       setBusy(false);
     }
@@ -63,7 +52,7 @@ export function LoginForm({ next }: { next?: string }) {
             color: "#737373",
           }}
         >
-          Email
+          {t("auth.b2b.login.emailLabel")}
         </label>
         <input
           type="email"
@@ -72,7 +61,7 @@ export function LoginForm({ next }: { next?: string }) {
           required
           autoComplete="email"
           autoFocus
-          placeholder="nome@azienda.it"
+          placeholder={t("auth.b2b.login.emailPlaceholder")}
           className="w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors duration-200"
           style={{
             backgroundColor: "#ffffff",
@@ -92,7 +81,7 @@ export function LoginForm({ next }: { next?: string }) {
             color: "#737373",
           }}
         >
-          Password
+          {t("auth.b2b.login.passwordLabel")}
         </label>
         <input
           type="password"
@@ -114,7 +103,7 @@ export function LoginForm({ next }: { next?: string }) {
           className="font-mono uppercase self-end transition-colors hover:text-[#dc2626]"
           style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#737373" }}
         >
-          Password dimenticata?
+          {t("auth.common.passwordForgot")}
         </a>
       </div>
 
@@ -144,7 +133,7 @@ export function LoginForm({ next }: { next?: string }) {
           letterSpacing: "-0.01em",
         }}
       >
-        {busy ? "Accesso in corso…" : "Accedi all'area B2B →"}
+        {busy ? t("auth.b2b.login.ctaBusy") : t("auth.b2b.login.cta")}
       </button>
 
       <div
@@ -152,7 +141,7 @@ export function LoginForm({ next }: { next?: string }) {
         style={{ borderTop: "1px solid #f1f5f9" }}
       >
         <span style={{ fontSize: "13px", color: "#737373" }}>
-          Sono nuovo rivenditore —
+          {t("auth.b2b.login.newReseller")}
         </span>
         <a
           href="/b2b/registrati"
@@ -165,7 +154,7 @@ export function LoginForm({ next }: { next?: string }) {
             textUnderlineOffset: "3px",
           }}
         >
-          registrami →
+          {t("auth.b2b.login.newResellerCta")}
         </a>
       </div>
     </form>

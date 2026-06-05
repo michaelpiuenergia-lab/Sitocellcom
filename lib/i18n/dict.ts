@@ -303,6 +303,92 @@ export type Dict = {
   "rep.request.accent": string;
   "rep.request.intro": string;
 
+  // ─── Auth (B2B + customer) ──────────────────────────────────────────
+  "auth.common.backToSite": string;
+  "auth.common.backToLogin": string;
+  "auth.common.passwordForgot": string;
+  "auth.b2b.eyebrow": string;
+  "auth.b2b.login.title": string;
+  "auth.b2b.login.subtitle": string;
+  "auth.b2b.login.sessionExpired": string;
+  "auth.b2b.login.noCredentials": string;
+  "auth.b2b.login.requestActivation": string;
+  "auth.b2b.login.emailLabel": string;
+  "auth.b2b.login.passwordLabel": string;
+  "auth.b2b.login.emailPlaceholder": string;
+  "auth.b2b.login.cta": string;
+  "auth.b2b.login.ctaBusy": string;
+  "auth.b2b.login.newReseller": string;
+  "auth.b2b.login.newResellerCta": string;
+  "auth.b2b.login.errInvalidCreds": string;
+  "auth.b2b.login.errPending": string;
+  "auth.b2b.login.errRejected": string;
+  "auth.b2b.login.errNotB2B": string;
+  "auth.b2b.login.errGeneric": string;
+  "auth.b2b.register.eyebrow": string;
+  "auth.b2b.register.title": string;
+  "auth.b2b.register.subtitle": string;
+  "auth.b2b.register.nameLabel": string;
+  "auth.b2b.register.namePh": string;
+  "auth.b2b.register.emailLabel": string;
+  "auth.b2b.register.emailPh": string;
+  "auth.b2b.register.companyLabel": string;
+  "auth.b2b.register.companyPh": string;
+  "auth.b2b.register.vatLabel": string;
+  "auth.b2b.register.vatPh": string;
+  "auth.b2b.register.phoneLabel": string;
+  "auth.b2b.register.phonePh": string;
+  "auth.b2b.register.consent": string;
+  "auth.b2b.register.cta": string;
+  "auth.b2b.register.ctaBusy": string;
+  "auth.b2b.register.done.title": string;
+  "auth.b2b.register.done.body": string;
+  "auth.b2b.register.errGeneric": string;
+  "auth.b2b.forgot.title": string;
+  "auth.b2b.forgot.subtitle": string;
+  "auth.b2b.forgot.emailLabel": string;
+  "auth.b2b.forgot.emailPh": string;
+  "auth.b2b.forgot.cta": string;
+  "auth.b2b.forgot.ctaBusy": string;
+  "auth.b2b.forgot.done.title": string;
+  "auth.b2b.forgot.done.body": string;
+  "auth.b2b.reset.eyebrow": string;
+  "auth.b2b.reset.title": string;
+  "auth.b2b.reset.subtitle": string;
+  "auth.b2b.reset.passwordLabel": string;
+  "auth.b2b.reset.cta": string;
+  "auth.b2b.reset.ctaBusy": string;
+  "auth.b2b.reset.done.title": string;
+  "auth.b2b.reset.done.body": string;
+  "auth.b2b.reset.done.cta": string;
+  "auth.b2b.reset.invalidToken": string;
+  "auth.b2b.reset.invalidLinkBefore": string;
+  "auth.b2b.reset.invalidLinkAnchor": string;
+  "auth.b2b.reset.minLengthHint": string;
+  "auth.b2b.reset.titleInline": string;
+  "auth.b2b.reset.confirmLabel": string;
+  "auth.b2b.reset.errMinLength": string;
+  "auth.b2b.reset.errMismatch": string;
+  "auth.b2b.reset.errGeneric": string;
+  "auth.b2b.reset.successTitle": string;
+  "auth.b2b.reset.successBody": string;
+  "auth.b2b.reset.submitting": string;
+  "auth.b2b.reset.submit": string;
+  "auth.customer.eyebrow": string;
+  "auth.customer.title": string;
+  "auth.customer.subtitle": string;
+  "auth.customer.inlineTitle": string;
+  "auth.customer.inlineSubtitle": string;
+  "auth.customer.emailLabel": string;
+  "auth.customer.emailPh": string;
+  "auth.customer.passwordLabel": string;
+  "auth.customer.cta": string;
+  "auth.customer.ctaBusy": string;
+  "auth.customer.errInvalidCreds": string;
+  "auth.customer.errGeneric": string;
+  "auth.customer.noCredentials": string;
+  "auth.customer.noCredentialsHint": string;
+
   // ─── Enum labels riusati ovunque ────────────────────────────────────
   "enum.condition.new": string;
   "enum.condition.used": string;
@@ -638,6 +724,108 @@ const IT: Dict = {
   "rep.request.intro":
     "Tre passi rapidi: telefono → problema → come fartelo arrivare. Diagnosi gratuita, nessun impegno fino al preventivo.",
 
+  "auth.common.backToSite": "← Torna al sito pubblico",
+  "auth.common.backToLogin": "← Torna al login",
+  "auth.common.passwordForgot": "Password dimenticata?",
+  "auth.b2b.eyebrow": "Area B2B",
+  "auth.b2b.login.title": "Accedi al tuo listino",
+  "auth.b2b.login.subtitle":
+    "Prezzi riservati per rivenditori, operatori e aziende del Gruppo.",
+  "auth.b2b.login.sessionExpired":
+    "Sessione scaduta. Effettua di nuovo l'accesso.",
+  "auth.b2b.login.noCredentials": "Non hai ancora le credenziali?",
+  "auth.b2b.login.requestActivation": "Richiedi attivazione →",
+  "auth.b2b.login.emailLabel": "Email",
+  "auth.b2b.login.passwordLabel": "Password",
+  "auth.b2b.login.emailPlaceholder": "nome@azienda.it",
+  "auth.b2b.login.cta": "Accedi all'area B2B →",
+  "auth.b2b.login.ctaBusy": "Accesso in corso…",
+  "auth.b2b.login.newReseller": "Sono nuovo rivenditore —",
+  "auth.b2b.login.newResellerCta": "registrami →",
+  "auth.b2b.login.errInvalidCreds": "Credenziali non valide",
+  "auth.b2b.login.errPending":
+    "Il tuo account è in attesa di approvazione dal nostro staff. Riceverai una mail appena sarà attivo.",
+  "auth.b2b.login.errRejected":
+    "La richiesta di account B2B è stata rifiutata. Contattaci per maggiori informazioni.",
+  "auth.b2b.login.errNotB2B":
+    "Questo account non è abilitato all'area B2B. Registra un'azienda per accedere.",
+  "auth.b2b.login.errGeneric": "Errore di accesso",
+  "auth.b2b.register.eyebrow": "Diventa rivenditore",
+  "auth.b2b.register.title": "Registrati come rivenditore",
+  "auth.b2b.register.subtitle":
+    "Lasciaci i dati della tua attività. Lo staff Cellcom verifica la richiesta entro 24h lavorative e ti manda una mail per impostare la password.",
+  "auth.b2b.register.nameLabel": "Nome e cognome referente *",
+  "auth.b2b.register.namePh": "Mario Rossi",
+  "auth.b2b.register.emailLabel": "Email aziendale *",
+  "auth.b2b.register.emailPh": "nome@azienda.it",
+  "auth.b2b.register.companyLabel": "Ragione sociale *",
+  "auth.b2b.register.companyPh": "Es. Rivenditore srl",
+  "auth.b2b.register.vatLabel": "P.IVA",
+  "auth.b2b.register.vatPh": "01234567890",
+  "auth.b2b.register.phoneLabel": "Telefono",
+  "auth.b2b.register.phonePh": "+39 091 1234567",
+  "auth.b2b.register.consent":
+    "Inviando la richiesta accetti che Cellcom Smartphone Fix SRLS contatti l'email indicata per gestire l'attivazione dell'account rivenditore.",
+  "auth.b2b.register.cta": "Invia la richiesta →",
+  "auth.b2b.register.ctaBusy": "Invio…",
+  "auth.b2b.register.done.title": "Richiesta inviata.",
+  "auth.b2b.register.done.body":
+    "Ti contatteremo via email entro 24h lavorative. Una volta approvato riceverai un link per impostare la password e accedere all'area B2B con i prezzi a volumi.",
+  "auth.b2b.register.errGeneric": "Errore nell'invio",
+  "auth.b2b.forgot.title": "Password dimenticata",
+  "auth.b2b.forgot.subtitle":
+    "Inserisci la tua email B2B. Se l'account esiste ti mandiamo un link per impostare una nuova password.",
+  "auth.b2b.forgot.emailLabel": "Email",
+  "auth.b2b.forgot.emailPh": "azienda@email.it",
+  "auth.b2b.forgot.cta": "Manda il link →",
+  "auth.b2b.forgot.ctaBusy": "Invio…",
+  "auth.b2b.forgot.done.title": "Richiesta inviata.",
+  "auth.b2b.forgot.done.body":
+    "Se l'email è registrata come account B2B, riceverai un link entro qualche minuto. Controlla anche la cartella spam.",
+  "auth.b2b.reset.eyebrow": "Reimposta password",
+  "auth.b2b.reset.title": "Nuova password",
+  "auth.b2b.reset.subtitle":
+    "Imposta una nuova password per il tuo account B2B. Minimo 8 caratteri.",
+  "auth.b2b.reset.passwordLabel": "Nuova password",
+  "auth.b2b.reset.cta": "Imposta password →",
+  "auth.b2b.reset.ctaBusy": "Invio…",
+  "auth.b2b.reset.done.title": "Password aggiornata.",
+  "auth.b2b.reset.done.body":
+    "La tua password è stata cambiata. Puoi accedere all'area B2B con le nuove credenziali.",
+  "auth.b2b.reset.done.cta": "Vai al login →",
+  "auth.b2b.reset.invalidToken": "Link non valido o scaduto",
+  "auth.b2b.reset.invalidLinkBefore":
+    "Link non valido. Richiedi un nuovo invio dalla",
+  "auth.b2b.reset.invalidLinkAnchor": "pagina password dimenticata",
+  "auth.b2b.reset.minLengthHint":
+    "Almeno 8 caratteri. Tutte le tue sessioni attive verranno revocate.",
+  "auth.b2b.reset.titleInline": "Imposta una nuova password",
+  "auth.b2b.reset.confirmLabel": "Conferma password",
+  "auth.b2b.reset.errMinLength": "La password deve avere almeno 8 caratteri",
+  "auth.b2b.reset.errMismatch": "Le due password non coincidono",
+  "auth.b2b.reset.errGeneric": "Operazione non riuscita",
+  "auth.b2b.reset.successTitle": "Password aggiornata.",
+  "auth.b2b.reset.successBody": "Ti porto al login…",
+  "auth.b2b.reset.submitting": "Aggiorno…",
+  "auth.b2b.reset.submit": "Imposta nuova password →",
+  "auth.customer.eyebrow": "Area clienti",
+  "auth.customer.title": "Accedi al tuo account",
+  "auth.customer.subtitle":
+    "Lo stato delle tue riparazioni, i preventivi da approvare e i corsi a cui sei iscritto.",
+  "auth.customer.inlineTitle": "Accedi",
+  "auth.customer.inlineSubtitle":
+    "Vedi le tue riparazioni, i preventivi e i prezzi riservati.",
+  "auth.customer.emailLabel": "Email",
+  "auth.customer.emailPh": "nome@email.it",
+  "auth.customer.passwordLabel": "Password",
+  "auth.customer.cta": "Accedi →",
+  "auth.customer.ctaBusy": "Accesso in corso…",
+  "auth.customer.errInvalidCreds": "Credenziali non valide",
+  "auth.customer.errGeneric": "Errore",
+  "auth.customer.noCredentials": "Non hai ancora le credenziali?",
+  "auth.customer.noCredentialsHint":
+    "Porta un dispositivo in riparazione: ti arriverà via email un link per impostare la password.",
+
   "enum.condition.new": "Nuovo",
   "enum.condition.used": "Usato",
   "enum.condition.refurbished": "Ricondizionato",
@@ -972,6 +1160,108 @@ const EN: Dict = {
   "rep.request.accent": "do you want to fix?",
   "rep.request.intro":
     "Three quick steps: phone → problem → how to get it to us. Free diagnosis, no commitment until the quote.",
+
+  "auth.common.backToSite": "← Back to the public site",
+  "auth.common.backToLogin": "← Back to sign-in",
+  "auth.common.passwordForgot": "Forgot password?",
+  "auth.b2b.eyebrow": "B2B area",
+  "auth.b2b.login.title": "Sign in to your price list",
+  "auth.b2b.login.subtitle":
+    "Reserved prices for resellers, operators and businesses in the Group.",
+  "auth.b2b.login.sessionExpired":
+    "Session expired. Please sign in again.",
+  "auth.b2b.login.noCredentials": "Don't have credentials yet?",
+  "auth.b2b.login.requestActivation": "Request activation →",
+  "auth.b2b.login.emailLabel": "Email",
+  "auth.b2b.login.passwordLabel": "Password",
+  "auth.b2b.login.emailPlaceholder": "name@company.com",
+  "auth.b2b.login.cta": "Sign into B2B area →",
+  "auth.b2b.login.ctaBusy": "Signing in…",
+  "auth.b2b.login.newReseller": "I'm a new reseller —",
+  "auth.b2b.login.newResellerCta": "register me →",
+  "auth.b2b.login.errInvalidCreds": "Invalid credentials",
+  "auth.b2b.login.errPending":
+    "Your account is awaiting approval from our team. You'll get an email as soon as it's active.",
+  "auth.b2b.login.errRejected":
+    "Your B2B account request was rejected. Get in touch for more info.",
+  "auth.b2b.login.errNotB2B":
+    "This account isn't enabled for the B2B area. Register a business to access.",
+  "auth.b2b.login.errGeneric": "Sign-in error",
+  "auth.b2b.register.eyebrow": "Become a reseller",
+  "auth.b2b.register.title": "Sign up as a reseller",
+  "auth.b2b.register.subtitle":
+    "Give us your business details. Cellcom staff reviews the request within 24 business hours and emails you a link to set the password.",
+  "auth.b2b.register.nameLabel": "Contact full name *",
+  "auth.b2b.register.namePh": "Jane Doe",
+  "auth.b2b.register.emailLabel": "Business email *",
+  "auth.b2b.register.emailPh": "name@company.com",
+  "auth.b2b.register.companyLabel": "Company name *",
+  "auth.b2b.register.companyPh": "e.g. Reseller Ltd",
+  "auth.b2b.register.vatLabel": "VAT number",
+  "auth.b2b.register.vatPh": "GB123456789",
+  "auth.b2b.register.phoneLabel": "Phone",
+  "auth.b2b.register.phonePh": "+44 20 1234 5678",
+  "auth.b2b.register.consent":
+    "By submitting you agree that Cellcom Smartphone Fix SRLS may contact the email above to activate the reseller account.",
+  "auth.b2b.register.cta": "Send the request →",
+  "auth.b2b.register.ctaBusy": "Sending…",
+  "auth.b2b.register.done.title": "Request sent.",
+  "auth.b2b.register.done.body":
+    "We'll get in touch by email within 24 business hours. Once approved you'll receive a link to set the password and access the B2B area with volume pricing.",
+  "auth.b2b.register.errGeneric": "Sending failed",
+  "auth.b2b.forgot.title": "Forgot password",
+  "auth.b2b.forgot.subtitle":
+    "Enter your B2B email. If the account exists we'll send you a link to set a new password.",
+  "auth.b2b.forgot.emailLabel": "Email",
+  "auth.b2b.forgot.emailPh": "company@email.com",
+  "auth.b2b.forgot.cta": "Send the link →",
+  "auth.b2b.forgot.ctaBusy": "Sending…",
+  "auth.b2b.forgot.done.title": "Request sent.",
+  "auth.b2b.forgot.done.body":
+    "If the email is registered as a B2B account, you'll receive a link within a few minutes. Check your spam folder too.",
+  "auth.b2b.reset.eyebrow": "Reset password",
+  "auth.b2b.reset.title": "New password",
+  "auth.b2b.reset.subtitle":
+    "Set a new password for your B2B account. Minimum 8 characters.",
+  "auth.b2b.reset.passwordLabel": "New password",
+  "auth.b2b.reset.cta": "Set password →",
+  "auth.b2b.reset.ctaBusy": "Sending…",
+  "auth.b2b.reset.done.title": "Password updated.",
+  "auth.b2b.reset.done.body":
+    "Your password has been changed. You can sign into the B2B area with the new credentials.",
+  "auth.b2b.reset.done.cta": "Go to sign-in →",
+  "auth.b2b.reset.invalidToken": "Invalid or expired link",
+  "auth.b2b.reset.invalidLinkBefore":
+    "Invalid link. Request a new one from the",
+  "auth.b2b.reset.invalidLinkAnchor": "forgot password page",
+  "auth.b2b.reset.minLengthHint":
+    "At least 8 characters. All your active sessions will be revoked.",
+  "auth.b2b.reset.titleInline": "Set a new password",
+  "auth.b2b.reset.confirmLabel": "Confirm password",
+  "auth.b2b.reset.errMinLength": "Password must be at least 8 characters",
+  "auth.b2b.reset.errMismatch": "The two passwords don't match",
+  "auth.b2b.reset.errGeneric": "Operation failed",
+  "auth.b2b.reset.successTitle": "Password updated.",
+  "auth.b2b.reset.successBody": "Taking you to sign-in…",
+  "auth.b2b.reset.submitting": "Updating…",
+  "auth.b2b.reset.submit": "Set new password →",
+  "auth.customer.eyebrow": "Customer area",
+  "auth.customer.title": "Sign in to your account",
+  "auth.customer.subtitle":
+    "Your repairs status, quotes to approve, and the courses you're enrolled in.",
+  "auth.customer.inlineTitle": "Sign in",
+  "auth.customer.inlineSubtitle":
+    "See your repairs, quotes and reserved prices.",
+  "auth.customer.emailLabel": "Email",
+  "auth.customer.emailPh": "name@email.com",
+  "auth.customer.passwordLabel": "Password",
+  "auth.customer.cta": "Sign in →",
+  "auth.customer.ctaBusy": "Signing in…",
+  "auth.customer.errInvalidCreds": "Invalid credentials",
+  "auth.customer.errGeneric": "Error",
+  "auth.customer.noCredentials": "Don't have credentials yet?",
+  "auth.customer.noCredentialsHint":
+    "Bring a device in for repair: you'll get an email with a link to set the password.",
 
   "enum.condition.new": "New",
   "enum.condition.used": "Used",

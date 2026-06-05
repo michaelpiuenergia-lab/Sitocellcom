@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLang } from "@/lib/i18n/lang-context";
 
 const inputClass =
   "w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors";
@@ -19,6 +20,7 @@ const labelStyle = {
 } as const;
 
 export function RegisterForm() {
+  const { t } = useLang();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -48,11 +50,11 @@ export function RegisterForm() {
         const data = (await res.json().catch(() => ({}))) as {
           error?: { message?: string };
         };
-        throw new Error(data?.error?.message ?? "Errore nell'invio");
+        throw new Error(data?.error?.message ?? t("auth.b2b.register.errGeneric"));
       }
       setDone(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Errore nell'invio");
+      setError(e instanceof Error ? e.message : t("auth.b2b.register.errGeneric"));
     } finally {
       setBusy(false);
     }
@@ -69,12 +71,8 @@ export function RegisterForm() {
           border: "1px solid #a7f3d0",
         }}
       >
-        <span className="font-semibold">Richiesta inviata.</span>
-        <span>
-          Ti contatteremo via email entro 24h lavorative. Una volta approvato
-          riceverai un link per impostare la password e accedere all&apos;area
-          B2B con i prezzi a volumi.
-        </span>
+        <span className="font-semibold">{t("auth.b2b.register.done.title")}</span>
+        <span>{t("auth.b2b.register.done.body")}</span>
       </div>
     );
   }
@@ -83,7 +81,7 @@ export function RegisterForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <label className={labelClass} style={labelStyle}>
-          Nome e cognome referente *
+          {t("auth.b2b.register.nameLabel")}
         </label>
         <input
           type="text"
@@ -94,7 +92,7 @@ export function RegisterForm() {
           maxLength={120}
           autoComplete="name"
           autoFocus
-          placeholder="Mario Rossi"
+          placeholder={t("auth.b2b.register.namePh")}
           className={inputClass}
           style={inputStyle}
         />
@@ -102,7 +100,7 @@ export function RegisterForm() {
 
       <div className="flex flex-col gap-2">
         <label className={labelClass} style={labelStyle}>
-          Email aziendale *
+          {t("auth.b2b.register.emailLabel")}
         </label>
         <input
           type="email"
@@ -111,7 +109,7 @@ export function RegisterForm() {
           required
           maxLength={180}
           autoComplete="email"
-          placeholder="nome@azienda.it"
+          placeholder={t("auth.b2b.register.emailPh")}
           className={inputClass}
           style={inputStyle}
         />
@@ -119,7 +117,7 @@ export function RegisterForm() {
 
       <div className="flex flex-col gap-2">
         <label className={labelClass} style={labelStyle}>
-          Ragione sociale *
+          {t("auth.b2b.register.companyLabel")}
         </label>
         <input
           type="text"
@@ -129,7 +127,7 @@ export function RegisterForm() {
           minLength={2}
           maxLength={180}
           autoComplete="organization"
-          placeholder="Es. Rivenditore srl"
+          placeholder={t("auth.b2b.register.companyPh")}
           className={inputClass}
           style={inputStyle}
         />
@@ -138,7 +136,7 @@ export function RegisterForm() {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div className="flex flex-col gap-2">
           <label className={labelClass} style={labelStyle}>
-            P.IVA
+            {t("auth.b2b.register.vatLabel")}
           </label>
           <input
             type="text"
@@ -147,14 +145,14 @@ export function RegisterForm() {
             maxLength={40}
             pattern="[A-Za-z0-9]*"
             autoComplete="off"
-            placeholder="01234567890"
+            placeholder={t("auth.b2b.register.vatPh")}
             className={inputClass}
             style={inputStyle}
           />
         </div>
         <div className="flex flex-col gap-2">
           <label className={labelClass} style={labelStyle}>
-            Telefono
+            {t("auth.b2b.register.phoneLabel")}
           </label>
           <input
             type="tel"
@@ -162,7 +160,7 @@ export function RegisterForm() {
             onChange={(e) => setPhone(e.target.value)}
             maxLength={40}
             autoComplete="tel"
-            placeholder="+39 091 1234567"
+            placeholder={t("auth.b2b.register.phonePh")}
             className={inputClass}
             style={inputStyle}
           />
@@ -184,9 +182,7 @@ export function RegisterForm() {
       )}
 
       <p style={{ fontSize: "12px", color: "#737373" }}>
-        Inviando la richiesta accetti che Cellcom Smartphone Fix SRLS contatti
-        l&apos;email indicata per gestire l&apos;attivazione dell&apos;account
-        rivenditore.
+        {t("auth.b2b.register.consent")}
       </p>
 
       <button
@@ -201,7 +197,7 @@ export function RegisterForm() {
           letterSpacing: "-0.01em",
         }}
       >
-        {busy ? "Invio…" : "Invia la richiesta →"}
+        {busy ? t("auth.b2b.register.ctaBusy") : t("auth.b2b.register.cta")}
       </button>
     </form>
   );

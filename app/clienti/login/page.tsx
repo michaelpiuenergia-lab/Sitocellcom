@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { optionalCustomerSession } from "@/lib/auth/customer-guards";
 import { AuthForm } from "./auth-form";
 import { LogoC } from "@/components/marketing/logo-c";
+import { getT } from "@/lib/i18n/server";
 
 type SearchParams = Promise<{ next?: string; reason?: string }>;
 
@@ -17,6 +18,7 @@ export default async function ClientiLoginPage({
   if (existing) {
     redirect(next ?? "/clienti");
   }
+  const t = await getT();
 
   return (
     <main
@@ -30,7 +32,7 @@ export default async function ClientiLoginPage({
             className="font-mono uppercase"
             style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}
           >
-            Area clienti
+            {t("auth.customer.eyebrow")}
           </span>
         </a>
 
@@ -52,7 +54,7 @@ export default async function ClientiLoginPage({
                 border: "1px solid #fde68a",
               }}
             >
-              Sessione scaduta. Effettua di nuovo l&apos;accesso.
+              {t("auth.b2b.login.sessionExpired")}
             </p>
           )}
 
@@ -64,7 +66,7 @@ export default async function ClientiLoginPage({
           className="font-mono uppercase transition-colors hover:text-[#0a0a0a]"
           style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#737373" }}
         >
-          ← Torna al sito pubblico
+          {t("auth.common.backToSite")}
         </a>
       </div>
     </main>

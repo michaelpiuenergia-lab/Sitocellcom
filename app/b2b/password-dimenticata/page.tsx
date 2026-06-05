@@ -1,5 +1,6 @@
 import { PasswordRequestForm } from "./password-request-form";
 import { LogoC } from "@/components/marketing/logo-c";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "Password dimenticata — Cellcom B2B",
@@ -8,7 +9,8 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default function PasswordDimenticatePage() {
+export default async function PasswordDimenticatePage() {
+  const t = await getT();
   return (
     <main
       className="relative min-h-screen flex items-center justify-center px-6 py-16"
@@ -21,7 +23,7 @@ export default function PasswordDimenticatePage() {
             className="font-mono uppercase"
             style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}
           >
-            Area B2B
+            {t("auth.b2b.eyebrow")}
           </span>
         </a>
 
@@ -38,11 +40,10 @@ export default function PasswordDimenticatePage() {
               className="font-sans tracking-[-0.02em]"
               style={{ fontSize: "28px", color: "#0a0a0a", fontWeight: 700, lineHeight: 1.1 }}
             >
-              Password dimenticata
+              {t("auth.b2b.forgot.title")}
             </h1>
             <p style={{ fontSize: "14px", color: "#525252" }}>
-              Inserisci la tua email B2B. Se l&apos;account esiste ti mandiamo un
-              link per impostare una nuova password.
+              {t("auth.b2b.forgot.subtitle")}
             </p>
           </div>
           <PasswordRequestForm />
@@ -53,7 +54,7 @@ export default function PasswordDimenticatePage() {
           className="font-mono uppercase transition-colors hover:text-[#0a0a0a]"
           style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#737373" }}
         >
-          ← Torna al login
+          {t("auth.common.backToLogin")}
         </a>
       </div>
     </main>

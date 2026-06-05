@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLang } from "@/lib/i18n/lang-context";
 
 const inputClass =
   "w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors";
@@ -19,6 +20,7 @@ const labelStyle = {
 
 export function PasswordResetForm({ token }: { token: string }) {
   const router = useRouter();
+  const { t } = useLang();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -29,11 +31,11 @@ export function PasswordResetForm({ token }: { token: string }) {
     e.preventDefault();
     setError(null);
     if (password.length < 8) {
-      setError("La password deve avere almeno 8 caratteri");
+      setError(t("auth.b2b.reset.errMinLength"));
       return;
     }
     if (password !== confirm) {
-      setError("Le due password non coincidono");
+      setError(t("auth.b2b.reset.errMismatch"));
       return;
     }
     setBusy(true);
@@ -44,11 +46,11 @@ export function PasswordResetForm({ token }: { token: string }) {
         body: JSON.stringify({ token, password }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data?.error?.message ?? "Operazione non riuscita");
+      if (!res.ok) throw new Error(data?.error?.message ?? t("auth.b2b.reset.errGeneric"));
       setSuccess(true);
       setTimeout(() => router.push("/b2b/login"), 1500);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Errore");
+      setError(e instanceof Error ? e.message : t("auth.b2b.reset.errGeneric"));
     } finally {
       setBusy(false);
     }
@@ -65,8 +67,8 @@ export function PasswordResetForm({ token }: { token: string }) {
           border: "1px solid #a7f3d0",
         }}
       >
-        <span className="font-semibold">Password aggiornata.</span>
-        <span>Ti porto al login…</span>
+        <span className="font-semibold">{t("auth.b2b.reset.successTitle")}</span>
+        <span>{t("auth.b2b.reset.successBody")}</span>
       </div>
     );
   }
@@ -75,7 +77,7 @@ export function PasswordResetForm({ token }: { token: string }) {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <label className="font-mono uppercase" style={labelStyle}>
-          Nuova password
+          {t("auth.b2b.reset.passwordLabel")}
         </label>
         <input
           type="password"
@@ -92,7 +94,7 @@ export function PasswordResetForm({ token }: { token: string }) {
 
       <div className="flex flex-col gap-2">
         <label className="font-mono uppercase" style={labelStyle}>
-          Conferma password
+          {t("auth.b2b.reset.confirmLabel")}
         </label>
         <input
           type="password"
@@ -132,7 +134,7 @@ export function PasswordResetForm({ token }: { token: string }) {
           letterSpacing: "-0.01em",
         }}
       >
-        {busy ? "Aggiorno…" : "Imposta nuova password →"}
+        {busy ? t("auth.b2b.reset.submitting") : t("auth.b2b.reset.submit")}
       </button>
     </form>
   );

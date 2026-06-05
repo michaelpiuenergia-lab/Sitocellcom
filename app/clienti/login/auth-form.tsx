@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useLang } from "@/lib/i18n/lang-context";
 
 const inputClass =
   "w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors duration-200";
@@ -19,6 +20,7 @@ const labelStyle = {
 
 export function AuthForm({ next }: { next?: string }) {
   const router = useRouter();
+  const { t } = useLang();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -38,12 +40,12 @@ export function AuthForm({ next }: { next?: string }) {
         const data = (await res.json().catch(() => ({}))) as {
           error?: { message?: string };
         };
-        throw new Error(data?.error?.message ?? "Credenziali non valide");
+        throw new Error(data?.error?.message ?? t("auth.customer.errInvalidCreds"));
       }
       router.push(next ?? "/clienti");
       router.refresh();
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Errore");
+      setError(e instanceof Error ? e.message : t("auth.customer.errGeneric"));
     } finally {
       setBusy(false);
     }
@@ -56,17 +58,17 @@ export function AuthForm({ next }: { next?: string }) {
           className="font-sans tracking-[-0.02em]"
           style={{ fontSize: "28px", color: "#0a0a0a", fontWeight: 700, lineHeight: 1.1 }}
         >
-          Accedi
+          {t("auth.customer.inlineTitle")}
         </h1>
         <p style={{ fontSize: "14px", color: "#525252" }}>
-          Vedi le tue riparazioni, i preventivi e i prezzi riservati.
+          {t("auth.customer.inlineSubtitle")}
         </p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <label className="font-mono uppercase" style={labelStyle}>
-            Email
+            {t("auth.customer.emailLabel")}
           </label>
           <input
             type="email"
@@ -75,7 +77,7 @@ export function AuthForm({ next }: { next?: string }) {
             required
             autoComplete="email"
             autoFocus
-            placeholder="nome@email.it"
+            placeholder={t("auth.customer.emailPh")}
             className={inputClass}
             style={inputStyle}
           />
@@ -83,7 +85,7 @@ export function AuthForm({ next }: { next?: string }) {
 
         <div className="flex flex-col gap-2">
           <label className="font-mono uppercase" style={labelStyle}>
-            Password
+            {t("auth.customer.passwordLabel")}
           </label>
           <input
             type="password"
@@ -123,15 +125,14 @@ export function AuthForm({ next }: { next?: string }) {
             letterSpacing: "-0.01em",
           }}
         >
-          {busy ? "Accesso in corso…" : "Accedi →"}
+          {busy ? t("auth.customer.ctaBusy") : t("auth.customer.cta")}
         </button>
       </form>
 
       <p className="text-center" style={{ fontSize: "14px", color: "#525252" }}>
-        Non hai ancora le credenziali?{" "}
+        {t("auth.customer.noCredentials")}{" "}
         <span style={{ color: "#0a0a0a" }}>
-          Porta un dispositivo in riparazione: ti arriverà via email un link per
-          impostare la password.
+          {t("auth.customer.noCredentialsHint")}
         </span>
       </p>
     </div>

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { optionalB2bSession } from "@/lib/auth/guards";
 import { LoginForm } from "./login-form";
 import { LogoC } from "@/components/marketing/logo-c";
+import { getT } from "@/lib/i18n/server";
 
 type SearchParams = Promise<{ next?: string; reason?: string }>;
 
@@ -17,6 +18,7 @@ export default async function B2bLoginPage({
   if (existing) {
     redirect(next ?? "/b2b/prodotti");
   }
+  const t = await getT();
 
   return (
     <main
@@ -39,7 +41,7 @@ export default async function B2bLoginPage({
               color: "#dc2626",
             }}
           >
-            Area B2B
+            {t("auth.b2b.eyebrow")}
           </span>
         </a>
 
@@ -62,10 +64,10 @@ export default async function B2bLoginPage({
                 lineHeight: 1.1,
               }}
             >
-              Accedi al tuo listino
+              {t("auth.b2b.login.title")}
             </h1>
             <p style={{ fontSize: "14px", color: "#525252" }}>
-              Prezzi riservati per rivenditori, operatori e aziende del Gruppo.
+              {t("auth.b2b.login.subtitle")}
             </p>
           </div>
 
@@ -79,7 +81,7 @@ export default async function B2bLoginPage({
                 border: "1px solid #fde68a",
               }}
             >
-              Sessione scaduta. Effettua di nuovo l&apos;accesso.
+              {t("auth.b2b.login.sessionExpired")}
             </p>
           )}
 
@@ -89,13 +91,13 @@ export default async function B2bLoginPage({
         {/* Footer */}
         <div className="flex flex-col items-center gap-3 text-center">
           <p style={{ fontSize: "14px", color: "#525252" }}>
-            Non hai ancora le credenziali?{" "}
+            {t("auth.b2b.login.noCredentials")}{" "}
             <a
               href="mailto:b2b@cellcom.it?subject=Richiesta%20attivazione%20account%20B2B"
               className="hover:underline"
               style={{ color: "#dc2626", fontWeight: 500 }}
             >
-              Richiedi attivazione →
+              {t("auth.b2b.login.requestActivation")}
             </a>
           </p>
           <a
@@ -107,7 +109,7 @@ export default async function B2bLoginPage({
               color: "#737373",
             }}
           >
-            ← Torna al sito pubblico
+            {t("auth.common.backToSite")}
           </a>
         </div>
       </div>

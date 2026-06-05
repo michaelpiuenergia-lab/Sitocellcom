@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLang } from "@/lib/i18n/lang-context";
 
 const inputClass =
   "w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors";
@@ -12,6 +13,7 @@ const inputStyle = {
 } as const;
 
 export function PasswordRequestForm() {
+  const { t } = useLang();
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
@@ -30,11 +32,11 @@ export function PasswordRequestForm() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data?.error?.message ?? "Errore");
+        throw new Error(data?.error?.message ?? t("auth.b2b.register.errGeneric"));
       }
       setDone(true);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Errore");
+      setError(e instanceof Error ? e.message : t("auth.b2b.register.errGeneric"));
     } finally {
       setBusy(false);
     }
@@ -51,11 +53,8 @@ export function PasswordRequestForm() {
           border: "1px solid #a7f3d0",
         }}
       >
-        <span className="font-semibold">Richiesta inviata.</span>
-        <span>
-          Se l&apos;email è registrata come account B2B, riceverai un link entro
-          qualche minuto. Controlla anche la cartella spam.
-        </span>
+        <span className="font-semibold">{t("auth.b2b.forgot.done.title")}</span>
+        <span>{t("auth.b2b.forgot.done.body")}</span>
       </div>
     );
   }
@@ -67,7 +66,7 @@ export function PasswordRequestForm() {
           className="font-mono uppercase"
           style={{ fontSize: "10px", letterSpacing: "0.22em", color: "#737373" }}
         >
-          Email
+          {t("auth.b2b.forgot.emailLabel")}
         </label>
         <input
           type="email"
@@ -76,7 +75,7 @@ export function PasswordRequestForm() {
           required
           autoComplete="email"
           autoFocus
-          placeholder="azienda@email.it"
+          placeholder={t("auth.b2b.forgot.emailPh")}
           className={inputClass}
           style={inputStyle}
         />
@@ -108,7 +107,7 @@ export function PasswordRequestForm() {
           letterSpacing: "-0.01em",
         }}
       >
-        {busy ? "Invio…" : "Manda il link →"}
+        {busy ? t("auth.b2b.forgot.ctaBusy") : t("auth.b2b.forgot.cta")}
       </button>
     </form>
   );

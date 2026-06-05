@@ -1,5 +1,6 @@
 import { PasswordResetForm } from "./password-reset-form";
 import { LogoC } from "@/components/marketing/logo-c";
+import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
   title: "Reimposta password — Cellcom B2B",
@@ -16,6 +17,7 @@ export default async function ReimpostaPasswordPage({
   searchParams?: SearchParams;
 }) {
   const { token } = (await searchParams) ?? {};
+  const t = await getT();
 
   return (
     <main
@@ -29,7 +31,7 @@ export default async function ReimpostaPasswordPage({
             className="font-mono uppercase"
             style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}
           >
-            Area B2B
+            {t("auth.b2b.eyebrow")}
           </span>
         </a>
 
@@ -46,11 +48,10 @@ export default async function ReimpostaPasswordPage({
               className="font-sans tracking-[-0.02em]"
               style={{ fontSize: "28px", color: "#0a0a0a", fontWeight: 700, lineHeight: 1.1 }}
             >
-              Imposta una nuova password
+              {t("auth.b2b.reset.titleInline")}
             </h1>
             <p style={{ fontSize: "14px", color: "#525252" }}>
-              Almeno 8 caratteri. Tutte le tue sessioni attive verranno
-              revocate.
+              {t("auth.b2b.reset.minLengthHint")}
             </p>
           </div>
 
@@ -66,9 +67,9 @@ export default async function ReimpostaPasswordPage({
                 border: "1px solid #fecaca",
               }}
             >
-              Link non valido. Richiedi un nuovo invio dalla{" "}
+              {t("auth.b2b.reset.invalidLinkBefore")}{" "}
               <a href="/b2b/password-dimenticata" className="underline">
-                pagina password dimenticata
+                {t("auth.b2b.reset.invalidLinkAnchor")}
               </a>
               .
             </p>
@@ -80,7 +81,7 @@ export default async function ReimpostaPasswordPage({
           className="font-mono uppercase transition-colors hover:text-[#0a0a0a]"
           style={{ fontSize: "10px", letterSpacing: "0.28em", color: "#737373" }}
         >
-          ← Torna al login
+          {t("auth.common.backToLogin")}
         </a>
       </div>
     </main>
