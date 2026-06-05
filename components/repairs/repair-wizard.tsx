@@ -1254,7 +1254,7 @@ function BrandCard({
       type="button"
       onClick={onClick}
       className={cn(
-        "aspect-[5/3] rounded-2xl border-2 flex items-center justify-center px-3 transition-all duration-200",
+        "aspect-[5/4] rounded-2xl border-2 flex flex-col items-center justify-center gap-1.5 px-3 py-3 transition-all duration-200",
         active
           ? "bg-brand-600/10 border-brand-600 shadow-[0_0_24px_-8px_rgba(220,38,38,0.4)]"
           : "bg-card border-border hover:border-brand-600/40 hover:bg-card-hover",
@@ -1270,7 +1270,19 @@ function BrandCard({
           {name}
         </span>
       ) : (
-        <BrandLogo name={name} size={40} color={active ? "dc2626" : "404040"} />
+        <>
+          <div className="flex-1 flex items-center justify-center min-h-0 w-full">
+            <BrandLogo name={name} size={32} color={active ? "dc2626" : "404040"} />
+          </div>
+          <span
+            className={cn(
+              "font-mono uppercase text-[10px] tracking-[0.18em] leading-none truncate max-w-full",
+              active ? "text-brand-500" : "text-foreground/70",
+            )}
+          >
+            {name}
+          </span>
+        </>
       )}
     </button>
   );
