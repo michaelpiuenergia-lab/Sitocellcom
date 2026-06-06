@@ -79,6 +79,16 @@ export type Dict = {
   "hero.pillar.resell": string;
   "hero.pillar.learn": string;
   "hero.pillar.b2b": string;
+
+  // ─── Trust strip (sotto Hero/Marquee) ───────────────────────────────
+  "trust.shipping.value": string;
+  "trust.shipping.desc": string;
+  "trust.warranty.value": string;
+  "trust.warranty.desc": string;
+  "trust.technician.value": string;
+  "trust.technician.desc": string;
+  "trust.b2b.value": string;
+  "trust.b2b.desc": string;
   "hero.catalogCta.eyebrow": string;
   "hero.catalogCta.title": string;
   "hero.catalogCta.explore": string;
@@ -692,6 +702,15 @@ const IT: Dict = {
   "hero.pillar.resell": "Rivendi",
   "hero.pillar.learn": "Impara",
   "hero.pillar.b2b": "B2B",
+
+  "trust.shipping.value": "Spedizione 24-48h",
+  "trust.shipping.desc": "Con corrieri selezionati in tutta Italia.",
+  "trust.warranty.value": "Garanzia 12 mesi",
+  "trust.warranty.desc": "Su prodotti, ricambi e riparazioni.",
+  "trust.technician.value": "Tecnici Fast-Fix",
+  "trust.technician.desc": "Laboratorio interno, diagnosi in giornata.",
+  "trust.b2b.value": "Supporto B2B",
+  "trust.b2b.desc": "Account manager dedicato per i rivenditori.",
   "hero.catalogCta.eyebrow": "Catalogo completo",
   "hero.catalogCta.title": "Tutti gli smartphone, ricambi, accessori",
   "hero.catalogCta.explore": "Esplora",
@@ -1391,6 +1410,15 @@ const EN: Dict = {
   "hero.pillar.resell": "Resell",
   "hero.pillar.learn": "Learn",
   "hero.pillar.b2b": "B2B",
+
+  "trust.shipping.value": "24-48h shipping",
+  "trust.shipping.desc": "With trusted couriers across Italy.",
+  "trust.warranty.value": "12-month warranty",
+  "trust.warranty.desc": "On products, parts and repairs.",
+  "trust.technician.value": "Fast-Fix technicians",
+  "trust.technician.desc": "In-house lab, same-day diagnosis.",
+  "trust.b2b.value": "B2B support",
+  "trust.b2b.desc": "Dedicated account manager for resellers.",
   "hero.catalogCta.eyebrow": "Full catalogue",
   "hero.catalogCta.title": "All smartphones, parts and accessories",
   "hero.catalogCta.explore": "Browse",

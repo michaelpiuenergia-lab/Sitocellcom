@@ -1,6 +1,7 @@
 import { Hero } from "@/components/marketing/hero";
 import { ImmersivePin } from "@/components/marketing/immersive-pin";
 import { BrandMarquee } from "@/components/marketing/brand-marquee";
+import { TrustStrip } from "@/components/marketing/trust-strip";
 import {
   MarketingPanel,
   PanelStat,
@@ -58,6 +59,9 @@ export default async function MarketingPage() {
 
         {/* Banner ROSSO Cellcom — tra Hero e 3D */}
         <BrandMarquee />
+
+        {/* Trust strip 4 garanzie (spedizione/warranty/tecnici/B2B) */}
+        <TrustStrip />
 
         {/* Telefono 3D scroll-driven (intoccabile) */}
         <ImmersivePin device={devices[0]} />
