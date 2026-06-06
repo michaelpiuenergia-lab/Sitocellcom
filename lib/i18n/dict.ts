@@ -78,6 +78,7 @@ export type Dict = {
   "hero.pillar.repair": string;
   "hero.pillar.resell": string;
   "hero.pillar.learn": string;
+  "hero.pillar.b2b": string;
   "hero.catalogCta.eyebrow": string;
   "hero.catalogCta.title": string;
   "hero.catalogCta.explore": string;
@@ -690,6 +691,7 @@ const IT: Dict = {
   "hero.pillar.repair": "Ripara",
   "hero.pillar.resell": "Rivendi",
   "hero.pillar.learn": "Impara",
+  "hero.pillar.b2b": "B2B",
   "hero.catalogCta.eyebrow": "Catalogo completo",
   "hero.catalogCta.title": "Tutti gli smartphone, ricambi, accessori",
   "hero.catalogCta.explore": "Esplora",
@@ -887,7 +889,7 @@ const IT: Dict = {
     "Valutazione gratis, spedizione gratis, pagamento entro 48h.",
   "immersive.m3.cta": "Scopri come",
 
-  "rep.hero.eyebrow": "Centro riparazioni Cellcom",
+  "rep.hero.eyebrow": "Fast-Fix · Centro riparazioni del Gruppo",
   "rep.hero.titleA": "Quale dispositivo",
   "rep.hero.accent": "vuoi riparare?",
   "rep.hero.description":
@@ -1388,6 +1390,7 @@ const EN: Dict = {
   "hero.pillar.repair": "Repair",
   "hero.pillar.resell": "Resell",
   "hero.pillar.learn": "Learn",
+  "hero.pillar.b2b": "B2B",
   "hero.catalogCta.eyebrow": "Full catalogue",
   "hero.catalogCta.title": "All smartphones, parts and accessories",
   "hero.catalogCta.explore": "Browse",
@@ -1585,7 +1588,7 @@ const EN: Dict = {
     "Free valuation, free shipping, payment within 48 hours.",
   "immersive.m3.cta": "Find out how",
 
-  "rep.hero.eyebrow": "Cellcom repair centre",
+  "rep.hero.eyebrow": "Fast-Fix · Group repair centre",
   "rep.hero.titleA": "Which device",
   "rep.hero.accent": "do you want to fix?",
   "rep.hero.description":

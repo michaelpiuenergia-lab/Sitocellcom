@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
@@ -10,8 +10,6 @@ import type { PublicProductListItem } from "@/lib/crm-client/types";
 import { useLang } from "@/lib/i18n/lang-context";
 import type { Dict } from "@/lib/i18n/dict";
 
-const VIDEO_SRC = "/videos/hero-evolution.mp4";
-const FLASH_DURATION_MS = 1400;
 const ELLCOM_LETTERS = ["E", "L", "L", "C", "O", "M"] as const;
 
 const PILLAR_BUTTONS: Array<{
@@ -22,9 +20,8 @@ const PILLAR_BUTTONS: Array<{
   { key: "hero.pillar.repair", href: "/riparazioni" },
   { key: "hero.pillar.resell", href: "/rivendi" },
   { key: "hero.pillar.learn", href: "/corsi" },
+  { key: "hero.pillar.b2b", href: "/b2b" },
 ];
-
-type Phase = "video" | "flash" | "content";
 
 export function Hero({
   devices = [],
@@ -35,103 +32,26 @@ export function Hero({
 }) {
   const { t } = useLang();
   const shouldReduce = useReducedMotion();
-  const [phase, setPhase] = useState<Phase>(shouldReduce ? "content" : "video");
-  const [isVideoNearEnd, setIsVideoNearEnd] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   const newDevices = devices
     .filter((d) => d.condition !== "used" && d.condition !== "refurbished")
     .slice(0, 3);
 
-  // Pausa il video quando la Hero esce dal viewport: niente decode inutile.
-  useEffect(() => {
-    const node = sectionRef.current;
-    if (!node) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        const v = videoRef.current;
-        if (!v) return;
-        if (entry.isIntersecting) {
-          v.play().catch(() => {});
-        } else {
-          v.pause();
-        }
-      },
-      { threshold: 0 },
-    );
-    obs.observe(node);
-    return () => obs.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (phase !== "video") return;
-    const safety = setTimeout(() => setPhase("flash"), 9000);
-    return () => clearTimeout(safety);
-  }, [phase]);
-
-  useEffect(() => {
-    if (phase !== "flash") return;
-    const t = setTimeout(() => setPhase("content"), FLASH_DURATION_MS);
-    return () => clearTimeout(t);
-  }, [phase]);
-
-  const handleVideoEnd = () => {
-    setPhase((p) => (p === "video" ? "flash" : p));
-  };
-
-  const handleVideoTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
-    const v = e.currentTarget;
-    if (!v.duration || isVideoNearEnd) return;
-    if (v.currentTime > v.duration - 1.6) setIsVideoNearEnd(true);
-  };
-
-  const isWhite = phase === "flash" || phase === "content";
-  const showContent = phase === "content";
-  const hidden = phase === "video";
+  // Hero senza video — partiamo direttamente nello stato finale ("content")
+  // con sfondo bianco, wordmark gia' fermo, contenuti visibili.
+  const showContent = true;
+  const hidden = false;
 
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden transition-colors duration-700 flex flex-col"
+      className="relative overflow-hidden flex flex-col"
       style={{
-        backgroundColor: isWhite ? "#ffffff" : "#050505",
-        // navbar (72) + banner (~48) = 120 — Hero leggermente più corta così
-        // il banner ROSSO sotto entra nel primo fold senza scrollare.
+        backgroundColor: "#ffffff",
         minHeight: "calc(100vh - 120px)",
       }}
     >
-      {/* Video background — a tutto schermo (cover su ogni breakpoint) */}
-      <div className="absolute inset-0 z-0">
-        {!shouldReduce && (
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            playsInline
-            preload="metadata"
-            onEnded={handleVideoEnd}
-            onTimeUpdate={handleVideoTimeUpdate}
-            className="w-full h-full object-cover"
-            style={{ objectPosition: "center" }}
-            aria-hidden="true"
-          >
-            <source src={VIDEO_SRC} type="video/mp4" />
-          </video>
-        )}
-      </div>
-
-      {/* Bridge bianco invisibile */}
-      <motion.div
-        className="absolute inset-0 z-20 pointer-events-none"
-        style={{ backgroundColor: "#ffffff" }}
-        initial={{ opacity: 0 }}
-        animate={{
-          opacity: isVideoNearEnd || phase !== "video" ? 1 : 0,
-        }}
-        transition={{ duration: 1.4, ease: "easeOut" }}
-        aria-hidden="true"
-      />
 
       {/*
         Layout principale: container UNIFICATO con navbar (max-w-[1400px]
@@ -166,7 +86,7 @@ export function Hero({
                     : { rotate: -180, opacity: 0 }
                 }
                 animate={{
-                  rotate: phase === "video" ? -180 : 0,
+                  rotate: 0,
                   opacity: hidden ? 0 : 1,
                 }}
                 transition={{
@@ -209,7 +129,7 @@ export function Hero({
                       transition={{
                         duration: 0.5,
                         ease: EASE.snappy,
-                        delay: phase === "flash" ? 0.1 + i * 0.05 : i * 0.04,
+                        delay: i * 0.04,
                       }}
                       style={{
                         fontFamily:
@@ -231,7 +151,7 @@ export function Hero({
                   animate={{ opacity: hidden ? 0 : 1 }}
                   transition={{
                     duration: 0.6,
-                    delay: phase === "flash" ? 0.9 : 0.6,
+                    delay: 0.6,
                   }}
                   className="font-mono uppercase tabular-nums"
                   style={{
@@ -256,7 +176,7 @@ export function Hero({
               transition={{
                 duration: 0.7,
                 ease: EASE.smooth,
-                delay: phase === "flash" ? 0.6 : 0.1,
+                delay: 0.1,
               }}
               className="font-serif tracking-[-0.02em] text-[#171717]"
               style={{
@@ -288,7 +208,7 @@ export function Hero({
                     type: "spring",
                     stiffness: 380,
                     damping: 18,
-                    delay: phase === "flash" ? 0.8 + i * 0.1 : i * 0.07,
+                    delay: i * 0.07,
                   }}
                 >
                   <Link
