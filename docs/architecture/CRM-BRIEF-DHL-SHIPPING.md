@@ -125,3 +125,100 @@ Se il flusso prevede di **rispedire al cliente privato** il dispositivo riparato
 ---
 
 *Brief redatto il 2026-06-09 dalla sessione CRM (Claude-CRM). Da leggere/approvare nella sessione HUB (Claude-HUB).*
+
+---
+
+## 7. Decisioni prese (2026-06-09, post-conferma utente lato HUB)
+
+### 7.1 Scopo dell'integrazione
+
+**Tracking automatico + creazione etichette** (non solo tracking passivo).
+
+Implica: il CRM, al momento della creazione di una spedizione B2B, chiama MyDHL API con i dati pacco/indirizzi → riceve `trackingNumber` + label PDF da stampare. Poi periodicamente (o via webhook se DHL lo supporta sul prodotto sottoscritto) aggiorna `status` e `events[]`.
+
+**Niente cambia per il contratto pubblico**: `/api/v1/b2b/shipments` restituisce gli stessi campi di prima, semplicemente popolati da dati reali invece di mock.
+
+### 7.2 API DHL identificata
+
+**MyDHL API** (`developer.dhl.com`, infrastruttura Azure API Management).
+
+Identificata dal pattern "API Key + Subscription Key" del portale developer DHL gialla (screenshot utente, settings dell'app). Probabilità ~99%.
+
+**Auth (da verificare nella tab "Try it out" del prodotto specifico sul portale):**
+
+```http
+DHL-API-Key: <api-key>
+Ocp-Apim-Subscription-Key: <subscription-key>     # se Azure APIM pattern
+Message-Reference: <uuid v4 unique per request>
+Content-Type: application/json
+```
+
+In alternativa, alcuni prodotti DHL usano Basic Auth:
+```
+Authorization: Basic <base64(username:password)>
+```
+
+⚠️ Da confermare guardando la documentazione **specifica del prodotto sottoscritto** nel proprio account developer.dhl.com → My Apps → `<la-tua-app>` → Products.
+
+**Base URL:**
+- Test/Sandbox: `https://express.api.dhl.com/mydhlapi/test`
+- Prod: `https://express.api.dhl.com/mydhlapi`
+
+(Cambia in base al prodotto: Express vs eCommerce vs Parcel DE. Da confermare con il prodotto sottoscritto.)
+
+### 7.3 Endpoint del flusso "tracking + etichette"
+
+| Operazione | Method + path | Note |
+|---|---|---|
+| Crea spedizione + ottieni label | `POST /shipments` | Body con shipper/receiver/packages/productCode/accounts. Risposta: `trackingNumber`, `documents[]` (label base64), `shipmentTrackingNumber` |
+| Tracking eventi | `GET /shipments/{trackingNumber}/tracking` | Eventi cronologici per popolare `shipment_events` lato CRM (→ `events[]` su /api/v1/b2b/shipments/{id}) |
+| Proof of Delivery | `GET /shipments/{trackingNumber}/proof-of-delivery` | POD scaricabile quando `status=delivered` |
+| Quote rate (opzionale) | `POST /rates` | Per mostrare costo stimato prima di creare la spedizione |
+| Cancel | `DELETE /shipments/{trackingNumber}` | Solo se non ritirato |
+
+### 7.4 Campi minimi per `POST /shipments`
+
+```jsonc
+{
+  "plannedShippingDateAndTime": "2026-06-10T10:00:00 GMT+02:00",
+  "pickup": { "isRequested": true, "closeTime": "18:00", "location": "reception" },
+  "productCode": "P",                       // "P" Express Worldwide, "N" Domestic IT, "U" Economy Select
+  "accounts": [
+    { "typeCode": "shipper", "number": "<DHL account number>" }
+  ],
+  "customerDetails": {
+    "shipperDetails": {
+      "postalAddress": { "cityName": "...", "countryCode": "IT", "postalCode": "63074", "addressLine1": "..." },
+      "contactInformation": { "phone": "...", "companyName": "Cellcom SRLS", "fullName": "..." }
+    },
+    "receiverDetails": {
+      "postalAddress": { "cityName": "...", "countryCode": "IT", "postalCode": "...", "addressLine1": "..." },
+      "contactInformation": { "phone": "...", "companyName": "...", "fullName": "..." }
+    }
+  },
+  "content": {
+    "packages": [
+      { "weight": 1.5, "dimensions": { "length": 30, "width": 20, "height": 10 }, "description": "Smartphone" }
+    ],
+    "isCustomsDeclarable": false,            // true se cross-border non-EU
+    "incoterm": "DAP",
+    "unitOfMeasurement": "metric"
+  }
+}
+```
+
+### 7.5 Storage credenziali (CRM-side)
+
+- `INTEGRATIONS_DHL_API_KEY` (cifrata con `INTEGRATIONS_ENC_KEY`)
+- `INTEGRATIONS_DHL_SUBSCRIPTION_KEY` (cifrata)
+- `INTEGRATIONS_DHL_ACCOUNT_NUMBER` (numero conto cliente DHL, plain text può essere)
+- `INTEGRATIONS_DHL_ENV` = `test` | `production`
+
+Mai esposte al HUB. Mai loggate in plain. Webhook DHL (se disponibili) richiedono URL pubblica del CRM + verifica della firma.
+
+### 7.6 Decisioni ancora aperte (in attesa)
+
+- **§4a Timeline `events[]`**: sì o no nel MVP? Default = no nel MVP, accendiamo dopo.
+- **§4b Tracking riparazioni B2C**: sì o no? Default = no, feature separata, da scopare a parte.
+
+Brief utilizzabile come è dal CRM-side per partire con MyDHL API. Le 2 decisioni residue non bloccano l'integrazione B2B core.
