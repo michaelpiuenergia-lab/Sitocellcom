@@ -7,7 +7,7 @@ import {
   useTransform,
 } from "framer-motion";
 import dynamic from "next/dynamic";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PhoneSilhouette } from "./phone-silhouette";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 import { useLang } from "@/lib/i18n/lang-context";
@@ -49,6 +49,12 @@ export function ImmersivePin({
   const { t } = useLang();
   const containerRef = useRef<HTMLElement>(null);
 
+  // Monta il 3D (dynamic ssr:false) solo dopo il primo commit. Senza questo,
+  // l'import dinamico può risolversi DURANTE il render iniziale e React 19
+  // emette il warning "state update on a component that hasn't mounted yet".
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   // Scroll progress sull'intero contenitore (h=300vh) da 0 → 1
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -75,15 +81,16 @@ export function ImmersivePin({
   const opacity3 = useTransform(sp, [0.64, 0.72, 0.95, 1], [0, 1, 1, 1]);
   const y3 = useTransform(sp, [0.64, 0.72, 1], ["20px", "0px", "0px"]);
 
-  // Sfondo che vira: nero profondo → cremisi → rosso acceso e RESTA acceso.
+  // Sfondo che vira: cremisi scuro → rosso → rosso acceso e RESTA acceso.
+  // Parte già caldo (non nero) così la scena ha colore fin dal primo frame.
   // Niente reverse a fine sezione: la prossima zona della pagina raccoglie
   // la temperatura calda con un bridge gradient.
   const bgColor = useTransform(
     sp,
     [0, 0.3, 0.6, 1],
-    ["#050505", "#1a0303", "#3a0808", "#5a0c0c"],
+    ["#240608", "#3a0809", "#4d0b0b", "#5e0d0d"],
   );
-  const glowOpacity = useTransform(sp, [0, 0.4, 0.75, 1], [0.2, 0.85, 1, 1]);
+  const glowOpacity = useTransform(sp, [0, 0.4, 0.75, 1], [0.6, 0.9, 1, 1]);
 
   return (
     <section
@@ -122,7 +129,7 @@ export function ImmersivePin({
           }}
           className="relative z-10 w-[280px] sm:w-[360px] md:w-[420px] h-[520px]"
         >
-          <Phone3D rotationDeg={phoneRotateY} />
+          {mounted && <Phone3D rotationDeg={phoneRotateY} />}
           <noscript>
             <div className="absolute inset-0 flex items-center justify-center text-brand-400">
               <PhoneSilhouette variant={1} />
