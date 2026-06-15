@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/card";
+import { RequestTrigger } from "@/components/forms/request-trigger";
 import { useLang } from "@/lib/i18n/lang-context";
 import type { Dict } from "@/lib/i18n/dict";
 
@@ -250,6 +251,23 @@ function ProductCard({
             {t("pg.cta.buyOn", getChannelName(product.channel))}
           </Button>
         )}
+
+        {/* Richiesta info: per chi non vuole/può registrarsi. Arriva al CRM
+            come site_request kind="info" (modal con consenso privacy). */}
+        <RequestTrigger
+          kind="info"
+          variant="ghost"
+          hideCompany
+          product={{
+            id: null,
+            slug: product.slug,
+            name: product.name,
+            variantId: null,
+            variantLabel: null,
+          }}
+          label={t("pg.cta.askInfo")}
+          className="w-full"
+        />
       </div>
     </motion.div>
   );

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLang } from "@/lib/i18n/lang-context";
+import { RequestTrigger } from "@/components/forms/request-trigger";
 
 const inputClass =
   "w-full px-4 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#dc2626]/40 focus:border-[#dc2626] transition-colors duration-200";
@@ -129,12 +130,21 @@ export function AuthForm({ next }: { next?: string }) {
         </button>
       </form>
 
-      <p className="text-center" style={{ fontSize: "14px", color: "#525252" }}>
-        {t("auth.customer.noCredentials")}{" "}
-        <span style={{ color: "#0a0a0a" }}>
-          {t("auth.customer.noCredentialsHint")}
-        </span>
-      </p>
+      <div className="flex flex-col items-center gap-3 text-center">
+        <p style={{ fontSize: "14px", color: "#525252" }}>
+          {t("auth.customer.noCredentials")}{" "}
+          <span style={{ color: "#0a0a0a" }}>
+            {t("auth.customer.noCredentialsHint")}
+          </span>
+        </p>
+        <RequestTrigger
+          kind="info"
+          variant="outline"
+          hideCompany
+          defaultCustomer={{ message: t("auth.customer.requestAccessMsg") }}
+          label={t("auth.customer.requestAccess")}
+        />
+      </div>
     </div>
   );
 }
