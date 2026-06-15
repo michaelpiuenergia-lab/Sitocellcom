@@ -19,6 +19,10 @@ const Body = z.object({
     .regex(/^[+0-9 ()\-./]*$/, "Telefono non valido")
     .optional()
     .nullable(),
+  // GDPR: consenso esplicito obbligatorio (checkbox del form). Senza, 400.
+  privacyAccepted: z.literal(true, {
+    message: "È necessario accettare l'informativa privacy per registrarsi",
+  }),
 });
 
 export async function POST(req: NextRequest) {

@@ -89,7 +89,15 @@ function handleHtmlRequest() {
   return applySecurityHeaders(response);
 }
 
-const B2B_PUBLIC_PATHS = new Set<string>(["/b2b/login"]);
+// Pagine B2B raggiungibili SENZA sessione: i flussi auth pubblici. Senza
+// queste, un rivenditore non loggato (cioè chiunque debba registrarsi o
+// recuperare la password) verrebbe rimbalzato al login → flussi morti.
+const B2B_PUBLIC_PATHS = new Set<string>([
+  "/b2b/login",
+  "/b2b/registrati",
+  "/b2b/password-dimenticata",
+  "/b2b/reimposta-password",
+]);
 const B2B_SESSION_COOKIE = "b2b_session";
 
 function b2bGate(request: NextRequest): NextResponse | null {

@@ -130,7 +130,7 @@ export default async function MarketingPage() {
           primaryCta={{ label: t("home.b2b.cta.login"), href: "/b2b/login" }}
           secondaryCta={{
             label: t("home.b2b.cta.contact"),
-            href: "mailto:b2b@cellcom.it?subject=Richiesta%20attivazione%20account%20B2B",
+            href: "/b2b/registrati",
           }}
         />
       </main>

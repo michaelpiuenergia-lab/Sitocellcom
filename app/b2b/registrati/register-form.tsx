@@ -26,6 +26,7 @@ export function RegisterForm() {
   const [companyName, setCompanyName] = useState("");
   const [vatNumber, setVatNumber] = useState("");
   const [phone, setPhone] = useState("");
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +45,7 @@ export function RegisterForm() {
           companyName: companyName.trim(),
           vatNumber: vatNumber.trim() || null,
           phone: phone.trim() || null,
+          privacyAccepted: true,
         }),
       });
       if (!res.ok) {
@@ -181,13 +183,39 @@ export function RegisterForm() {
         </p>
       )}
 
-      <p style={{ fontSize: "12px", color: "#737373" }}>
-        {t("auth.b2b.register.consent")}
-      </p>
+      <label
+        className="flex items-start gap-3 cursor-pointer select-none"
+        style={{ fontSize: "12px", color: "#737373", lineHeight: 1.5 }}
+      >
+        <input
+          type="checkbox"
+          required
+          checked={privacyAccepted}
+          onChange={(e) => setPrivacyAccepted(e.target.checked)}
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer"
+          style={{ accentColor: "#dc2626" }}
+        />
+        <span>
+          {t("auth.b2b.register.consent")}{" "}
+          <a
+            href="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "#dc2626",
+              textDecoration: "underline",
+              textUnderlineOffset: "2px",
+            }}
+          >
+            {t("auth.b2b.register.privacyLinkLabel")}
+          </a>
+          .
+        </span>
+      </label>
 
       <button
         type="submit"
-        disabled={busy}
+        disabled={busy || !privacyAccepted}
         className="w-full py-3.5 rounded-full transition-all duration-300 hover:shadow-[0_18px_44px_-12px_rgba(220,38,38,0.55)] disabled:opacity-60 disabled:cursor-not-allowed mt-2"
         style={{
           backgroundColor: "#dc2626",
