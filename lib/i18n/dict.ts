@@ -145,6 +145,7 @@ export type Dict = {
   "pg.cta.loginForPrice": string;
   "pg.cta.notifyWhenBack": string;
   "pg.cta.buyOn": (channel: string) => string;
+  "pg.cta.askInfo": string;
   "pg.empty": string;
 
   // ─── Breadcrumb ─────────────────────────────────────────────────────
@@ -191,6 +192,11 @@ export type Dict = {
   "ch.used.title": string;
   "ch.used.accent": string;
   "ch.used.description": string;
+  "ch.used.trust.imei": string;
+  "ch.used.trust.battery": string;
+  "ch.used.trust.report": string;
+  "ch.used.trust.warranty": string;
+  "ch.used.available": string;
   "ch.used.metric.forSale": string;
   "ch.used.metric.ottimo": string;
   "ch.used.metric.buono": string;
@@ -400,6 +406,8 @@ export type Dict = {
   "auth.customer.errGeneric": string;
   "auth.customer.noCredentials": string;
   "auth.customer.noCredentialsHint": string;
+  "auth.customer.requestAccess": string;
+  "auth.customer.requestAccessMsg": string;
 
   // ─── /negozi ────────────────────────────────────────────────────────
   "stores.hero.eyebrow": string;
@@ -772,6 +780,7 @@ const IT: Dict = {
   "pg.cta.loginForPrice": "Accedi per il prezzo",
   "pg.cta.notifyWhenBack": "Avvisami quando torna",
   "pg.cta.buyOn": (channel) => `Acquista su ${channel}`,
+  "pg.cta.askInfo": "Richiedi informazioni",
   "pg.empty": "Nessun prodotto trovato.",
 
   "bc.home": "Home",
@@ -821,6 +830,11 @@ const IT: Dict = {
   "ch.used.accent": "testato e garantito",
   "ch.used.description":
     "Ogni telefono passa dal nostro laboratorio: IMEI verificato, batteria controllata, report tecnico e garanzia inclusa. Quello che vedi è disponibile davvero — quando si vende, sparisce dal listino.",
+  "ch.used.trust.imei": "IMEI verificato",
+  "ch.used.trust.battery": "Batteria controllata",
+  "ch.used.trust.report": "Report tecnico",
+  "ch.used.trust.warranty": "Garanzia fino a 12 mesi",
+  "ch.used.available": "disponibili",
   "ch.used.metric.forSale": "In vendita",
   "ch.used.metric.ottimo": "Ottimo",
   "ch.used.metric.buono": "Buono",
@@ -1064,6 +1078,9 @@ const IT: Dict = {
   "auth.customer.noCredentials": "Non hai ancora le credenziali?",
   "auth.customer.noCredentialsHint":
     "Porta un dispositivo in riparazione: ti arriverà via email un link per impostare la password.",
+  "auth.customer.requestAccess": "Richiedi l'accesso",
+  "auth.customer.requestAccessMsg":
+    "Vorrei richiedere l'accesso all'area clienti.",
 
   "stores.hero.eyebrow": "I punti vendita",
   "stores.hero.titleA": "I nostri",
@@ -1481,6 +1498,7 @@ const EN: Dict = {
   "pg.cta.loginForPrice": "Sign in for the price",
   "pg.cta.notifyWhenBack": "Notify me when back",
   "pg.cta.buyOn": (channel) => `Buy on ${channel}`,
+  "pg.cta.askInfo": "Ask for information",
   "pg.empty": "No products found.",
 
   "bc.home": "Home",
@@ -1530,6 +1548,11 @@ const EN: Dict = {
   "ch.used.accent": "tested and warranted",
   "ch.used.description":
     "Every phone goes through our lab: IMEI verified, battery checked, technical report and warranty included. What you see is actually in stock — once it sells, it's gone from the listing.",
+  "ch.used.trust.imei": "IMEI verified",
+  "ch.used.trust.battery": "Battery checked",
+  "ch.used.trust.report": "Technical report",
+  "ch.used.trust.warranty": "Up to 12 months warranty",
+  "ch.used.available": "available",
   "ch.used.metric.forSale": "For sale",
   "ch.used.metric.ottimo": "Excellent",
   "ch.used.metric.buono": "Good",
@@ -1773,6 +1796,9 @@ const EN: Dict = {
   "auth.customer.noCredentials": "Don't have credentials yet?",
   "auth.customer.noCredentialsHint":
     "Bring a device in for repair: you'll get an email with a link to set the password.",
+  "auth.customer.requestAccess": "Request access",
+  "auth.customer.requestAccessMsg":
+    "I'd like to request access to the customer area.",
 
   "stores.hero.eyebrow": "The stores",
   "stores.hero.titleA": "Our",
