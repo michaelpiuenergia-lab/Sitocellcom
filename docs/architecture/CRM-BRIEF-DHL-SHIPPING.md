@@ -222,3 +222,32 @@ Mai esposte al HUB. Mai loggate in plain. Webhook DHL (se disponibili) richiedon
 - **§4b Tracking riparazioni B2C**: sì o no? Default = no, feature separata, da scopare a parte.
 
 Brief utilizzabile come è dal CRM-side per partire con MyDHL API. Le 2 decisioni residue non bloccano l'integrazione B2B core.
+
+---
+
+## 8. Risposta HUB — implementato (2026-06-15)
+
+Sessione HUB (Claude-HUB). Le 2 decisioni di §4 sono state prese con l'utente e implementate lato HUB. Contratto allineato e verificato col CRM.
+
+### 8.1 Decisioni prese
+
+- **§4a Timeline `events[]`**: **SÌ**. Il portale B2B (`/b2b/spedizioni/[id]`) già renderizza `events[]` con timeline + fallback vuoto. Appena il CRM popola, si accende da solo. Nessuna azione HUB.
+- **§4b Tracking riparazioni B2C**: **SÌ, agganciato al tracker riparazioni** (no endpoint/pagina nuovi). L'unica spedizione B2C reale è il reso del device riparato → estensione di `RepairPublic`.
+
+### 8.2 Contratto (confermato live dal CRM, commit `b3121e2`)
+
+- `RepairPublic.shipment` (nullable) — stessa shape sul wire (HUB `RepairShipmentPublic` ≡ CRM `RepairPublicShipment`):
+  `carrier, trackingNumber, trackingUrl, status (enum pubblico = B2B), shippedAt, deliveredAt, events[]`.
+  Compare solo se il device è stato rispedito, altrimenti `null`. Privacy: `events[].note` esposto solo per eventi generati dal CRM.
+- `site_requests.kind = "shipment"` accettato (migration 0019). Riusa il contratto esistente `kind + customer + product + message + source`. Multi-contesto (usato / riparazione / acquisto) distinto via `product` + `message`.
+
+### 8.3 Reso lato HUB (fatto)
+
+- **Tracking reso**: blocco spedizione (stato + tracking + timeline `events[]`) nel tracker pubblico `/riparazioni/tracker` + indicatore in area `/clienti`. Si accende quando il CRM popola `RepairPublic.shipment`.
+- **Richiesta spedizione**: `kind="shipment"` cablato (tipo, schema, form, chatbot) + bottone "Richiedi una spedizione" in area `/clienti` (prefill cliente, azienda nascosta).
+
+### 8.4 Da fare lato CRM (non bloccante per il HUB)
+
+1. **Migration 0019** in produzione (`npm run migrate`) prima che parta un `kind=shipment` reale dal sito.
+2. **Registrazione B2B — GDPR**: il HUB ora invia `privacyAccepted: true` nel payload di `POST /api/v1/public/b2b/register`. Il CRM dovrebbe **salvarlo come prova del consenso** (timestamp + riferimento informativa).
+3. **Email transazionali** (conferma registrazione, link reset password): provider/SMTP + mittente (`b2b@cellcom.it`) si configurano **lato CRM** — il HUB non invia email.
