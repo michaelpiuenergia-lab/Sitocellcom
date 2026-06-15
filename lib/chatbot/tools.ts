@@ -145,7 +145,14 @@ export const ANTHROPIC_TOOLS: Tool[] = [
       properties: {
         kind: {
           type: "string",
-          enum: ["info", "spare-part", "repair", "b2b-quote", "trade-in"],
+          enum: [
+            "info",
+            "spare-part",
+            "repair",
+            "b2b-quote",
+            "trade-in",
+            "shipment",
+          ],
         },
         defaultCustomer: {
           type: "object",
@@ -220,7 +227,14 @@ const ListStoresInput = z.object({
 });
 
 const OpenRequestFormInput = z.object({
-  kind: z.enum(["info", "spare-part", "repair", "b2b-quote", "trade-in"]),
+  kind: z.enum([
+    "info",
+    "spare-part",
+    "repair",
+    "b2b-quote",
+    "trade-in",
+    "shipment",
+  ]),
   defaultCustomer: z
     .object({
       name: z.string().max(120).optional(),

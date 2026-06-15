@@ -18,12 +18,24 @@ export function RequestTrigger({
   label,
   variant = "primary",
   className,
+  hideCompany = false,
+  defaultCustomer,
 }: {
   kind: SiteRequestKind;
   product?: SiteRequestProductPayload | null;
   label: string;
   variant?: "primary" | "outline" | "ghost";
   className?: string;
+  /** Nasconde il campo azienda (richieste B2C/cliente finale). */
+  hideCompany?: boolean;
+  /** Pre-compila i campi del form (es. cliente autenticato). */
+  defaultCustomer?: Partial<{
+    name: string;
+    email: string;
+    phone: string;
+    company: string;
+    message: string;
+  }>;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -52,6 +64,8 @@ export function RequestTrigger({
         <RequestForm
           kind={kind}
           product={product}
+          hideCompany={hideCompany}
+          defaultCustomer={defaultCustomer}
           onClose={() => setOpen(false)}
         />
       )}

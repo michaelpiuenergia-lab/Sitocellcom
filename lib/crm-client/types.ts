@@ -128,6 +128,12 @@ export type B2bRegisterInput = {
   companyName: string;
   vatNumber?: string | null;
   phone?: string | null;
+  /**
+   * GDPR — consenso esplicito al trattamento dati raccolto dalla checkbox del
+   * form registrazione. Sempre true (l'endpoint rifiuta i payload senza). Il
+   * CRM lo salva come base legale del trattamento (art. 13 GDPR).
+   */
+  privacyAccepted: true;
 };
 
 export type B2bPasswordRequestInput = {
@@ -212,7 +218,9 @@ export type SiteRequestKind =
   | "spare-part"
   | "repair"
   | "b2b-quote"
-  | "trade-in"; // valutazione usato proposta dall'utente pubblico
+  | "trade-in" // valutazione usato proposta dall'utente pubblico
+  | "shipment"; // richiesta spedizione/ritiro generica (usato, riparazione,
+//                 acquisto) — contesto via product+message+source
 
 export type SiteRequestSource = "hub-public" | "hub-b2b";
 
@@ -346,6 +354,25 @@ export type RepairStatusHistoryPublic = {
   at: string; // ISO 8601
 };
 
+/**
+ * Spedizione (reso) collegata a una riparazione. Il CRM la popola SOLO se il
+ * device riparato è stato rispedito al cliente; altrimenti `shipment: null`
+ * (nullable → retro-compatibile). Riusa l'enum stati e gli eventi delle
+ * spedizioni B2B: stesso contratto CRM, single source of truth.
+ *
+ * Privacy: `events[].note` è esposto dal CRM solo per eventi generati
+ * internamente, mai testo libero del corriere non vettato.
+ */
+export type RepairShipmentPublic = {
+  carrier: string;
+  trackingNumber: string | null;
+  trackingUrl: string | null;
+  status: B2bShipmentStatus;
+  shippedAt: string | null;
+  deliveredAt: string | null;
+  events: B2bShipmentEvent[];
+};
+
 /** Vista pubblica del ticket — campi sensibili (devicePassword, costi interni,
  *  customerId, tecnico) MAI esposti. imei già mascherato lato CRM. */
 export type RepairPublic = {
@@ -358,6 +385,8 @@ export type RepairPublic = {
   defectDiagnosed: string | null;
   quote: RepairQuotePublic;
   statusHistory: RepairStatusHistoryPublic[];
+  /** Spedizione del reso (nullable). Vedi RepairShipmentPublic. */
+  shipment: RepairShipmentPublic | null;
   createdAt: string;
   updatedAt: string;
 };

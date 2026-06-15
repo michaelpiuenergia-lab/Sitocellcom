@@ -38,6 +38,10 @@ const KIND_LABELS: Record<SiteRequestKind, { title: string; cta: string }> = {
     title: "Richiedi valutazione usato",
     cta: "Invia richiesta valutazione",
   },
+  shipment: {
+    title: "Richiedi una spedizione",
+    cta: "Invia richiesta spedizione",
+  },
 };
 
 type FormState = {
@@ -302,7 +306,9 @@ export function RequestForm({
                         ? "Modello compatibile, quantità, urgenza…"
                         : kind === "b2b-quote"
                           ? "Quantità richiesta, eventuali condizioni…"
-                          : "Dettagli della richiesta…"
+                          : kind === "shipment"
+                            ? "Cosa spedire, indirizzo, ritiro o consegna…"
+                            : "Dettagli della richiesta…"
                   }
                   className={cn(
                     "w-full px-4 py-3 rounded-lg bg-popover border border-border",

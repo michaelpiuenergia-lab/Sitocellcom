@@ -1,7 +1,11 @@
 import { requireCustomerSession } from "@/lib/auth/customer-guards";
 import { customerRepairs } from "@/lib/crm-client";
 import { RepairStatusBadge } from "@/components/repairs/repair-status-badge";
-import type { RepairPublic } from "@/lib/crm-client/types";
+import { RequestTrigger } from "@/components/forms/request-trigger";
+import {
+  B2B_SHIPMENT_STATUS_LABELS,
+  type RepairPublic,
+} from "@/lib/crm-client/types";
 
 export const dynamic = "force-dynamic";
 
@@ -66,6 +70,22 @@ function RepairCard({ repair }: { repair: RepairPublic }) {
       </div>
 
       <QuoteLine repair={repair} />
+
+      {repair.shipment && (
+        <div
+          className="flex items-center gap-2 rounded-xl px-4 py-2.5 flex-wrap"
+          style={{ backgroundColor: "#f0f9ff", border: "1px solid #bae6fd" }}
+        >
+          <span className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#0369a1" }}>
+            Spedizione · {B2B_SHIPMENT_STATUS_LABELS[repair.shipment.status]}
+          </span>
+          {repair.shipment.trackingNumber && (
+            <span className="font-mono" style={{ fontSize: "12px", color: "#525252" }}>
+              {repair.shipment.trackingNumber}
+            </span>
+          )}
+        </div>
+      )}
 
       <div className="flex items-center justify-between gap-3 pt-1">
         <span className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#a3a3a3" }}>
@@ -133,6 +153,27 @@ export default async function ClientiDashboardPage() {
             </a>
           </div>
         )}
+
+        <div
+          className="flex flex-wrap items-center justify-between gap-4 rounded-2xl p-6"
+          style={{ backgroundColor: "#fafaf8", border: "1px solid #ececec" }}
+        >
+          <div className="flex flex-col gap-1">
+            <span className="font-sans font-semibold" style={{ fontSize: "16px", color: "#0a0a0a" }}>
+              Devi spedirci un dispositivo o farti spedire qualcosa?
+            </span>
+            <span style={{ fontSize: "14px", color: "#525252" }}>
+              Apri una richiesta di spedizione: ti ricontattiamo con le istruzioni.
+            </span>
+          </div>
+          <RequestTrigger
+            kind="shipment"
+            variant="outline"
+            hideCompany
+            defaultCustomer={{ name: customer.name, email: customer.email }}
+            label="Richiedi una spedizione"
+          />
+        </div>
 
         <p className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.18em", color: "#a3a3a3" }}>
           Account: {customer.email}

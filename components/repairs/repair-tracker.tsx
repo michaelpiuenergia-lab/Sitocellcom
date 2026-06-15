@@ -6,10 +6,23 @@ import { z } from "zod";
 import {
   REPAIR_PUBLIC_STATUS_LABELS,
   REPAIR_PUBLIC_STATUS_FLOW,
+  B2B_SHIPMENT_STATUS_LABELS,
   type RepairPublic,
   type RepairPublicStatus,
+  type RepairShipmentPublic,
 } from "@/lib/crm-client/types";
 import { RepairStatusBadge } from "./repair-status-badge";
+
+/** Colori badge per stato spedizione (reso riparazione). */
+const SHIPMENT_TONE: Record<string, { bg: string; border: string; color: string }> = {
+  preparing: { bg: "#fafaf8", border: "#ececec", color: "#737373" },
+  shipped: { bg: "#e0f2fe", border: "#bae6fd", color: "#0369a1" },
+  in_transit: { bg: "#e0f2fe", border: "#bae6fd", color: "#0369a1" },
+  out_for_delivery: { bg: "#e0f2fe", border: "#bae6fd", color: "#0369a1" },
+  delivered: { bg: "#dcfce7", border: "#86efac", color: "#15803d" },
+  returned: { bg: "#fee2e2", border: "#fecaca", color: "#b91c1c" },
+  exception: { bg: "#fee2e2", border: "#fecaca", color: "#b91c1c" },
+};
 
 const schema = z.object({
   ticket: z.string().min(1, "Inserisci il numero ticket"),
@@ -184,6 +197,72 @@ function QuotePanel({
   );
 }
 
+function ShipmentBlock({ shipment }: { shipment: RepairShipmentPublic }) {
+  const dt = (iso: string) => new Date(iso).toLocaleString("it-IT");
+  const dd = (iso: string | null) =>
+    iso ? new Date(iso).toLocaleDateString("it-IT") : "—";
+  const tone = SHIPMENT_TONE[shipment.status] ?? SHIPMENT_TONE.preparing;
+
+  return (
+    <div className="rounded-2xl p-6 flex flex-col gap-5" style={{ backgroundColor: "#ffffff", border: "1px solid #ececec" }}>
+      <div className="flex items-start justify-between gap-4 flex-wrap">
+        <div className="flex flex-col gap-1">
+          <span className="font-mono uppercase" style={{ fontSize: "11px", letterSpacing: "0.18em", color: "#737373" }}>
+            Spedizione del reso
+          </span>
+          <span style={{ fontSize: "16px", color: "#0a0a0a", fontWeight: 600 }}>
+            {shipment.carrier}
+            {shipment.trackingNumber && (
+              <span className="font-mono" style={{ fontSize: "13px", color: "#525252", fontWeight: 400 }}>
+                {" · "}{shipment.trackingNumber}
+              </span>
+            )}
+          </span>
+          <span style={{ fontSize: "13px", color: "#737373" }}>
+            Spedito {dd(shipment.shippedAt)}
+            {shipment.deliveredAt && ` · Consegnato ${dd(shipment.deliveredAt)}`}
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span
+            className="inline-flex items-center rounded-full px-3 py-1 font-mono uppercase whitespace-nowrap"
+            style={{ backgroundColor: tone.bg, color: tone.color, border: `1px solid ${tone.border}`, fontSize: "10px", letterSpacing: "0.14em", fontWeight: 600 }}
+          >
+            {B2B_SHIPMENT_STATUS_LABELS[shipment.status]}
+          </span>
+          {shipment.trackingUrl && (
+            <a
+              href={shipment.trackingUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full px-4 py-2"
+              style={{ backgroundColor: "#dc2626", color: "#fff", fontSize: "13px", fontWeight: 600 }}
+            >
+              Traccia ↗
+            </a>
+          )}
+        </div>
+      </div>
+
+      {shipment.events.length > 0 && (
+        <div className="flex flex-col gap-3 pt-1" style={{ borderTop: "1px solid #f4f3ee" }}>
+          {[...shipment.events].reverse().map((ev, i) => (
+            <div key={i} className={i === 0 ? "flex items-start gap-3 pt-3" : "flex items-start gap-3"}>
+              <div className="w-2 h-2 mt-1.5 rounded-full shrink-0" style={{ backgroundColor: i === 0 ? "#dc2626" : "#d4d4d4" }} />
+              <div className="flex flex-col">
+                <span style={{ fontSize: "14px", color: "#0a0a0a", fontWeight: i === 0 ? 600 : 400 }}>{ev.status}</span>
+                {ev.location && <span style={{ fontSize: "13px", color: "#525252" }}>{ev.location}</span>}
+                {ev.note && <span style={{ fontSize: "12px", color: "#737373", fontStyle: "italic" }}>{ev.note}</span>}
+                <span className="font-mono" style={{ fontSize: "11px", color: "#a3a3a3" }}>{dt(ev.at)}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function RepairResult({
   repair,
   ticket,
@@ -241,6 +320,8 @@ function RepairResult({
           ))}
         </div>
       </div>
+
+      {repair.shipment && <ShipmentBlock shipment={repair.shipment} />}
     </motion.div>
   );
 }

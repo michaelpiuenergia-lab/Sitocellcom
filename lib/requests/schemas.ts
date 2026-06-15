@@ -13,6 +13,7 @@ export const SiteRequestKindSchema = z.enum([
   "repair",
   "b2b-quote",
   "trade-in",
+  "shipment",
 ]);
 
 export const SiteRequestSourceSchema = z.enum(["hub-public", "hub-b2b"]);
