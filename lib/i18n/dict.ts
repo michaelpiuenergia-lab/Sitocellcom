@@ -350,6 +350,7 @@ export type Dict = {
   "auth.b2b.register.phoneLabel": string;
   "auth.b2b.register.phonePh": string;
   "auth.b2b.register.consent": string;
+  "auth.b2b.register.privacyLinkLabel": string;
   "auth.b2b.register.cta": string;
   "auth.b2b.register.ctaBusy": string;
   "auth.b2b.register.done.title": string;
@@ -685,7 +686,7 @@ const IT: Dict = {
   "nav.courses": "Corsi",
   "nav.stores": "Negozi",
   "nav.about": "Chi siamo",
-  "nav.login": "Accedi",
+  "nav.login": "Area clienti",
   "nav.b2b": "Area B2B",
   "nav.repairCta": "Ripara ora",
   "nav.customerArea": "Area clienti",
@@ -823,8 +824,8 @@ const IT: Dict = {
   "ch.used.metric.forSale": "In vendita",
   "ch.used.metric.ottimo": "Ottimo",
   "ch.used.metric.buono": "Buono",
-  "ch.used.metric.warranty": "Garanzia",
-  "ch.used.metric.warrantyValue": "fino 12m",
+  "ch.used.metric.warranty": "Mesi di garanzia",
+  "ch.used.metric.warrantyValue": "fino a 12",
 
   "catalog.land.sec.phones.title": "Telefoni",
   "catalog.land.sec.phones.description":
@@ -1002,7 +1003,8 @@ const IT: Dict = {
   "auth.b2b.register.phoneLabel": "Telefono",
   "auth.b2b.register.phonePh": "+39 091 1234567",
   "auth.b2b.register.consent":
-    "Inviando la richiesta accetti che Cellcom Smartphone Fix SRLS contatti l'email indicata per gestire l'attivazione dell'account rivenditore.",
+    "Acconsento al trattamento dei miei dati personali da parte di Cellcom Smartphone Fix SRLS per gestire la richiesta di attivazione dell'account rivenditore (art. 13 GDPR — Reg. UE 2016/679).",
+  "auth.b2b.register.privacyLinkLabel": "Leggi l'informativa privacy",
   "auth.b2b.register.cta": "Invia la richiesta →",
   "auth.b2b.register.ctaBusy": "Invio…",
   "auth.b2b.register.done.title": "Richiesta inviata.",
@@ -1393,7 +1395,7 @@ const EN: Dict = {
   "nav.courses": "Courses",
   "nav.stores": "Stores",
   "nav.about": "About",
-  "nav.login": "Sign in",
+  "nav.login": "Customer area",
   "nav.b2b": "B2B area",
   "nav.repairCta": "Repair now",
   "nav.customerArea": "Customer area",
@@ -1531,8 +1533,8 @@ const EN: Dict = {
   "ch.used.metric.forSale": "For sale",
   "ch.used.metric.ottimo": "Excellent",
   "ch.used.metric.buono": "Good",
-  "ch.used.metric.warranty": "Warranty",
-  "ch.used.metric.warrantyValue": "up to 12m",
+  "ch.used.metric.warranty": "Months warranty",
+  "ch.used.metric.warrantyValue": "up to 12",
 
   "catalog.land.sec.phones.title": "Phones",
   "catalog.land.sec.phones.description":
@@ -1710,7 +1712,8 @@ const EN: Dict = {
   "auth.b2b.register.phoneLabel": "Phone",
   "auth.b2b.register.phonePh": "+44 20 1234 5678",
   "auth.b2b.register.consent":
-    "By submitting you agree that Cellcom Smartphone Fix SRLS may contact the email above to activate the reseller account.",
+    "I consent to the processing of my personal data by Cellcom Smartphone Fix SRLS to handle the reseller account activation request (art. 13 GDPR — EU Reg. 2016/679).",
+  "auth.b2b.register.privacyLinkLabel": "Read the privacy policy",
   "auth.b2b.register.cta": "Send the request →",
   "auth.b2b.register.ctaBusy": "Sending…",
   "auth.b2b.register.done.title": "Request sent.",
