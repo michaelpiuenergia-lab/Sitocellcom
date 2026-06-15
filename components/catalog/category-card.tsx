@@ -32,17 +32,17 @@ export function CategoryCard({
         href={href}
         className="group relative flex flex-col rounded-3xl border border-border bg-card overflow-hidden transition-colors duration-300 hover:border-brand-600/40 hover:bg-card-hover h-full"
       >
-        {/* Numero protagonista */}
-        <div className="aspect-[4/5] flex flex-col items-start justify-between p-8">
+        {/* Numero protagonista — grande ma non enorme */}
+        <div className="flex flex-col items-start gap-6 p-8 pb-7">
           <Eyebrow>Categoria</Eyebrow>
           {count !== null && (
-            <div className="flex items-baseline gap-3 leading-none">
+            <div className="flex items-baseline gap-2.5 leading-none">
               <AnimatedNumber
                 value={count}
-                duration={1600}
-                className="font-serif text-[clamp(80px,10vw,160px)] text-foreground tabular-nums"
+                duration={1400}
+                className="font-serif text-[clamp(40px,5vw,72px)] text-foreground tabular-nums"
               />
-              <span className="font-mono text-xs uppercase tracking-[0.24em] text-muted-foreground translate-y-[-0.4em]">
+              <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
                 prodotti
               </span>
             </div>
