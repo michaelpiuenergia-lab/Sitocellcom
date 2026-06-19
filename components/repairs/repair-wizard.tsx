@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -133,6 +133,10 @@ export function RepairWizard() {
     status: "idle" | "submitting" | "error";
     error: string | null;
   }>({ status: "idle", error: null });
+  // True dopo un tentativo di conferma con campi mancanti: rende l'avviso
+  // "cosa manca" rosso ed evidente (prima e' un hint grigio discreto).
+  const [triedSubmit, setTriedSubmit] = useState(false);
+  const missingRef = useRef<HTMLDivElement>(null);
 
   const category = form.category ? getCategory(form.category) : null;
   const isOtherBrand = form.brand === OTHER_BRAND;
@@ -252,7 +256,13 @@ export function RepairWizard() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!serviceReady) return;
+    if (!serviceReady) {
+      // Niente submit silenzioso: evidenzia l'avviso e portacelo davanti agli
+      // occhi, cosi' l'utente vede subito cosa ha dimenticato (es. la sede).
+      setTriedSubmit(true);
+      missingRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
     if (!form.privacyAccepted) {
       setSubmitState({
         status: "error",
@@ -1004,9 +1014,18 @@ export function RepairWizard() {
               )}
 
               {!serviceReady && (
-                <p className="text-sm text-muted-foreground bg-black/5 rounded-lg px-4 py-2">
-                  Per confermare manca: {serviceMissing.join(", ")}.
-                </p>
+                <div
+                  ref={missingRef}
+                  className={
+                    triedSubmit
+                      ? "text-sm text-brand-600 bg-brand-600/10 border border-brand-600/40 rounded-lg px-4 py-3 font-semibold"
+                      : "text-sm text-muted-foreground bg-black/5 rounded-lg px-4 py-2"
+                  }
+                >
+                  {triedSubmit
+                    ? `⚠ Prima di confermare completa: ${serviceMissing.join(", ")}.`
+                    : `Per confermare manca: ${serviceMissing.join(", ")}.`}
+                </div>
               )}
 
               <div className="flex justify-between gap-3 pt-4">
@@ -1019,7 +1038,7 @@ export function RepairWizard() {
                 </button>
                 <button
                   type="submit"
-                  disabled={submitState.status === "submitting" || !serviceReady}
+                  disabled={submitState.status === "submitting"}
                   className={primaryBtnClass}
                 >
                   {submitState.status === "submitting"
