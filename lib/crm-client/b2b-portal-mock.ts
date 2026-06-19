@@ -16,6 +16,7 @@ import type {
   B2bQuoteAcceptResponse,
   B2bQuoteDetail,
   B2bQuoteListItem,
+  B2bRequestListItem,
   B2bShipmentDetail,
   B2bShipmentListItem,
 } from "./types";
@@ -262,6 +263,10 @@ const shipmentListKeys: (keyof B2bShipmentListItem & keyof B2bShipmentDetail)[] 
 export async function listB2bOrders(_token: string, params?: B2bListParams) {
   void _token;
   return paginate(orders.map((o) => toListItem<B2bOrderDetail, B2bOrderListItem>(o, orderListKeys)), params);
+}
+export async function listB2bRequests(_token: string, params?: B2bListParams) {
+  void _token;
+  return paginate<B2bRequestListItem>([], params);
 }
 export async function getB2bOrder(_token: string, id: string): Promise<B2bOrderDetail> {
   void _token;

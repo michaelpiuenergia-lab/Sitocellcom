@@ -15,6 +15,7 @@ import type {
   B2bQuoteAcceptResponse,
   B2bQuoteDetail,
   B2bQuoteListItem,
+  B2bRequestListItem,
   B2bShipmentDetail,
   B2bShipmentListItem,
 } from "./types";
@@ -60,6 +61,18 @@ export async function getB2bOrder(
   id: string,
 ): Promise<B2bOrderDetail> {
   return crmFetch(`/api/v1/b2b/orders/${encodeURIComponent(id)}`, {
+    cache: "no-store",
+    extraHeaders: authHeaders(sessionToken),
+  });
+}
+
+// ─── Richieste ───────────────────────────────────────────────────────────────
+
+export async function listB2bRequests(
+  sessionToken: string,
+  params?: B2bListParams,
+): Promise<B2bListResponse<B2bRequestListItem>> {
+  return crmFetch(`/api/v1/b2b/requests${buildQuery(params)}`, {
     cache: "no-store",
     extraHeaders: authHeaders(sessionToken),
   });

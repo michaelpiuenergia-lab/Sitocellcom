@@ -1,14 +1,39 @@
 import { requireB2bSession } from "@/lib/auth/guards";
 import { B2bNavbar } from "@/components/b2b/b2b-navbar";
+import { listB2bRequests } from "@/lib/crm-client";
 
 export const dynamic = "force-dynamic";
 
+const KIND_LABEL: Record<string, string> = {
+  info: "Info prodotto",
+  "spare-part": "Ricambio",
+  repair: "Riparazione",
+  "b2b-quote": "Preventivo",
+  "trade-in": "Permuta",
+  shipment: "Spedizione",
+};
+
+const STATUS_LABEL: Record<string, string> = {
+  "da-gestire": "Da gestire",
+  "in-lavorazione": "In lavorazione",
+  "risposta-inviata": "Risposta inviata",
+  chiusa: "Chiusa",
+  spam: "Spam",
+};
+
+const STATUS_TONE: Record<string, string> = {
+  "da-gestire": "#b45309",
+  "in-lavorazione": "#2563eb",
+  "risposta-inviata": "#047857",
+  chiusa: "#6b7280",
+  spam: "#dc2626",
+};
+
 export default async function B2bRequestsPage() {
   const ctx = await requireB2bSession("/b2b/richieste");
-
-  // Lista richieste B2B: in attesa di endpoint CRM GET /api/v1/b2b/requests
-  // (vedi CRM-BRIEF-B2B.md §2.2.3 — per ora coperto solo POST).
-  // Placeholder visivo. Quando l'endpoint sarà esposto, sostituire con la lista reale.
+  const { items } = await listB2bRequests(ctx.sessionToken, { limit: 100 }).catch(
+    () => ({ items: [], total: 0, hasMore: false, limit: 100, offset: 0 }),
+  );
 
   return (
     <>
@@ -23,41 +48,69 @@ export default async function B2bRequestsPage() {
             Storico richieste
           </h1>
           <p className="text-sm text-muted-foreground max-w-2xl">
-            Qui troverai tutte le richieste di disponibilità, preventivi e
-            ordini speciali che hai inviato. Stato e risposta dell'ufficio
-            commerciale sempre aggiornati dal gestionale Cellcom.
+            Tutte le richieste di disponibilità, preventivi e ordini speciali che
+            hai inviato, con stato e risposta dell&apos;ufficio commerciale
+            aggiornati dal gestionale Cellcom.
           </p>
         </div>
 
-        <div className="rounded-2xl border border-dashed border-border bg-card/40 p-12 flex flex-col items-center justify-center gap-4 text-center">
-          <div className="w-12 h-12 rounded-full border border-border bg-card flex items-center justify-center">
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="text-muted-foreground"
+        {items.length === 0 ? (
+          <div className="rounded-2xl border border-dashed border-border bg-card/40 p-12 flex flex-col items-center justify-center gap-4 text-center">
+            <h3 className="font-serif italic text-xl">Nessuna richiesta ancora</h3>
+            <p className="text-sm text-muted-foreground max-w-md">
+              Le richieste di disponibilità e preventivo che invierai dalla
+              sezione prodotti compariranno qui.
+            </p>
+            <a
+              href="/b2b/prodotti"
+              className="mt-2 px-5 py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold"
             >
-              <path d="M9 12l2 2 4-4" />
-              <path d="M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9c2.07 0 3.98.7 5.5 1.88" />
-            </svg>
+              Sfoglia il catalogo
+            </a>
           </div>
-          <h3 className="font-serif italic text-xl">Nessuna richiesta ancora</h3>
-          <p className="text-sm text-muted-foreground max-w-md">
-            Le richieste di disponibilità e preventivo che invierai dalla
-            sezione prodotti compariranno qui.
-          </p>
-          <a
-            href="/b2b/prodotti"
-            className="mt-2 px-5 py-2.5 rounded-lg bg-linear-to-br from-brand-600 to-brand-800 text-white text-sm font-semibold"
-          >
-            Sfoglia il catalogo
-          </a>
-        </div>
+        ) : (
+          <div className="overflow-x-auto rounded-2xl border border-border">
+            <table className="w-full text-sm">
+              <thead className="bg-card text-left text-xs uppercase text-muted-foreground">
+                <tr>
+                  <th className="px-4 py-3">Data</th>
+                  <th className="px-4 py-3">Tipo</th>
+                  <th className="px-4 py-3">Prodotto</th>
+                  <th className="px-4 py-3">Messaggio</th>
+                  <th className="px-4 py-3">Stato</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((r) => (
+                  <tr key={r.id} className="border-t border-border">
+                    <td className="px-4 py-3 whitespace-nowrap">
+                      {new Date(r.createdAt).toLocaleDateString("it-IT")}
+                    </td>
+                    <td className="px-4 py-3">{KIND_LABEL[r.kind] ?? r.kind}</td>
+                    <td className="px-4 py-3">
+                      {r.productName ?? "—"}
+                      {r.variantLabel ? ` (${r.variantLabel})` : ""}
+                    </td>
+                    <td className="px-4 py-3 max-w-[280px] truncate text-muted-foreground">
+                      {r.message ?? "—"}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span
+                        className="rounded-full px-2.5 py-1 text-xs font-semibold"
+                        style={{
+                          color: STATUS_TONE[r.status] ?? "#6b7280",
+                          backgroundColor: `${STATUS_TONE[r.status] ?? "#6b7280"}1a`,
+                        }}
+                      >
+                        {STATUS_LABEL[r.status] ?? r.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </main>
     </>
   );

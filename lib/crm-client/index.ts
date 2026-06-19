@@ -115,6 +115,7 @@ export const respondToQuote = USE_MOCK_PUBLIC
 // Portale B2B (ordini, preventivi, fatture, NC, pagamenti, spedizioni, docs)
 export const listB2bOrders = USE_MOCK_B2B ? mockB2bPortal.listB2bOrders : realB2bPortal.listB2bOrders;
 export const getB2bOrder = USE_MOCK_B2B ? mockB2bPortal.getB2bOrder : realB2bPortal.getB2bOrder;
+export const listB2bRequests = USE_MOCK_B2B ? mockB2bPortal.listB2bRequests : realB2bPortal.listB2bRequests;
 export const listB2bQuotes = USE_MOCK_B2B ? mockB2bPortal.listB2bQuotes : realB2bPortal.listB2bQuotes;
 export const getB2bQuote = USE_MOCK_B2B ? mockB2bPortal.getB2bQuote : realB2bPortal.getB2bQuote;
 export const acceptB2bQuote = USE_MOCK_B2B ? mockB2bPortal.acceptB2bQuote : realB2bPortal.acceptB2bQuote;

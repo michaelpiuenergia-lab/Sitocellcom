@@ -655,6 +655,17 @@ export type B2bOrderListItem = {
   shipmentId: string | null;
 };
 
+/** Richiesta inviata dal cliente B2B (intake site_requests, GET /b2b/requests). */
+export type B2bRequestListItem = {
+  id: string;
+  kind: string;
+  status: string;
+  productName: string | null;
+  variantLabel: string | null;
+  message: string | null;
+  createdAt: string;
+};
+
 export type B2bOrderDetail = B2bOrderListItem & {
   customer: { id: string; name: string; company: string | null };
   shippingAddress: B2bAddress;
