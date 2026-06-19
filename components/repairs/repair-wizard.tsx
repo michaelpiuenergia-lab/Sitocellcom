@@ -185,21 +185,39 @@ export function RepairWizard() {
 
   const repairsReady = form.repairTypes.size > 0;
 
-  const serviceReady = (() => {
-    if (!form.serviceMode) return false;
-    if (form.serviceMode === "in-store" && !form.storeId) return false;
-    if (
-      (form.serviceMode === "at-home" ||
-        form.serviceMode === "pickup-at-home" ||
-        form.serviceMode === "ship-to-us") &&
-      !(form.shippingAddress && form.shippingCity && form.shippingCap)
-    )
-      return false;
-    if (needsAppointment(form.serviceMode)) {
-      if (!form.appointmentDate || !form.appointmentTime) return false;
+  // Elenco "cosa manca" per confermare: mostrato sotto il pulsante quando e'
+  // disabilitato, cosi' l'utente sa esattamente cosa completare (prima il
+  // pulsante restava spento senza spiegazione).
+  const serviceMissing: string[] = (() => {
+    const m: string[] = [];
+    if (!form.serviceMode) {
+      m.push("scegli come consegnare il dispositivo");
+    } else {
+      if (form.serviceMode === "in-store" && !form.storeId) m.push("scegli il negozio");
+      if (
+        (form.serviceMode === "at-home" ||
+          form.serviceMode === "pickup-at-home" ||
+          form.serviceMode === "ship-to-us") &&
+        !(form.shippingAddress && form.shippingCity && form.shippingCap)
+      ) {
+        m.push("completa l'indirizzo");
+      }
+      if (
+        needsAppointment(form.serviceMode) &&
+        (!form.appointmentDate || !form.appointmentTime)
+      ) {
+        m.push("scegli data e ora");
+      }
     }
-    return true;
+    if (!form.customerName.trim()) m.push("il tuo nome");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.customerEmail.trim()))
+      m.push("una email valida");
+    if (!form.customerPhone.trim()) m.push("il telefono");
+    if (!form.privacyAccepted) m.push("accettare l'informativa privacy");
+    if (!form.termsAccepted) m.push("accettare i termini e condizioni");
+    return m;
   })();
+  const serviceReady = serviceMissing.length === 0;
 
   const sevenDays = useMemo(() => nextSevenDays(), []);
 
@@ -982,6 +1000,12 @@ export function RepairWizard() {
               {submitState.error && (
                 <p className="text-sm text-brand-500 bg-brand-600/10 border border-brand-600/30 rounded-lg px-4 py-2">
                   {submitState.error}
+                </p>
+              )}
+
+              {!serviceReady && (
+                <p className="text-sm text-muted-foreground bg-black/5 rounded-lg px-4 py-2">
+                  Per confermare manca: {serviceMissing.join(", ")}.
                 </p>
               )}
 
