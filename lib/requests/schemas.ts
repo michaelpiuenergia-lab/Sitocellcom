@@ -60,6 +60,8 @@ export const SiteRequestPayloadSchema = z.object({
       "È necessario accettare l'informativa privacy per inviare la richiesta",
   }),
   meta: SiteRequestMetaSchema,
+  // Foto allegate dal cliente (es. permuta): data URL compressi. Max 6.
+  photos: z.array(z.string().max(3_500_000)).max(6).optional(),
 });
 
 export type SiteRequestPayloadInput = z.infer<
@@ -85,6 +87,8 @@ export const PublicRequestFormSchema = z.object({
       "È necessario accettare l'informativa privacy per inviare la richiesta",
   }),
   hpf: z.string().max(200).optional().default(""),
+  // Foto allegate dal cliente (es. permuta): data URL compressi. Max 6.
+  photos: z.array(z.string().max(3_500_000)).max(6).optional(),
 });
 
 export type PublicRequestFormInput = z.infer<

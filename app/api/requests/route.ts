@@ -75,6 +75,7 @@ export async function POST(req: NextRequest) {
     message: parsed.data.message,
     privacyAccepted: parsed.data.privacyAccepted,
     hpf: parsed.data.hpf,
+    photos: parsed.data.photos,
     meta,
   };
 

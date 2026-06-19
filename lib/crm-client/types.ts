@@ -277,6 +277,8 @@ export type SiteRequestPayload = {
    * Vedi CRM-BRIEF-B2B.md §2.2.3.
    */
   hpf?: string;
+  /** Foto allegate dal cliente (data URL compressi), es. permuta. Max 6. */
+  photos?: string[];
   meta: SiteRequestMeta;
 };
 

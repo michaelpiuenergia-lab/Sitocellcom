@@ -11,6 +11,9 @@ import {
 } from "@/lib/trade-in/models";
 import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
+import { fileToCompressedDataUrl } from "@/lib/images/compress-image";
+
+const MAX_PHOTOS = 6;
 
 type Step = "model" | "contact" | "done";
 
@@ -28,6 +31,7 @@ type FormState = {
   email: string;
   phone: string;
   notes: string;
+  photos: string[];
   privacyAccepted: boolean;
   hpf: string;
 };
@@ -43,6 +47,7 @@ const EMPTY: FormState = {
   email: "",
   phone: "",
   notes: "",
+  photos: [],
   privacyAccepted: false,
   hpf: "",
 };
@@ -54,6 +59,35 @@ export function TradeInCalculator() {
     status: "idle" | "submitting" | "error";
     error: string | null;
   }>({ status: "idle", error: null });
+  const [uploadingPhotos, setUploadingPhotos] = useState(false);
+
+  async function handleAddPhotos(files: FileList | null) {
+    if (!files || files.length === 0) return;
+    const room = MAX_PHOTOS - form.photos.length;
+    if (room <= 0) return;
+    setUploadingPhotos(true);
+    try {
+      const picked = Array.from(files).slice(0, room);
+      const dataUrls = await Promise.all(
+        picked.map((f) => fileToCompressedDataUrl(f)),
+      );
+      setForm((prev) => ({ ...prev, photos: [...prev.photos, ...dataUrls] }));
+    } catch {
+      setSubmitState({
+        status: "error",
+        error: "Una foto non è valida. Usa JPG o PNG.",
+      });
+    } finally {
+      setUploadingPhotos(false);
+    }
+  }
+
+  function removePhoto(idx: number) {
+    setForm((prev) => ({
+      ...prev,
+      photos: prev.photos.filter((_, i) => i !== idx),
+    }));
+  }
 
   const brands = useMemo(() => [...listBrands(), OTHER_BRAND], []);
   const isOther = form.brand === OTHER_BRAND;
@@ -152,6 +186,7 @@ export function TradeInCalculator() {
           message: messageLines.filter(Boolean).join("\n"),
           privacyAccepted: true,
           hpf: form.hpf,
+          photos: form.photos,
         }),
       });
       if (!res.ok) {
@@ -447,6 +482,54 @@ export function TradeInCalculator() {
                   className={cn(fieldClass, "resize-none")}
                   style={fieldStyle}
                 />
+              </Field>
+
+              <Field label={`Foto del telefono (consigliato — max ${MAX_PHOTOS})`}>
+                <div className="flex flex-wrap gap-3">
+                  {form.photos.map((src, i) => (
+                    <div key={i} className="relative">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={src}
+                        alt={`Foto ${i + 1}`}
+                        className="h-20 w-20 rounded-lg object-cover"
+                        style={{ border: "1px solid #e5e5e5" }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removePhoto(i)}
+                        aria-label="Rimuovi foto"
+                        className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full leading-none"
+                        style={{ backgroundColor: "#dc2626", color: "#fff", fontSize: "13px" }}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  ))}
+                  {form.photos.length < MAX_PHOTOS && (
+                    <label
+                      className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center rounded-lg text-center"
+                      style={{ border: "1px dashed #d4d4d4", color: "#737373", fontSize: "11px" }}
+                    >
+                      {uploadingPhotos ? "…" : "+ Foto"}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="hidden"
+                        onChange={(e) => {
+                          void handleAddPhotos(e.target.files);
+                          e.currentTarget.value = "";
+                        }}
+                      />
+                    </label>
+                  )}
+                </div>
+                <p className="text-xs text-muted-foreground/80 mt-1.5">
+                  Aggiungi foto di fronte, retro, schermo acceso ed eventuali
+                  danni: velocizzi la valutazione. (Puoi anche inviarle dopo via
+                  email.)
+                </p>
               </Field>
 
               <div
