@@ -134,6 +134,11 @@ export type B2bRegisterInput = {
    * CRM lo salva come base legale del trattamento (art. 13 GDPR).
    */
   privacyAccepted: true;
+  /**
+   * Honeypot anti-bot: campo nascosto che deve restare vuoto. Se un bot lo
+   * compila, il CRM risponde ok ma NON registra nulla (no enumeration).
+   */
+  hpf?: string;
 };
 
 export type B2bPasswordRequestInput = {

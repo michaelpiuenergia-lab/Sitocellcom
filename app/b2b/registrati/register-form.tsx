@@ -26,6 +26,7 @@ export function RegisterForm() {
   const [companyName, setCompanyName] = useState("");
   const [vatNumber, setVatNumber] = useState("");
   const [phone, setPhone] = useState("");
+  const [hpf, setHpf] = useState(""); // honeypot anti-bot (resta vuoto)
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
@@ -46,6 +47,7 @@ export function RegisterForm() {
           vatNumber: vatNumber.trim() || null,
           phone: phone.trim() || null,
           privacyAccepted: true,
+          hpf,
         }),
       });
       if (!res.ok) {
@@ -81,6 +83,19 @@ export function RegisterForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {/* Honeypot anti-bot: nascosto agli utenti reali (fuori schermo +
+          aria-hidden + tabIndex -1). I bot lo compilano -> registrazione
+          scartata lato CRM. */}
+      <input
+        type="text"
+        name="company_website"
+        value={hpf}
+        onChange={(e) => setHpf(e.target.value)}
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+      />
       <div className="flex flex-col gap-2">
         <label className={labelClass} style={labelStyle}>
           {t("auth.b2b.register.nameLabel")}

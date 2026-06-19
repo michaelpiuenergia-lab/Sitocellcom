@@ -23,6 +23,9 @@ const Body = z.object({
   privacyAccepted: z.literal(true, {
     message: "È necessario accettare l'informativa privacy per registrarsi",
   }),
+  // Honeypot anti-bot: campo nascosto, deve restare vuoto. Inoltrato al CRM
+  // che decide (se valorizzato risponde ok ma non registra).
+  hpf: z.string().max(200).optional().default(""),
 });
 
 export async function POST(req: NextRequest) {
