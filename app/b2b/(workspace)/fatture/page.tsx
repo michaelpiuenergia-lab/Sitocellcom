@@ -43,6 +43,10 @@ export default async function FatturePage() {
               <div className="tabular-nums" style={{ fontSize: "22px", fontWeight: 700, color: "#92400e" }}>
                 {eur(openBalance)}
               </div>
+              <div className="mt-2 flex items-center gap-2">
+                <span style={{ fontSize: "11px", color: "#92400e" }}>Paga online, anche in 3 rate, con</span>
+                <KlarnaBadge height={20} />
+              </div>
             </div>
           )}
         </div>
