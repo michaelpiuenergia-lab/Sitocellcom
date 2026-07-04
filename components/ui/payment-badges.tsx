@@ -56,7 +56,7 @@ export function PaymentMethodsStrip({
           color: dark ? "#737373" : "#525252",
         }}
       >
-        Pagamenti sicuri
+        Pagamenti sicuri · anche in 3 rate
       </span>
       <KlarnaBadge height={height} />
       <PayPalBadge height={height} />
