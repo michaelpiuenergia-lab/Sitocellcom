@@ -1,49 +1,37 @@
+/* eslint-disable @next/next/no-img-element */
+
 /**
- * Badge dei metodi di pagamento (Klarna, PayPal) come si vedono nei footer
- * e nei checkout degli e-commerce. Wordmark ricreati inline (niente asset
- * esterni: CSP-safe), colori brand ufficiali.
+ * Badge UFFICIALI dei metodi di pagamento (SVG originali in /public/payments,
+ * same-origin: CSP-safe). Klarna = badge rosa ufficiale; PayPal = wordmark
+ * ufficiale, su chip bianco per restare leggibile anche su sfondi scuri.
  */
 
 export function KlarnaBadge({ height = 24 }: { height?: number }) {
   return (
-    <span
-      aria-label="Klarna"
-      className="inline-flex items-center justify-center rounded-md"
-      style={{
-        height,
-        paddingInline: height * 0.45,
-        backgroundColor: "#FFB3C7",
-        color: "#0A0B09",
-        fontWeight: 800,
-        fontSize: height * 0.5,
-        letterSpacing: "-0.02em",
-        lineHeight: 1,
-      }}
-    >
-      Klarna.
-    </span>
+    <img
+      src="/payments/klarna.svg"
+      alt="Klarna"
+      style={{ height, width: "auto", display: "inline-block" }}
+    />
   );
 }
 
 export function PayPalBadge({ height = 24 }: { height?: number }) {
   return (
     <span
-      aria-label="PayPal"
       className="inline-flex items-center justify-center rounded-md"
       style={{
         height,
-        paddingInline: height * 0.45,
+        paddingInline: height * 0.35,
         backgroundColor: "#ffffff",
         border: "1px solid #e5e5e5",
-        fontStyle: "italic",
-        fontWeight: 800,
-        fontSize: height * 0.5,
-        letterSpacing: "-0.01em",
-        lineHeight: 1,
       }}
     >
-      <span style={{ color: "#003087" }}>Pay</span>
-      <span style={{ color: "#0070BA" }}>Pal</span>
+      <img
+        src="/payments/paypal.svg"
+        alt="PayPal"
+        style={{ height: height * 0.55, width: "auto", display: "inline-block" }}
+      />
     </span>
   );
 }
@@ -53,7 +41,7 @@ export function PayPalBadge({ height = 24 }: { height?: number }) {
  */
 export function PaymentMethodsStrip({
   dark = false,
-  height = 24,
+  height = 26,
 }: {
   dark?: boolean;
   height?: number;
