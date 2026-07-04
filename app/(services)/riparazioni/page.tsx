@@ -4,6 +4,7 @@ import { IntakeOptions } from "@/components/repairs/intake-options";
 import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { getT } from "@/lib/i18n/server";
 import Link from "next/link";
+import { PayIn3Banner } from "@/components/ui/payment-badges";
 
 export const metadata = {
   title: "Riparazioni — Cellcom Group",
@@ -110,6 +111,8 @@ export default async function RepairsPage() {
       <HowItWorks />
 
       <IntakeOptions />
+
+      <PayIn3Banner />
 
       <section
         id="tracker"
