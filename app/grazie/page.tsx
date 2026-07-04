@@ -59,8 +59,9 @@ export default async function GraziePage({
 }: {
   searchParams?: SearchParams;
 }) {
-  const { klarna } = (await searchParams) ?? {};
-  const esito = (klarna && ESITI[klarna.toLowerCase()]) || DEFAULT_ESITO;
+  const { klarna, paypal } = (await searchParams) ?? {};
+  const key = klarna ?? paypal;
+  const esito = (key && ESITI[key.toLowerCase()]) || DEFAULT_ESITO;
 
   return (
     <main
