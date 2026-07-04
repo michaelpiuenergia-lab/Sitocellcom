@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { requireB2bSession } from "@/lib/auth/guards";
+import { optionalB2bSession } from "@/lib/auth/guards";
 import { payB2bInvoiceKlarna } from "@/lib/crm-client";
 
 /**
@@ -10,7 +10,15 @@ import { payB2bInvoiceKlarna } from "@/lib/crm-client";
  * pagamento torna al CRM via webhook (qui rimbalziamo solo il link).
  */
 export async function POST(req: NextRequest) {
-  const ctx = await requireB2bSession();
+  // In una API route niente redirect 307: sessione assente = 401 JSON, il
+  // bottone client rimanda al login mantenendo la pagina di ritorno.
+  const ctx = await optionalB2bSession();
+  if (!ctx) {
+    return NextResponse.json(
+      { error: { code: "UNAUTHORIZED", message: "Sessione scaduta, accedi di nuovo." } },
+      { status: 401 },
+    );
+  }
 
   const body = (await req.json().catch(() => ({}))) as { invoiceId?: unknown };
   const invoiceId = typeof body.invoiceId === "string" ? body.invoiceId.trim() : "";
@@ -30,6 +38,20 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: { code: "NOT_FOUND", message: "Fattura non trovata" } },
         { status: 404 },
+      );
+    }
+    if (err.code === "INVALID_SESSION" || err.code === "UNAUTHORIZED") {
+      return NextResponse.json(
+        { error: { code: "UNAUTHORIZED", message: "Sessione scaduta, accedi di nuovo." } },
+        { status: 401 },
+      );
+    }
+    // Errori applicativi del CRM (es. "Fattura gia' saldata"): inoltra il
+    // messaggio invece di appiattirlo in un generico 502.
+    if (err.code === "INVALID_PAYLOAD") {
+      return NextResponse.json(
+        { error: { code: "INVALID_PAYLOAD", message: err.message } },
+        { status: 400 },
       );
     }
     return NextResponse.json(

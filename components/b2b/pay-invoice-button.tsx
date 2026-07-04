@@ -24,6 +24,13 @@ export function PayInvoiceButton({ invoiceId }: { invoiceId: string }) {
         data?: { redirectUrl?: string };
         error?: { message?: string };
       } | null;
+      if (r.status === 401) {
+        // Sessione scaduta: al login e poi di nuovo qui sulle fatture.
+        window.location.assign(
+          "/b2b/login?next=" + encodeURIComponent(window.location.pathname),
+        );
+        return;
+      }
       const url = json?.data?.redirectUrl;
       if (!r.ok || !url) {
         throw new Error(json?.error?.message ?? "Pagamento non disponibile");

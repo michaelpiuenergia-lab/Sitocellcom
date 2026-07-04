@@ -16,7 +16,7 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-type SearchParams = Promise<{ klarna?: string; paypal?: string }>;
+type SearchParams = Promise<{ klarna?: string | string[]; paypal?: string | string[] }>;
 
 type Esito = { title: string; body: string; ok: boolean };
 
@@ -48,10 +48,12 @@ const ESITI: Record<string, Esito> = {
   },
 };
 
+// Esito sconosciuto/assente: tono NEUTRO, niente spunta verde che farebbe
+// credere a un pagamento riuscito.
 const DEFAULT_ESITO: Esito = {
   title: "Grazie",
-  body: "Operazione registrata. Per qualsiasi domanda siamo a disposizione.",
-  ok: true,
+  body: "Se hai completato un pagamento riceverai conferma a breve. Per qualsiasi dubbio contattaci.",
+  ok: false,
 };
 
 export default async function GraziePage({
@@ -60,7 +62,9 @@ export default async function GraziePage({
   searchParams?: SearchParams;
 }) {
   const { klarna, paypal } = (await searchParams) ?? {};
-  const key = klarna ?? paypal;
+  const pick = (v: string | string[] | undefined): string | undefined =>
+    Array.isArray(v) ? v[0] : v;
+  const key = pick(klarna) ?? pick(paypal);
   const esito = (key && ESITI[key.toLowerCase()]) || DEFAULT_ESITO;
 
   return (
