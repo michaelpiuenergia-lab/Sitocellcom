@@ -126,6 +126,7 @@ export const listB2bPayments = USE_MOCK_B2B ? mockB2bPortal.listB2bPayments : re
 export const listB2bShipments = USE_MOCK_B2B ? mockB2bPortal.listB2bShipments : realB2bPortal.listB2bShipments;
 export const getB2bShipment = USE_MOCK_B2B ? mockB2bPortal.getB2bShipment : realB2bPortal.getB2bShipment;
 export const listB2bDocuments = USE_MOCK_B2B ? mockB2bPortal.listB2bDocuments : realB2bPortal.listB2bDocuments;
+export const payB2bInvoiceKlarna = USE_MOCK_B2B ? mockB2bPortal.payB2bInvoiceKlarna : realB2bPortal.payB2bInvoiceKlarna;
 export { b2bDownloadCrmPath } from "./b2b-portal";
 
 // Corsi Cellcom Academy

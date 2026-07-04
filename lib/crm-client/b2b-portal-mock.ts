@@ -371,3 +371,11 @@ function conflict(): Error {
   (e as Error & { code?: string }).code = "CONFLICT";
   return e;
 }
+
+export async function payB2bInvoiceKlarna(_token: string, _invoiceId: string) {
+  void _token;
+  void _invoiceId;
+  const e = new Error("Pagamento online non disponibile in modalita' mock");
+  (e as Error & { code?: string }).code = "CONFLICT";
+  return Promise.reject(e);
+}

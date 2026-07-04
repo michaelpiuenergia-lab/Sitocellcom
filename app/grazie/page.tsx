@@ -16,7 +16,7 @@ export const metadata = {
 
 export const dynamic = "force-dynamic";
 
-type SearchParams = Promise<{ klarna?: string }>;
+type SearchParams = Promise<{ klarna?: string; paypal?: string }>;
 
 type Esito = { title: string; body: string; ok: boolean };
 

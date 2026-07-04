@@ -3,6 +3,7 @@ import { listB2bInvoices } from "@/lib/crm-client";
 import { B2bNavbar } from "@/components/b2b/b2b-navbar";
 import { StatusPill, invoiceTone } from "@/components/b2b/status-pill";
 import { B2B_INVOICE_STATUS_LABELS } from "@/lib/crm-client/types";
+import { PayInvoiceButton } from "@/components/b2b/pay-invoice-button";
 
 export const dynamic = "force-dynamic";
 
@@ -75,6 +76,9 @@ export default async function FatturePage() {
                     <td className="px-5 py-4 text-right tabular-nums" style={{ color: "#0a0a0a", fontWeight: 600 }}>{eur(inv.totalCents)}</td>
                     <td className="px-5 py-4 text-right tabular-nums" style={{ color: inv.balanceCents > 0 ? "#b91c1c" : "#15803d" }}>{eur(inv.balanceCents)}</td>
                     <td className="px-5 py-4 text-right whitespace-nowrap">
+                      {inv.balanceCents > 0 && (
+                        <span className="mr-3 inline-block align-middle"><PayInvoiceButton invoiceId={inv.id} /></span>
+                      )}
                       <a href={`/b2b/fatture/${inv.id}`} style={{ color: "#dc2626", fontSize: "13px", fontWeight: 500 }}>
                         Dettagli
                       </a>

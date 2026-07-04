@@ -198,3 +198,26 @@ export function b2bDownloadCrmPath(
 ): string {
   return `/api/v1/b2b/${kind}/${encodeURIComponent(id)}/download`;
 }
+
+// ─── Pagamento online fattura (Klarna via CRM) ─────────────────────────────
+
+export type B2bPayInvoiceResult = {
+  data: { redirectUrl: string; qrCodeUrl: string | null; dueCents: number };
+};
+
+/**
+ * Genera sul CRM un link Klarna per pagare online il residuo di una fattura
+ * del rivenditore. L'esito del pagamento torna al CRM via webhook (la fattura
+ * si aggiorna da sola).
+ */
+export async function payB2bInvoiceKlarna(
+  sessionToken: string,
+  invoiceId: string,
+): Promise<B2bPayInvoiceResult> {
+  return crmFetch(`/api/v1/b2b/payments/klarna-link`, {
+    method: "POST",
+    body: { invoiceId },
+    cache: "no-store",
+    extraHeaders: authHeaders(sessionToken),
+  });
+}
