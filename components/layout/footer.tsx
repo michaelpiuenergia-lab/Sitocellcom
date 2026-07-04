@@ -1,4 +1,5 @@
 import { LogoC } from "@/components/marketing/logo-c";
+import { PaymentMethodsStrip } from "@/components/ui/payment-badges";
 import { WowspaceCredit } from "@/components/credits/wowspace-credit";
 import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
@@ -96,6 +97,9 @@ export async function Footer() {
           <a href="tel:0735501637" className="hover:text-brand-500">0735 501637</a> · WhatsApp{" "}
           <a href="tel:+393208574006" className="hover:text-brand-500">320 857 4006</a>
         </p>
+        <div className="flex justify-center mt-6">
+          <PaymentMethodsStrip dark />
+        </div>
         <div className="flex justify-center mt-5">
           <WowspaceCredit variant="footer" />
         </div>

@@ -4,6 +4,7 @@ import { B2bNavbar } from "@/components/b2b/b2b-navbar";
 import { StatusPill, invoiceTone } from "@/components/b2b/status-pill";
 import { B2B_INVOICE_STATUS_LABELS } from "@/lib/crm-client/types";
 import { PayInvoiceButton } from "@/components/b2b/pay-invoice-button";
+import { KlarnaBadge } from "@/components/ui/payment-badges";
 
 export const dynamic = "force-dynamic";
 
