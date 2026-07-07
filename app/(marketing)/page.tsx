@@ -10,6 +10,7 @@ import {
 import { PillarsGrid } from "@/components/marketing/pillars-grid";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { PayIn3Banner } from "@/components/ui/payment-badges";
 import { getProducts } from "@/lib/crm-client";
 import { canSeePrices } from "@/lib/auth/pricing-access";
 import { getT } from "@/lib/i18n/server";
@@ -102,6 +103,10 @@ export default async function MarketingPage() {
           primaryCta={{ label: t("home.numbers.cta.catalog"), href: "/prodotti" }}
           secondaryCta={{ label: t("home.numbers.cta.about"), href: "/chi-siamo" }}
         />
+
+        {/* Paga in 3 rate (Klarna/PayPal): subito dopo la sezione chiara,
+            il banner ha sfondo chiaro suo e fa da ponte verso il blocco scuro. */}
+        <PayIn3Banner />
 
         {/* B2B (nero, fanale rosso intenso) */}
         <MarketingPanel
