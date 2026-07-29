@@ -14,10 +14,10 @@ export default async function B2bRegistratiPage() {
   const t = await getT();
   return (
     <main
-      className="relative min-h-screen flex items-center justify-center px-6 py-16"
+      className="relative min-h-screen flex items-start justify-center px-6 py-16"
       style={{ backgroundColor: "#fafaf8" }}
     >
-      <div className="w-full max-w-[480px] flex flex-col items-center gap-9">
+      <div className="w-full max-w-[640px] flex flex-col items-center gap-9">
         <a href="/" className="flex flex-col items-center gap-3" aria-label="Home">
           <LogoMark className="w-12 h-12" />
           <span

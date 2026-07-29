@@ -343,8 +343,6 @@ export type Dict = {
   "auth.b2b.register.eyebrow": string;
   "auth.b2b.register.title": string;
   "auth.b2b.register.subtitle": string;
-  "auth.b2b.register.nameLabel": string;
-  "auth.b2b.register.namePh": string;
   "auth.b2b.register.emailLabel": string;
   "auth.b2b.register.emailPh": string;
   "auth.b2b.register.companyLabel": string;
@@ -354,6 +352,59 @@ export type Dict = {
   "auth.b2b.register.phoneLabel": string;
   "auth.b2b.register.phonePh": string;
   "auth.b2b.register.consent": string;
+  // Form completo — sezioni
+  "auth.b2b.register.sec.contact": string;
+  "auth.b2b.register.sec.company": string;
+  "auth.b2b.register.sec.address": string;
+  "auth.b2b.register.sec.profile": string;
+  // Referente
+  "auth.b2b.register.firstNameLabel": string;
+  "auth.b2b.register.firstNamePh": string;
+  "auth.b2b.register.lastNameLabel": string;
+  "auth.b2b.register.lastNamePh": string;
+  "auth.b2b.register.emailConfirmLabel": string;
+  "auth.b2b.register.emailMismatch": string;
+  // Azienda
+  "auth.b2b.register.taxCodeLabel": string;
+  "auth.b2b.register.taxCodePh": string;
+  "auth.b2b.register.sdiLabel": string;
+  "auth.b2b.register.sdiPh": string;
+  "auth.b2b.register.pecLabel": string;
+  "auth.b2b.register.pecPh": string;
+  "auth.b2b.register.websiteLabel": string;
+  "auth.b2b.register.websitePh": string;
+  // Sede
+  "auth.b2b.register.countryLabel": string;
+  "auth.b2b.register.provinceLabel": string;
+  "auth.b2b.register.provincePh": string;
+  "auth.b2b.register.cityLabel": string;
+  "auth.b2b.register.cityPh": string;
+  "auth.b2b.register.addressLabel": string;
+  "auth.b2b.register.addressPh": string;
+  "auth.b2b.register.streetNumberLabel": string;
+  "auth.b2b.register.streetNumberPh": string;
+  // Profilo
+  "auth.b2b.register.businessTypeLabel": string;
+  "auth.b2b.register.businessType.reseller": string;
+  "auth.b2b.register.businessType.repairShop": string;
+  "auth.b2b.register.businessType.operator": string;
+  "auth.b2b.register.businessType.school": string;
+  "auth.b2b.register.businessType.other": string;
+  "auth.b2b.register.discoveryLabel": string;
+  "auth.b2b.register.discovery.placeholder": string;
+  "auth.b2b.register.discovery.search": string;
+  "auth.b2b.register.discovery.social": string;
+  "auth.b2b.register.discovery.wordOfMouth": string;
+  "auth.b2b.register.discovery.fair": string;
+  "auth.b2b.register.discovery.salesRep": string;
+  "auth.b2b.register.discovery.other": string;
+  "auth.b2b.register.notesLabel": string;
+  "auth.b2b.register.notesPh": string;
+  // Documenti + consenso
+  "auth.b2b.register.docs.title": string;
+  "auth.b2b.register.docs.body": string;
+  "auth.b2b.register.privacyCheckbox": string;
+  "auth.b2b.register.optionalHint": string;
   "auth.b2b.register.cta": string;
   "auth.b2b.register.ctaBusy": string;
   "auth.b2b.register.done.title": string;
@@ -1001,18 +1052,67 @@ const IT: Dict = {
   "auth.b2b.register.title": "Registrati come rivenditore",
   "auth.b2b.register.subtitle":
     "Lasciaci i dati della tua attività. Lo staff Fast-Fix verifica la richiesta entro 24h lavorative e ti manda una mail per impostare la password.",
-  "auth.b2b.register.nameLabel": "Nome e cognome referente *",
-  "auth.b2b.register.namePh": "Mario Rossi",
   "auth.b2b.register.emailLabel": "Email aziendale *",
   "auth.b2b.register.emailPh": "nome@azienda.it",
   "auth.b2b.register.companyLabel": "Ragione sociale *",
   "auth.b2b.register.companyPh": "Es. Rivenditore srl",
-  "auth.b2b.register.vatLabel": "P.IVA",
+  "auth.b2b.register.vatLabel": "P.IVA *",
   "auth.b2b.register.vatPh": "01234567890",
-  "auth.b2b.register.phoneLabel": "Telefono",
-  "auth.b2b.register.phonePh": "+39 091 1234567",
+  "auth.b2b.register.phoneLabel": "Cellulare *",
+  "auth.b2b.register.phonePh": "+39 320 1234567",
   "auth.b2b.register.consent":
     "Inviando la richiesta accetti che FAST-FIX di Sarker Srabon contatti l'email indicata per gestire l'attivazione dell'account rivenditore.",
+  "auth.b2b.register.sec.contact": "Referente",
+  "auth.b2b.register.sec.company": "Azienda",
+  "auth.b2b.register.sec.address": "Sede legale",
+  "auth.b2b.register.sec.profile": "La tua attività",
+  "auth.b2b.register.firstNameLabel": "Nome *",
+  "auth.b2b.register.firstNamePh": "Mario",
+  "auth.b2b.register.lastNameLabel": "Cognome *",
+  "auth.b2b.register.lastNamePh": "Rossi",
+  "auth.b2b.register.emailConfirmLabel": "Conferma email *",
+  "auth.b2b.register.emailMismatch": "Le due email non coincidono",
+  "auth.b2b.register.taxCodeLabel": "Codice fiscale azienda",
+  "auth.b2b.register.taxCodePh": "Se diverso dalla P.IVA",
+  "auth.b2b.register.sdiLabel": "Codice SDI",
+  "auth.b2b.register.sdiPh": "Es. KRRH6B9",
+  "auth.b2b.register.pecLabel": "PEC",
+  "auth.b2b.register.pecPh": "azienda@pec.it",
+  "auth.b2b.register.websiteLabel": "Sito web",
+  "auth.b2b.register.websitePh": "www.tuonegozio.it",
+  "auth.b2b.register.countryLabel": "Nazione *",
+  "auth.b2b.register.provinceLabel": "Provincia *",
+  "auth.b2b.register.provincePh": "Seleziona",
+  "auth.b2b.register.cityLabel": "Città *",
+  "auth.b2b.register.cityPh": "San Benedetto del Tronto",
+  "auth.b2b.register.addressLabel": "Indirizzo *",
+  "auth.b2b.register.addressPh": "Via Roma",
+  "auth.b2b.register.streetNumberLabel": "N. civico *",
+  "auth.b2b.register.streetNumberPh": "31",
+  "auth.b2b.register.businessTypeLabel": "Tipologia di attività",
+  "auth.b2b.register.businessType.reseller": "Rivenditore",
+  "auth.b2b.register.businessType.repairShop": "Centro assistenza",
+  "auth.b2b.register.businessType.operator": "Operatore telefonia",
+  "auth.b2b.register.businessType.school": "Scuola o ente",
+  "auth.b2b.register.businessType.other": "Altro",
+  "auth.b2b.register.discoveryLabel": "Come ci hai conosciuto",
+  "auth.b2b.register.discovery.placeholder": "Preferisco non dirlo",
+  "auth.b2b.register.discovery.search": "Ricerca su Google",
+  "auth.b2b.register.discovery.social": "Social",
+  "auth.b2b.register.discovery.wordOfMouth": "Passaparola",
+  "auth.b2b.register.discovery.fair": "Fiera di settore",
+  "auth.b2b.register.discovery.salesRep": "Un nostro commerciale",
+  "auth.b2b.register.discovery.other": "Altro",
+  "auth.b2b.register.notesLabel": "Note per lo staff",
+  "auth.b2b.register.notesPh":
+    "Volumi indicativi, zona di operatività, cosa ti serve per primo…",
+  "auth.b2b.register.docs.title": "Documenti: te li chiediamo dopo",
+  "auth.b2b.register.docs.body":
+    "Per attivare il listino servono visura camerale e autocertificazione reverse charge. Non caricarli qui: dopo l'invio ti scriviamo via email e li alleghi alla risposta.",
+  "auth.b2b.register.privacyCheckbox":
+    "Ho letto e accetto l'informativa privacy *",
+  "auth.b2b.register.optionalHint":
+    "I campi senza asterisco sono facoltativi — se li compili acceleri la verifica.",
   "auth.b2b.register.cta": "Invia la richiesta →",
   "auth.b2b.register.ctaBusy": "Invio…",
   "auth.b2b.register.done.title": "Richiesta inviata.",
@@ -1716,18 +1816,67 @@ const EN: Dict = {
   "auth.b2b.register.title": "Sign up as a reseller",
   "auth.b2b.register.subtitle":
     "Give us your business details. Fast-Fix staff reviews the request within 24 business hours and emails you a link to set the password.",
-  "auth.b2b.register.nameLabel": "Contact full name *",
-  "auth.b2b.register.namePh": "Jane Doe",
   "auth.b2b.register.emailLabel": "Business email *",
   "auth.b2b.register.emailPh": "name@company.com",
   "auth.b2b.register.companyLabel": "Company name *",
   "auth.b2b.register.companyPh": "e.g. Reseller Ltd",
-  "auth.b2b.register.vatLabel": "VAT number",
+  "auth.b2b.register.vatLabel": "VAT number *",
   "auth.b2b.register.vatPh": "GB123456789",
-  "auth.b2b.register.phoneLabel": "Phone",
+  "auth.b2b.register.phoneLabel": "Mobile *",
   "auth.b2b.register.phonePh": "+44 20 1234 5678",
   "auth.b2b.register.consent":
     "By submitting you agree that FAST-FIX di Sarker Srabon may contact the email above to activate the reseller account.",
+  "auth.b2b.register.sec.contact": "Contact person",
+  "auth.b2b.register.sec.company": "Company",
+  "auth.b2b.register.sec.address": "Registered address",
+  "auth.b2b.register.sec.profile": "Your business",
+  "auth.b2b.register.firstNameLabel": "First name *",
+  "auth.b2b.register.firstNamePh": "Jane",
+  "auth.b2b.register.lastNameLabel": "Last name *",
+  "auth.b2b.register.lastNamePh": "Doe",
+  "auth.b2b.register.emailConfirmLabel": "Confirm email *",
+  "auth.b2b.register.emailMismatch": "The two emails don't match",
+  "auth.b2b.register.taxCodeLabel": "Company tax code",
+  "auth.b2b.register.taxCodePh": "If different from VAT",
+  "auth.b2b.register.sdiLabel": "SDI code",
+  "auth.b2b.register.sdiPh": "e.g. KRRH6B9",
+  "auth.b2b.register.pecLabel": "Certified email (PEC)",
+  "auth.b2b.register.pecPh": "company@pec.it",
+  "auth.b2b.register.websiteLabel": "Website",
+  "auth.b2b.register.websitePh": "www.yourshop.com",
+  "auth.b2b.register.countryLabel": "Country *",
+  "auth.b2b.register.provinceLabel": "Province *",
+  "auth.b2b.register.provincePh": "Select",
+  "auth.b2b.register.cityLabel": "City *",
+  "auth.b2b.register.cityPh": "San Benedetto del Tronto",
+  "auth.b2b.register.addressLabel": "Street *",
+  "auth.b2b.register.addressPh": "Via Roma",
+  "auth.b2b.register.streetNumberLabel": "No. *",
+  "auth.b2b.register.streetNumberPh": "31",
+  "auth.b2b.register.businessTypeLabel": "Type of business",
+  "auth.b2b.register.businessType.reseller": "Reseller",
+  "auth.b2b.register.businessType.repairShop": "Repair shop",
+  "auth.b2b.register.businessType.operator": "Telecom operator",
+  "auth.b2b.register.businessType.school": "School or institution",
+  "auth.b2b.register.businessType.other": "Other",
+  "auth.b2b.register.discoveryLabel": "How did you hear about us",
+  "auth.b2b.register.discovery.placeholder": "Rather not say",
+  "auth.b2b.register.discovery.search": "Google search",
+  "auth.b2b.register.discovery.social": "Social media",
+  "auth.b2b.register.discovery.wordOfMouth": "Word of mouth",
+  "auth.b2b.register.discovery.fair": "Trade fair",
+  "auth.b2b.register.discovery.salesRep": "One of our sales reps",
+  "auth.b2b.register.discovery.other": "Other",
+  "auth.b2b.register.notesLabel": "Notes for our staff",
+  "auth.b2b.register.notesPh":
+    "Rough volumes, area you operate in, what you need first…",
+  "auth.b2b.register.docs.title": "Documents: we'll ask later",
+  "auth.b2b.register.docs.body":
+    "To activate the price list we need your company registration document and a reverse-charge self-declaration. Don't upload them here: after you submit we'll email you and you attach them to the reply.",
+  "auth.b2b.register.privacyCheckbox":
+    "I have read and accept the privacy policy *",
+  "auth.b2b.register.optionalHint":
+    "Fields without an asterisk are optional — filling them speeds up the review.",
   "auth.b2b.register.cta": "Send the request →",
   "auth.b2b.register.ctaBusy": "Sending…",
   "auth.b2b.register.done.title": "Request sent.",
