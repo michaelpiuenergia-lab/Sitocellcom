@@ -903,7 +903,7 @@ function RecapPanel({
         <Bullet>Valutazione gratuita e senza impegno</Bullet>
         <Bullet>Risposta via email entro 24 ore lavorative</Bullet>
         <Bullet>Spedizione gratis o ritiro in negozio</Bullet>
-        <Bullet>Bonus +10% se scegli credito Cellcom</Bullet>
+        <Bullet>Bonus +10% se scegli credito Fast-Fix</Bullet>
       </div>
     </div>
   );

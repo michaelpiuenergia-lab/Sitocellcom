@@ -25,7 +25,7 @@ export default async function B2bRequestsPage() {
           <p className="text-sm text-muted-foreground max-w-2xl">
             Qui troverai tutte le richieste di disponibilità, preventivi e
             ordini speciali che hai inviato. Stato e risposta dell'ufficio
-            commerciale sempre aggiornati dal gestionale Cellcom.
+            commerciale sempre aggiornati dal gestionale Fast-Fix.
           </p>
         </div>
 

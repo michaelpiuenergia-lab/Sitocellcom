@@ -58,7 +58,7 @@ export default async function MarketingPage() {
         {/* Hero video + wordmark (intoccabile) */}
         <Hero devices={devices} canSeePrices={showPrices} />
 
-        {/* Banner ROSSO Cellcom — tra Hero e 3D */}
+        {/* Banner ROSSO Fast-Fix — tra Hero e 3D */}
         <BrandMarquee />
 
         {/* Trust strip 4 garanzie (spedizione/warranty/tecnici/B2B) */}
@@ -135,7 +135,7 @@ export default async function MarketingPage() {
           primaryCta={{ label: t("home.b2b.cta.login"), href: "/b2b/login" }}
           secondaryCta={{
             label: t("home.b2b.cta.contact"),
-            href: "mailto:b2b@cellcom.it?subject=Richiesta%20attivazione%20account%20B2B",
+            href: "mailto:b2b@fast-fix.it?subject=Richiesta%20attivazione%20account%20B2B",
           }}
         />
       </main>

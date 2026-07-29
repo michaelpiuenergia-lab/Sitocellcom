@@ -12,7 +12,7 @@ import { RequestFormBridge } from "./request-form-bridge";
  * - ChatProvider: stato condiviso (messages/status/isOpen)
  *   - ChatFab: bottone fluttuante 56x56
  *   - ChatPanel: pannello 380x600 (animato apertura/chiusura)
- * - RequestFormBridge: ascolta cellcom:open-request e monta <RequestForm/>
+ * - RequestFormBridge: ascolta fastfix:open-request e monta <RequestForm/>
  *   (vive fuori dal Provider perché il modal va sopra TUTTO, inclusa la chat)
  *
  * NOTA: se l'env var CHATBOT_DISABLED è "true" la route /api/chat ritorna
@@ -25,10 +25,10 @@ export function Chatbot() {
   return (
     <>
       <style jsx global>{`
-        @keyframes cellcom-chat-spin {
+        @keyframes fastfix-chat-spin {
           to { transform: rotate(360deg); }
         }
-        @keyframes cellcom-chat-caret {
+        @keyframes fastfix-chat-caret {
           0%, 49% { opacity: 0.6; }
           50%, 100% { opacity: 0; }
         }

@@ -1,9 +1,9 @@
 import { SetPasswordForm } from "./set-password-form";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 
 export const metadata = {
-  title: "Imposta la tua password — Cellcom Group",
-  description: "Crea la password per accedere all'area clienti Cellcom.",
+  title: "Imposta la tua password — Fast-Fix",
+  description: "Crea la password per accedere all'area clienti Fast-Fix.",
 };
 
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ export default async function ImpostaPasswordPage({
     >
       <div className="w-full max-w-[440px] flex flex-col items-center gap-9">
         <a href="/" className="flex flex-col items-center gap-3" aria-label="Home">
-          <LogoC className="w-12 h-12" />
+          <LogoMark className="w-12 h-12" />
           <span
             className="font-mono uppercase"
             style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}

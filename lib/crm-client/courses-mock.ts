@@ -9,7 +9,7 @@ import type {
 
 /**
  * Mock corsi — usato finché il CRM non è raggiungibile dal HUB.
- * Tre livelli standard Cellcom Academy: base, intermedio, avanzato BGA.
+ * Tre livelli standard Fast-Fix Academy: base, intermedio, avanzato BGA.
  */
 
 const MOCK_COURSES: CoursePublic[] = [

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { optionalCustomerSession } from "@/lib/auth/customer-guards";
 import { AuthForm } from "./auth-form";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import { getT } from "@/lib/i18n/server";
 
 type SearchParams = Promise<{ next?: string; reason?: string }>;
@@ -27,7 +27,7 @@ export default async function ClientiLoginPage({
     >
       <div className="w-full max-w-[440px] flex flex-col items-center gap-9">
         <a href="/" className="flex flex-col items-center gap-3" aria-label="Torna alla home">
-          <LogoC className="w-12 h-12" />
+          <LogoMark className="w-12 h-12" />
           <span
             className="font-mono uppercase"
             style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}

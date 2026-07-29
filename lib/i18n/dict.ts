@@ -106,6 +106,10 @@ export type Dict = {
   "hero.intro.bodyB": string;
   "hero.intro.boldC": string;
   "hero.intro.bodyC": string;
+  "hero.intro.boldD": string;
+  "hero.intro.bodyD": string;
+  "hero.intro.boldE": string;
+  "hero.intro.bodyE": string;
 
   // ─── Home / Marketing panels ────────────────────────────────────────
   "home.numbers.eyebrow": string;
@@ -144,7 +148,7 @@ export type Dict = {
   "pg.price.reserved": string;
   "pg.cta.loginForPrice": string;
   "pg.cta.notifyWhenBack": string;
-  "pg.cta.buyOn": (channel: string) => string;
+  "pg.cta.buy": string;
   "pg.empty": string;
 
   // ─── Breadcrumb ─────────────────────────────────────────────────────
@@ -437,6 +441,8 @@ export type Dict = {
   "about.b3.description": string;
   "about.b4.role": string;
   "about.b4.description": string;
+  "about.b5.role": string;
+  "about.b5.description": string;
   "about.manifesto.eyebrow": string;
   "about.manifesto.titleA": string;
   "about.manifesto.accent": string;
@@ -634,14 +640,14 @@ export type Dict = {
 };
 
 const IT: Dict = {
-  "chat.header.title": "Assistenza Cellcom",
+  "chat.header.title": "assistenza Fast-Fix",
   "chat.header.statusOnline": "Risposta in pochi minuti",
   "chat.header.statusStreaming": "Sta scrivendo…",
   "chat.header.closeAria": "Chiudi chat",
   "chat.fab.openAria": "Apri chat assistenza",
   "chat.fab.closeAria": "Chiudi chat assistenza",
   "chat.welcome":
-    "Ciao — sono l'assistente Cellcom. Cerco prodotti, traccio riparazioni, indico negozi e ti apro la richiesta giusta. Da dove vuoi partire?",
+    "Ciao — sono l'assistente Fast-Fix. Cerco prodotti, traccio riparazioni, indico negozi e ti apro la richiesta giusta. Da dove vuoi partire?",
   "chat.input.placeholder": "Scrivi un messaggio…",
   "chat.input.placeholderStreaming": "Attendi la risposta…",
   "chat.input.sendAria": "Invia messaggio",
@@ -670,7 +676,7 @@ const IT: Dict = {
   "chat.toolLabel.listStores": "Recupero i negozi…",
   "chat.toolLabel.openRequestForm": "Preparo la richiesta…",
   "chat.toolLabel.getHealth": "Verifico lo stato del sistema…",
-  "chat.regionAria": "Chat assistenza Cellcom",
+  "chat.regionAria": "Chat assistenza Fast-Fix",
   "chat.openAnnounce": "Chat assistenza aperta",
 
   "lang.label": "Lingua",
@@ -692,7 +698,7 @@ const IT: Dict = {
   "nav.openMenu": "Apri menu",
   "nav.closeMenu": "Chiudi menu",
 
-  "footer.copyrightGroup": "Cellcom Group",
+  "footer.copyrightGroup": "Fast-Fix",
   "footer.legal.privacy": "Privacy",
   "footer.legal.cookie": "Cookie",
   "footer.legal.terms": "Termini",
@@ -721,20 +727,24 @@ const IT: Dict = {
   "hero.claim.italicA": "ripariamo",
   "hero.claim.between": ", riforniamo",
   "hero.claim.italicB": "chi li vende",
-  "hero.intro.lead": "Tre attività, un solo magazzino.",
-  "hero.intro.boldA": "Vendita al pubblico",
-  "hero.intro.bodyA": " di smartphone, accessori e ricambi.",
-  "hero.intro.boldB": "Centro assistenza",
-  "hero.intro.bodyB": " con laboratorio interno e garanzia 12 mesi.",
-  "hero.intro.boldC": "Ingrosso B2B",
-  "hero.intro.bodyC": " per rivenditori, centri assistenza e aziende.",
+  "hero.intro.lead": "Cinque attività, un solo magazzino.",
+  "hero.intro.boldA": "Riparazione",
+  "hero.intro.bodyA": " con laboratorio interno e garanzia 12 mesi.",
+  "hero.intro.boldB": "Fast-Fix Academy",
+  "hero.intro.bodyB": " per diventare tecnico, dal base alla microsaldatura.",
+  "hero.intro.boldC": "Compro e vendo usato",
+  "hero.intro.bodyC": " garantito, valutazione gratuita in 24 ore.",
+  "hero.intro.boldD": "Vendita ricambi",
+  "hero.intro.bodyD": " originali e compatibili, a stock.",
+  "hero.intro.boldE": "Ingrosso B2B",
+  "hero.intro.bodyE": " per rivenditori, centri assistenza e aziende.",
 
-  "home.numbers.eyebrow": "I numeri del gruppo",
-  "home.numbers.titleA": "Tre brand. Un solo",
+  "home.numbers.eyebrow": "I numeri Fast-Fix",
+  "home.numbers.titleA": "Cinque attività. Un solo",
   "home.numbers.titleB": "magazzino.",
   "home.numbers.intro":
-    "Cellcom (e-commerce + B2B), Fast-Fix (negozi e riparazioni), ItalianParts (ricambi). Specializzati ognuno nel suo, stesso stock dietro le quinte. I numeri qui sotto arrivano live dal CRM — niente vetrine vuote.",
-  "home.numbers.stat.brands": "Brand del gruppo",
+    "Riparazione, Fast-Fix Academy, compro e vendo usato, vendita ricambi, ingrosso B2B. Cinque attività specializzate, lo stesso stock dietro le quinte. I numeri qui sotto arrivano live dal CRM — niente vetrine vuote.",
+  "home.numbers.stat.brands": "Attività Fast-Fix",
   "home.numbers.stat.parts": "Ricambi a stock",
   "home.numbers.stat.phones": "Telefoni in catalogo",
   "home.numbers.stat.accessories": "Accessori disponibili",
@@ -770,7 +780,7 @@ const IT: Dict = {
   "pg.price.reserved": "Prezzo riservato",
   "pg.cta.loginForPrice": "Accedi per il prezzo",
   "pg.cta.notifyWhenBack": "Avvisami quando torna",
-  "pg.cta.buyOn": (channel) => `Acquista su ${channel}`,
+  "pg.cta.buy": "Acquista online",
   "pg.empty": "Nessun prodotto trovato.",
 
   "bc.home": "Home",
@@ -788,11 +798,11 @@ const IT: Dict = {
   "bc.tradeIn": "Rivendi",
   "bc.tracker": "Traccia riparazione",
 
-  "ch.products.eyebrow": "Magazzino unificato del Gruppo",
+  "ch.products.eyebrow": "Magazzino unico Fast-Fix",
   "ch.products.title": "Il nostro",
   "ch.products.accent": "catalogo",
   "ch.products.description":
-    "Telefoni, ricambi, accessori. Disponibilità reale dai canali del Gruppo Cellcom: nuovo, ricondizionato e usato garantito.",
+    "Telefoni, ricambi, accessori. Disponibilità reale dai canali del Fast-Fix: nuovo, ricondizionato e usato garantito.",
   "ch.phones.eyebrow": "Smartphone",
   "ch.phones.title": "I nostri",
   "ch.phones.accent": "telefoni",
@@ -869,7 +879,7 @@ const IT: Dict = {
   "pillars.resell.accent": "vale ancora.",
   "pillars.resell.body":
     "Valutazione gratis dalle foto in 24 ore. Spedizione o ritiro gratis, pagamento entro 48 ore.",
-  "pillars.resell.b1": "Bonus +10% in credito Cellcom",
+  "pillars.resell.b1": "Bonus +10% in credito Fast-Fix",
   "pillars.resell.b2": "Quotazione scritta, niente trucchi",
   "pillars.resell.b3": "Ritiriamo anche telefoni rotti",
   "pillars.resell.cta": "Valuta il tuo usato",
@@ -877,7 +887,7 @@ const IT: Dict = {
   "pillars.learn.titleA": "Diventa",
   "pillars.learn.accent": "tecnico riparatore.",
   "pillars.learn.body":
-    "Tre livelli alla Cellcom Academy: base, intermedio, microsaldatura BGA. Gli stessi formatori dei nostri tecnici.",
+    "Tre livelli alla Fast-Fix Academy: base, intermedio, microsaldatura BGA. Gli stessi formatori dei nostri tecnici.",
   "pillars.learn.b1": "Postazioni ESD professionali",
   "pillars.learn.b2": "Aule limitate a 6 allievi",
   "pillars.learn.b3": "Attestato + sbocco interno",
@@ -894,7 +904,7 @@ const IT: Dict = {
   "immersive.m1.titleA": "Tutto il telefono,",
   "immersive.m1.italic": "una sola casa.",
   "immersive.m1.body":
-    "Dal primo acquisto fino al riciclo — quattro servizi, un solo gruppo.",
+    "Dal primo acquisto fino al riciclo — quattro servizi, una sola squadra.",
   "immersive.m2.eyebrow": "Lo riparo, lo ricondiziono",
   "immersive.m2.titleA": "Quasi tutto si",
   "immersive.m2.italic": "ripara",
@@ -908,7 +918,7 @@ const IT: Dict = {
     "Valutazione gratis, spedizione gratis, pagamento entro 48h.",
   "immersive.m3.cta": "Scopri come",
 
-  "rep.hero.eyebrow": "Fast-Fix · Centro riparazioni del Gruppo",
+  "rep.hero.eyebrow": "Fast-Fix · Centro riparazioni",
   "rep.hero.titleA": "Quale dispositivo",
   "rep.hero.accent": "vuoi riparare?",
   "rep.hero.description":
@@ -943,7 +953,7 @@ const IT: Dict = {
   "rep.intake.opt1.eyebrow": "Opzione 1",
   "rep.intake.opt1.title": "Portacelo in negozio",
   "rep.intake.opt1.text":
-    "Vieni in uno dei punti vendita del Gruppo. Diagnosi sul momento se è disponibile un tecnico, altrimenti ricevuta e chiamata entro 24h con preventivo.",
+    "Vieni in uno dei nostre sedi. Diagnosi sul momento se è disponibile un tecnico, altrimenti ricevuta e chiamata entro 24h con preventivo.",
   "rep.intake.opt1.cta": "Trova negozio più vicino",
   "rep.intake.opt2.eyebrow": "Opzione 2",
   "rep.intake.opt2.title": "Spediscilo a noi",
@@ -967,7 +977,7 @@ const IT: Dict = {
   "auth.b2b.eyebrow": "Area B2B",
   "auth.b2b.login.title": "Accedi al tuo listino",
   "auth.b2b.login.subtitle":
-    "Prezzi riservati per rivenditori, operatori e aziende del Gruppo.",
+    "Prezzi riservati per rivenditori, operatori e aziende.",
   "auth.b2b.login.sessionExpired":
     "Sessione scaduta. Effettua di nuovo l'accesso.",
   "auth.b2b.login.noCredentials": "Non hai ancora le credenziali?",
@@ -990,7 +1000,7 @@ const IT: Dict = {
   "auth.b2b.register.eyebrow": "Diventa rivenditore",
   "auth.b2b.register.title": "Registrati come rivenditore",
   "auth.b2b.register.subtitle":
-    "Lasciaci i dati della tua attività. Lo staff Cellcom verifica la richiesta entro 24h lavorative e ti manda una mail per impostare la password.",
+    "Lasciaci i dati della tua attività. Lo staff Fast-Fix verifica la richiesta entro 24h lavorative e ti manda una mail per impostare la password.",
   "auth.b2b.register.nameLabel": "Nome e cognome referente *",
   "auth.b2b.register.namePh": "Mario Rossi",
   "auth.b2b.register.emailLabel": "Email aziendale *",
@@ -1002,7 +1012,7 @@ const IT: Dict = {
   "auth.b2b.register.phoneLabel": "Telefono",
   "auth.b2b.register.phonePh": "+39 091 1234567",
   "auth.b2b.register.consent":
-    "Inviando la richiesta accetti che Cellcom Smartphone Fix SRLS contatti l'email indicata per gestire l'attivazione dell'account rivenditore.",
+    "Inviando la richiesta accetti che FAST-FIX di Sarker Srabon contatti l'email indicata per gestire l'attivazione dell'account rivenditore.",
   "auth.b2b.register.cta": "Invia la richiesta →",
   "auth.b2b.register.ctaBusy": "Invio…",
   "auth.b2b.register.done.title": "Richiesta inviata.",
@@ -1067,48 +1077,51 @@ const IT: Dict = {
   "stores.hero.titleA": "I nostri",
   "stores.hero.accent": "negozi.",
   "stores.hero.description":
-    "Trova il punto vendita più vicino tra i brand del Gruppo Cellcom. Centri assistenza, magazzino ricambi, vendita al pubblico — tutti gli orari, gli indirizzi e i contatti in tempo reale.",
+    "Trova il punto vendita più vicino tra i brand del Fast-Fix. Centri assistenza, magazzino ricambi, vendita al pubblico — tutti gli orari, gli indirizzi e i contatti in tempo reale.",
   "stores.features.eyebrow": "Cosa puoi fare in negozio",
   "stores.features.titleA": "Non solo vendita —",
   "stores.features.accent": "servizi completi.",
   "stores.features.intro":
-    "Ogni punto vendita del Gruppo offre molto più dello scaffale: riparazioni, valutazione usato, consulenza commerciale per rivenditori che hanno bisogno di assistenza fisica.",
+    "Ognuna delle nostre sedi offre molto più dello scaffale: riparazioni, valutazione usato, consulenza commerciale per rivenditori che hanno bisogno di assistenza fisica.",
   "stores.f1.title": "Diagnosi sul momento",
   "stores.f1.text":
     "Porti il device in negozio, se c'è un tecnico disponibile lo vede in 10 minuti e ti dice cosa serve.",
   "stores.f2.title": "Ritiro ordini gratuito",
   "stores.f2.text":
-    "Ordini online e ritiri in qualsiasi punto vendita del Gruppo senza spese di spedizione.",
+    "Ordini online e ritiri in qualsiasi delle nostre sedi senza spese di spedizione.",
   "stores.f3.title": "Trade-in al banco",
   "stores.f3.text":
-    "Porti il tuo vecchio telefono, lo valutiamo davanti a te, esci con bonifico o credito Cellcom.",
+    "Porti il tuo vecchio telefono, lo valutiamo davanti a te, esci con bonifico o credito Fast-Fix.",
 
-  "about.hero.eyebrow": "Il gruppo",
-  "about.hero.titleA": "Cinque brand. Una sola",
+  "about.hero.eyebrow": "L'attività",
+  "about.hero.titleA": "Cinque attività. Una sola",
   "about.hero.accent": "fiducia.",
   "about.hero.description":
-    "Vendiamo, ripariamo e riforniamo telefoni. Siamo di San Benedetto del Tronto, ma lavoriamo in tutta Italia. Tre brand specializzati, un magazzino solo, le stesse persone dietro a tutto.",
+    "Ripariamo, formiamo, compriamo e vendiamo usato, forniamo ricambi e riforniamo chi vende. Siamo di San Benedetto del Tronto, ma lavoriamo in tutta Italia. Due sedi, un magazzino solo, le stesse persone dietro a tutto.",
   "about.stat.products": "Prodotti a catalogo",
-  "about.stat.brands": "Brand verticali",
+  "about.stat.brands": "Attività",
   "about.stat.delivery": "Consegna in Italia",
   "about.stat.warranty": "Garanzia ricambi",
-  "about.brands.eyebrow": "I 5 brand",
-  "about.brands.titleA": "Un gruppo,",
+  "about.brands.eyebrow": "Le 5 attività",
+  "about.brands.titleA": "Una squadra,",
   "about.brands.accent": "cinque specializzazioni.",
   "about.brands.intro":
-    "Ogni marchio fa una cosa sola e la fa bene. Insieme coprono l'intero ciclo di vita del telefono: vendita, riparazione, ricambi, formazione, software. Stesso magazzino, stessi standard.",
-  "about.b1.role": "Magazzino B2B",
+    "Ogni attività fa una cosa sola e la fa bene. Insieme coprono l'intero ciclo di vita del telefono: riparazione, formazione, usato, ricambi, ingrosso. Stesso magazzino, stessi standard.",
+  "about.b1.role": "Riparazione",
   "about.b1.description":
-    "L'ingrosso del gruppo. Vendiamo a rivenditori, centri assistenza e aziende con listini a volumi.",
-  "about.b2.role": "Negozi e riparazioni",
+    "Laboratorio interno: smartphone, tablet, console e computer. Diagnosi gratuita e garanzia 12 mesi sull'intervento.",
+  "about.b2.role": "Fast-Fix Academy",
   "about.b2.description":
-    "I punti vendita fisici dove porti il telefono a riparare o vieni a comprarne uno nuovo.",
-  "about.b3.role": "Ricambi",
+    "La scuola dove formiamo i nostri tecnici. Aperta a chi vuole imparare il mestiere: dal base alla microsaldatura BGA.",
+  "about.b3.role": "Compro e vendo usato",
   "about.b3.description":
-    "Display, batterie, scocche, schede madri. Per chi ripara smartphone di mestiere.",
-  "about.b4.role": "Academy",
+    "Valutiamo e acquistiamo il tuo device, anche rotto. E rivendiamo usato ricondizionato e testato, con garanzia.",
+  "about.b4.role": "Vendita ricambi",
   "about.b4.description":
-    "La scuola interna dove formiamo i nostri tecnici. Aperta anche a chi vuole imparare il mestiere.",
+    "Display, batterie, scocche, schede madri. Originali e compatibili, per chi ripara smartphone di mestiere.",
+  "about.b5.role": "Ingrosso B2B",
+  "about.b5.description":
+    "Vendiamo a rivenditori, centri assistenza e aziende con listini a volumi e account manager dedicato.",
   "about.manifesto.eyebrow": "Cosa ci distingue",
   "about.manifesto.titleA": "Tre principi,",
   "about.manifesto.accent": "non negoziabili.",
@@ -1118,17 +1131,17 @@ const IT: Dict = {
   "about.s2.title": "Ogni intervento tracciato",
   "about.s2.description":
     "Sei riparazioni o ordini entrano nel gestionale, lo vedi anche tu in tempo reale. Foto del device, ricambi usati, tecnico responsabile — tutto registrato.",
-  "about.s3.title": "Una specializzazione per brand",
+  "about.s3.title": "Una specializzazione per attività",
   "about.s3.description":
-    "I brand del Gruppo fanno ognuno una cosa sola e la fanno seriamente. Mettendoli insieme copriamo tutto il ciclo di vita del telefono.",
+    "Ognuna delle nostre attività fa una cosa sola e la fa seriamente. Messe insieme coprono tutto il ciclo di vita del telefono.",
 
-  "ti.hero.eyebrow": "Trade-in Cellcom",
+  "ti.hero.eyebrow": "Trade-in Fast-Fix",
   "ti.hero.titleA": "Il tuo vecchio telefono",
   "ti.hero.accent": "vale ancora.",
   "ti.hero.descA":
     "Dicci che telefono hai e in che condizioni è. I tecnici lo valutano gratuitamente dopo aver ricevuto le foto e ti rispondono via email entro poche ore. Spedizione gratuita o ritiro nei negozi. Bonus ",
   "ti.hero.descBoldBonus": "+10%",
-  "ti.hero.descB": " se scegli credito spendibile sul Gruppo Cellcom.",
+  "ti.hero.descB": " se scegli credito spendibile sul Fast-Fix.",
   "ti.how.eyebrow": "Come funziona",
   "ti.how.titleA": "Quattro passi,",
   "ti.how.accent": "zero sorprese.",
@@ -1162,12 +1175,12 @@ const IT: Dict = {
   "ti.faq.q4.q": "Come funziona la spedizione gratuita?",
   "ti.faq.q4.a":
     "Dopo che accetti l'offerta ti mandiamo un'etichetta prepagata via email. Spedisci da qualsiasi ufficio postale con il telefono ben imballato (idealmente in scatola originale). In alternativa fissi un appuntamento e te lo ritiriamo a casa.",
-  "ti.faq.q5.q": "Cos'è il bonus +10% per il credito Cellcom?",
+  "ti.faq.q5.q": "Cos'è il bonus +10% per il credito Fast-Fix?",
   "ti.faq.q5.a":
-    "Se invece del bonifico scegli credito spendibile sui siti del Gruppo Cellcom, maggioriamo l'offerta del 10%. Esempio: offerta €500 → credito €550. Valido 24 mesi.",
+    "Se invece del bonifico scegli credito spendibile sui siti del Fast-Fix, maggioriamo l'offerta del 10%. Esempio: offerta €500 → credito €550. Valido 24 mesi.",
   "ti.faq.q6.q": "Comprate solo telefoni o anche tablet, smartwatch?",
   "ti.faq.q6.a":
-    "Adesso solo smartphone. Tablet, smartwatch, AirPods, console: scrivici a hello@cellcom.it e ti diciamo cosa possiamo fare caso per caso.",
+    "Adesso solo smartphone. Tablet, smartwatch, AirPods, console: scrivici a info@fast-fix.it e ti diciamo cosa possiamo fare caso per caso.",
   "ti.faq.q7.q": "Il mio telefono è rotto, posso venderlo lo stesso?",
   "ti.faq.q7.a":
     "Sì ma cambia il flusso. Per schermi rotti, batterie guaste, telefoni che non accendono: meglio passare prima dal nostro centro riparazioni. Spesso ripariamo a costo basso e poi il valore di rivendita sale del 3-5x.",
@@ -1175,16 +1188,16 @@ const IT: Dict = {
   "ti.faq.q8.a":
     "Seleziona 'Altro / non in lista' e scrivi marca e modello a mano. Il nostro tecnico farà la valutazione esattamente come per i modelli in lista.",
 
-  "cou.hero.eyebrow": "Cellcom Academy",
+  "cou.hero.eyebrow": "Fast-Fix Academy",
   "cou.hero.titleA": "Impara a riparare,",
   "cou.hero.accent": "come un tecnico vero.",
   "cou.hero.description":
-    "Tre livelli — base, intermedio, avanzato BGA. Postazioni ESD, strumentazione professionale, gli stessi formatori che addestrano i tecnici del Gruppo prima di mandarli in laboratorio. Attestato di frequenza e corsia preferenziale per assunzioni interne.",
+    "Tre livelli — base, intermedio, avanzato BGA. Postazioni ESD, strumentazione professionale, gli stessi formatori che addestrano i nostri tecnici prima di mandarli in laboratorio. Attestato di frequenza e corsia preferenziale per assunzioni interne.",
   "cou.hero.cta1": "Richiedi info iscrizioni →",
   "cou.hero.cta2": "Confronta i livelli",
   "cou.hero.subtitle":
     "Iscrizione su approvazione · Pagamento online · Materiale incluso",
-  "cou.hero.reqName": "Cellcom Academy — Richiesta iscrizione",
+  "cou.hero.reqName": "Fast-Fix Academy — Richiesta iscrizione",
   "cou.levels.eyebrow": "I livelli",
   "cou.levels.titleA": "Dal primo screen",
   "cou.levels.accent": "alla microsaldatura BGA.",
@@ -1208,7 +1221,7 @@ const IT: Dict = {
   "cou.cta.intro":
     "Calendario, prezzi tier (privati / centri assistenza / scuole) e agevolazioni: ti rispondiamo entro 24h con tutto quello che ti serve.",
   "cou.cta.cta": "Richiedi calendario e iscrizione →",
-  "cou.cta.reqName": "Cellcom Academy — Iscrizione corso",
+  "cou.cta.reqName": "Fast-Fix Academy — Iscrizione corso",
   "cou.card.priceOnReq": "Prezzo su richiesta",
   "cou.card.enroll": "Iscriviti →",
 
@@ -1216,11 +1229,11 @@ const IT: Dict = {
   "os.hero.titleA": "Da zero al tuo",
   "os.hero.accent": "negozio aperto.",
   "os.hero.description":
-    "Ti accompagniamo passo per passo: consulenza, formazione, fornitura, setup negozio, accesso al CRM e supporto continuo. Niente franchising, niente royalty — solo i nostri prezzi B2B + il know-how del gruppo.",
+    "Ti accompagniamo passo per passo: consulenza, formazione, fornitura, setup negozio, accesso al CRM e supporto continuo. Niente franchising, niente royalty — solo i nostri prezzi B2B + il nostro know-how.",
   "os.hero.cta1": "Parla con un consulente →",
   "os.hero.cta2": "Vedi il percorso",
   "os.hero.subtitle": "Risposta entro 24h · Consulenza iniziale gratuita",
-  "os.hero.reqName": "Apri un negozio Cellcom — richiesta consulenza",
+  "os.hero.reqName": "Apri un negozio Fast-Fix — richiesta consulenza",
   "os.steps.eyebrow": "Il percorso, 5 step",
   "os.steps.titleA": "Dalla prima chiamata",
   "os.steps.accent": "al primo cliente.",
@@ -1231,13 +1244,13 @@ const IT: Dict = {
     "Analizziamo zona, target e investimento. Definiamo insieme format del punto vendita, mix prodotti, listino e margini realistici.",
   "os.s2.title": "Formazione e Academy",
   "os.s2.text":
-    "Mandiamo te o il tuo tecnico in Cellcom Academy: base, intermedio o avanzato BGA. Esci con un attestato e operatività vera dal primo giorno.",
+    "Mandiamo te o il tuo tecnico in Fast-Fix Academy: base, intermedio o avanzato BGA. Esci con un attestato e operatività vera dal primo giorno.",
   "os.s3.title": "Fornitura e magazzino",
   "os.s3.text":
-    "Listino B2B Cellcom riservato: telefoni nuovi, ricondizionati, ricambi originali, accessori. Ordini rapidi dal portale, spedizione 24-48h.",
+    "Listino B2B Fast-Fix riservato: telefoni nuovi, ricondizionati, ricambi originali, accessori. Ordini rapidi dal portale, spedizione 24-48h.",
   "os.s4.title": "Setup negozio + CRM",
   "os.s4.text":
-    "Layout, banco di lavoro, strumentazione consigliata, branding. Accesso al gestionale Cellcom per ticket riparazione, magazzino, fatture.",
+    "Layout, banco di lavoro, strumentazione consigliata, branding. Accesso al gestionale Fast-Fix per ticket riparazione, magazzino, fatture.",
   "os.s5.title": "Supporto continuo",
   "os.s5.text":
     "Linea diretta con il laboratorio Fast-Fix per le riparazioni difficili. Aggiornamenti su nuovi modelli, prezzi, listini stagionali.",
@@ -1247,7 +1260,7 @@ const IT: Dict = {
   "os.included.intro":
     "Non vendiamo franchising in scatola, vendiamo ricambi e telefoni e un metodo. Il negozio resta tuo, il listino resta nostro.",
   "os.i1": "Consulenza pre-apertura (zona, format, mix prodotti)",
-  "os.i2": "Accesso al listino B2B Cellcom riservato",
+  "os.i2": "Accesso al listino B2B Fast-Fix riservato",
   "os.i3": "Formazione tecnica Academy (1-3 livelli)",
   "os.i4": "Setup CRM e account B2B per ordini rapidi",
   "os.i5": "Supporto laboratorio Fast-Fix sulle riparazioni complesse",
@@ -1257,7 +1270,7 @@ const IT: Dict = {
   "os.cta.intro":
     "Lasciaci 3 informazioni — chi sei, dove vuoi aprire, cosa hai già. Un nostro consulente ti richiama entro 24 ore.",
   "os.cta.cta": "Richiedi consulenza gratuita →",
-  "os.cta.reqName": "Apri un negozio Cellcom — primo contatto",
+  "os.cta.reqName": "Apri un negozio Fast-Fix — primo contatto",
 
   "bp.hero.eyebrow": "Network Fast-Fix",
   "bp.hero.titleA": "Diventa punto",
@@ -1282,7 +1295,7 @@ const IT: Dict = {
     "Le riparazioni che non vuoi fare in laboratorio le mandi a noi: microsaldatura, BGA, recupero dati. Costo trasparente, garanzia su lavoro e ricambi.",
   "bp.b3.title": "Accesso al gestionale",
   "bp.b3.text":
-    "Apri ticket di riparazione che ti rigiriamo gestiti dal CRM Cellcom. Il cliente del cliente vede stato e preventivo in tempo reale.",
+    "Apri ticket di riparazione che ti rigiriamo gestiti dal CRM Fast-Fix. Il cliente del cliente vede stato e preventivo in tempo reale.",
   "bp.req.eyebrow": "Requisiti",
   "bp.req.titleA": "Per chi",
   "bp.req.accent": "ripara di mestiere.",
@@ -1341,14 +1354,14 @@ const IT: Dict = {
 };
 
 const EN: Dict = {
-  "chat.header.title": "Cellcom Assistance",
+  "chat.header.title": "Fast-Fix Assistance",
   "chat.header.statusOnline": "Reply in minutes",
   "chat.header.statusStreaming": "Typing…",
   "chat.header.closeAria": "Close chat",
   "chat.fab.openAria": "Open assistance chat",
   "chat.fab.closeAria": "Close assistance chat",
   "chat.welcome":
-    "Hi — I'm the Cellcom assistant. I search products, track repairs, find stores and open the right request for you. Where do you want to start?",
+    "Hi — I'm the Fast-Fix assistant. I search products, track repairs, find stores and open the right request for you. Where do you want to start?",
   "chat.input.placeholder": "Write a message…",
   "chat.input.placeholderStreaming": "Wait for the reply…",
   "chat.input.sendAria": "Send message",
@@ -1378,7 +1391,7 @@ const EN: Dict = {
   "chat.toolLabel.listStores": "Loading stores…",
   "chat.toolLabel.openRequestForm": "Preparing the request…",
   "chat.toolLabel.getHealth": "Checking system status…",
-  "chat.regionAria": "Cellcom assistance chat",
+  "chat.regionAria": "Fast-Fix assistance chat",
   "chat.openAnnounce": "Assistance chat opened",
 
   "lang.label": "Language",
@@ -1400,7 +1413,7 @@ const EN: Dict = {
   "nav.openMenu": "Open menu",
   "nav.closeMenu": "Close menu",
 
-  "footer.copyrightGroup": "Cellcom Group",
+  "footer.copyrightGroup": "Fast-Fix",
   "footer.legal.privacy": "Privacy",
   "footer.legal.cookie": "Cookies",
   "footer.legal.terms": "Terms",
@@ -1429,20 +1442,24 @@ const EN: Dict = {
   "hero.claim.italicA": "we repair",
   "hero.claim.between": ", we supply",
   "hero.claim.italicB": "those who sell them",
-  "hero.intro.lead": "Three businesses, one warehouse.",
-  "hero.intro.boldA": "Retail sales",
-  "hero.intro.bodyA": " of smartphones, accessories and parts.",
-  "hero.intro.boldB": "Service centre",
-  "hero.intro.bodyB": " with in-house lab and 12-month warranty.",
-  "hero.intro.boldC": "B2B wholesale",
-  "hero.intro.bodyC": " for resellers, repair shops and businesses.",
+  "hero.intro.lead": "Five businesses, one warehouse.",
+  "hero.intro.boldA": "Repairs",
+  "hero.intro.bodyA": " with in-house lab and 12-month warranty.",
+  "hero.intro.boldB": "Fast-Fix Academy",
+  "hero.intro.bodyB": " to become a technician, from basics to micro-soldering.",
+  "hero.intro.boldC": "We buy and sell used",
+  "hero.intro.bodyC": " devices, warranty-backed, free valuation in 24 hours.",
+  "hero.intro.boldD": "Spare parts",
+  "hero.intro.bodyD": " originals and compatibles, in stock.",
+  "hero.intro.boldE": "B2B wholesale",
+  "hero.intro.bodyE": " for resellers, repair shops and businesses.",
 
-  "home.numbers.eyebrow": "The group in numbers",
-  "home.numbers.titleA": "Three brands. One",
+  "home.numbers.eyebrow": "Fast-Fix in numbers",
+  "home.numbers.titleA": "Five businesses. One",
   "home.numbers.titleB": "warehouse.",
   "home.numbers.intro":
-    "Cellcom (e-commerce + B2B), Fast-Fix (stores and repairs), ItalianParts (spare parts). Each one focused on its own thing, same stock behind the scenes. The numbers below come live from the CRM — no empty windows.",
-  "home.numbers.stat.brands": "Group brands",
+    "Repairs, Fast-Fix Academy, buying and selling used devices, spare parts, B2B wholesale. Five specialised businesses, the same stock behind the scenes. The numbers below come live from the CRM — no empty windows.",
+  "home.numbers.stat.brands": "Businesses",
   "home.numbers.stat.parts": "Parts in stock",
   "home.numbers.stat.phones": "Phones in catalogue",
   "home.numbers.stat.accessories": "Accessories available",
@@ -1478,7 +1495,7 @@ const EN: Dict = {
   "pg.price.reserved": "Price reserved",
   "pg.cta.loginForPrice": "Sign in for the price",
   "pg.cta.notifyWhenBack": "Notify me when back",
-  "pg.cta.buyOn": (channel) => `Buy on ${channel}`,
+  "pg.cta.buy": "Buy online",
   "pg.empty": "No products found.",
 
   "bc.home": "Home",
@@ -1496,11 +1513,11 @@ const EN: Dict = {
   "bc.tradeIn": "Trade-in",
   "bc.tracker": "Track repair",
 
-  "ch.products.eyebrow": "The Group's unified warehouse",
+  "ch.products.eyebrow": "One Fast-Fix warehouse",
   "ch.products.title": "Our",
   "ch.products.accent": "catalogue",
   "ch.products.description":
-    "Phones, spare parts, accessories. Real availability from Cellcom Group channels: brand new, refurbished and warranty-backed used.",
+    "Phones, spare parts, accessories. Real availability from Fast-Fix channels: brand new, refurbished and warranty-backed used.",
   "ch.phones.eyebrow": "Smartphones",
   "ch.phones.title": "Our",
   "ch.phones.accent": "phones",
@@ -1577,7 +1594,7 @@ const EN: Dict = {
   "pillars.resell.accent": "is still worth something.",
   "pillars.resell.body":
     "Free valuation from photos within 24 hours. Free shipping or pickup, payment within 48 hours.",
-  "pillars.resell.b1": "+10% bonus in Cellcom credit",
+  "pillars.resell.b1": "+10% bonus in Fast-Fix credit",
   "pillars.resell.b2": "Written quote, no tricks",
   "pillars.resell.b3": "We take broken phones too",
   "pillars.resell.cta": "Value your used phone",
@@ -1585,7 +1602,7 @@ const EN: Dict = {
   "pillars.learn.titleA": "Become",
   "pillars.learn.accent": "a repair technician.",
   "pillars.learn.body":
-    "Three levels at Cellcom Academy: foundation, intermediate, BGA micro-soldering. The same instructors who train our technicians.",
+    "Three levels at Fast-Fix Academy: foundation, intermediate, BGA micro-soldering. The same instructors who train our technicians.",
   "pillars.learn.b1": "Professional ESD workstations",
   "pillars.learn.b2": "Class size capped at 6 students",
   "pillars.learn.b3": "Certificate + in-house job pipeline",
@@ -1602,7 +1619,7 @@ const EN: Dict = {
   "immersive.m1.titleA": "The whole phone,",
   "immersive.m1.italic": "one home.",
   "immersive.m1.body":
-    "From the first purchase to recycling — four services, one group.",
+    "From the first purchase to recycling — four services, one team.",
   "immersive.m2.eyebrow": "I repair, I refurbish",
   "immersive.m2.titleA": "Almost anything can be",
   "immersive.m2.italic": "fixed",
@@ -1616,7 +1633,7 @@ const EN: Dict = {
     "Free valuation, free shipping, payment within 48 hours.",
   "immersive.m3.cta": "Find out how",
 
-  "rep.hero.eyebrow": "Fast-Fix · Group repair centre",
+  "rep.hero.eyebrow": "Fast-Fix · Repair centre",
   "rep.hero.titleA": "Which device",
   "rep.hero.accent": "do you want to fix?",
   "rep.hero.description":
@@ -1651,7 +1668,7 @@ const EN: Dict = {
   "rep.intake.opt1.eyebrow": "Option 1",
   "rep.intake.opt1.title": "Drop it off in store",
   "rep.intake.opt1.text":
-    "Come to one of the Group's stores. On-the-spot diagnosis if a technician is available, otherwise a receipt and a call within 24h with the quote.",
+    "Come to one of our locations. On-the-spot diagnosis if a technician is available, otherwise a receipt and a call within 24h with the quote.",
   "rep.intake.opt1.cta": "Find your nearest store",
   "rep.intake.opt2.eyebrow": "Option 2",
   "rep.intake.opt2.title": "Ship it to us",
@@ -1675,7 +1692,7 @@ const EN: Dict = {
   "auth.b2b.eyebrow": "B2B area",
   "auth.b2b.login.title": "Sign in to your price list",
   "auth.b2b.login.subtitle":
-    "Reserved prices for resellers, operators and businesses in the Group.",
+    "Reserved prices for resellers, operators and businesses.",
   "auth.b2b.login.sessionExpired":
     "Session expired. Please sign in again.",
   "auth.b2b.login.noCredentials": "Don't have credentials yet?",
@@ -1698,7 +1715,7 @@ const EN: Dict = {
   "auth.b2b.register.eyebrow": "Become a reseller",
   "auth.b2b.register.title": "Sign up as a reseller",
   "auth.b2b.register.subtitle":
-    "Give us your business details. Cellcom staff reviews the request within 24 business hours and emails you a link to set the password.",
+    "Give us your business details. Fast-Fix staff reviews the request within 24 business hours and emails you a link to set the password.",
   "auth.b2b.register.nameLabel": "Contact full name *",
   "auth.b2b.register.namePh": "Jane Doe",
   "auth.b2b.register.emailLabel": "Business email *",
@@ -1710,7 +1727,7 @@ const EN: Dict = {
   "auth.b2b.register.phoneLabel": "Phone",
   "auth.b2b.register.phonePh": "+44 20 1234 5678",
   "auth.b2b.register.consent":
-    "By submitting you agree that Cellcom Smartphone Fix SRLS may contact the email above to activate the reseller account.",
+    "By submitting you agree that FAST-FIX di Sarker Srabon may contact the email above to activate the reseller account.",
   "auth.b2b.register.cta": "Send the request →",
   "auth.b2b.register.ctaBusy": "Sending…",
   "auth.b2b.register.done.title": "Request sent.",
@@ -1775,48 +1792,51 @@ const EN: Dict = {
   "stores.hero.titleA": "Our",
   "stores.hero.accent": "stores.",
   "stores.hero.description":
-    "Find the nearest store across the Cellcom Group brands. Service centres, parts warehouse, retail — all opening hours, addresses and contacts in real time.",
+    "Find the nearest store across the Fast-Fix brands. Service centres, parts warehouse, retail — all opening hours, addresses and contacts in real time.",
   "stores.features.eyebrow": "What you can do in store",
   "stores.features.titleA": "More than retail —",
   "stores.features.accent": "full services.",
   "stores.features.intro":
-    "Every Group store offers way more than the shelves: repairs, used-phone valuation, commercial support for resellers who need in-person help.",
+    "Each of our locations offers way more than the shelves: repairs, used-phone valuation, commercial support for resellers who need in-person help.",
   "stores.f1.title": "On-the-spot diagnosis",
   "stores.f1.text":
     "Bring your device in, if a technician is free they look at it in 10 minutes and tell you what's needed.",
   "stores.f2.title": "Free order pickup",
   "stores.f2.text":
-    "Order online and pick up at any Group store with no shipping fees.",
+    "Order online and pick up at either location with no shipping fees.",
   "stores.f3.title": "Trade-in at the counter",
   "stores.f3.text":
-    "Bring your old phone, we value it in front of you, you leave with bank transfer or Cellcom credit.",
+    "Bring your old phone, we value it in front of you, you leave with bank transfer or Fast-Fix credit.",
 
-  "about.hero.eyebrow": "The Group",
-  "about.hero.titleA": "Five brands. One single",
+  "about.hero.eyebrow": "The business",
+  "about.hero.titleA": "Five businesses. One single",
   "about.hero.accent": "trust.",
   "about.hero.description":
-    "We sell, we repair and we supply phones. We're based in San Benedetto del Tronto, but we work across Italy. Three specialised brands, one warehouse, the same people behind everything.",
+    "We repair, we train, we buy and sell used devices, we supply parts and we stock the people who sell. We're based in San Benedetto del Tronto, but we work across Italy. Two locations, one warehouse, the same people behind everything.",
   "about.stat.products": "Products in catalogue",
-  "about.stat.brands": "Vertical brands",
+  "about.stat.brands": "Businesses",
   "about.stat.delivery": "Delivery in Italy",
   "about.stat.warranty": "Parts warranty",
-  "about.brands.eyebrow": "The 5 brands",
-  "about.brands.titleA": "One group,",
+  "about.brands.eyebrow": "The 5 businesses",
+  "about.brands.titleA": "One team,",
   "about.brands.accent": "five specialisations.",
   "about.brands.intro":
-    "Each brand does one thing and does it well. Together they cover the entire phone lifecycle: sales, repair, parts, training, software. Same warehouse, same standards.",
-  "about.b1.role": "B2B warehouse",
+    "Each business does one thing and does it well. Together they cover the entire phone lifecycle: repair, training, used devices, parts, wholesale. Same warehouse, same standards.",
+  "about.b1.role": "Repairs",
   "about.b1.description":
-    "The Group's wholesale. We sell to resellers, repair shops and businesses on volume pricing.",
-  "about.b2.role": "Stores & repairs",
+    "In-house lab: smartphones, tablets, consoles and computers. Free diagnosis and 12-month warranty on the job.",
+  "about.b2.role": "Fast-Fix Academy",
   "about.b2.description":
-    "The physical stores where you bring a phone to repair or come to buy a new one.",
-  "about.b3.role": "Spare parts",
+    "The school where we train our own technicians. Open to anyone who wants to learn the trade: from basics to BGA micro-soldering.",
+  "about.b3.role": "We buy and sell used",
   "about.b3.description":
-    "Displays, batteries, housings, motherboards. For people who fix phones for a living.",
-  "about.b4.role": "Academy",
+    "We value and buy your device, broken ones too. And we resell refurbished, tested used devices with warranty.",
+  "about.b4.role": "Spare parts",
   "about.b4.description":
-    "The in-house school where we train our technicians. Also open to anyone who wants to learn the trade.",
+    "Displays, batteries, housings, motherboards. Originals and compatibles, for people who fix phones for a living.",
+  "about.b5.role": "B2B wholesale",
+  "about.b5.description":
+    "We sell to resellers, repair shops and businesses on volume pricing, with a dedicated account manager.",
   "about.manifesto.eyebrow": "What sets us apart",
   "about.manifesto.titleA": "Three principles,",
   "about.manifesto.accent": "non-negotiable.",
@@ -1826,17 +1846,17 @@ const EN: Dict = {
   "about.s2.title": "Every job tracked",
   "about.s2.description":
     "Your repairs or orders go into the system, you see them live too. Photo of the device, parts used, responsible technician — all logged.",
-  "about.s3.title": "One specialisation per brand",
+  "about.s3.title": "One specialisation per business",
   "about.s3.description":
-    "Each Group brand does one thing and takes it seriously. Put them together and we cover the entire phone lifecycle.",
+    "Each of our businesses does one thing and takes it seriously. Put them together and we cover the entire phone lifecycle.",
 
-  "ti.hero.eyebrow": "Cellcom trade-in",
+  "ti.hero.eyebrow": "Fast-Fix trade-in",
   "ti.hero.titleA": "Your old phone",
   "ti.hero.accent": "is still worth something.",
   "ti.hero.descA":
     "Tell us what phone you have and what condition it's in. Our technicians value it for free after they receive the photos and reply by email within a few hours. Free shipping or store pickup. ",
   "ti.hero.descBoldBonus": "+10%",
-  "ti.hero.descB": " bonus if you take Cellcom Group store credit.",
+  "ti.hero.descB": " bonus if you take Fast-Fix store credit.",
   "ti.how.eyebrow": "How it works",
   "ti.how.titleA": "Four steps,",
   "ti.how.accent": "no surprises.",
@@ -1870,12 +1890,12 @@ const EN: Dict = {
   "ti.faq.q4.q": "How does free shipping work?",
   "ti.faq.q4.a":
     "Once you accept the offer we email you a prepaid label. Ship from any post office with the phone well packed (ideally in the original box). Or you book an appointment and we pick it up at home.",
-  "ti.faq.q5.q": "What's the +10% Cellcom credit bonus?",
+  "ti.faq.q5.q": "What's the +10% Fast-Fix credit bonus?",
   "ti.faq.q5.a":
-    "If instead of a bank transfer you take store credit spendable on Cellcom Group sites, we top the offer up by 10%. Example: €500 offer → €550 credit. Valid for 24 months.",
+    "If instead of a bank transfer you take store credit spendable on Fast-Fix sites, we top the offer up by 10%. Example: €500 offer → €550 credit. Valid for 24 months.",
   "ti.faq.q6.q": "Do you buy only phones or also tablets, smartwatches?",
   "ti.faq.q6.a":
-    "Right now phones only. Tablets, smartwatches, AirPods, consoles: drop us an email at hello@cellcom.it and we'll let you know case by case.",
+    "Right now phones only. Tablets, smartwatches, AirPods, consoles: drop us an email at info@fast-fix.it and we'll let you know case by case.",
   "ti.faq.q7.q": "My phone is broken, can I still sell it?",
   "ti.faq.q7.a":
     "Yes but the flow changes. For broken screens, dead batteries, phones that won't turn on: better to go through our repair centre first. We often fix it cheaply and then the resale value jumps 3-5x.",
@@ -1883,16 +1903,16 @@ const EN: Dict = {
   "ti.faq.q8.a":
     "Pick 'Other / not in list' and type brand and model by hand. Our technician will value it exactly like the listed models.",
 
-  "cou.hero.eyebrow": "Cellcom Academy",
+  "cou.hero.eyebrow": "Fast-Fix Academy",
   "cou.hero.titleA": "Learn to repair,",
   "cou.hero.accent": "like a real technician.",
   "cou.hero.description":
-    "Three levels — foundation, intermediate, advanced BGA. ESD workstations, professional tools, the same instructors who train the Group's technicians before sending them into the lab. Certificate of attendance and priority track for in-house hiring.",
+    "Three levels — foundation, intermediate, advanced BGA. ESD workstations, professional tools, the same instructors who train our own technicians before sending them into the lab. Certificate of attendance and priority track for in-house hiring.",
   "cou.hero.cta1": "Request enrolment info →",
   "cou.hero.cta2": "Compare the levels",
   "cou.hero.subtitle":
     "Enrolment subject to approval · Online payment · Materials included",
-  "cou.hero.reqName": "Cellcom Academy — Enrolment request",
+  "cou.hero.reqName": "Fast-Fix Academy — Enrolment request",
   "cou.levels.eyebrow": "The levels",
   "cou.levels.titleA": "From your first screen",
   "cou.levels.accent": "to BGA micro-soldering.",
@@ -1916,7 +1936,7 @@ const EN: Dict = {
   "cou.cta.intro":
     "Calendar, tiered pricing (private / repair shops / schools) and discounts: we reply within 24h with everything you need.",
   "cou.cta.cta": "Request calendar and enrolment →",
-  "cou.cta.reqName": "Cellcom Academy — Course enrolment",
+  "cou.cta.reqName": "Fast-Fix Academy — Course enrolment",
   "cou.card.priceOnReq": "Price on request",
   "cou.card.enroll": "Enrol →",
 
@@ -1924,11 +1944,11 @@ const EN: Dict = {
   "os.hero.titleA": "From zero to your",
   "os.hero.accent": "store, open.",
   "os.hero.description":
-    "We walk you through every step: consultation, training, supply, store setup, CRM access and ongoing support. No franchise fees, no royalties — just our B2B prices + the Group's know-how.",
+    "We walk you through every step: consultation, training, supply, store setup, CRM access and ongoing support. No franchise fees, no royalties — just our B2B prices + our own know-how.",
   "os.hero.cta1": "Talk to a consultant →",
   "os.hero.cta2": "See the path",
   "os.hero.subtitle": "Reply within 24h · Free initial consultation",
-  "os.hero.reqName": "Open a Cellcom store — consultation request",
+  "os.hero.reqName": "Open a Fast-Fix store — consultation request",
   "os.steps.eyebrow": "The path, 5 steps",
   "os.steps.titleA": "From the first call",
   "os.steps.accent": "to your first customer.",
@@ -1939,13 +1959,13 @@ const EN: Dict = {
     "We analyse area, target audience and investment. Together we define store format, product mix, price list and realistic margins.",
   "os.s2.title": "Training and Academy",
   "os.s2.text":
-    "We send you or your technician to Cellcom Academy: foundation, intermediate or advanced BGA. You leave with a certificate and real operational skills from day one.",
+    "We send you or your technician to Fast-Fix Academy: foundation, intermediate or advanced BGA. You leave with a certificate and real operational skills from day one.",
   "os.s3.title": "Supply and warehouse",
   "os.s3.text":
-    "Reserved Cellcom B2B price list: brand new and refurbished phones, original parts, accessories. Fast orders from the portal, 24-48h shipping.",
+    "Reserved Fast-Fix B2B price list: brand new and refurbished phones, original parts, accessories. Fast orders from the portal, 24-48h shipping.",
   "os.s4.title": "Store setup + CRM",
   "os.s4.text":
-    "Layout, workbench, recommended equipment, branding. Access to the Cellcom system for repair tickets, inventory, invoices.",
+    "Layout, workbench, recommended equipment, branding. Access to the Fast-Fix system for repair tickets, inventory, invoices.",
   "os.s5.title": "Ongoing support",
   "os.s5.text":
     "Direct line to the Fast-Fix lab for tricky repairs. Updates on new models, prices, seasonal listings.",
@@ -1955,7 +1975,7 @@ const EN: Dict = {
   "os.included.intro":
     "We don't sell franchise-in-a-box, we sell parts and phones and a method. The store stays yours, the price list stays ours.",
   "os.i1": "Pre-opening consultation (area, format, product mix)",
-  "os.i2": "Access to the reserved Cellcom B2B price list",
+  "os.i2": "Access to the reserved Fast-Fix B2B price list",
   "os.i3": "Academy technical training (1-3 levels)",
   "os.i4": "CRM setup and B2B account for fast orders",
   "os.i5": "Fast-Fix lab support on complex repairs",
@@ -1965,7 +1985,7 @@ const EN: Dict = {
   "os.cta.intro":
     "Tell us 3 things — who you are, where you want to open, what you already have. One of our consultants will call you back within 24 hours.",
   "os.cta.cta": "Request a free consultation →",
-  "os.cta.reqName": "Open a Cellcom store — first contact",
+  "os.cta.reqName": "Open a Fast-Fix store — first contact",
 
   "bp.hero.eyebrow": "Fast-Fix Network",
   "bp.hero.titleA": "Become a partner",
@@ -1990,7 +2010,7 @@ const EN: Dict = {
     "The repairs you don't want to do in-house, you send to us: micro-soldering, BGA, data recovery. Transparent cost, warranty on labour and parts.",
   "bp.b3.title": "System access",
   "bp.b3.text":
-    "Open repair tickets that we handle through the Cellcom CRM. The customer's customer sees status and quote in real time.",
+    "Open repair tickets that we handle through the Fast-Fix CRM. The customer's customer sees status and quote in real time.",
   "bp.req.eyebrow": "Requirements",
   "bp.req.titleA": "For people who",
   "bp.req.accent": "repair for a living.",

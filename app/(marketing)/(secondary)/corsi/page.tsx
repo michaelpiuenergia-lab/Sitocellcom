@@ -9,7 +9,7 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
-  title: "Corsi — Cellcom Group",
+  title: "Corsi — Fast-Fix",
   description:
     "Corsi di riparazione smartphone per professionisti e hobbisti. Formazione pratica su tutti i modelli.",
 };
@@ -29,7 +29,7 @@ const eur = (cents: number) =>
   new Intl.NumberFormat("it-IT", { style: "currency", currency: "EUR" }).format(cents / 100);
 
 export default async function CorsiPage() {
-  // Source-of-truth: CRM Cellcom Academy. Fallback su lista vuota se CRM giù.
+  // Source-of-truth: CRM Fast-Fix Academy. Fallback su lista vuota se CRM giù.
   const [data, t] = await Promise.all([
     getCourses().catch(() => ({ items: [] as CoursePublic[], total: 0 })),
     getT(),
@@ -364,7 +364,7 @@ function CourseCard({ course, index, t }: { course: CoursePublic; index: number;
             product={{
               id: course.id,
               slug: course.slug ?? null,
-              name: `Cellcom Academy — ${course.title}`,
+              name: `Fast-Fix Academy — ${course.title}`,
               variantId: null,
               variantLabel: null,
             }}

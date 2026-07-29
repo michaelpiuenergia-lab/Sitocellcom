@@ -1,22 +1,34 @@
 /**
- * Negozi del Gruppo Cellcom — fonte unica per /negozi, /riparazioni, /rivendi
+ * Negozi Fast-Fix — fonte unica per /negozi, /riparazioni, /rivendi
  * e ovunque serva uno store picker.
  *
- * Dati estratti dai brief contatti aziendali (CELLCOM_Contatti srls ditta,
- * FastFix_Contatti per dati ditta — Desktop/integrazione cellcom). Due sedi
- * reali, entrambe a San Benedetto del Tronto.
+ * Unica ditta: FAST-FIX di Sarker Srabon. Due sedi operative, entrambe a
+ * San Benedetto del Tronto, sotto la stessa partita IVA.
  *
  * Quando il CRM esporrà /api/v1/public/stores questa lista resta come
  * fallback offline.
  */
 
+/** Dati fiscali della ditta — unici per tutte le sedi */
+export const COMPANY = {
+  legalName: "FAST-FIX di Sarker Srabon",
+  vatNumber: "01802850675",
+  taxCode: "SRKSBN88S16Z249Q",
+  /** Codice destinatario per la fatturazione elettronica */
+  sdi: "KRRH6B9",
+  /** Sede legale (coincide con la sede di Piazza Garibaldi) */
+  registeredAddress: "Piazza G. Garibaldi 31, 63074 San Benedetto del Tronto (AP)",
+  email: "info@fast-fix.it",
+  pec: "fast-fix@pec.it",
+} as const;
+
 export type Store = {
-  /** Slug univoco (kebab-case città-brand) */
+  /** Slug univoco (kebab-case città-sede) */
   id: string;
-  /** Nome visibile, include brand quando rilevante */
+  /** Nome visibile della sede */
   name: string;
-  /** Brand di riferimento — usato per badge UI */
-  brand: "Cellcom" | "Fast-Fix";
+  /** Insegna di riferimento — usata per badge UI */
+  brand: "Fast-Fix";
   /** Ragione sociale completa (per fatturazione e legal) */
   legalName: string;
   address: string;
@@ -30,7 +42,7 @@ export type Store = {
   mobile: string | null;
   email: string;
   pec: string | null;
-  /** P.IVA / C.F. */
+  /** P.IVA della ditta */
   vatNumber: string | null;
   /** Coordinate per Leaflet map — entrambe in San Benedetto del Tronto */
   lat: number;
@@ -48,30 +60,10 @@ export type Store = {
 
 export const STORES: Store[] = [
   {
-    id: "cellcom-san-benedetto",
-    name: "Cellcom San Benedetto",
-    brand: "Cellcom",
-    legalName: "CELLCOM SRLS",
-    address: "Via Calatafimi 52",
-    cap: "63074",
-    city: "San Benedetto del Tronto",
-    province: "AP",
-    region: "Marche",
-    phone: "+39 344 455 5678",
-    mobile: null,
-    email: "info@cellcom.it",
-    pec: "cellcom25@pec.it",
-    vatNumber: "02576350447",
-    lat: 42.9434,
-    lng: 13.8770,
-    hours: "Lun-Sab 9-13 / 15:30-19:30",
-    services: { repair: true, tradeIn: true, pickup: true, walkin: true },
-  },
-  {
-    id: "fast-fix-san-benedetto",
-    name: "Fast-Fix Assistenza San Benedetto",
+    id: "fast-fix-garibaldi",
+    name: "Fast-Fix Piazza Garibaldi",
     brand: "Fast-Fix",
-    legalName: "FAST-FIX di Sarker Srabon",
+    legalName: COMPANY.legalName,
     address: "Piazza G. Garibaldi 31",
     cap: "63074",
     city: "San Benedetto del Tronto",
@@ -79,11 +71,31 @@ export const STORES: Store[] = [
     region: "Marche",
     phone: "0735 501637",
     mobile: "+39 320 857 4006",
-    email: "info@fast-fix.it",
-    pec: "fast-fix@pec.it",
-    vatNumber: null,
+    email: COMPANY.email,
+    pec: COMPANY.pec,
+    vatNumber: COMPANY.vatNumber,
     lat: 42.9434,
     lng: 13.8814,
+    hours: "Lun-Sab 9-13 / 15:30-19:30",
+    services: { repair: true, tradeIn: true, pickup: true, walkin: true },
+  },
+  {
+    id: "fast-fix-calatafimi",
+    name: "Fast-Fix Via Calatafimi",
+    brand: "Fast-Fix",
+    legalName: COMPANY.legalName,
+    address: "Via Calatafimi 52",
+    cap: "63074",
+    city: "San Benedetto del Tronto",
+    province: "AP",
+    region: "Marche",
+    phone: "0735 501637",
+    mobile: "+39 320 857 4006",
+    email: COMPANY.email,
+    pec: COMPANY.pec,
+    vatNumber: COMPANY.vatNumber,
+    lat: 42.9434,
+    lng: 13.8770,
     hours: "Lun-Sab 9-13 / 15:30-19:30",
     services: { repair: true, tradeIn: true, pickup: true, walkin: true },
   },

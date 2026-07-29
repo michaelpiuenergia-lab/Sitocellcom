@@ -31,23 +31,23 @@ const instrumentSerif = Instrument_Serif({
 export const metadata: Metadata = {
   metadataBase: new URL("https://sitocellcom.vercel.app"),
   title: {
-    default: "Cellcom Group — Compra, ripara, impara, rivendi",
-    template: "%s — Cellcom Group",
+    default: "Fast-Fix — Ripara, impara, compra, rivendi",
+    template: "%s — Fast-Fix",
   },
   description:
-    "Smartphone nuovi e ricondizionati, riparazioni con garanzia 12 mesi, ricambi originali, corsi di riparazione. Tre brand del Gruppo Cellcom: Cellcom (B2B), Fast-Fix (riparazioni), ItalianParts (ricambi). San Benedetto del Tronto.",
+    "Riparazioni con garanzia 12 mesi, Fast-Fix Academy per diventare tecnico, compro e vendo usato, vendita ricambi e ingrosso B2B per rivenditori. San Benedetto del Tronto.",
   keywords: [
     "riparazione smartphone",
     "smartphone ricondizionati",
     "ricambi smartphone",
-    "Cellcom",
     "Fast-Fix",
-    "ItalianParts",
+    "Fast-Fix Academy",
+    "compro usato smartphone",
     "corsi riparazione smartphone",
     "B2B smartphone ingrosso",
     "San Benedetto del Tronto",
   ],
-  authors: [{ name: "Cellcom Group" }],
+  authors: [{ name: "Fast-Fix" }],
   alternates: {
     canonical: "/",
     languages: {
@@ -60,23 +60,23 @@ export const metadata: Metadata = {
     type: "website",
     locale: "it_IT",
     alternateLocale: ["en_US"],
-    siteName: "Cellcom Group",
-    title: "Cellcom Group — Compra, ripara, impara, rivendi",
+    siteName: "Fast-Fix",
+    title: "Fast-Fix — Ripara, impara, compra, rivendi",
     description:
-      "Tre brand. Un solo magazzino. Diagnosi gratuita, preventivo entro 24h, garanzia 12 mesi.",
+      "Cinque attività, un solo magazzino. Diagnosi gratuita, preventivo entro 24h, garanzia 12 mesi.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Cellcom Group",
+        alt: "Fast-Fix",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cellcom Group — Compra, ripara, impara, rivendi",
-    description: "Tre brand. Un solo magazzino. Diagnosi gratuita, garanzia 12 mesi.",
+    title: "Fast-Fix — Ripara, impara, compra, rivendi",
+    description: "Cinque attività, un solo magazzino. Diagnosi gratuita, garanzia 12 mesi.",
     images: ["/og-image.png"],
   },
   robots: {

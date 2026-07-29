@@ -7,9 +7,9 @@ import { canSeePrices } from "@/lib/auth/pricing-access";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
-  title: "Accessori — Cellcom Group",
+  title: "Accessori — Fast-Fix",
   description:
-    "Cover, caricabatterie, cavi, cuffie. Qualità certificata dai canali del Gruppo Cellcom.",
+    "Cover, caricabatterie, cavi, cuffie. Qualità certificata dai canali del Fast-Fix.",
 };
 
 export const revalidate = 60;

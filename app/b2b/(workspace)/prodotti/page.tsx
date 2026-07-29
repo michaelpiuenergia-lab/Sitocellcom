@@ -99,7 +99,7 @@ export default async function B2bProductsPage() {
               I tuoi prodotti, ai tuoi prezzi
             </h1>
             <p className="text-sm text-muted-foreground max-w-2xl">
-              Catalogo completo del magazzino Cellcom — {totals.devices} telefoni,{" "}
+              Catalogo completo del magazzino Fast-Fix — {totals.devices} telefoni,{" "}
               {totals.parts} ricambi, {totals.accessories} accessori. Disponibilità
               in tempo reale. Per condizioni dedicate o grandi quantità, premi{" "}
               <em>Richiedi disponibilità</em> sul prodotto.

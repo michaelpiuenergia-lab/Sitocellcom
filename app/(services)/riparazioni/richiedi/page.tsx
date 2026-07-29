@@ -6,7 +6,7 @@ import { H1, Accent } from "@/components/ui/heading";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
-  title: "Richiedi riparazione — Cellcom Group",
+  title: "Richiedi riparazione — Fast-Fix",
   description:
     "Wizard riparazione: scegli telefono, problema, modalità (negozio / spedizione / domicilio) e appuntamento. Diagnosi gratuita, garanzia 12 mesi.",
 };

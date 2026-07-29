@@ -212,7 +212,7 @@ function Caret() {
         marginLeft: 2,
         backgroundColor: "currentColor",
         opacity: 0.6,
-        animation: "cellcom-chat-caret 1s steps(2, start) infinite",
+        animation: "fastfix-chat-caret 1s steps(2, start) infinite",
       }}
     />
   );
@@ -225,7 +225,7 @@ function Spinner() {
       height="10"
       viewBox="0 0 24 24"
       fill="none"
-      style={{ animation: "cellcom-chat-spin 0.8s linear infinite" }}
+      style={{ animation: "fastfix-chat-spin 0.8s linear infinite" }}
     >
       <circle cx="12" cy="12" r="9" stroke="#fecaca" strokeWidth="3" />
       <path d="M21 12a9 9 0 0 0-9-9" stroke="#dc2626" strokeWidth="3" strokeLinecap="round" />

@@ -1,4 +1,4 @@
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 
 /**
  * Landing pubblica dopo un pagamento online (Klarna, in futuro PayPal).
@@ -10,7 +10,7 @@ import { LogoC } from "@/components/marketing/logo-c";
  */
 
 export const metadata = {
-  title: "Grazie — Cellcom Group",
+  title: "Grazie — Fast-Fix",
   description: "Esito del pagamento online.",
 };
 
@@ -74,7 +74,7 @@ export default async function GraziePage({
     >
       <div className="w-full max-w-[440px] flex flex-col items-center gap-9">
         <a href="/" className="flex flex-col items-center gap-3" aria-label="Home">
-          <LogoC className="w-12 h-12" />
+          <LogoMark className="w-12 h-12" />
           <span
             className="font-mono uppercase"
             style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}

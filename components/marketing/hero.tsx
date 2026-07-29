@@ -10,7 +10,7 @@ import type { PublicProductListItem } from "@/lib/crm-client/types";
 import { useLang } from "@/lib/i18n/lang-context";
 import type { Dict } from "@/lib/i18n/dict";
 
-const ELLCOM_LETTERS = ["E", "L", "L", "C", "O", "M"] as const;
+const WORDMARK_LETTERS = ["F", "A", "S", "T", "-", "F", "I", "X"] as const;
 
 const PILLAR_BUTTONS: Array<{
   key: keyof Dict;
@@ -69,16 +69,16 @@ export function Hero({
              */}
             <div className="flex items-end gap-2 md:gap-3">
               <motion.svg
-                viewBox="10 15 80 70"
-                aria-label="Cellcom"
+                viewBox="0 0 100 100"
+                aria-label="Fast-Fix"
                 preserveAspectRatio="xMidYMid meet"
                 style={{
                   display: "block",
                   overflow: "visible",
                   flexShrink: 0,
-                  // C grande, dominante rispetto a ELLCOM (ratio ~2.5-3x).
-                  width: "clamp(110px, 14vw, 200px)",
-                  height: "clamp(96px, 12.3vw, 175px)",
+                  // Mark quadrato, dominante rispetto al wordmark.
+                  width: "clamp(96px, 12vw, 168px)",
+                  height: "clamp(96px, 12vw, 168px)",
                 }}
                 initial={
                   shouldReduce
@@ -94,27 +94,27 @@ export function Hero({
                   ease: EASE.smooth,
                 }}
               >
+                <rect width="100" height="100" rx="22" fill="#dc2626" />
                 <motion.path
-                  d="M 80,25 A 30,30 0 1,0 80,75"
-                  fill="none"
-                  stroke="#dc2626"
-                  strokeWidth="18"
-                  strokeLinecap="round"
+                  d="M58 12 L30 58 h16 l-6 30 L72 42 H54 z"
+                  fill="#ffffff"
+                  style={{ transformOrigin: "50px 50px" }}
                   initial={
                     shouldReduce
-                      ? { strokeDashoffset: 0, strokeDasharray: 280 }
-                      : { strokeDasharray: 280, strokeDashoffset: 280 }
+                      ? { opacity: 1, scale: 1 }
+                      : { opacity: 0, scale: 0.7 }
                   }
                   animate={{
-                    strokeDashoffset: hidden ? 280 : 0,
+                    opacity: hidden ? 0 : 1,
+                    scale: hidden ? 0.7 : 1,
                   }}
-                  transition={{ duration: 1.0, ease: EASE.smooth }}
+                  transition={{ duration: 0.8, ease: EASE.smooth, delay: 0.25 }}
                 />
               </motion.svg>
 
               <div className="flex flex-col items-start gap-1 md:gap-2 pb-1.5 md:pb-2.5">
                 <div className="flex items-end">
-                  {ELLCOM_LETTERS.map((letter, i) => (
+                  {WORDMARK_LETTERS.map((letter, i) => (
                     <motion.span
                       key={i}
                       initial={
@@ -146,24 +146,6 @@ export function Hero({
                     </motion.span>
                   ))}
                 </div>
-                <motion.span
-                  initial={shouldReduce ? { opacity: 1 } : { opacity: 0 }}
-                  animate={{ opacity: hidden ? 0 : 1 }}
-                  transition={{
-                    duration: 0.6,
-                    delay: 0.6,
-                  }}
-                  className="font-mono uppercase tabular-nums"
-                  style={{
-                    fontSize: "clamp(11px, 1vw, 14px)",
-                    letterSpacing: "0.42em",
-                    color: "#dc2626",
-                    lineHeight: 1,
-                    marginLeft: "0.1em",
-                  }}
-                >
-                  GROUP
-                </motion.span>
               </div>
             </div>
 
@@ -262,7 +244,15 @@ export function Hero({
                 <strong className="font-semibold" style={{ color: "#0a0a0a" }}>
                   {t("hero.intro.boldC")}
                 </strong>
-                {t("hero.intro.bodyC")}
+                {t("hero.intro.bodyC")}{" "}
+                <strong className="font-semibold" style={{ color: "#0a0a0a" }}>
+                  {t("hero.intro.boldD")}
+                </strong>
+                {t("hero.intro.bodyD")}{" "}
+                <strong className="font-semibold" style={{ color: "#0a0a0a" }}>
+                  {t("hero.intro.boldE")}
+                </strong>
+                {t("hero.intro.bodyE")}
               </motion.p>
             )}
           </div>

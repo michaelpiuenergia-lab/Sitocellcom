@@ -1,11 +1,11 @@
 import { RegisterForm } from "./register-form";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
-  title: "Registrati come rivenditore — Cellcom B2B",
+  title: "Registrati come rivenditore — Fast-Fix B2B",
   description:
-    "Crea il tuo account rivenditore Cellcom. Verifica del nostro staff in 24h lavorative.",
+    "Crea il tuo account rivenditore Fast-Fix. Verifica del nostro staff in 24h lavorative.",
 };
 
 export const dynamic = "force-dynamic";
@@ -19,7 +19,7 @@ export default async function B2bRegistratiPage() {
     >
       <div className="w-full max-w-[480px] flex flex-col items-center gap-9">
         <a href="/" className="flex flex-col items-center gap-3" aria-label="Home">
-          <LogoC className="w-12 h-12" />
+          <LogoMark className="w-12 h-12" />
           <span
             className="font-mono uppercase"
             style={{

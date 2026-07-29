@@ -13,7 +13,7 @@ import { useLang } from "@/lib/i18n/lang-context";
 /**
  * Hook lato browser: gestisce history messaggi, streaming SSE, abort,
  * persistenza sessione (sessionStorage) e dispatch dell'evento
- * window "cellcom:open-request" verso il <RequestFormBridge/>.
+ * window "fastfix:open-request" verso il <RequestFormBridge/>.
  *
  * Fix dal review:
  * #9  Turn-guard ref: dopo cancel() gli eventi SSE già bufferizzati non

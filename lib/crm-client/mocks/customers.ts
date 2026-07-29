@@ -18,7 +18,7 @@ export const MOCK_CUSTOMER_ACCOUNTS: MockCustomerAccount[] = [
     customer: {
       id: "cust-001",
       name: "Mario Rossi",
-      email: "cliente@demo.cellcom.it",
+      email: "cliente@demo.fast-fix.it",
       phone: "3331234567",
       category: "riparazione",
     },

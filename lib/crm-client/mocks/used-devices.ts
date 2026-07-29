@@ -25,7 +25,7 @@ export const mockUsedDevices: UsedDevice[] = [
     priceCents: 58000,
     priceEur: "580,00",
     title: "iPhone 13 Pro 256GB Grigio Siderale",
-    description: "Ottime condizioni, batteria 92%, garanzia Cellcom 6 mesi.",
+    description: "Ottime condizioni, batteria 92%, garanzia Fast-Fix 6 mesi.",
     photos: [],
     publishedAt: "2026-05-27T22:14:00.000Z",
   },

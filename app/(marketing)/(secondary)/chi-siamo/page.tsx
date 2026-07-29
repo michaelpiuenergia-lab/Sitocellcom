@@ -4,9 +4,9 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
-  title: "Chi siamo — Cellcom Group",
+  title: "Chi siamo — Fast-Fix",
   description:
-    "Il Gruppo Cellcom è il punto di riferimento italiano per il ciclo di vita completo dello smartphone: vendita, riparazione, formazione e ricambistica.",
+    "Fast-Fix copre il ciclo di vita completo dello smartphone: riparazione, formazione, usato, ricambi e ingrosso B2B. Due sedi a San Benedetto del Tronto.",
 };
 
 const STATS: { value: string; labelKey: keyof Dict }[] = [
@@ -16,16 +16,17 @@ const STATS: { value: string; labelKey: keyof Dict }[] = [
   { value: "12 mesi", labelKey: "about.stat.warranty" },
 ];
 
-const BRANDS: {
-  name: string;
+/** Le cinque attività, ognuna con la sua pagina interna */
+const ACTIVITIES: {
   roleKey: keyof Dict;
   descKey: keyof Dict;
-  url: string;
+  href: string;
 }[] = [
-  { name: "Cellcom.it", roleKey: "about.b1.role", descKey: "about.b1.description", url: "https://cellcom.it" },
-  { name: "Fast-Fix.it", roleKey: "about.b2.role", descKey: "about.b2.description", url: "https://fast-fix.it" },
-  { name: "ItalianParts.it", roleKey: "about.b3.role", descKey: "about.b3.description", url: "https://www.italianparts.it" },
-  { name: "Cellcom Academy", roleKey: "about.b4.role", descKey: "about.b4.description", url: "/corsi" },
+  { roleKey: "about.b1.role", descKey: "about.b1.description", href: "/riparazioni" },
+  { roleKey: "about.b2.role", descKey: "about.b2.description", href: "/corsi" },
+  { roleKey: "about.b3.role", descKey: "about.b3.description", href: "/rivendi" },
+  { roleKey: "about.b4.role", descKey: "about.b4.description", href: "/prodotti/ricambi" },
+  { roleKey: "about.b5.role", descKey: "about.b5.description", href: "/b2b" },
 ];
 
 const STATEMENTS: { num: string; titleKey: keyof Dict; descKey: keyof Dict }[] = [
@@ -119,9 +120,9 @@ export default async function ChiSiamoPage() {
         </div>
       </section>
 
-      {/* 5 BRAND (bianco) */}
+      {/* 5 ATTIVITÀ (bianco) */}
       <section
-        aria-label="I cinque brand del gruppo"
+        aria-label="Le cinque attività Fast-Fix"
         style={{ backgroundColor: "#ffffff" }}
       >
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-28">
@@ -164,12 +165,10 @@ export default async function ChiSiamoPage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5">
-            {BRANDS.map((brand) => (
+            {ACTIVITIES.map((activity) => (
               <a
-                key={brand.name}
-                href={brand.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                key={activity.href}
+                href={activity.href}
                 className="group rounded-2xl p-7 lg:p-8 flex flex-col gap-3 transition-colors duration-300 hover:border-[#dc2626]"
                 style={{
                   backgroundColor: "#fafaf8",
@@ -186,31 +185,21 @@ export default async function ChiSiamoPage() {
                       fontWeight: 700,
                     }}
                   >
-                    {brand.name}
+                    {t(activity.roleKey)}
                   </h3>
                   <span
                     aria-hidden
                     className="transition-transform duration-300 group-hover:translate-x-1"
                     style={{ color: "#dc2626", fontSize: "18px" }}
                   >
-                    ↗
+                    →
                   </span>
                 </div>
-                <span
-                  className="font-mono uppercase"
-                  style={{
-                    fontSize: "10px",
-                    letterSpacing: "0.28em",
-                    color: "#dc2626",
-                  }}
-                >
-                  {t(brand.roleKey)}
-                </span>
                 <p
                   className="leading-relaxed mt-1"
                   style={{ fontSize: "14px", color: "#525252" }}
                 >
-                  {t(brand.descKey)}
+                  {t(activity.descKey)}
                 </p>
               </a>
             ))}

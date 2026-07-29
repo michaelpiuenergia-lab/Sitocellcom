@@ -8,7 +8,7 @@ import { getT } from "@/lib/i18n/server";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 
 export const metadata = {
-  title: "Ricambi — Cellcom Group",
+  title: "Ricambi — Fast-Fix",
   description:
     "Display, batterie, scocche, schede. Filtra per modello compatibile e trova il ricambio giusto.",
 };

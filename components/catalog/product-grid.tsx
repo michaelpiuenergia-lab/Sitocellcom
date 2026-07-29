@@ -26,17 +26,6 @@ function buildBuyUrl(product: PublicProductListItem): string {
   return `${base}/search?q=${query}`;
 }
 
-function getChannelName(channel: PublicProductListItem["channel"]): string {
-  switch (channel) {
-    case "cellcom":
-      return "Cellcom";
-    case "italianparts":
-      return "ItalianParts";
-    case "fastfix":
-      return "Fast-Fix";
-  }
-}
-
 function PartIcon({ category }: { category: string | null }) {
   const c = (category ?? "").toLowerCase();
   if (c.includes("display") || c.includes("schermo")) {
@@ -247,7 +236,7 @@ function ProductCard({
             iconEnd="↗"
             className="w-full"
           >
-            {t("pg.cta.buyOn", getChannelName(product.channel))}
+            {t("pg.cta.buy")}
           </Button>
         )}
       </div>

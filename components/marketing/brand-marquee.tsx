@@ -4,7 +4,7 @@ import { useLang } from "@/lib/i18n/lang-context";
 import type { Dict } from "@/lib/i18n/dict";
 
 /**
- * BrandStrip — banner ROSSO Cellcom che cammina.
+ * BrandStrip — banner ROSSO Fast-Fix che cammina.
  *
  * Striscia stretta (py-3.5 lg:py-4) montata in cima alla pagina, subito
  * sotto la navbar. Fondo rosso brand pieno, testi bianchi, marquee

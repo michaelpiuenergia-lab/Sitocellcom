@@ -1,10 +1,10 @@
 import { PasswordRequestForm } from "./password-request-form";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
-  title: "Password dimenticata — Cellcom B2B",
-  description: "Reimposta la password del tuo account rivenditore Cellcom.",
+  title: "Password dimenticata — Fast-Fix B2B",
+  description: "Reimposta la password del tuo account rivenditore Fast-Fix.",
 };
 
 export const dynamic = "force-dynamic";
@@ -18,7 +18,7 @@ export default async function PasswordDimenticatePage() {
     >
       <div className="w-full max-w-[440px] flex flex-col items-center gap-9">
         <a href="/" className="flex flex-col items-center gap-3" aria-label="Home">
-          <LogoC className="w-12 h-12" />
+          <LogoMark className="w-12 h-12" />
           <span
             className="font-mono uppercase"
             style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}

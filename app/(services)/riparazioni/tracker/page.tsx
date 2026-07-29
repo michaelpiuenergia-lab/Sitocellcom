@@ -3,7 +3,7 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
-  title: "Traccia la riparazione — Cellcom Group",
+  title: "Traccia la riparazione — Fast-Fix",
   description:
     "Inserisci numero ticket e telefono per vedere lo stato della tua riparazione e gestire il preventivo.",
 };

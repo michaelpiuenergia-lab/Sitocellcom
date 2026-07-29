@@ -1,4 +1,4 @@
-import { STORES } from "@/lib/stores";
+import { COMPANY, STORES } from "@/lib/stores";
 
 /**
  * Componenti per inserire JSON-LD structured data nelle pagine. I bot
@@ -7,7 +7,7 @@ import { STORES } from "@/lib/stores";
  *
  * Usi tipici:
  * - <OrganizationJsonLd/> nel root layout (una volta)
- * - <LocalBusinessJsonLd/> sulla /negozi (2 negozi)
+ * - <LocalBusinessJsonLd/> sulla /negozi (2 sedi)
  * - <BreadcrumbJsonLd items={...}/> su ogni pagina secondaria
  * - <ProductJsonLd .../> sulla scheda prodotto
  * - <CourseJsonLd .../> per corsi
@@ -29,23 +29,26 @@ export function OrganizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": `${SITE}#organization`,
-    name: "Cellcom Group",
+    name: "Fast-Fix",
+    legalName: COMPANY.legalName,
+    vatID: COMPANY.vatNumber,
+    taxID: COMPANY.taxCode,
     url: SITE,
-    logo: `${SITE}/logo-c.svg`,
-    sameAs: ["https://cellcom.it", "https://fast-fix.it", "https://www.italianparts.it"],
+    logo: `${SITE}/logo-fast-fix.svg`,
+    sameAs: ["https://fast-fix.it"],
     contactPoint: [
       {
         "@type": "ContactPoint",
         contactType: "customer service",
-        email: "info@cellcom.it",
-        telephone: "+39-344-455-5678",
+        email: "info@fast-fix.it",
+        telephone: "+39-0735-501637",
         areaServed: "IT",
         availableLanguage: ["it", "en"],
       },
       {
         "@type": "ContactPoint",
         contactType: "sales",
-        email: "b2b@cellcom.it",
+        email: "b2b@fast-fix.it",
         areaServed: "IT",
         availableLanguage: ["it", "en"],
       },
@@ -62,7 +65,7 @@ export function OrganizationJsonLd() {
 }
 
 export function LocalBusinessJsonLd() {
-  // Un nodo LocalBusiness per ogni negozio (Cellcom + Fast-Fix)
+  // Un nodo LocalBusiness per ogni sede Fast-Fix
   return STORES.map((s) =>
     jsonLd({
       "@context": "https://schema.org",
@@ -212,7 +215,7 @@ export function CourseJsonLd({
       courseMode: "Onsite",
       location: {
         "@type": "Place",
-        name: "Cellcom Academy",
+        name: "Fast-Fix Academy",
         address: {
           "@type": "PostalAddress",
           streetAddress: "Via Calatafimi 52",
@@ -231,7 +234,7 @@ export function WebSiteJsonLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${SITE}#website`,
-    name: "Cellcom Group",
+    name: "Fast-Fix",
     url: SITE,
     inLanguage: ["it-IT", "en-US"],
     publisher: { "@id": `${SITE}#organization` },

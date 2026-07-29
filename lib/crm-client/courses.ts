@@ -8,7 +8,7 @@ import type {
 } from "./types";
 
 /**
- * Endpoint Cellcom Academy esposti dal CRM (Brief §10).
+ * Endpoint Fast-Fix Academy esposti dal CRM (Brief §10).
  *
  * - public/courses: lista pubblicabile (titolo, livello, prezzo, link pagamento)
  * - customer/courses: corsi del cliente autenticato con enrollment nested

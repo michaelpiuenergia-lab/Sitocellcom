@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <!-- Logo Fast-Fix per JSON-LD / Open Graph. Gemello statico di
+       components/marketing/logo-mark.tsx (stessa geometria, senza animazione). -->
+  <rect width="100" height="100" rx="22" fill="#dc2626"/>
+  <path d="M58 12 L30 58 h16 l-6 30 L72 42 H54 z" fill="#ffffff"/>
+</svg>

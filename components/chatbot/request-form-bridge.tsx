@@ -5,7 +5,7 @@ import { RequestForm } from "@/components/forms/request-form";
 import { OPEN_REQUEST_EVENT, type OpenRequestEventDetail } from "@/lib/chatbot/types";
 
 /**
- * Mount globale che ascolta `window` event "cellcom:open-request"
+ * Mount globale che ascolta `window` event "fastfix:open-request"
  * (emesso da useChat() quando il modello chiama openRequestForm) e renderizza
  * <RequestForm/> già esistente, pre-compilato.
  *

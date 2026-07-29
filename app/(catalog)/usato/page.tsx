@@ -7,9 +7,9 @@ import { canSeePrices } from "@/lib/auth/pricing-access";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
-  title: "Usato garantito — Cellcom Group",
+  title: "Usato garantito — Fast-Fix",
   description:
-    "Smartphone usati testati e garantiti, selezionati dal Gruppo Cellcom. IMEI verificato, batteria controllata, garanzia inclusa. Disponibilità reale dal magazzino.",
+    "Smartphone usati testati e garantiti, selezionati dal Fast-Fix. IMEI verificato, batteria controllata, garanzia inclusa. Disponibilità reale dal magazzino.",
 };
 
 export const revalidate = 60;

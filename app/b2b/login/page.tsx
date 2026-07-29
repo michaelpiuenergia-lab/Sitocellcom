@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { optionalB2bSession } from "@/lib/auth/guards";
 import { LoginForm } from "./login-form";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import { getT } from "@/lib/i18n/server";
 
 type SearchParams = Promise<{ next?: string; reason?: string }>;
@@ -32,7 +32,7 @@ export default async function B2bLoginPage({
           className="flex flex-col items-center gap-3"
           aria-label="Torna alla home"
         >
-          <LogoC className="w-12 h-12" />
+          <LogoMark className="w-12 h-12" />
           <span
             className="font-mono uppercase"
             style={{

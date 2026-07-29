@@ -1,5 +1,5 @@
 /**
- * Tipi condivisi del chatbot pubblico Cellcom.
+ * Tipi condivisi del chatbot pubblico Fast-Fix.
  * - Server (app/api/chat) + client (lib/chatbot/use-chat) usano gli stessi
  *   ChatMessage e gli stessi event-name SSE.
  * - Il bridge handoff verso <RequestForm> usa OpenRequestEventDetail.
@@ -82,7 +82,7 @@ export type OpenRequestCustomer = {
 };
 
 /**
- * Detail dell'evento DOM window "cellcom:open-request".
+ * Detail dell'evento DOM window "fastfix:open-request".
  * Il <RequestFormBridge/> ascolta e monta <RequestForm/> pre-compilato.
  */
 export type OpenRequestEventDetail = {
@@ -93,4 +93,4 @@ export type OpenRequestEventDetail = {
   hideCompany: boolean;
 };
 
-export const OPEN_REQUEST_EVENT = "cellcom:open-request" as const;
+export const OPEN_REQUEST_EVENT = "fastfix:open-request" as const;

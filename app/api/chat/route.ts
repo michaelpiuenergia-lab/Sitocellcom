@@ -4,7 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 
-import { CELLCOM_SYSTEM_PROMPT } from "@/lib/chatbot/system-prompt";
+import { FASTFIX_SYSTEM_PROMPT } from "@/lib/chatbot/system-prompt";
 import {
   ANTHROPIC_TOOLS,
   TOOL_HANDLERS,
@@ -16,7 +16,7 @@ import { consumeRateLimit, extractIp } from "@/lib/chatbot/rate-limit";
 import { log } from "@/lib/log";
 
 /**
- * /api/chat — endpoint streaming SSE per il chatbot pubblico Cellcom.
+ * /api/chat — endpoint streaming SSE per il chatbot pubblico Fast-Fix.
  *
  * Flusso:
  * 1. Same-origin guard (host stretto, no endsWith)
@@ -258,7 +258,7 @@ export async function POST(req: NextRequest) {
         const cachedSystem: Anthropic.Messages.TextBlockParam[] = [
           {
             type: "text",
-            text: CELLCOM_SYSTEM_PROMPT,
+            text: FASTFIX_SYSTEM_PROMPT,
             cache_control: { type: "ephemeral" },
           },
         ];
@@ -380,7 +380,7 @@ export async function POST(req: NextRequest) {
         if (upstreamSignal.aborted) return; // disconnesso: chiudi pulito
         const err = e as { status?: number; message?: string };
         const status = err.status;
-        let userMessage = "Il servizio chat non è disponibile, scrivici a info@cellcom.it";
+        let userMessage = "Il servizio chat non è disponibile, scrivici a info@fast-fix.it";
         if (status === 429) userMessage = "Troppe richieste, riprova fra qualche minuto";
         else if (status === 401 || status === 403)
           userMessage = "Chat non disponibile (configurazione)";

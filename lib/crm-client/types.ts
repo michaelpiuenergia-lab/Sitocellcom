@@ -378,7 +378,7 @@ export type RepairQuoteResponseInput = {
 };
 
 // ============================================================================
-// Corsi (Cellcom Academy) — list pubblica + corsi del cliente autenticato
+// Corsi (Fast-Fix Academy) — list pubblica + corsi del cliente autenticato
 //
 // Allineato a docs/SITE-INTEGRATION-BRIEF.md §10 del CRM.
 // Public list: titolo, livello, descrizione, prezzo, paymentLink, coverUrl.

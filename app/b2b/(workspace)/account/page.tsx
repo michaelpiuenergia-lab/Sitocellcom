@@ -27,8 +27,8 @@ export default async function B2bAccountPage() {
           <p style={{ fontSize: "14px", color: "#525252" }}>
             Modifica i dati di contatto e cambia password.
             Per modificare ragione sociale, P.IVA o listino contatta{" "}
-            <a href="mailto:b2b@cellcom.it" className="underline">
-              b2b@cellcom.it
+            <a href="mailto:b2b@fast-fix.it" className="underline">
+              b2b@fast-fix.it
             </a>
             .
           </p>

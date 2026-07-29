@@ -7,7 +7,7 @@ import Link from "next/link";
 import { PayIn3Banner } from "@/components/ui/payment-badges";
 
 export const metadata = {
-  title: "Riparazioni — Cellcom Group",
+  title: "Riparazioni — Fast-Fix",
   description:
     "Riparazione professionale di smartphone con garanzia 12 mesi. Diagnosi gratuita, ricambi originali, ritiro in negozio o spedizione. Traccia il tuo ticket in tempo reale.",
 };

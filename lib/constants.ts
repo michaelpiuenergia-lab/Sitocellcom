@@ -1,5 +1,5 @@
 /**
- * Costanti globali dell'HUB Cellcom.
+ * Costanti globali dell'HUB Fast-Fix.
  *
  * Curve di easing cinematiche — estratte dal mockup cube-carousel.html
  * e normalizzate per Framer Motion (array di 4 numeri) + Tailwind.
@@ -27,16 +27,21 @@ export const DURATION = {
 
 /** Brand config — allineato con CRM brand-templates.ts */
 export const BRAND = {
-  name: "Cellcom",
-  legalName: "Cellcom S.r.l.",
+  name: "Fast-Fix",
+  legalName: "FAST-FIX di Sarker Srabon",
   primaryColor: "#dc2626",
   secondaryColor: "#991b1b",
-  website: "cellcom.it",
-  email: "info@cellcom.it",
-  phone: "+39 000 000 0000",
+  website: "fast-fix.it",
+  email: "info@fast-fix.it",
+  phone: "0735 501637",
 } as const;
 
-/** Channel mapping per link-out */
+/**
+ * Channel mapping per link-out.
+ * ATTENZIONE: le chiavi sono gli identificatori dei canali lato CRM
+ * (product.channel) — non rinominarle nel rebranding o la mappatura
+ * dei prodotti si rompe.
+ */
 export const CHANNEL_URLS = {
   cellcom: "https://cellcom.it",
   italianparts: "https://www.italianparts.it",

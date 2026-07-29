@@ -1,10 +1,10 @@
 import { PasswordResetForm } from "./password-reset-form";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
-  title: "Reimposta password — Cellcom B2B",
-  description: "Imposta una nuova password per il tuo account rivenditore Cellcom.",
+  title: "Reimposta password — Fast-Fix B2B",
+  description: "Imposta una nuova password per il tuo account rivenditore Fast-Fix.",
 };
 
 export const dynamic = "force-dynamic";
@@ -26,7 +26,7 @@ export default async function ReimpostaPasswordPage({
     >
       <div className="w-full max-w-[440px] flex flex-col items-center gap-9">
         <a href="/" className="flex flex-col items-center gap-3" aria-label="Home">
-          <LogoC className="w-12 h-12" />
+          <LogoMark className="w-12 h-12" />
           <span
             className="font-mono uppercase"
             style={{ fontSize: "11px", letterSpacing: "0.32em", color: "#dc2626" }}

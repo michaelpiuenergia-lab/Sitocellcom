@@ -1,8 +1,9 @@
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import { PaymentMethodsStrip } from "@/components/ui/payment-badges";
 import { WowspaceCredit } from "@/components/credits/wowspace-credit";
 import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
+import { COMPANY, STORES } from "@/lib/stores";
 
 const LINKS: { key: keyof Dict; href: string }[] = [
   { key: "nav.products", href: "/prodotti" },
@@ -32,8 +33,8 @@ export async function Footer() {
       style={{ backgroundColor: "#0a0a0a", color: "#fafafa" }}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">
-        <a href="/" aria-label="Cellcom — home" className="shrink-0">
-          <LogoC className="w-7 h-7" />
+        <a href="/" aria-label="Fast-Fix — home" className="shrink-0">
+          <LogoMark className="w-7 h-7" />
         </a>
 
         <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
@@ -89,11 +90,11 @@ export async function Footer() {
             lineHeight: 1.7,
           }}
         >
-          CELLCOM SRLS · Via Calatafimi 52, 63074 San Benedetto del Tronto (AP) · P.IVA 02576350447 · PEC{" "}
-          <a href="mailto:cellcom25@pec.it" className="hover:text-brand-500">cellcom25@pec.it</a> · Tel{" "}
-          <a href="tel:+393444555678" className="hover:text-brand-500">+39 344 455 5678</a>
+          {COMPANY.legalName} · P.IVA {COMPANY.vatNumber} · C.F. {COMPANY.taxCode} · SDI{" "}
+          {COMPANY.sdi} · PEC{" "}
+          <a href={`mailto:${COMPANY.pec}`} className="hover:text-brand-500">{COMPANY.pec}</a>
           <span className="mx-2">|</span>
-          FAST-FIX di Sarker Srabon · Piazza G. Garibaldi 31, 63074 San Benedetto del Tronto (AP) · Tel{" "}
+          Sedi: {STORES.map((s) => s.address).join(" · ")} — 63074 San Benedetto del Tronto (AP) · Tel{" "}
           <a href="tel:0735501637" className="hover:text-brand-500">0735 501637</a> · WhatsApp{" "}
           <a href="tel:+393208574006" className="hover:text-brand-500">320 857 4006</a>
         </p>

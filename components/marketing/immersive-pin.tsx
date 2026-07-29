@@ -90,7 +90,7 @@ export function ImmersivePin({
       ref={containerRef}
       className="relative"
       style={{ height: "300vh" }}
-      aria-label="Scopri Cellcom"
+      aria-label="Scopri Fast-Fix"
     >
       <motion.div
         style={{ backgroundColor: bgColor }}

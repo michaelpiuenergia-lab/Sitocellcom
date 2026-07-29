@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import type { B2bCustomer } from "@/lib/crm-client/types";
 import { cn } from "@/lib/utils/cn";
 
@@ -67,7 +67,7 @@ export function B2bNavbar({ customer }: { customer: B2bCustomer }) {
           href="/b2b/prodotti"
           className="flex items-center gap-3 min-w-0"
         >
-          <LogoC className="w-8 h-8 shrink-0" />
+          <LogoMark className="w-8 h-8 shrink-0" />
           <div className="flex flex-col min-w-0">
             <span
               className="font-mono uppercase leading-tight"

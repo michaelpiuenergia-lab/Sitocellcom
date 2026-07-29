@@ -129,7 +129,7 @@ export const listB2bDocuments = USE_MOCK_B2B ? mockB2bPortal.listB2bDocuments : 
 export const payB2bInvoiceKlarna = USE_MOCK_B2B ? mockB2bPortal.payB2bInvoiceKlarna : realB2bPortal.payB2bInvoiceKlarna;
 export { b2bDownloadCrmPath } from "./b2b-portal";
 
-// Corsi Cellcom Academy
+// Corsi Fast-Fix Academy
 export const getCourses = USE_MOCK_PUBLIC ? mockCourses.getCourses : realCourses.getCourses;
 export const getCustomerCourses = USE_MOCK_B2B
   ? mockCourses.getCustomerCourses

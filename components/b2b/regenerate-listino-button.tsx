@@ -53,7 +53,7 @@ export function RegenerateListinoButton() {
           viewBox="0 0 24 24"
           fill="none"
           style={{
-            animation: busy ? "cellcom-spin 0.8s linear infinite" : undefined,
+            animation: busy ? "fastfix-spin 0.8s linear infinite" : undefined,
           }}
         >
           <path
@@ -93,7 +93,7 @@ export function RegenerateListinoButton() {
         </span>
       )}
       <style jsx>{`
-        @keyframes cellcom-spin {
+        @keyframes fastfix-spin {
           to { transform: rotate(360deg); }
         }
       `}</style>

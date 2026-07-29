@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import type { CustomerProfile } from "@/lib/crm-client/types";
 
 const NAV_ITEMS: { label: string; href: string; match: (p: string) => boolean }[] = [
@@ -41,7 +41,7 @@ export function ClientiNavbar({ customer }: { customer: CustomerProfile }) {
           className="flex items-center gap-2.5 shrink-0"
           aria-label="Home"
         >
-          <LogoC className="w-8 h-8" />
+          <LogoMark className="w-8 h-8" />
           <span
             className="font-sans hidden sm:inline"
             style={{

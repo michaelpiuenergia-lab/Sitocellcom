@@ -19,7 +19,7 @@ export default async function ClientiCorsiPage() {
     <main className="pt-12 pb-16 px-6 lg:px-12 max-w-[1200px] mx-auto">
       <div className="flex flex-col gap-2 mb-8">
         <span className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.2em", color: "#dc2626" }}>
-          Cellcom Academy
+          Fast-Fix Academy
         </span>
         <h1 className="font-sans tracking-[-0.02em]" style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 700, color: "#0a0a0a", lineHeight: 1.05 }}>
           I tuoi corsi
@@ -49,7 +49,7 @@ export default async function ClientiCorsiPage() {
               fontWeight: 600,
             }}
           >
-            Scopri Cellcom Academy →
+            Scopri Fast-Fix Academy →
           </a>
         </div>
       ) : (

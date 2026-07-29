@@ -12,9 +12,9 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata = {
-  title: "Catalogo — Cellcom Group",
+  title: "Catalogo — Fast-Fix",
   description:
-    "Telefoni, ricambi, accessori. Catalogo unificato dei brand del Gruppo Cellcom con disponibilità reale dal magazzino.",
+    "Telefoni, ricambi, accessori. Catalogo unificato dei brand del Fast-Fix con disponibilità reale dal magazzino.",
 };
 
 export const revalidate = 60;

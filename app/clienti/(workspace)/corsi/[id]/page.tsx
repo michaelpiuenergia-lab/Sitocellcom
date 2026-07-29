@@ -47,7 +47,7 @@ export default async function CourseDetailPage({ params }: { params: Params }) {
           ← I tuoi corsi
         </Link>
         <span className="font-mono uppercase" style={{ fontSize: "10px", letterSpacing: "0.2em", color: "#dc2626" }}>
-          {COURSE_LEVEL_LABELS[course.level]} · Cellcom Academy
+          {COURSE_LEVEL_LABELS[course.level]} · Fast-Fix Academy
         </span>
         <h1 className="font-sans tracking-[-0.02em]" style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 700, color: "#0a0a0a", lineHeight: 1.05 }}>
           {course.title}
@@ -180,7 +180,7 @@ function RejectedNotice({ reason }: { reason: string | null }) {
         Iscrizione non approvata
       </span>
       <p style={{ fontSize: "15px", color: "#b91c1c", lineHeight: 1.5 }}>
-        {reason ?? "Contatta b2b@cellcom.it per maggiori informazioni."}
+        {reason ?? "Contatta b2b@fast-fix.it per maggiori informazioni."}
       </p>
     </div>
   );

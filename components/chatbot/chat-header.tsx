@@ -1,6 +1,6 @@
 "use client";
 
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import { useChatState, useChatActions } from "./chat-context";
 import { useLang } from "@/lib/i18n/lang-context";
 
@@ -18,7 +18,7 @@ export function ChatHeader() {
       className="flex items-center gap-3 px-5 h-16 shrink-0"
       style={{ borderBottom: "1px solid #ececec", backgroundColor: "#ffffff" }}
     >
-      <LogoC className="w-6 h-6 shrink-0" />
+      <LogoMark className="w-6 h-6 shrink-0" />
       <div className="flex flex-col min-w-0">
         <span
           className="font-sans"

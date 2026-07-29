@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { LogoC } from "@/components/marketing/logo-c";
+import { LogoMark } from "@/components/marketing/logo-mark";
 import { cn } from "@/lib/utils/cn";
 import { LangSwitcher } from "@/components/i18n/lang-switcher";
 import { useLang } from "@/lib/i18n/lang-context";
@@ -19,9 +19,9 @@ const NAV_LINKS: { key: keyof Dict; href: string }[] = [
 ];
 
 /**
- * Navbar FastFix-style.
+ * Navbar Fast-Fix.
  * Fondo bianco solid (no più dark blur), border bottom sottile.
- * Logo + wordmark CELLCOM a sinistra (mai più C persa da sola).
+ * Mark + wordmark FAST-FIX a sinistra.
  * Nav centrale piccolo, CTA rosso "Ripara ora" + B2B a destra.
  */
 export function Navbar() {
@@ -48,10 +48,10 @@ export function Navbar() {
         {/* Logo + wordmark */}
         <a
           href="/"
-          aria-label="Cellcom Group — home"
+          aria-label="Fast-Fix — home"
           className="flex items-center gap-2.5 shrink-0"
         >
-          <LogoC className="w-8 h-8" />
+          <LogoMark className="w-8 h-8" />
           <span
             className="font-sans"
             style={{
@@ -61,7 +61,7 @@ export function Navbar() {
               color: "#0a0a0a",
             }}
           >
-            CELLCOM
+            FAST-FIX
             <span style={{ color: "#dc2626" }}>.</span>
           </span>
         </a>

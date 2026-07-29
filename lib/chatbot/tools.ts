@@ -57,7 +57,7 @@ export const ANTHROPIC_TOOLS: Tool[] = [
   {
     name: "searchProducts",
     description:
-      'Cerca nel catalogo pubblico unificato (Cellcom + Fast-Fix + ItalianParts): smartphone nuovi/ricondizionati, accessori, ricambi. Restituisce fino a 6 item con prezzo formattato, stock, slug. Se il prodotto ha priceHidden=true (tipicamente ricambi), il campo priceEur è null e priceLabel="Su richiesta".',
+      'Cerca nel catalogo pubblico unificato Fast-Fix: smartphone nuovi/ricondizionati, accessori, ricambi. Restituisce fino a 6 item con prezzo formattato, stock, slug. Se il prodotto ha priceHidden=true (tipicamente ricambi), il campo priceEur è null e priceLabel="Su richiesta".',
     input_schema: {
       type: "object",
       properties: {
@@ -91,7 +91,7 @@ export const ANTHROPIC_TOOLS: Tool[] = [
   {
     name: "searchUsedDevices",
     description:
-      "Catalogo usato garantito Cellcom: smartphone testati, IMEI verificato, fino 12 mesi di garanzia. Restituisce sempre prezzo.",
+      "Catalogo usato garantito Fast-Fix: smartphone testati, IMEI verificato, fino 12 mesi di garanzia. Restituisce sempre prezzo.",
     input_schema: {
       type: "object",
       properties: {
@@ -124,7 +124,7 @@ export const ANTHROPIC_TOOLS: Tool[] = [
   {
     name: "listStores",
     description:
-      "I due punti vendita del Gruppo: Cellcom (via Calatafimi 52) e Fast-Fix (piazza Garibaldi 31), entrambi a San Benedetto del Tronto. Dato statico, sempre disponibile.",
+      "Le due sedi Fast-Fix: piazza Garibaldi 31 e via Calatafimi 52, entrambe a San Benedetto del Tronto. Dato statico, sempre disponibile.",
     input_schema: {
       type: "object",
       properties: {

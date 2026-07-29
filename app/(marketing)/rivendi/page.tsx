@@ -6,9 +6,9 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
-  title: "Rivendi il tuo telefono — Cellcom Group",
+  title: "Rivendi il tuo telefono — Fast-Fix",
   description:
-    "Valutazione gratuita del tuo smartphone usato. Spedizione gratis, pagamento entro 48h. Bonus +10% se scegli credito Cellcom.",
+    "Valutazione gratuita del tuo smartphone usato. Spedizione gratis, pagamento entro 48h. Bonus +10% se scegli credito Fast-Fix.",
 };
 
 const STEPS: { n: string; titleKey: keyof Dict; textKey: keyof Dict }[] = [

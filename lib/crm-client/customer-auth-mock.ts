@@ -21,7 +21,7 @@ import { listRepairsByCustomer } from "./mocks/repairs";
  *
  * Mock invite token: per testare set-password in dev usa
  *   /imposta-password?token=invite-cust-001-demo
- * (associa la nuova password a cliente@demo.cellcom.it).
+ * (associa la nuova password a cliente@demo.fast-fix.it).
  */
 
 type GlobalWithSessions = typeof globalThis & {

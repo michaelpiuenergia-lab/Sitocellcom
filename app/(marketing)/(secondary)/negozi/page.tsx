@@ -5,8 +5,8 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata = {
-  title: "Negozi — Cellcom Group",
-  description: "Trova il punto vendita Cellcom / Fast-Fix più vicino a te.",
+  title: "Negozi — Fast-Fix",
+  description: "Trova il punto vendita Fast-Fix più vicino a te.",
 };
 
 const FEATURES: { titleKey: keyof Dict; textKey: keyof Dict }[] = [

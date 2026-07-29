@@ -6,9 +6,9 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
-  title: "Apri un negozio — Cellcom Group",
+  title: "Apri un negozio — Fast-Fix",
   description:
-    "Vuoi aprire il tuo negozio di telefonia? Cellcom ti accompagna passo per passo: consulenza, formazione tecnica, fornitura ricambi e accessori, setup negozio e accesso al CRM. Supporto continuo dopo l'apertura.",
+    "Vuoi aprire il tuo negozio di telefonia? Fast-Fix ti accompagna passo per passo: consulenza, formazione tecnica, fornitura ricambi e accessori, setup negozio e accesso al CRM. Supporto continuo dopo l'apertura.",
 };
 
 const STEPS: { n: string; titleKey: keyof Dict; textKey: keyof Dict }[] = [
