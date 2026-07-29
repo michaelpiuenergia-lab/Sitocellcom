@@ -19,11 +19,21 @@ import { Chip } from "@/components/ui/card";
 import { useLang } from "@/lib/i18n/lang-context";
 import type { Dict } from "@/lib/i18n/dict";
 
+/**
+ * Destinazione del pulsante d'acquisto.
+ *
+ * Tutti i canali finiscono sulla ricerca prodotti di cellcom.it: è l'unico
+ * e-commerce operativo. Gli altri due manderebbero il cliente su una pagina
+ * rotta — italianparts.it è un negozio Shopify ancora chiuso da password,
+ * fast-fix.it ha il certificato SSL scaduto e il browser lo blocca.
+ *
+ * Il formato `?s=…&post_type=product` è la ricerca prodotti di WooCommerce.
+ * Quando gli altri shop torneranno online basta ripristinare il lookup per
+ * canale: `CHANNEL_URLS[product.channel]` (Shopify usa `/search?q=…`).
+ */
 function buildBuyUrl(product: PublicProductListItem): string {
-  const base = CHANNEL_URLS[product.channel];
   const query = encodeURIComponent(product.name);
-  if (product.channel === "cellcom") return `${base}/?s=${query}&post_type=product`;
-  return `${base}/search?q=${query}`;
+  return `${CHANNEL_URLS.cellcom}/?s=${query}&post_type=product`;
 }
 
 function PartIcon({ category }: { category: string | null }) {
