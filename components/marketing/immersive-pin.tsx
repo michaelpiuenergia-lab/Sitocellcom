@@ -55,8 +55,9 @@ export function ImmersivePin({
     offset: ["start start", "end end"],
   });
 
-  // Smooth con spring per niente jitter
-  const sp = useSpring(scrollYProgress, { stiffness: 100, damping: 26 });
+  // Smooth con spring per niente jitter. Stiffness alta: con 100 il telefono
+  // inseguiva lo scroll con un lag molto percepibile ("va lenta").
+  const sp = useSpring(scrollYProgress, { stiffness: 260, damping: 30 });
 
   // Scroll-driven: rotazione 360° sull'asse Y + scale + y.
   // Start a 0° (frontale, vedi schermo); finisce a 360° (giro completo).
@@ -89,7 +90,10 @@ export function ImmersivePin({
     <section
       ref={containerRef}
       className="relative"
-      style={{ height: "300vh" }}
+      // 180vh invece di 300vh: la rotazione completa si consumava in tre
+      // schermate di scroll. I keyframe sotto sono su progresso 0→1, quindi
+      // restano proporzionati senza altri ritocchi.
+      style={{ height: "180vh" }}
       aria-label="Scopri Fast-Fix"
     >
       <motion.div

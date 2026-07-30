@@ -12,12 +12,14 @@ import type { Dict } from "@/lib/i18n/dict";
 
 const WORDMARK_LETTERS = ["F", "A", "S", "T", "-", "F", "I", "X"] as const;
 
+// Ordine deliberato: "Ripara" per primo — la riparazione è il mestiere
+// principale e deve leggersi al primo impatto, prima della vendita.
 const PILLAR_BUTTONS: Array<{
   key: keyof Dict;
   href: string;
 }> = [
-  { key: "hero.pillar.buy", href: "/prodotti" },
   { key: "hero.pillar.repair", href: "/riparazioni" },
+  { key: "hero.pillar.buy", href: "/prodotti" },
   { key: "hero.pillar.resell", href: "/rivendi" },
   { key: "hero.pillar.learn", href: "/corsi" },
   { key: "hero.pillar.b2b", href: "/b2b" },
@@ -169,8 +171,7 @@ export function Hero({
                 lineHeight: 1.05,
               }}
             >
-              {t("hero.claim.preItalic")}{" "}
-              <em className="italic text-brand-600 not-italic" style={{ fontStyle: "italic" }}>{t("hero.claim.italicA")}</em>
+              <em className="italic text-brand-600" style={{ fontStyle: "italic" }}>{t("hero.claim.italicA")}</em>
               {t("hero.claim.between")}{" "}
               <em className="italic text-brand-600" style={{ fontStyle: "italic" }}>{t("hero.claim.italicB")}</em>.
             </motion.h2>

@@ -95,7 +95,6 @@ export type Dict = {
   "hero.pricesReservedHint": string;
   "hero.newDevicesEyebrow": string;
   "hero.priceOnRequest": string;
-  "hero.claim.preItalic": string;
   "hero.claim.italicA": string;
   "hero.claim.between": string;
   "hero.claim.italicB": string;
@@ -774,9 +773,8 @@ const IT: Dict = {
   "hero.pricesReservedHint": "Prezzo riservato → accedi",
   "hero.newDevicesEyebrow": "Nuovi in catalogo",
   "hero.priceOnRequest": "Su richiesta",
-  "hero.claim.preItalic": "Vendiamo,",
-  "hero.claim.italicA": "ripariamo",
-  "hero.claim.between": ", riforniamo",
+  "hero.claim.italicA": "Ripariamo",
+  "hero.claim.between": ", vendiamo, riforniamo",
   "hero.claim.italicB": "chi li vende",
   "hero.intro.lead": "Cinque attività, un solo magazzino.",
   "hero.intro.boldA": "Riparazione",
@@ -1538,9 +1536,8 @@ const EN: Dict = {
   "hero.pricesReservedHint": "Price reserved → sign in",
   "hero.newDevicesEyebrow": "New in catalogue",
   "hero.priceOnRequest": "On request",
-  "hero.claim.preItalic": "We sell,",
-  "hero.claim.italicA": "we repair",
-  "hero.claim.between": ", we supply",
+  "hero.claim.italicA": "We repair",
+  "hero.claim.between": ", we sell, we supply",
   "hero.claim.italicB": "those who sell them",
   "hero.intro.lead": "Five businesses, one warehouse.",
   "hero.intro.boldA": "Repairs",

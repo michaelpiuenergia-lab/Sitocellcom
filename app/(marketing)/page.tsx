@@ -52,6 +52,20 @@ export default async function MarketingPage() {
 
   return (
     <>
+      {/*
+        Il GLB del telefono 3D pesa 1.5MB e senza questo partiva solo dopo
+        che il chunk Three.js era stato scaricato ed eseguito (dynamic import
+        con ssr:false) — da qui il "Caricamento 3D…" che restava a lungo.
+        Preload a priorità bassa: scarica in parallelo senza rubare banda al
+        first paint. Niente crossOrigin: è same-origin e creerebbe una cache
+        entry separata, cioè un secondo download.
+       */}
+      <link
+        rel="preload"
+        href="/models/samsung-phone.glb"
+        as="fetch"
+        fetchPriority="low"
+      />
       <Navbar />
       {/* offset navbar fissa 72px */}
       <main className="pt-[72px]">
