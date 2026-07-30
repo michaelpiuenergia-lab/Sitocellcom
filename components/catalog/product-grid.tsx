@@ -3,14 +3,15 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  formatPrice,
-  CHANNEL_URLS,
-} from "@/lib/crm-client/mocks/products";
+import { formatPrice } from "@/lib/crm-client/mocks/products";
 import type {
   PublicCondition,
   PublicProductListItem,
 } from "@/lib/crm-client/types";
+import {
+  OPEN_REQUEST_EVENT,
+  type OpenRequestEventDetail,
+} from "@/lib/chatbot/types";
 import { PhoneSilhouette } from "@/components/marketing/phone-silhouette";
 import { cn } from "@/lib/utils/cn";
 import { EASE, DURATION } from "@/lib/constants";
@@ -20,20 +21,32 @@ import { useLang } from "@/lib/i18n/lang-context";
 import type { Dict } from "@/lib/i18n/dict";
 
 /**
- * Destinazione del pulsante d'acquisto.
+ * Il pulsante d'acquisto non manda più fuori dal sito.
  *
- * Tutti i canali finiscono sulla ricerca prodotti di cellcom.it: è l'unico
- * e-commerce operativo. Gli altri due manderebbero il cliente su una pagina
- * rotta — italianparts.it è un negozio Shopify ancora chiuso da password,
- * fast-fix.it ha il certificato SSL scaduto e il browser lo blocca.
+ * Prima puntava agli shop per canale, ma cellcom.it richiede il login
+ * WooCommerce, italianparts.it è un negozio Shopify chiuso da password e
+ * fast-fix.it ha il certificato scaduto: da qualsiasi parte lo si girasse,
+ * il cliente finiva su una pagina che non gli faceva comprare niente.
  *
- * Il formato `?s=…&post_type=product` è la ricerca prodotti di WooCommerce.
- * Quando gli altri shop torneranno online basta ripristinare il lookup per
- * canale: `CHANNEL_URLS[product.channel]` (Shopify usa `/search?q=…`).
+ * Ora apre il modal di richiesta già montato nel layout (RequestFormBridge,
+ * lo stesso che usa il chatbot) precompilato col prodotto: il visitatore
+ * resta su Fast-Fix e il click diventa un contatto per lo staff.
  */
-function buildBuyUrl(product: PublicProductListItem): string {
-  const query = encodeURIComponent(product.name);
-  return `${CHANNEL_URLS.cellcom}/?s=${query}&post_type=product`;
+function openProductRequest(product: PublicProductListItem) {
+  const detail: OpenRequestEventDetail = {
+    // I ricambi hanno il prezzo nascosto e una lavorazione diversa a valle
+    kind: product.priceHidden ? "spare-part" : "info",
+    product: {
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      variantId: null,
+      variantLabel: null,
+    },
+    defaultCustomer: {},
+    hideCompany: true,
+  };
+  window.dispatchEvent(new CustomEvent(OPEN_REQUEST_EVENT, { detail }));
 }
 
 function PartIcon({ category }: { category: string | null }) {
@@ -237,16 +250,14 @@ function ProductCard({
           </Button>
         ) : (
           <Button
-            href={buildBuyUrl(product)}
-            target="_blank"
-            rel="noopener noreferrer"
+            onClick={() => openProductRequest(product)}
             variant="primary"
             size="sm"
             shine
-            iconEnd="↗"
+            iconEnd="→"
             className="w-full"
           >
-            {t("pg.cta.buy")}
+            {t("pg.cta.request")}
           </Button>
         )}
       </div>

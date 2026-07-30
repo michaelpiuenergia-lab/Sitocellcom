@@ -147,7 +147,7 @@ export type Dict = {
   "pg.price.reserved": string;
   "pg.cta.loginForPrice": string;
   "pg.cta.notifyWhenBack": string;
-  "pg.cta.buy": string;
+  "pg.cta.request": string;
   "pg.empty": string;
 
   // ─── Breadcrumb ─────────────────────────────────────────────────────
@@ -829,7 +829,7 @@ const IT: Dict = {
   "pg.price.reserved": "Prezzo riservato",
   "pg.cta.loginForPrice": "Accedi per il prezzo",
   "pg.cta.notifyWhenBack": "Avvisami quando torna",
-  "pg.cta.buy": "Acquista online",
+  "pg.cta.request": "Richiedi disponibilità",
   "pg.empty": "Nessun prodotto trovato.",
 
   "bc.home": "Home",
@@ -1592,7 +1592,7 @@ const EN: Dict = {
   "pg.price.reserved": "Price reserved",
   "pg.cta.loginForPrice": "Sign in for the price",
   "pg.cta.notifyWhenBack": "Notify me when back",
-  "pg.cta.buy": "Buy online",
+  "pg.cta.request": "Check availability",
   "pg.empty": "No products found.",
 
   "bc.home": "Home",
