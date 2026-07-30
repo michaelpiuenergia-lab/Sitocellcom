@@ -76,9 +76,12 @@ export function Hero({
                   display: "block",
                   overflow: "visible",
                   flexShrink: 0,
-                  // Mark quadrato, dominante rispetto al wordmark.
-                  width: "clamp(96px, 12vw, 168px)",
-                  height: "clamp(96px, 12vw, 168px)",
+                  // Mark quadrato tarato sull'altezza del wordmark accanto:
+                  // le lettere sono clamp(32px, 4.8vw, 72px) con lineHeight
+                  // 0.85, quindi ~0.85x di quei valori — un pelo più basso
+                  // del testo, così accompagna invece di dominare.
+                  width: "clamp(30px, 4.1vw, 60px)",
+                  height: "clamp(30px, 4.1vw, 60px)",
                 }}
                 initial={
                   shouldReduce
@@ -112,7 +115,7 @@ export function Hero({
                 />
               </motion.svg>
 
-              <div className="flex flex-col items-start gap-1 md:gap-2 pb-1.5 md:pb-2.5">
+              <div className="flex flex-col items-start">
                 <div className="flex items-end">
                   {WORDMARK_LETTERS.map((letter, i) => (
                     <motion.span
@@ -172,7 +175,7 @@ export function Hero({
               <em className="italic text-brand-600" style={{ fontStyle: "italic" }}>{t("hero.claim.italicB")}</em>.
             </motion.h2>
 
-            <div className="flex flex-wrap gap-3 md:gap-4 mt-1">
+            <div className="flex flex-wrap gap-2.5 md:gap-3 mt-1">
               {PILLAR_BUTTONS.map((btn, i) => (
                 <motion.div
                   key={btn.href}
@@ -195,7 +198,7 @@ export function Hero({
                 >
                   <Link
                     href={btn.href}
-                    className="group relative inline-flex items-center gap-2 sm:gap-3 px-5 sm:px-7 py-3 sm:py-4 rounded-xl overflow-hidden transition-all duration-300 ease-snappy hover:shadow-[0_14px_36px_-10px_rgba(220,38,38,0.55),0_0_0_1px_rgba(248,113,113,0.3)]"
+                    className="group relative inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg overflow-hidden transition-all duration-300 ease-snappy hover:shadow-[0_10px_26px_-10px_rgba(220,38,38,0.5),0_0_0_1px_rgba(248,113,113,0.3)]"
                     style={{
                       backgroundImage:
                         "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)",
@@ -207,13 +210,13 @@ export function Hero({
                       style={{
                         fontFamily:
                           '"Geist", ui-sans-serif, system-ui, sans-serif',
-                        fontSize: "clamp(16px, 2.1vw, 26px)",
+                        fontSize: "clamp(14px, 1.25vw, 17px)",
                         letterSpacing: "-0.015em",
                       }}
                     >
                       {t(btn.key)}
                     </span>
-                    <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-base sm:text-lg">
+                    <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-sm">
                       →
                     </span>
                   </Link>
