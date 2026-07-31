@@ -403,6 +403,7 @@ export type Dict = {
   "auth.b2b.register.docs.title": string;
   "auth.b2b.register.docs.body": string;
   "auth.b2b.register.privacyCheckbox": string;
+  "auth.b2b.register.privacyLinkLabel": string;
   "auth.b2b.register.optionalHint": string;
   "auth.b2b.register.cta": string;
   "auth.b2b.register.ctaBusy": string;
@@ -1109,6 +1110,7 @@ const IT: Dict = {
     "Per attivare il listino servono visura camerale e autocertificazione reverse charge. Non caricarli qui: dopo l'invio ti scriviamo via email e li alleghi alla risposta.",
   "auth.b2b.register.privacyCheckbox":
     "Ho letto e accetto l'informativa privacy *",
+  "auth.b2b.register.privacyLinkLabel": "(leggila)",
   "auth.b2b.register.optionalHint":
     "I campi senza asterisco sono facoltativi — se li compili acceleri la verifica.",
   "auth.b2b.register.cta": "Invia la richiesta →",
@@ -1872,6 +1874,7 @@ const EN: Dict = {
     "To activate the price list we need your company registration document and a reverse-charge self-declaration. Don't upload them here: after you submit we'll email you and you attach them to the reply.",
   "auth.b2b.register.privacyCheckbox":
     "I have read and accept the privacy policy *",
+  "auth.b2b.register.privacyLinkLabel": "(read it)",
   "auth.b2b.register.optionalHint":
     "Fields without an asterisk are optional — filling them speeds up the review.",
   "auth.b2b.register.cta": "Send the request →",

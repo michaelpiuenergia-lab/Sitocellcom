@@ -602,7 +602,21 @@ export function RegisterForm() {
           className="mt-0.5"
           style={{ accentColor: "#dc2626" }}
         />
-        <span>{t("auth.b2b.register.privacyCheckbox")}</span>
+        <span>
+          {t("auth.b2b.register.privacyCheckbox")}{" "}
+          <a
+            href="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-brand-600 underline"
+            // Il consenso non è valido se l'informativa non è raggiungibile
+            // dal punto in cui lo si presta: apre in una scheda nuova per non
+            // far perdere i dati già digitati nel form.
+            onClick={(e) => e.stopPropagation()}
+          >
+            {t("auth.b2b.register.privacyLinkLabel")}
+          </a>
+        </span>
       </label>
 
       <p style={{ fontSize: "12px", color: "#737373" }}>

@@ -15,9 +15,9 @@ const LINKS: { key: keyof Dict; href: string }[] = [
 ];
 
 const LEGAL_LINKS: { key: keyof Dict; href: string }[] = [
-  { key: "footer.legal.privacy", href: "#" },
-  { key: "footer.legal.cookie", href: "#" },
-  { key: "footer.legal.terms", href: "#" },
+  { key: "footer.legal.privacy", href: "/privacy" },
+  { key: "footer.legal.cookie", href: "/cookie" },
+  { key: "footer.legal.terms", href: "/termini" },
 ];
 
 /**
