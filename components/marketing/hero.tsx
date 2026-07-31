@@ -231,7 +231,11 @@ export function Hero({
               caratteri di testo.
              */}
             <motion.div
-              className="flex flex-wrap items-center gap-x-6 gap-y-3"
+              // Su mobile tre colonne uguali a tutta larghezza: allineate ai
+              // due pulsanti sopra, senza il vuoto che restava a destra
+              // quando erano semplici link affiancati. Da sm in su tornano
+              // in fila, dimensionati sul testo.
+              className="grid grid-cols-3 sm:flex sm:flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-3 w-full sm:w-auto"
               initial={shouldReduce ? { opacity: 1 } : { opacity: 0 }}
               animate={{ opacity: hidden ? 0 : 1 }}
               transition={{ duration: 0.6, delay: 0.35 }}
@@ -240,12 +244,12 @@ export function Hero({
                 <Link
                   key={btn.href}
                   href={btn.href}
-                  className="group inline-flex items-center gap-2 transition-colors"
+                  className="group flex sm:inline-flex items-center justify-center sm:justify-start gap-2 transition-colors"
                   style={{
                     fontSize: "15px",
                     color: "#525252",
                     borderBottom: "1px solid #d4d4d4",
-                    paddingBottom: "3px",
+                    paddingBottom: "5px",
                   }}
                 >
                   <btn.Icon className="w-4 h-4 shrink-0 text-brand-600" />

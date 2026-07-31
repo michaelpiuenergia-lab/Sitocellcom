@@ -35,8 +35,12 @@ function SamsungPhoneModel({
     const center = box.getCenter(new THREE.Vector3());
     gltf.scene.position.set(-center.x, -center.y, -center.z);
 
+    // Il modello veniva scalato a 3.2 unità: con camera a z=7 e fov 32 il
+    // campo visibile è ~4 unità, e la scala animata dello scroll arriva a
+    // 1.15 → 3.68. Margine troppo stretto, il telefono usciva dai bordi e si
+    // vedeva tagliato. A 2.6 resta dentro l'inquadratura in ogni fase.
     const maxDim = Math.max(size.x, size.y, size.z);
-    const fit = maxDim > 0 ? 3.2 / maxDim : 1;
+    const fit = maxDim > 0 ? 2.6 / maxDim : 1;
     setScale(fit);
 
     gltf.scene.traverse((obj) => {
@@ -104,14 +108,22 @@ export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
       >
         {/* Lighting alleggerito: hemisphere (full ambient) + directional.
             Tolti 2 directional e 2 point lights — meno shader work. */}
-        <hemisphereLight args={["#ffffff", "#3a0a0a", 1.6]} />
-        <ambientLight intensity={0.85} color="#ffffff" />
-        <directionalLight position={[5, 3, 5]} intensity={2.6} color="#ffffff" />
-        <directionalLight position={[-5, 3, -5]} intensity={2.0} color="#dc2626" />
-        {/* Rim light da dietro: disegna il bordo del telefono e lo stacca
-            dallo sfondo scuro. Senza, su mobile il device spariva nel fondo
-            e si vedeva solo la scritta "scrolla". */}
-        <directionalLight position={[0, 2, -6]} intensity={2.2} color="#ffd9d9" />
+        {/*
+          Il modello è un telefono nero lucido: senza sorgenti che gli
+          disegnino sopra dei riflessi resta una sagoma piatta, che su fondo
+          scuro sembra un rettangolo rotto invece di un oggetto.
+          Le luci sono disposte su angoli diversi apposta: una chiave frontale,
+          una rossa di rimbalzo, due di taglio che accendono i bordi lunghi e
+          una da dietro che stacca la silhouette dallo sfondo.
+        */}
+        <hemisphereLight args={["#ffffff", "#4a1414", 1.8]} />
+        <ambientLight intensity={1.0} color="#fff5f5" />
+        <directionalLight position={[5, 3, 5]} intensity={3.0} color="#ffffff" />
+        <directionalLight position={[-5, 3, -5]} intensity={2.2} color="#dc2626" />
+        <directionalLight position={[0, 2, -6]} intensity={2.4} color="#ffd9d9" />
+        {/* Tagli laterali: sono questi a dare il bordo lucido sui fianchi */}
+        <directionalLight position={[-6, 0, 2]} intensity={1.8} color="#ffffff" />
+        <directionalLight position={[6, -1, 1]} intensity={1.6} color="#ffe8e8" />
 
         <Suspense fallback={null}>
           <SamsungPhoneModel rotationDeg={rotationDeg} />
