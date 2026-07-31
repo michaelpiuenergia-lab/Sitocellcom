@@ -8,6 +8,7 @@ import { getT } from "@/lib/i18n/server";
 import type { PublicCondition } from "@/lib/crm-client/types";
 
 export const metadata = {
+  alternates: { canonical: "/prodotti/telefoni" },
   title: "Telefoni — Fast-Fix",
   description:
     "Smartphone nuovi, usati e ricondizionati. Disponibilità reale dai canali del Fast-Fix.",

@@ -8,6 +8,7 @@ import { LangProvider } from "@/lib/i18n/lang-context";
 import { getLang } from "@/lib/i18n/server";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/structured-data";
 import { QueryProvider } from "@/lib/providers/query-provider";
+import { SITE_URL } from "@/lib/seo/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,23 +30,33 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sitocellcom.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Fast-Fix — Ripara, impara, compra, rivendi",
+    // Il title è il fattore on-page che pesa di più: la città sta davanti,
+    // perché la ricerca che vogliamo intercettare è "riparazione telefoni
+    // san benedetto", non il nome del negozio (che nessuno cerca ancora).
+    default:
+      "Riparazione smartphone San Benedetto del Tronto — Fast-Fix",
+    // Template corto di proposito: Google taglia intorno ai 60 caratteri,
+    // e la località la porta ogni pagina nel proprio titolo.
     template: "%s — Fast-Fix",
   },
   description:
-    "Riparazioni con garanzia 12 mesi, Fast-Fix Academy per diventare tecnico, compro e vendo usato, vendita ricambi e ingrosso B2B per rivenditori. San Benedetto del Tronto.",
+    "Riparazione smartphone, tablet e computer a San Benedetto del Tronto: diagnosi gratuita, preventivo in 24 ore, garanzia 12 mesi. Compriamo il tuo usato, vendiamo ricambi e forniamo rivenditori all'ingrosso. Due sedi in centro.",
   keywords: [
-    "riparazione smartphone",
-    "smartphone ricondizionati",
-    "ricambi smartphone",
-    "Fast-Fix",
-    "Fast-Fix Academy",
+    "riparazione smartphone San Benedetto del Tronto",
+    "riparazione iPhone San Benedetto del Tronto",
+    "riparazione cellulari Ascoli Piceno",
+    "sostituzione display smartphone",
+    "sostituzione batteria iPhone",
+    "microsaldatura scheda madre",
+    "ingrosso telefoni",
+    "ingrosso ricambi smartphone",
+    "grossista smartphone Marche",
     "compro usato smartphone",
-    "corsi riparazione smartphone",
-    "B2B smartphone ingrosso",
-    "San Benedetto del Tronto",
+    "smartphone ricondizionati garantiti",
+    "corso riparazione smartphone",
+    "centro assistenza telefoni San Benedetto del Tronto",
   ],
   authors: [{ name: "Fast-Fix" }],
   alternates: {
@@ -61,23 +72,24 @@ export const metadata: Metadata = {
     locale: "it_IT",
     alternateLocale: ["en_US"],
     siteName: "Fast-Fix",
-    title: "Fast-Fix — Ripara, impara, compra, rivendi",
+    title: "Riparazione smartphone a San Benedetto del Tronto — Fast-Fix",
     description:
-      "Cinque attività, un solo magazzino. Diagnosi gratuita, preventivo entro 24h, garanzia 12 mesi.",
+      "Diagnosi gratuita, preventivo in 24 ore, garanzia 12 mesi. Due sedi a San Benedetto del Tronto.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: "Fast-Fix",
+        alt: "Fast-Fix — riparazione smartphone a San Benedetto del Tronto",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fast-Fix — Ripara, impara, compra, rivendi",
-    description: "Cinque attività, un solo magazzino. Diagnosi gratuita, garanzia 12 mesi.",
-    images: ["/og-image.png"],
+    title: "Riparazione smartphone a San Benedetto del Tronto — Fast-Fix",
+    description:
+      "Diagnosi gratuita, preventivo in 24 ore, garanzia 12 mesi. Due sedi in città.",
+    images: ["/opengraph-image"],
   },
   robots: {
     index: true,

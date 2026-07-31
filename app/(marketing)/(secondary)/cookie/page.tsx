@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { LegalPage, LegalSection, LegalTable } from "@/components/legal/legal-page";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/cookie" },
   title: "Cookie policy — Fast-Fix",
   description:
     "I cookie usati da Fast-Fix: solo tecnici e necessari, nessuna profilazione. Elenco completo, durata e come disattivarli.",

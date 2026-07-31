@@ -5,8 +5,9 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata = {
-  title: "Negozi — Fast-Fix",
-  description: "Trova il punto vendita Fast-Fix più vicino a te.",
+  alternates: { canonical: "/negozi" },
+  title: "Negozi Fast-Fix a San Benedetto del Tronto",
+  description: "Due sedi a San Benedetto del Tronto: Piazza Garibaldi 31 e Via Calatafimi 52. Orari, indirizzi, telefono e mappa. Riparazioni, valutazione usato e ritiro ordini al banco.",
 };
 
 const FEATURES: { titleKey: keyof Dict; textKey: keyof Dict }[] = [

@@ -4,6 +4,7 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/chi-siamo" },
   title: "Chi siamo — Fast-Fix",
   description:
     "Fast-Fix copre il ciclo di vita completo dello smartphone: riparazione, formazione, usato, ricambi e ingrosso B2B. Due sedi a San Benedetto del Tronto.",

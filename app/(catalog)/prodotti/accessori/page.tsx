@@ -7,6 +7,7 @@ import { canSeePrices } from "@/lib/auth/pricing-access";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
+  alternates: { canonical: "/prodotti/accessori" },
   title: "Accessori — Fast-Fix",
   description:
     "Cover, caricabatterie, cavi, cuffie. Qualità certificata dai canali del Fast-Fix.",

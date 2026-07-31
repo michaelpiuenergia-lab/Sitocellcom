@@ -3,6 +3,7 @@ import { LegalPage, LegalSection, LegalTable } from "@/components/legal/legal-pa
 import { COMPANY } from "@/lib/stores";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/privacy" },
   title: "Informativa privacy — Fast-Fix",
   description:
     "Come Fast-Fix tratta i dati personali raccolti dal sito: finalità, basi giuridiche, destinatari, conservazione e diritti dell'interessato.",

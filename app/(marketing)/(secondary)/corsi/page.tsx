@@ -9,9 +9,10 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
-  title: "Corsi — Fast-Fix",
+  alternates: { canonical: "/corsi" },
+  title: "Corso riparazione smartphone nelle Marche",
   description:
-    "Corsi di riparazione smartphone per professionisti e hobbisti. Formazione pratica su tutti i modelli.",
+    "Fast-Fix Academy a San Benedetto del Tronto: tre livelli dal base alla microsaldatura BGA. Postazioni ESD, aule da 6 allievi, attestato finale. Diventa tecnico riparatore.",
 };
 
 export const revalidate = 300;

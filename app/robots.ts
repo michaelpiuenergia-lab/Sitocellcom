@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/seo/site";
 
-const BASE = "https://sitocellcom.vercel.app";
+const BASE = SITE_URL;
 
 /**
  * Regole crawler:

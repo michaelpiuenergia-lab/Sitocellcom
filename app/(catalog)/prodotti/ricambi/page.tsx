@@ -8,9 +8,10 @@ import { getT } from "@/lib/i18n/server";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 
 export const metadata = {
-  title: "Ricambi — Fast-Fix",
+  alternates: { canonical: "/prodotti/ricambi" },
+  title: "Ricambi smartphone: display, batterie, scocche",
   description:
-    "Display, batterie, scocche, schede. Filtra per modello compatibile e trova il ricambio giusto.",
+    "Display, batterie, scocche e schede madri per ogni marca. Originali e compatibili, a stock. Vendita al dettaglio e ingrosso per centri assistenza e rivenditori con listino riservato.",
 };
 
 export const revalidate = 60;

@@ -12,6 +12,7 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata = {
+  alternates: { canonical: "/prodotti" },
   title: "Catalogo — Fast-Fix",
   description:
     "Telefoni, ricambi, accessori. Catalogo unificato dei brand del Fast-Fix con disponibilità reale dal magazzino.",

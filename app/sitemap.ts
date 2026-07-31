@@ -1,103 +1,74 @@
 import type { MetadataRoute } from "next";
-import { getProducts, getUsedDevices, getCourses } from "@/lib/crm-client";
+import { SITE_URL } from "@/lib/seo/site";
 
 /**
- * Sitemap dinamico generato a build/ISR. Liste paginate dal CRM in modo
- * best-effort (fallback silent su errore: se il CRM è down il sitemap
- * contiene comunque le route statiche).
+ * Sitemap delle pagine indicizzabili.
  *
- * Bilingue: ogni entry ha alternates IT/EN per il muRliR-language hint.
+ * Due correzioni rispetto alla versione precedente:
+ *
+ * 1. Niente più URL con àncora (/prodotti#slug). Per Google `#` non
+ *    identifica una pagina: quelle 150+ entry erano tutte lo stesso
+ *    indirizzo ripetuto, e una sitemap piena di duplicati fa perdere
+ *    autorevolezza a quelle vere. Torneranno quando esisteranno le schede
+ *    prodotto come pagine proprie.
+ *
+ * 2. Niente /b2b/login: robots.ts blocca "/b2b/", quindi dichiararla qui
+ *    era una contraddizione: si chiede a Google di indicizzare una pagina
+ *    che gli si vieta di leggere.
  */
 
-const BASE = "https://sitocellcom.vercel.app";
+const BASE = SITE_URL;
 
-const STATIC_ROUTES: { path: string; changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"]; priority: number }[] = [
+const ROUTES: {
+  path: string;
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"];
+  priority: number;
+}[] = [
   { path: "/", changeFrequency: "daily", priority: 1.0 },
+
+  // Servizi: sono le pagine che devono posizionarsi sulle ricerche locali
+  { path: "/riparazioni", changeFrequency: "weekly", priority: 0.95 },
+  { path: "/riparazioni/richiedi", changeFrequency: "monthly", priority: 0.75 },
+  { path: "/negozi", changeFrequency: "monthly", priority: 0.9 },
+  { path: "/usato", changeFrequency: "daily", priority: 0.9 },
+  { path: "/rivendi", changeFrequency: "weekly", priority: 0.85 },
+
+  // Catalogo
   { path: "/prodotti", changeFrequency: "daily", priority: 0.9 },
   { path: "/prodotti/telefoni", changeFrequency: "daily", priority: 0.85 },
   { path: "/prodotti/ricambi", changeFrequency: "daily", priority: 0.85 },
-  { path: "/prodotti/accessori", changeFrequency: "daily", priority: 0.85 },
-  { path: "/usato", changeFrequency: "daily", priority: 0.9 },
-  { path: "/rivendi", changeFrequency: "weekly", priority: 0.8 },
-  { path: "/riparazioni", changeFrequency: "weekly", priority: 0.9 },
-  { path: "/riparazioni/richiedi", changeFrequency: "weekly", priority: 0.75 },
-  { path: "/riparazioni/tracker", changeFrequency: "monthly", priority: 0.5 },
-  { path: "/corsi", changeFrequency: "weekly", priority: 0.7 },
-  { path: "/negozi", changeFrequency: "monthly", priority: 0.8 },
+  { path: "/prodotti/accessori", changeFrequency: "daily", priority: 0.8 },
+
+  // Formazione e canale professionale
+  { path: "/corsi", changeFrequency: "weekly", priority: 0.8 },
+  { path: "/apri-negozio", changeFrequency: "monthly", priority: 0.65 },
+  { path: "/diventa-partner", changeFrequency: "monthly", priority: 0.65 },
+
+  // Istituzionali
   { path: "/chi-siamo", changeFrequency: "monthly", priority: 0.7 },
-  { path: "/apri-negozio", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/diventa-partner", changeFrequency: "monthly", priority: 0.6 },
-  { path: "/b2b/login", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/privacy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/cookie", changeFrequency: "yearly", priority: 0.3 },
+  { path: "/termini", changeFrequency: "yearly", priority: 0.3 },
 ];
 
-function withAlternates(path: string): MetadataRoute.Sitemap[number]["alternates"] {
-  return {
-    languages: {
-      it: `${BASE}${path}`,
-      en: `${BASE}${path}`, // stessa URL con cookie lang=en
-      "x-default": `${BASE}${path}`,
-    },
-  };
+/**
+ * Il sito serve entrambe le lingue sullo stesso indirizzo (la scelta vive in
+ * un cookie), quindi gli alternates puntano alla stessa URL: è il modo
+ * corretto di dichiararlo finché non esistono percorsi /en separati.
+ */
+function alternates(path: string): MetadataRoute.Sitemap[number]["alternates"] {
+  const url = `${BASE}${path}`;
+  return { languages: { it: url, en: url, "x-default": url } };
 }
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  const staticEntries: MetadataRoute.Sitemap = STATIC_ROUTES.map((r) => ({
+  return ROUTES.map((r) => ({
     url: `${BASE}${r.path}`,
     lastModified: now,
     changeFrequency: r.changeFrequency,
     priority: r.priority,
-    alternates: withAlternates(r.path),
+    alternates: alternates(r.path),
   }));
-
-  // Dinamiche: prodotti pubblici (top 200), usato (top 100), corsi (top 50)
-  const dynamicEntries: MetadataRoute.Sitemap = [];
-
-  try {
-    const products = await getProducts({ limit: 100 });
-    for (const p of products.items) {
-      dynamicEntries.push({
-        url: `${BASE}/prodotti#${p.slug}`,
-        lastModified: now,
-        changeFrequency: "weekly",
-        priority: 0.7,
-        alternates: withAlternates(`/prodotti#${p.slug}`),
-      });
-    }
-  } catch {
-    // CRM giù: sitemap statico va comunque bene
-  }
-
-  try {
-    const used = await getUsedDevices({ limit: 50 });
-    for (const d of used.items) {
-      dynamicEntries.push({
-        url: `${BASE}/usato#${d.id}`,
-        lastModified: new Date(d.publishedAt),
-        changeFrequency: "weekly",
-        priority: 0.75,
-        alternates: withAlternates(`/usato#${d.id}`),
-      });
-    }
-  } catch {
-    // ignore
-  }
-
-  try {
-    const courses = await getCourses();
-    for (const c of courses.items) {
-      dynamicEntries.push({
-        url: `${BASE}/corsi#${c.id}`,
-        lastModified: now,
-        changeFrequency: "monthly",
-        priority: 0.7,
-        alternates: withAlternates(`/corsi#${c.id}`),
-      });
-    }
-  } catch {
-    // ignore
-  }
-
-  return [...staticEntries, ...dynamicEntries];
 }

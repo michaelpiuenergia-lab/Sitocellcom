@@ -3,6 +3,7 @@ import { LegalPage, LegalSection } from "@/components/legal/legal-page";
 import { COMPANY } from "@/lib/stores";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/termini" },
   title: "Termini di utilizzo — Fast-Fix",
   description:
     "Condizioni d'uso del sito Fast-Fix: richieste, preventivi, area riservata, proprietà dei contenuti e legge applicabile.",

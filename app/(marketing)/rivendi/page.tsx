@@ -6,9 +6,10 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
-  title: "Rivendi il tuo telefono — Fast-Fix",
+  alternates: { canonical: "/rivendi" },
+  title: "Vendi il tuo smartphone usato — valutazione gratuita",
   description:
-    "Valutazione gratuita del tuo smartphone usato. Spedizione gratis, pagamento entro 48h. Bonus +10% se scegli credito Fast-Fix.",
+    "Compriamo il tuo smartphone usato, anche rotto. Valutazione gratuita in 24 ore dalle foto, pagamento entro 48 ore, spedizione gratuita o ritiro in negozio a San Benedetto del Tronto.",
 };
 
 const STEPS: { n: string; titleKey: keyof Dict; textKey: keyof Dict }[] = [

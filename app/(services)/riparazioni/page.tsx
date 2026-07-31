@@ -5,17 +5,59 @@ import { Breadcrumb } from "@/components/layout/breadcrumb";
 import { getT } from "@/lib/i18n/server";
 import Link from "next/link";
 import { PayIn3Banner } from "@/components/ui/payment-badges";
+import { FaqJsonLd, RepairServiceJsonLd } from "@/components/seo/structured-data";
 
 export const metadata = {
-  title: "Riparazioni — Fast-Fix",
+  alternates: { canonical: "/riparazioni" },
+  title: "Riparazione telefoni e tablet a San Benedetto del Tronto",
   description:
-    "Riparazione professionale di smartphone con garanzia 12 mesi. Diagnosi gratuita, ricambi originali, ritiro in negozio o spedizione. Traccia il tuo ticket in tempo reale.",
+    "Ripariamo smartphone, tablet, computer e console a San Benedetto del Tronto. Diagnosi gratuita, preventivo in 24 ore, garanzia 12 mesi. Nessun costo se rifiuti il preventivo. Porti il device in negozio o ce lo spedisci.",
 };
+
+/**
+ * Le domande sono quelle che le persone digitano davvero prima di portare
+ * un telefono a riparare. In FAQPage Google può mostrarle direttamente nei
+ * risultati, occupando più spazio della concorrenza.
+ */
+const FAQ = [
+  {
+    question: "Quanto costa riparare uno smartphone a San Benedetto del Tronto?",
+    answer:
+      "La diagnosi è gratuita e il preventivo arriva entro 24 ore lavorative. Il costo dipende dal modello e dal guasto: se rifiuti il preventivo non paghi nulla e ti restituiamo il dispositivo.",
+  },
+  {
+    question: "Quanto tempo serve per riparare un telefono?",
+    answer:
+      "Le riparazioni più comuni, come display e batteria, si chiudono in giornata se il ricambio è a magazzino. Per guasti sulla scheda madre o microsaldatura servono alcuni giorni, e te lo diciamo nel preventivo.",
+  },
+  {
+    question: "La riparazione è garantita?",
+    answer:
+      "Sì, 12 mesi di garanzia su manodopera e ricambi utilizzati. La garanzia non copre danni successivi come cadute, liquidi o interventi fatti altrove.",
+  },
+  {
+    question: "Riparate anche tablet, computer e console?",
+    answer:
+      "Sì. Oltre agli smartphone trattiamo tablet, notebook, computer fissi e console da gioco, con lo stesso percorso: diagnosi gratuita, preventivo e garanzia 12 mesi.",
+  },
+  {
+    question: "Perdo i dati del telefono durante la riparazione?",
+    answer:
+      "Alcuni interventi comportano la perdita dei dati, per questo consigliamo sempre un backup prima di consegnare il dispositivo. Se il telefono non si accende possiamo valutare il recupero dati.",
+  },
+  {
+    question: "Devo venire in negozio o posso spedire il dispositivo?",
+    answer:
+      "Come preferisci. Puoi portarlo in una delle due sedi di San Benedetto del Tronto, spedircelo e riceverlo riparato, oppure — nelle zone vicine — chiedere ritiro e consegna a domicilio.",
+  },
+];
 
 export default async function RepairsPage() {
   const t = await getT();
   return (
     <>
+      <RepairServiceJsonLd />
+      <FaqJsonLd items={FAQ} />
       <Breadcrumb
         items={[{ label: t("bc.home"), href: "/" }, { label: t("bc.repairs") }]}
       />

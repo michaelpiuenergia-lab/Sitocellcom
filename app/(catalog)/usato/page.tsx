@@ -7,9 +7,10 @@ import { canSeePrices } from "@/lib/auth/pricing-access";
 import { getT } from "@/lib/i18n/server";
 
 export const metadata = {
-  title: "Usato garantito — Fast-Fix",
+  alternates: { canonical: "/usato" },
+  title: "Smartphone usati garantiti a San Benedetto del Tronto",
   description:
-    "Smartphone usati testati e garantiti, selezionati dal Fast-Fix. IMEI verificato, batteria controllata, garanzia inclusa. Disponibilità reale dal magazzino.",
+    "Smartphone usati e ricondizionati testati uno a uno: IMEI verificato, batteria controllata, garanzia fino a 12 mesi. Ritiri in negozio a San Benedetto del Tronto o te li spediamo in 24-48 ore.",
 };
 
 export const revalidate = 60;

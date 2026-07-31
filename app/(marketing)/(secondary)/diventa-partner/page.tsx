@@ -6,6 +6,7 @@ import { getT } from "@/lib/i18n/server";
 import type { Dict } from "@/lib/i18n/dict";
 
 export const metadata: Metadata = {
+  alternates: { canonical: "/diventa-partner" },
   title: "Diventa partner — Fast-Fix",
   description:
     "Punto riparazione partner Fast-Fix: ricambi originali a listino B2B, supporto laboratorio sulle riparazioni complesse, accesso al CRM per ticket. Per chi ripara di mestiere.",
