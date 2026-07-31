@@ -998,11 +998,11 @@ const IT: Dict = {
 
   "immersive.loading3D": "Caricamento 3D…",
   "immersive.scrollHint": "Scrolla",
-  "immersive.m1.eyebrow": "Phone Lifecycle",
+  "immersive.m1.eyebrow": "Il ciclo di vita del telefono",
   "immersive.m1.titleA": "Tutto il telefono,",
   "immersive.m1.italic": "una sola casa.",
   "immersive.m1.body":
-    "Dal primo acquisto fino al riciclo — quattro servizi, una sola squadra.",
+    "Dal primo acquisto fino al riciclo — cinque attività, una sola squadra.",
   "immersive.m2.eyebrow": "Lo riparo, lo ricondiziono",
   "immersive.m2.titleA": "Quasi tutto si",
   "immersive.m2.italic": "ripara",
@@ -1793,7 +1793,7 @@ const EN: Dict = {
   "immersive.m1.titleA": "The whole phone,",
   "immersive.m1.italic": "one home.",
   "immersive.m1.body":
-    "From the first purchase to recycling — four services, one team.",
+    "From the first purchase to recycling — five businesses, one team.",
   "immersive.m2.eyebrow": "I repair, I refurbish",
   "immersive.m2.titleA": "Almost anything can be",
   "immersive.m2.italic": "fixed",

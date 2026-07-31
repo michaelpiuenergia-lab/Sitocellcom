@@ -65,16 +65,22 @@ export function ImmersivePin({
   const phoneScale = useTransform(sp, [0, 0.5, 1], [0.85, 1.15, 0.95]);
   const phoneY = useTransform(sp, [0, 0.5, 1], ["8%", "0%", "-6%"]);
 
-  // 3 momenti di testo che si dissolvono in sequenza
-  // Ognuno appare per ~33% dello scroll
-  const opacity1 = useTransform(sp, [0, 0.05, 0.28, 0.36], [0, 1, 1, 0]);
-  const y1 = useTransform(sp, [0, 0.1, 0.36], ["20px", "0px", "-20px"]);
+  // 3 momenti di testo che si dissolvono in sequenza, ognuno per ~33%.
+  //
+  // Legati allo scroll GREZZO, non allo spring: tornando indietro dal browser
+  // la pagina viene ripristinata a metà sezione, ma lo spring riparte da 0 e
+  // ci mette un attimo a raggiungere il valore reale. In quel tempo attraversa
+  // tutte le fasi e i tre testi si accavallano a mezza opacità — è la
+  // schermata confusa che si vedeva al ritorno. Lo scroll grezzo è già
+  // corretto al primo frame.
+  const opacity1 = useTransform(scrollYProgress, [0, 0.05, 0.28, 0.36], [0, 1, 1, 0]);
+  const y1 = useTransform(scrollYProgress, [0, 0.1, 0.36], ["20px", "0px", "-20px"]);
 
-  const opacity2 = useTransform(sp, [0.32, 0.4, 0.6, 0.68], [0, 1, 1, 0]);
-  const y2 = useTransform(sp, [0.32, 0.4, 0.68], ["20px", "0px", "-20px"]);
+  const opacity2 = useTransform(scrollYProgress, [0.32, 0.4, 0.6, 0.68], [0, 1, 1, 0]);
+  const y2 = useTransform(scrollYProgress, [0.32, 0.4, 0.68], ["20px", "0px", "-20px"]);
 
-  const opacity3 = useTransform(sp, [0.64, 0.72, 0.95, 1], [0, 1, 1, 1]);
-  const y3 = useTransform(sp, [0.64, 0.72, 1], ["20px", "0px", "0px"]);
+  const opacity3 = useTransform(scrollYProgress, [0.64, 0.72, 0.95, 1], [0, 1, 1, 1]);
+  const y3 = useTransform(scrollYProgress, [0.64, 0.72, 1], ["20px", "0px", "0px"]);
 
   // Sfondo che vira: carbone caldo → cremisi → rosso acceso e RESTA acceso.
   //
@@ -84,13 +90,13 @@ export function ImmersivePin({
   // rosso dentro, e la virata comincia subito invece che a un terzo dello
   // scroll.
   const bgColor = useTransform(
-    sp,
+    scrollYProgress,
     [0, 0.3, 0.6, 1],
     ["#241618", "#3d1216", "#5c1418", "#7a1a1c"],
   );
   // Il bagliore è ciò che stacca il telefono dallo sfondo: partiva a 0.2,
   // praticamente spento proprio quando il telefono entra in scena.
-  const glowOpacity = useTransform(sp, [0, 0.4, 0.75, 1], [0.62, 0.95, 1, 1]);
+  const glowOpacity = useTransform(scrollYProgress, [0, 0.4, 0.75, 1], [0.62, 0.95, 1, 1]);
 
   return (
     <section
@@ -204,7 +210,7 @@ export function ImmersivePin({
         {/* Scroll hint in alto, sparisce a fine sezione */}
         <motion.div
           style={{
-            opacity: useTransform(sp, [0, 0.1, 0.85, 1], [1, 1, 0, 0]),
+            opacity: useTransform(scrollYProgress, [0, 0.1, 0.85, 1], [1, 1, 0, 0]),
           }}
           className="absolute top-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 pointer-events-none"
         >
