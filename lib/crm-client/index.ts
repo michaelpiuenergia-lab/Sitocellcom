@@ -12,6 +12,8 @@ import * as realCustomerAuth from "./customer-auth";
 import * as mockCustomerAuth from "./customer-auth-mock";
 import * as realRepairs from "./repairs";
 import * as mockRepairs from "./repairs-mock";
+import * as realWarranty from "./warranty";
+import * as mockWarranty from "./warranty-mock";
 import * as realB2bPortal from "./b2b-portal";
 import * as mockB2bPortal from "./b2b-portal-mock";
 import * as realCourses from "./courses";
@@ -111,6 +113,14 @@ export const lookupRepair = USE_MOCK_PUBLIC
 export const respondToQuote = USE_MOCK_PUBLIC
   ? mockRepairs.respondToQuote
   : realRepairs.respondToQuote;
+
+// Verifica garanzia pubblica (QR dalla ricevuta oppure ricerca a mano)
+export const lookupWarrantyByToken = USE_MOCK_PUBLIC
+  ? mockWarranty.lookupWarrantyByToken
+  : realWarranty.lookupWarrantyByToken;
+export const lookupWarrantyByTicket = USE_MOCK_PUBLIC
+  ? mockWarranty.lookupWarrantyByTicket
+  : realWarranty.lookupWarrantyByTicket;
 
 // Portale B2B (ordini, preventivi, fatture, NC, pagamenti, spedizioni, docs)
 export const listB2bOrders = USE_MOCK_B2B ? mockB2bPortal.listB2bOrders : realB2bPortal.listB2bOrders;

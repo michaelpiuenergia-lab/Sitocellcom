@@ -20,6 +20,9 @@ export default function robots(): MetadataRoute.Robots {
           "/clienti/",
           "/imposta-password",
           "/riparazioni/tracker",
+          // Come il tracker: la pagina ha senso solo con un token o dei dati
+          // in query-string, che non devono finire in un indice.
+          "/garanzia",
         ],
       },
       // Blocca esplicitamente i bot AI scraper aggressivi (opt-out

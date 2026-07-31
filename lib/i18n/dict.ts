@@ -165,6 +165,7 @@ export type Dict = {
   "bc.becomePartner": string;
   "bc.tradeIn": string;
   "bc.tracker": string;
+  "bc.warranty": string;
 
   // ─── Catalog hero ───────────────────────────────────────────────────
   "ch.products.eyebrow": string;
@@ -847,6 +848,7 @@ const IT: Dict = {
   "bc.becomePartner": "Diventa partner",
   "bc.tradeIn": "Rivendi",
   "bc.tracker": "Traccia riparazione",
+  "bc.warranty": "Garanzia",
 
   "ch.products.eyebrow": "Magazzino unico Fast-Fix",
   "ch.products.title": "Il nostro",
@@ -1611,6 +1613,7 @@ const EN: Dict = {
   "bc.becomePartner": "Become a partner",
   "bc.tradeIn": "Trade-in",
   "bc.tracker": "Track repair",
+  "bc.warranty": "Warranty",
 
   "ch.products.eyebrow": "One Fast-Fix warehouse",
   "ch.products.title": "Our",

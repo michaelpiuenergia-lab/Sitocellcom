@@ -368,6 +368,28 @@ export type RepairLookupInput = {
   phoneSuffix: string;
 };
 
+/**
+ * Stato garanzia di una riparazione consegnata.
+ *
+ * Volutamente minimale: nessun dato personale, nessun dettaglio del lavoro
+ * svolto. Ci si arriva col QR della ricevuta (token) o con numero riparazione
+ * piu' ultime cifre del telefono, quindi il contenuto deve restare innocuo
+ * anche se qualcuno indovina.
+ *
+ * `warranty: null` = consegna non ancora avvenuta, oppure garanzia non
+ * registrata su quella riparazione. Non e' un errore, e' un terzo stato.
+ */
+export type WarrantyPublic = {
+  device: string | null;
+  deliveredAt: string | null;
+  warranty: {
+    months: number;
+    validUntil: string;
+    daysRemaining: number;
+    active: boolean;
+  } | null;
+};
+
 export type RepairQuoteAction = "accept" | "decline";
 
 export type RepairQuoteResponseInput = {
