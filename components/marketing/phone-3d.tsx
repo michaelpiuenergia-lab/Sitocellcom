@@ -2,7 +2,7 @@
 
 import { Suspense, useRef, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { Environment, Lightformer, useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import type { MotionValue } from "framer-motion";
 
@@ -126,6 +126,53 @@ export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
         <directionalLight position={[6, -1, 1]} intensity={1.6} color="#ffe8e8" />
 
         <Suspense fallback={null}>
+          {/*
+            LA ragione per cui il telefono appariva come un rettangolo nero.
+
+            I materiali del modello hanno envMapIntensity 2 e superfici
+            metalliche/lucide, ma nella scena non c'era nessuna mappa
+            d'ambiente: un materiale metallico senza qualcosa da riflettere
+            resta nero comunque, per quante luci si accendano. Le luci
+            illuminano le superfici opache, i riflessi li fa l'ambiente.
+
+            Environment costruito con Lightformer, cioè generato in memoria da
+            questi pannelli: niente HDR scaricata da un CDN esterno, che
+            violerebbe la CSP e smentirebbe la cookie policy dove abbiamo
+            scritto che il sito non contatta domini di terzi per gli asset.
+          */}
+          <Environment resolution={256}>
+            {/* Pannello chiave: il riflesso lungo sul fronte del vetro */}
+            <Lightformer
+              intensity={3}
+              form="rect"
+              position={[0, 1.5, 4]}
+              scale={[6, 8, 1]}
+              color="#ffffff"
+            />
+            {/* Tagli laterali: accendono i bordi del telaio */}
+            <Lightformer
+              intensity={2}
+              form="rect"
+              position={[-5, 0, 1]}
+              scale={[3, 8, 1]}
+              color="#ffe4e4"
+            />
+            <Lightformer
+              intensity={1.6}
+              form="rect"
+              position={[5, 0, 1]}
+              scale={[3, 8, 1]}
+              color="#ffffff"
+            />
+            {/* Rimbalzo rosso dal basso: lega il device allo sfondo brand */}
+            <Lightformer
+              intensity={1.4}
+              form="circle"
+              position={[0, -4, 2]}
+              scale={[6, 6, 1]}
+              color="#dc2626"
+            />
+          </Environment>
           <SamsungPhoneModel rotationDeg={rotationDeg} />
         </Suspense>
       </Canvas>
