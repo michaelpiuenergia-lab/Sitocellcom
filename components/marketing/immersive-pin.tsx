@@ -76,15 +76,21 @@ export function ImmersivePin({
   const opacity3 = useTransform(sp, [0.64, 0.72, 0.95, 1], [0, 1, 1, 1]);
   const y3 = useTransform(sp, [0.64, 0.72, 1], ["20px", "0px", "0px"]);
 
-  // Sfondo che vira: nero profondo → cremisi → rosso acceso e RESTA acceso.
-  // Niente reverse a fine sezione: la prossima zona della pagina raccoglie
-  // la temperatura calda con un bridge gradient.
+  // Sfondo che vira: carbone caldo → cremisi → rosso acceso e RESTA acceso.
+  //
+  // Partiva da #050505, nero quasi assoluto: su mobile la sezione occupava
+  // mezza schermata di buio con dentro un telefono scuro che non si
+  // distingueva dal fondo. Ora il punto di partenza è un carbone con del
+  // rosso dentro, e la virata comincia subito invece che a un terzo dello
+  // scroll.
   const bgColor = useTransform(
     sp,
     [0, 0.3, 0.6, 1],
-    ["#050505", "#1a0303", "#3a0808", "#5a0c0c"],
+    ["#241618", "#3d1216", "#5c1418", "#7a1a1c"],
   );
-  const glowOpacity = useTransform(sp, [0, 0.4, 0.75, 1], [0.2, 0.85, 1, 1]);
+  // Il bagliore è ciò che stacca il telefono dallo sfondo: partiva a 0.2,
+  // praticamente spento proprio quando il telefono entra in scena.
+  const glowOpacity = useTransform(sp, [0, 0.4, 0.75, 1], [0.62, 0.95, 1, 1]);
 
   return (
     <section

@@ -60,13 +60,17 @@ const COLORS = {
     eyebrow: "#dc2626",
   },
   dark: {
-    bg: "#0a0a0a",
-    surface: "#141414",
-    surfaceBorder: "#1f1f1f",
+    // Carbone caldo, non nero assoluto: era #0a0a0a, lo stesso identico
+    // colore del footer, quindi pannello e footer si fondevano in un'unica
+    // fascia nera lunghissima in fondo alla pagina. Con una punta di rosso
+    // dentro il blocco si stacca e il rosso del brand ci risuona sopra.
+    bg: "#1a1416",
+    surface: "#241d1f",
+    surfaceBorder: "#332a2c",
     title: "#fafafa",
-    body: "#a3a3a3",
-    softText: "#737373",
-    chipBg: "rgba(220,38,38,0.12)",
+    body: "#b8b0b2",
+    softText: "#8a8083",
+    chipBg: "rgba(220,38,38,0.16)",
     chipText: "#f87171",
     eyebrow: "#dc2626",
   },

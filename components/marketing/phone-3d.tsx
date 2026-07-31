@@ -102,12 +102,16 @@ export function Phone3D({ rotationDeg }: Phone3DProps = {}) {
         // Quando fuori viewport: "never" — nessun render.
         frameloop={inView ? "demand" : "never"}
       >
-        {/* Lighting alleggerito: hemisphere (full ambient) + 2 directional.
+        {/* Lighting alleggerito: hemisphere (full ambient) + directional.
             Tolti 2 directional e 2 point lights — meno shader work. */}
-        <hemisphereLight args={["#ffffff", "#3a0a0a", 1.4]} />
-        <ambientLight intensity={0.6} color="#ffffff" />
-        <directionalLight position={[5, 3, 5]} intensity={2.4} color="#ffffff" />
+        <hemisphereLight args={["#ffffff", "#3a0a0a", 1.6]} />
+        <ambientLight intensity={0.85} color="#ffffff" />
+        <directionalLight position={[5, 3, 5]} intensity={2.6} color="#ffffff" />
         <directionalLight position={[-5, 3, -5]} intensity={2.0} color="#dc2626" />
+        {/* Rim light da dietro: disegna il bordo del telefono e lo stacca
+            dallo sfondo scuro. Senza, su mobile il device spariva nel fondo
+            e si vedeva solo la scritta "scrolla". */}
+        <directionalLight position={[0, 2, -6]} intensity={2.2} color="#ffd9d9" />
 
         <Suspense fallback={null}>
           <SamsungPhoneModel rotationDeg={rotationDeg} />

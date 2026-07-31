@@ -16,6 +16,7 @@ import {
   ShoppingBagIcon,
   WrenchIcon,
 } from "./service-icons";
+import { cn } from "@/lib/utils/cn";
 
 // Le cinque aree di Fast-Fix, ognuna con la sua icona: a colpo d'occhio si
 // capisce cosa fa l'azienda senza leggere.
@@ -111,7 +112,17 @@ export function Hero({
               {PILLAR_BUTTONS.map((btn, i) => (
                 <motion.div
                   key={btn.href}
-                  className="w-full sm:w-auto"
+                  className={cn(
+                    "w-full sm:w-auto",
+                    // I pulsanti sono cinque: in due colonne l'ultimo restava
+                    // spaiato con un buco accanto. Quando il numero è dispari
+                    // l'ultimo occupa la riga intera e la griglia si chiude.
+                    // Calcolato sulla lunghezza, così regge anche se un domani
+                    // le aree diventano quattro o sei.
+                    i === PILLAR_BUTTONS.length - 1 &&
+                      PILLAR_BUTTONS.length % 2 === 1 &&
+                      "col-span-2 sm:col-span-1",
+                  )}
                   initial={
                     shouldReduce
                       ? { y: 0, opacity: 1, rotate: 0 }
