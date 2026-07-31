@@ -7,7 +7,7 @@ import {
   PanelStat,
   Accent,
 } from "@/components/marketing/marketing-panel";
-import { PillarsGrid } from "@/components/marketing/pillars-grid";
+import { LifecycleTrack } from "@/components/marketing/lifecycle-track";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { PayIn3Banner } from "@/components/ui/payment-badges";
@@ -81,8 +81,10 @@ export default async function MarketingPage() {
         {/* Telefono 3D scroll-driven (intoccabile) */}
         <ImmersivePin device={devices[0]} />
 
-        {/* 4 pilastri in scacchiera 2×2 (Compra+Ripara sopra, Rivendi+Impara sotto) */}
-        <PillarsGrid />
+        {/* Ciclo di vita del telefono: le 5 attività come percorso.
+            Ha preso il posto della griglia dei pilastri, che ripeteva in
+            forma estesa gli stessi servizi già nei pulsanti dell'hero. */}
+        <LifecycleTrack />
 
         {/* Numeri (bianco) */}
         <MarketingPanel

@@ -74,6 +74,25 @@ export type Dict = {
   "footer.legal.terms": string;
 
   // ─── Hero (homepage) ────────────────────────────────────────────────
+  "cycle.eyebrow": string;
+  "cycle.titleA": string;
+  "cycle.accent": string;
+  "cycle.intro": string;
+  "cycle.s1.title": string;
+  "cycle.s1.body": string;
+  "cycle.s1.cta": string;
+  "cycle.s2.title": string;
+  "cycle.s2.body": string;
+  "cycle.s2.cta": string;
+  "cycle.s3.title": string;
+  "cycle.s3.body": string;
+  "cycle.s3.cta": string;
+  "cycle.s4.title": string;
+  "cycle.s4.body": string;
+  "cycle.s4.cta": string;
+  "cycle.s5.title": string;
+  "cycle.s5.body": string;
+  "cycle.s5.cta": string;
   "hero.pillar.buy": string;
   "hero.pillar.repair": string;
   "hero.pillar.resell": string;
@@ -755,6 +774,31 @@ const IT: Dict = {
   "footer.legal.cookie": "Cookie",
   "footer.legal.terms": "Termini",
 
+  "cycle.eyebrow": "Il ciclo di vita del tuo telefono",
+  "cycle.titleA": "Cinque attività.",
+  "cycle.accent": "Un solo magazzino.",
+  "cycle.intro":
+    "Un telefono entra da noi, viene riparato, ricondizionato, rivenduto o comprato. Ogni passaggio è un'attività a sé — ma il ricambio, il tecnico e la garanzia sono sempre gli stessi.",
+  "cycle.s1.title": "Ripara",
+  "cycle.s1.body":
+    "Display, batteria, scheda madre, microsaldatura BGA. Laboratorio interno, diagnosi gratuita.",
+  "cycle.s1.cta": "Richiedi riparazione",
+  "cycle.s2.title": "Compra",
+  "cycle.s2.body":
+    "Nuovi, ricondizionati e usati testati uno a uno. Garanzia 12 mesi su tutto il catalogo.",
+  "cycle.s2.cta": "Vai al catalogo",
+  "cycle.s3.title": "Rivendi",
+  "cycle.s3.body":
+    "Valutazione gratuita in 24 ore, pagamento entro 48. Ritiriamo anche telefoni rotti.",
+  "cycle.s3.cta": "Valuta il tuo usato",
+  "cycle.s4.title": "Impara",
+  "cycle.s4.body":
+    "Tre livelli alla Fast-Fix Academy, con gli stessi formatori che addestrano i nostri tecnici.",
+  "cycle.s4.cta": "Scopri i corsi",
+  "cycle.s5.title": "Rifornisci",
+  "cycle.s5.body":
+    "Ingrosso ricambi e telefoni per rivenditori e centri assistenza, con listino a volumi.",
+  "cycle.s5.cta": "Diventa partner",
   "hero.pillar.buy": "Compra",
   "hero.pillar.repair": "Ripara",
   "hero.pillar.resell": "Rivendi",
@@ -1520,6 +1564,31 @@ const EN: Dict = {
   "footer.legal.cookie": "Cookies",
   "footer.legal.terms": "Terms",
 
+  "cycle.eyebrow": "Your phone's life cycle",
+  "cycle.titleA": "Five businesses.",
+  "cycle.accent": "One warehouse.",
+  "cycle.intro":
+    "A phone comes in, gets repaired, refurbished, resold or bought. Each step is a business of its own — but the part, the technician and the warranty are always the same.",
+  "cycle.s1.title": "Repair",
+  "cycle.s1.body":
+    "Display, battery, motherboard, BGA micro-soldering. In-house lab, free diagnosis.",
+  "cycle.s1.cta": "Request a repair",
+  "cycle.s2.title": "Buy",
+  "cycle.s2.body":
+    "New, refurbished and used devices tested one by one. 12-month warranty across the catalogue.",
+  "cycle.s2.cta": "Browse the catalogue",
+  "cycle.s3.title": "Sell",
+  "cycle.s3.body":
+    "Free valuation within 24 hours, payment within 48. We take broken phones too.",
+  "cycle.s3.cta": "Value your device",
+  "cycle.s4.title": "Learn",
+  "cycle.s4.body":
+    "Three levels at Fast-Fix Academy, taught by the same instructors who train our technicians.",
+  "cycle.s4.cta": "See the courses",
+  "cycle.s5.title": "Stock up",
+  "cycle.s5.body":
+    "Wholesale parts and phones for resellers and repair shops, with volume pricing.",
+  "cycle.s5.cta": "Become a partner",
   "hero.pillar.buy": "Buy",
   "hero.pillar.repair": "Repair",
   "hero.pillar.resell": "Resell",
