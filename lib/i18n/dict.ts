@@ -74,6 +74,7 @@ export type Dict = {
   "footer.legal.terms": string;
 
   // ─── Hero (homepage) ────────────────────────────────────────────────
+  "hero.badge": string;
   "cycle.eyebrow": string;
   "cycle.titleA": string;
   "cycle.accent": string;
@@ -774,6 +775,7 @@ const IT: Dict = {
   "footer.legal.cookie": "Cookie",
   "footer.legal.terms": "Termini",
 
+  "hero.badge": "Dal 2016 · San Benedetto del Tronto",
   "cycle.eyebrow": "Il ciclo di vita del tuo telefono",
   "cycle.titleA": "Cinque attività.",
   "cycle.accent": "Un solo magazzino.",
@@ -1564,6 +1566,7 @@ const EN: Dict = {
   "footer.legal.cookie": "Cookies",
   "footer.legal.terms": "Terms",
 
+  "hero.badge": "Since 2016 · San Benedetto del Tronto",
   "cycle.eyebrow": "Your phone's life cycle",
   "cycle.titleA": "Five businesses.",
   "cycle.accent": "One warehouse.",

@@ -18,17 +18,39 @@ import {
 } from "./service-icons";
 import { cn } from "@/lib/utils/cn";
 
-// Le cinque aree di Fast-Fix, ognuna con la sua icona: a colpo d'occhio si
-// capisce cosa fa l'azienda senza leggere.
-// Ordine deliberato: "Ripara" per primo — la riparazione è il mestiere
-// principale e deve leggersi al primo impatto, prima della vendita.
-const PILLAR_BUTTONS: Array<{
+/**
+ * Gerarchia invece di cinque pulsanti pari.
+ *
+ * Cinque bottoni rossi identici non dicono da dove cominciare, e il quinto
+ * finiva largo tutta la riga per tre caratteri di testo. Chi arriva dal web
+ * ha il telefono rotto: quella è l'azione principale, il resto sono strade
+ * secondarie che restano raggiungibili senza urlare.
+ */
+const PRIMARY_ACTIONS: Array<{
+  key: keyof Dict;
+  href: string;
+  Icon: (props: { className?: string }) => React.ReactElement;
+  variant: "solid" | "outline";
+}> = [
+  {
+    key: "hero.pillar.repair",
+    href: "/riparazioni",
+    Icon: WrenchIcon,
+    variant: "solid",
+  },
+  {
+    key: "hero.pillar.buy",
+    href: "/prodotti",
+    Icon: ShoppingBagIcon,
+    variant: "outline",
+  },
+];
+
+const SECONDARY_ACTIONS: Array<{
   key: keyof Dict;
   href: string;
   Icon: (props: { className?: string }) => React.ReactElement;
 }> = [
-  { key: "hero.pillar.repair", href: "/riparazioni", Icon: WrenchIcon },
-  { key: "hero.pillar.buy", href: "/prodotti", Icon: ShoppingBagIcon },
   { key: "hero.pillar.resell", href: "/rivendi", Icon: RepeatIcon },
   { key: "hero.pillar.learn", href: "/corsi", Icon: GraduationCapIcon },
   { key: "hero.pillar.b2b", href: "/b2b", Icon: BoxesIcon },
@@ -81,6 +103,40 @@ export function Hero({
               esisteva nessun h1, e per Google è il segnale più forte di cosa
               tratta la pagina.
              */}
+            {/*
+              Anzianità e località: "dal 2016" è il segnale di fiducia più
+              economico che abbiamo (dieci anni nello stesso posto valgono
+              più di qualsiasi aggettivo), e la città in cima alla pagina
+              serve anche alla ricerca locale. Dato verificato su fonti
+              pubbliche, non dichiarato a stima.
+             */}
+            <motion.span
+              initial={shouldReduce ? { opacity: 1 } : { opacity: 0, y: 8 }}
+              animate={{ opacity: hidden ? 0 : 1, y: 0 }}
+              transition={{ duration: 0.6, ease: EASE.smooth }}
+              className="inline-flex items-center gap-2.5 font-mono uppercase rounded-full"
+              style={{
+                fontSize: "11px",
+                letterSpacing: "0.22em",
+                color: "#525252",
+                border: "1px solid #e5e5e5",
+                backgroundColor: "#fafaf8",
+                padding: "8px 16px",
+              }}
+            >
+              <span
+                aria-hidden
+                className="inline-block rounded-full"
+                style={{
+                  width: "7px",
+                  height: "7px",
+                  backgroundColor: "#dc2626",
+                  boxShadow: "0 0 10px rgba(220,38,38,0.8)",
+                }}
+              />
+              {t("hero.badge")}
+            </motion.span>
+
             <motion.h1
               initial={shouldReduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{
@@ -103,77 +159,102 @@ export function Hero({
               <em className="italic text-brand-600" style={{ fontStyle: "italic" }}>{t("hero.claim.italicB")}</em>.
             </motion.h1>
 
-            {/*
-              Mobile: griglia a due colonne, così i cinque pulsanti restano
-              allineati e leggibili invece di spezzarsi con larghezze diverse.
-              Da sm in su tornano in fila con wrap naturale.
-             */}
-            <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2.5 md:gap-3 mt-1 w-full">
-              {PILLAR_BUTTONS.map((btn, i) => (
+            {/* Due azioni principali: piene su mobile, affiancate da sm in su */}
+            <div className="flex flex-col sm:flex-row gap-3 mt-1 w-full sm:w-auto">
+              {PRIMARY_ACTIONS.map((btn, i) => (
                 <motion.div
                   key={btn.href}
-                  className={cn(
-                    "w-full sm:w-auto",
-                    // I pulsanti sono cinque: in due colonne l'ultimo restava
-                    // spaiato con un buco accanto. Quando il numero è dispari
-                    // l'ultimo occupa la riga intera e la griglia si chiude.
-                    // Calcolato sulla lunghezza, così regge anche se un domani
-                    // le aree diventano quattro o sei.
-                    i === PILLAR_BUTTONS.length - 1 &&
-                      PILLAR_BUTTONS.length % 2 === 1 &&
-                      "col-span-2 sm:col-span-1",
-                  )}
+                  className="w-full sm:w-auto"
                   initial={
                     shouldReduce
-                      ? { y: 0, opacity: 1, rotate: 0 }
-                      : { y: -180, opacity: 0, rotate: -10 }
+                      ? { y: 0, opacity: 1 }
+                      : { y: -60, opacity: 0 }
                   }
                   animate={{
-                    y: hidden ? -180 : 0,
+                    y: hidden ? -60 : 0,
                     opacity: hidden ? 0 : 1,
-                    rotate: hidden ? -10 : 0,
                   }}
                   transition={{
                     type: "spring",
                     stiffness: 380,
-                    damping: 18,
-                    delay: i * 0.07,
+                    damping: 20,
+                    delay: 0.1 + i * 0.08,
                   }}
                 >
                   <Link
                     href={btn.href}
-                    // w-full + justify-center: su mobile i pulsanti riempiono
-                    // la colonna della griglia e restano allineati invece di
-                    // andare a capo con larghezze diverse.
-                    // hover:-translate-y-0.5 + scale: il "leggero ingrandimento
-                    // con ombra" chiesto, tenuto sotto il 3% per non far
-                    // ballare la riga.
-                    className="group relative w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-2 px-4 sm:px-5 py-3 rounded-xl overflow-hidden transition-all duration-300 ease-snappy hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-10px_rgba(220,38,38,0.55),0_0_0_1px_rgba(248,113,113,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
-                    style={{
-                      backgroundImage:
-                        "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)",
-                      color: "#ffffff",
-                    }}
+                    className={cn(
+                      "group relative w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 sm:px-7 py-3.5 rounded-full overflow-hidden transition-all duration-300 ease-snappy hover:scale-[1.03] hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2",
+                      btn.variant === "solid"
+                        ? "hover:shadow-[0_16px_34px_-10px_rgba(220,38,38,0.6)]"
+                        : "hover:border-[#0a0a0a] hover:bg-[#0a0a0a]/[0.04]",
+                    )}
+                    style={
+                      btn.variant === "solid"
+                        ? {
+                            backgroundImage:
+                              "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)",
+                            color: "#ffffff",
+                            border: "2px solid transparent",
+                          }
+                        : {
+                            backgroundColor: "transparent",
+                            color: "#0a0a0a",
+                            border: "2px solid #d4d4d4",
+                          }
+                    }
                   >
-                    <btn.Icon className="w-[18px] h-[18px] shrink-0 transition-transform duration-300 ease-snappy group-hover:scale-110" />
+                    <btn.Icon className="w-[19px] h-[19px] shrink-0 transition-transform duration-300 ease-snappy group-hover:scale-110" />
                     <span
                       className="font-semibold"
                       style={{
                         fontFamily:
                           '"Geist", ui-sans-serif, system-ui, sans-serif',
-                        fontSize: "clamp(14px, 1.25vw, 17px)",
+                        fontSize: "16px",
                         letterSpacing: "-0.015em",
                       }}
                     >
                       {t(btn.key)}
                     </span>
-                    <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-sm ml-auto sm:ml-0">
+                    <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-sm">
                       →
                     </span>
                   </Link>
                 </motion.div>
               ))}
             </div>
+
+            {/*
+              Le altre tre strade: link sottolineati, non pulsanti. Restano
+              raggiungibili senza competere con l'azione principale — ed è
+              così che sparisce il pulsante "B2B" largo tutta la riga per tre
+              caratteri di testo.
+             */}
+            <motion.div
+              className="flex flex-wrap items-center gap-x-6 gap-y-3"
+              initial={shouldReduce ? { opacity: 1 } : { opacity: 0 }}
+              animate={{ opacity: hidden ? 0 : 1 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+            >
+              {SECONDARY_ACTIONS.map((btn) => (
+                <Link
+                  key={btn.href}
+                  href={btn.href}
+                  className="group inline-flex items-center gap-2 transition-colors"
+                  style={{
+                    fontSize: "15px",
+                    color: "#525252",
+                    borderBottom: "1px solid #d4d4d4",
+                    paddingBottom: "3px",
+                  }}
+                >
+                  <btn.Icon className="w-4 h-4 shrink-0 text-brand-600" />
+                  <span className="group-hover:text-[#0a0a0a] transition-colors">
+                    {t(btn.key)}
+                  </span>
+                </Link>
+              ))}
+            </motion.div>
 
             {showContent && (
               <motion.p

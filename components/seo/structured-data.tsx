@@ -36,6 +36,8 @@ export function OrganizationJsonLd() {
     legalName: COMPANY.legalName,
     vatID: COMPANY.vatNumber,
     taxID: COMPANY.taxCode,
+    // Attività avviata nel 2016 — dato confermato su fonti pubbliche
+    foundingDate: "2016",
     url: SITE_BASE,
     logo: `${SITE_BASE}/logo-fast-fix.svg`,
     sameAs: ["https://fast-fix.it"],
