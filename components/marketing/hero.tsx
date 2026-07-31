@@ -300,7 +300,11 @@ export function Hero({
                       }}
                     >
                       <Link
-                        href={`/prodotti/${d.slug}`}
+                        // La scheda prodotto singola non esiste: /prodotti/<slug>
+                        // restituiva 404 (verificato nei log di produzione).
+                        // Si atterra sulla categoria con l'àncora al prodotto,
+                        // come fa già il chatbot in lib/chatbot/tools.ts.
+                        href={`/prodotti/telefoni#${d.slug}`}
                         className="group flex items-center gap-4 sm:gap-5 rounded-2xl border border-neutral-200/80 bg-white hover:border-brand-600 transition-all duration-300 ease-snappy hover:shadow-[0_22px_50px_-22px_rgba(220,38,38,0.32)] p-3 sm:p-4"
                       >
                         <div className="relative w-[108px] h-[108px] sm:w-[136px] sm:h-[136px] flex-shrink-0 flex items-center justify-center overflow-hidden rounded-xl bg-neutral-50">

@@ -157,6 +157,11 @@ function ProductCard({
   return (
     <motion.div
       layout
+      // Bersaglio delle àncore /prodotti/<categoria>#<slug> usate dalla
+      // homepage e dal chatbot: senza questo id il link atterra sulla
+      // categoria ma non porta al prodotto.
+      id={product.slug}
+      style={{ scrollMarginTop: "96px" }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
