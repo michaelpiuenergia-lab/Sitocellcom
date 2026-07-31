@@ -9,20 +9,28 @@ import { formatPrice } from "@/lib/crm-client/mocks/products";
 import type { PublicProductListItem } from "@/lib/crm-client/types";
 import { useLang } from "@/lib/i18n/lang-context";
 import type { Dict } from "@/lib/i18n/dict";
+import {
+  BoxesIcon,
+  GraduationCapIcon,
+  RepeatIcon,
+  ShoppingBagIcon,
+  WrenchIcon,
+} from "./service-icons";
 
-const WORDMARK_LETTERS = ["F", "A", "S", "T", "-", "F", "I", "X"] as const;
-
+// Le cinque aree di Fast-Fix, ognuna con la sua icona: a colpo d'occhio si
+// capisce cosa fa l'azienda senza leggere.
 // Ordine deliberato: "Ripara" per primo — la riparazione è il mestiere
 // principale e deve leggersi al primo impatto, prima della vendita.
 const PILLAR_BUTTONS: Array<{
   key: keyof Dict;
   href: string;
+  Icon: (props: { className?: string }) => React.ReactElement;
 }> = [
-  { key: "hero.pillar.repair", href: "/riparazioni" },
-  { key: "hero.pillar.buy", href: "/prodotti" },
-  { key: "hero.pillar.resell", href: "/rivendi" },
-  { key: "hero.pillar.learn", href: "/corsi" },
-  { key: "hero.pillar.b2b", href: "/b2b" },
+  { key: "hero.pillar.repair", href: "/riparazioni", Icon: WrenchIcon },
+  { key: "hero.pillar.buy", href: "/prodotti", Icon: ShoppingBagIcon },
+  { key: "hero.pillar.resell", href: "/rivendi", Icon: RepeatIcon },
+  { key: "hero.pillar.learn", href: "/corsi", Icon: GraduationCapIcon },
+  { key: "hero.pillar.b2b", href: "/b2b", Icon: BoxesIcon },
 ];
 
 export function Hero({
@@ -65,96 +73,14 @@ export function Hero({
           {/* === Colonna sinistra === */}
           <div className="flex-1 flex flex-col gap-6 sm:gap-8 items-start text-left max-w-[640px] w-full">
             {/*
-              Wordmark — SOLO fade-in + rotazione iniziale.
-              Niente cambio di dimensione: il banner resta ancorato al posto
-              definitivo dall'inizio, non "cammina" tra le fasi.
+              Niente wordmark qui: il logo è già nella navbar, due righe sopra.
+              Ripeterlo grande rubava il primo schermo al messaggio vero e
+              faceva sembrare la pagina un frontespizio.
+              Al suo posto il claim, che ora è l'h1 della homepage: prima non
+              esisteva nessun h1, e per Google è il segnale più forte di cosa
+              tratta la pagina.
              */}
-            <div className="flex items-end gap-2 md:gap-3">
-              <motion.svg
-                viewBox="0 0 100 100"
-                aria-label="Fast-Fix"
-                preserveAspectRatio="xMidYMid meet"
-                style={{
-                  display: "block",
-                  overflow: "visible",
-                  flexShrink: 0,
-                  // Mark quadrato tarato sull'altezza del wordmark accanto:
-                  // le lettere sono clamp(32px, 4.8vw, 72px) con lineHeight
-                  // 0.85, quindi ~0.85x di quei valori — un pelo più basso
-                  // del testo, così accompagna invece di dominare.
-                  width: "clamp(30px, 4.1vw, 60px)",
-                  height: "clamp(30px, 4.1vw, 60px)",
-                }}
-                initial={
-                  shouldReduce
-                    ? { rotate: 0, opacity: 1 }
-                    : { rotate: -180, opacity: 0 }
-                }
-                animate={{
-                  rotate: 0,
-                  opacity: hidden ? 0 : 1,
-                }}
-                transition={{
-                  duration: 0.9,
-                  ease: EASE.smooth,
-                }}
-              >
-                <rect width="100" height="100" rx="22" fill="#dc2626" />
-                <motion.path
-                  d="M58 12 L30 58 h16 l-6 30 L72 42 H54 z"
-                  fill="#ffffff"
-                  style={{ transformOrigin: "50px 50px" }}
-                  initial={
-                    shouldReduce
-                      ? { opacity: 1, scale: 1 }
-                      : { opacity: 0, scale: 0.7 }
-                  }
-                  animate={{
-                    opacity: hidden ? 0 : 1,
-                    scale: hidden ? 0.7 : 1,
-                  }}
-                  transition={{ duration: 0.8, ease: EASE.smooth, delay: 0.25 }}
-                />
-              </motion.svg>
-
-              <div className="flex flex-col items-start">
-                <div className="flex items-end">
-                  {WORDMARK_LETTERS.map((letter, i) => (
-                    <motion.span
-                      key={i}
-                      initial={
-                        shouldReduce
-                          ? { opacity: 1, y: 0 }
-                          : { opacity: 0, y: 30 }
-                      }
-                      animate={{
-                        opacity: hidden ? 0 : 1,
-                        y: hidden ? 30 : 0,
-                      }}
-                      transition={{
-                        duration: 0.5,
-                        ease: EASE.snappy,
-                        delay: i * 0.04,
-                      }}
-                      style={{
-                        fontFamily:
-                          '"Geist", ui-sans-serif, system-ui, -apple-system, sans-serif',
-                        fontWeight: 800,
-                        fontSize: "clamp(32px, 4.8vw, 72px)",
-                        color: "#0a0a0a",
-                        lineHeight: 0.85,
-                        letterSpacing: "-0.045em",
-                        display: "inline-block",
-                      }}
-                    >
-                      {letter}
-                    </motion.span>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <motion.h2
+            <motion.h1
               initial={shouldReduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 14 }}
               animate={{
                 opacity: hidden ? 0 : 1,
@@ -167,19 +93,25 @@ export function Hero({
               }}
               className="font-serif tracking-[-0.02em] text-[#171717]"
               style={{
-                fontSize: "var(--text-h2)",
+                fontSize: "var(--text-h1, var(--text-h2))",
                 lineHeight: 1.05,
               }}
             >
               <em className="italic text-brand-600" style={{ fontStyle: "italic" }}>{t("hero.claim.italicA")}</em>
               {t("hero.claim.between")}{" "}
               <em className="italic text-brand-600" style={{ fontStyle: "italic" }}>{t("hero.claim.italicB")}</em>.
-            </motion.h2>
+            </motion.h1>
 
-            <div className="flex flex-wrap gap-2.5 md:gap-3 mt-1">
+            {/*
+              Mobile: griglia a due colonne, così i cinque pulsanti restano
+              allineati e leggibili invece di spezzarsi con larghezze diverse.
+              Da sm in su tornano in fila con wrap naturale.
+             */}
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2.5 md:gap-3 mt-1 w-full">
               {PILLAR_BUTTONS.map((btn, i) => (
                 <motion.div
                   key={btn.href}
+                  className="w-full sm:w-auto"
                   initial={
                     shouldReduce
                       ? { y: 0, opacity: 1, rotate: 0 }
@@ -199,13 +131,20 @@ export function Hero({
                 >
                   <Link
                     href={btn.href}
-                    className="group relative inline-flex items-center gap-1.5 sm:gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-lg overflow-hidden transition-all duration-300 ease-snappy hover:shadow-[0_10px_26px_-10px_rgba(220,38,38,0.5),0_0_0_1px_rgba(248,113,113,0.3)]"
+                    // w-full + justify-center: su mobile i pulsanti riempiono
+                    // la colonna della griglia e restano allineati invece di
+                    // andare a capo con larghezze diverse.
+                    // hover:-translate-y-0.5 + scale: il "leggero ingrandimento
+                    // con ombra" chiesto, tenuto sotto il 3% per non far
+                    // ballare la riga.
+                    className="group relative w-full sm:w-auto inline-flex items-center justify-center sm:justify-start gap-2 px-4 sm:px-5 py-3 rounded-xl overflow-hidden transition-all duration-300 ease-snappy hover:scale-[1.03] hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-10px_rgba(220,38,38,0.55),0_0_0_1px_rgba(248,113,113,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 focus-visible:ring-offset-2"
                     style={{
                       backgroundImage:
                         "linear-gradient(135deg, #dc2626 0%, #991b1b 100%)",
                       color: "#ffffff",
                     }}
                   >
+                    <btn.Icon className="w-[18px] h-[18px] shrink-0 transition-transform duration-300 ease-snappy group-hover:scale-110" />
                     <span
                       className="font-semibold"
                       style={{
@@ -217,7 +156,7 @@ export function Hero({
                     >
                       {t(btn.key)}
                     </span>
-                    <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-sm">
+                    <span className="transition-transform duration-300 ease-snappy group-hover:translate-x-1 text-sm ml-auto sm:ml-0">
                       →
                     </span>
                   </Link>
