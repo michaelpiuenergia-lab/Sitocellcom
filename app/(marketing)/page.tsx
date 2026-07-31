@@ -149,7 +149,11 @@ export default async function MarketingPage() {
           primaryCta={{ label: t("home.b2b.cta.login"), href: "/b2b/login" }}
           secondaryCta={{
             label: t("home.b2b.cta.contact"),
-            href: "mailto:b2b@fast-fix.it?subject=Richiesta%20attivazione%20account%20B2B",
+            // Era un mailto: su un browser senza client email associato il
+            // click non produceva nulla. Ora porta al form di registrazione
+            // rivenditore, che è esattamente la richiesta di attivazione e
+            // finisce nel CRM invece che in una casella di posta.
+            href: "/b2b/registrati",
           }}
         />
       </main>
