@@ -296,32 +296,54 @@ export type PricingViewer =
 /** Stati ticket — identici a REPAIR_STATUSES del CRM (lib/repairs/types.ts). */
 export type RepairPublicStatus =
   | "accepted"
+  | "to_check"
   | "diagnosed"
   | "in_repair"
   | "awaiting_parts"
+  | "waiting_customer"
+  | "sent_to_external_lab"
   | "ready_for_pickup"
   | "delivered"
+  | "not_repairable"
   | "cancelled";
 
 export const REPAIR_PUBLIC_STATUS_LABELS: Record<RepairPublicStatus, string> = {
   accepted: "Accettato",
+  to_check: "Da verificare",
   diagnosed: "Diagnosticato",
   in_repair: "In lavorazione",
   awaiting_parts: "Attesa ricambi",
+  waiting_customer: "In attesa del cliente",
+  sent_to_external_lab: "Al laboratorio esterno",
   ready_for_pickup: "Pronto al ritiro",
   delivered: "Consegnato",
+  not_repairable: "Non riparabile",
   cancelled: "Annullato",
 };
 
-/** Ordine lineare per la timeline (cancelled è terminale fuori sequenza). */
+/**
+ * Ordine lineare per la timeline. `cancelled` e `not_repairable` sono terminali
+ * fuori sequenza (gestiti a parte nel tracker). `waiting_customer` non entra
+ * nel flusso: e' una pausa che puo' capitare in qualunque momento.
+ */
 export const REPAIR_PUBLIC_STATUS_FLOW: RepairPublicStatus[] = [
   "accepted",
+  "to_check",
   "diagnosed",
   "in_repair",
   "awaiting_parts",
+  "sent_to_external_lab",
   "ready_for_pickup",
   "delivered",
 ];
+
+/**
+ * Etichetta di uno stato, resiliente: se il CRM introduce un nuovo stato non
+ * ancora mappato qui, ritorna il codice grezzo invece di far crashare il render
+ * (il tracker pubblico non deve MAI andare in "pagina non caricata").
+ */
+export const repairPublicStatusLabel = (status: string): string =>
+  REPAIR_PUBLIC_STATUS_LABELS[status as RepairPublicStatus] ?? status;
 
 /**
  * Stato del preventivo. RICHIEDE estensione lato CRM: oggi il ticket ha

@@ -4,8 +4,8 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { z } from "zod";
 import {
-  REPAIR_PUBLIC_STATUS_LABELS,
   REPAIR_PUBLIC_STATUS_FLOW,
+  repairPublicStatusLabel,
   type RepairPublic,
   type RepairPublicStatus,
 } from "@/lib/crm-client/types";
@@ -36,11 +36,12 @@ const inputStyle = {
 } as const;
 
 function StatusTimeline({ status }: { status: RepairPublicStatus }) {
-  if (status === "cancelled") {
+  // Stati terminali fuori sequenza: non hanno senso sulla timeline lineare.
+  if (status === "cancelled" || status === "not_repairable") {
     return (
       <div className="rounded-xl px-4 py-3" style={{ backgroundColor: "#fef2f2", border: "1px solid #fecaca" }}>
         <span className="font-mono uppercase" style={{ fontSize: "11px", letterSpacing: "0.16em", color: "#b91c1c" }}>
-          Riparazione annullata
+          {status === "cancelled" ? "Riparazione annullata" : "Dispositivo non riparabile"}
         </span>
       </div>
     );
@@ -73,7 +74,7 @@ function StatusTimeline({ status }: { status: RepairPublicStatus }) {
                     fontWeight: active ? 600 : 400,
                   }}
                 >
-                  {REPAIR_PUBLIC_STATUS_LABELS[s]}
+                  {repairPublicStatusLabel(s)}
                 </span>
               </div>
               {idx < REPAIR_PUBLIC_STATUS_FLOW.length - 1 && (
@@ -230,7 +231,7 @@ function RepairResult({
               <div className="w-2 h-2 mt-1.5 rounded-full shrink-0" style={{ backgroundColor: "#dc2626" }} />
               <div className="flex flex-col">
                 <span style={{ fontSize: "14px", color: "#0a0a0a" }}>
-                  {REPAIR_PUBLIC_STATUS_LABELS[entry.status]}
+                  {repairPublicStatusLabel(entry.status)}
                 </span>
                 {entry.note && <span style={{ fontSize: "13px", color: "#737373" }}>{entry.note}</span>}
                 <span className="font-mono" style={{ fontSize: "11px", color: "#a3a3a3" }}>
