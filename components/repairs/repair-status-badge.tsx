@@ -1,21 +1,28 @@
 import {
-  REPAIR_PUBLIC_STATUS_LABELS,
+  repairPublicStatusLabel,
   type RepairPublicStatus,
 } from "@/lib/crm-client/types";
 
 /** Colori per stato — coerenti con REPAIR_STATUS_COLORS del CRM. */
 const STATUS_TONE: Record<RepairPublicStatus, { bg: string; color: string }> = {
   accepted: { bg: "#f3f4f6", color: "#374151" },
+  to_check: { bg: "#f3f4f6", color: "#374151" },
   diagnosed: { bg: "#e0f2fe", color: "#0369a1" },
   in_repair: { bg: "#fef3c7", color: "#92400e" },
   awaiting_parts: { bg: "#f3e8ff", color: "#7e22ce" },
+  waiting_customer: { bg: "#fef9c3", color: "#854d0e" },
+  sent_to_external_lab: { bg: "#ccfbf1", color: "#0f766e" },
   ready_for_pickup: { bg: "#dcfce7", color: "#15803d" },
   delivered: { bg: "#e5e7eb", color: "#374151" },
+  not_repairable: { bg: "#fee2e2", color: "#b91c1c" },
   cancelled: { bg: "#fee2e2", color: "#b91c1c" },
 };
 
+// Fallback neutro: uno stato non ancora mappato non deve rompere il badge.
+const DEFAULT_TONE = { bg: "#f3f4f6", color: "#374151" } as const;
+
 export function RepairStatusBadge({ status }: { status: RepairPublicStatus }) {
-  const tone = STATUS_TONE[status];
+  const tone = STATUS_TONE[status] ?? DEFAULT_TONE;
   return (
     <span
       className="inline-flex items-center rounded-full px-3 py-1 font-mono uppercase whitespace-nowrap"
@@ -27,7 +34,7 @@ export function RepairStatusBadge({ status }: { status: RepairPublicStatus }) {
         fontWeight: 600,
       }}
     >
-      {REPAIR_PUBLIC_STATUS_LABELS[status]}
+      {repairPublicStatusLabel(status)}
     </span>
   );
 }
